@@ -1,10 +1,13 @@
 ## ComplexMCP: Evaluation of LLM Agents in Dynamic, Interdependent, and Large-Scale Tool Sandbox 
 
-**ComplexMCP** is a benchmark for evaluating model performance in complex software workflows and large API tool ecosystems.
+**ComplexMCP** is a benchmark that pushes LLM agents beyond isolated API calls into realistic, interdependent tool workflows. It provides over 300 meticulously tested tools across 7 stateful sandboxes — from office suites to financial systems — and reveals that even top-tier models fail to exceed 60% success rate, far behind human performance at 90%.
 
 <p align="center">
   <a href="https://arxiv.org/abs/2605.10787" target="_blank">
     <img src="https://img.shields.io/badge/arXiv-2605.10787v1-b31b1b?logo=arxiv&logoColor=white&style=for-the-badge" alt="arXiv badge">
+  </a>
+  <a href="https://github.com/ATH-MaaS/complex-mcp" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-ATH_MaaS/complex_mcp-181717?logo=github&logoColor=white&style=for-the-badge" alt="GitHub badge">
   </a>
 </p>
 
