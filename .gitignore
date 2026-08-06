@@ -224,3 +224,5 @@ check-client.py
 /ignore/
 
 draw/
+# Harbor task zip (kept as local convenience only)
+benchmark/harbor_final_all.zip

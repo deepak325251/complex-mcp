@@ -45,6 +45,36 @@ python run_benchmark.py --tool-config config/general.yaml \
   --model [model_name]
 ```
 
+### 4) One-command task runner
+
+`scripts/run_task.sh` starts the required servers/apps in tmux, waits for them, runs the benchmark, then tears everything down.
+
+```bash
+# Run one harbor task
+TASK=complexmcp-l1-s7-purchase-90-kg-of-limes-at-the-most-competitive-000 bash scripts/run_task.sh
+
+# Bake GT for that task first, then run with real judging
+BAKE_GT=1 TASK=complexmcp-l1-s7-purchase-90-kg-of-limes-at-the-most-competitive-000 bash scripts/run_task.sh
+
+# Parquet dataset (has GT baked in — full judging)
+TASKS_DIR=benchmark/data/data.parquet LIMIT=5 bash scripts/run_task.sh
+
+# Bake GT for ALL 43 harbor tasks in one go
+BAKE_GT=1 LIMIT=0 bash scripts/run_task.sh
+```
+
+Overrides: `MODEL`, `METHOD`, `LIMIT`, `TASK`, `TASKS_DIR`, `OUTPUT_DIR`.
+Output: `runs/<timestamp>__<model>__<method>/tasks/task_NNN__<slug>/{meta.json, output.md, trajectory.json, tool_summary.json, tokens.json, score.json}`.
+
+### 5) 3-container Docker stack
+
+```bash
+CLAUDE_CODE_OAUTH_TOKEN=sk-ant-oat01-... \
+  docker compose -f docker/docker-compose.yml up --abort-on-container-exit
+```
+
+Servers, software, and runner each run in their own container. See `docker/README.md`.
+
 
 
 If you find this work helpful, please cite our paper:

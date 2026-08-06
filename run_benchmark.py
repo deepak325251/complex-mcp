@@ -1,6 +1,7 @@
 from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
 from benchmark.judge import judge_env
+from scripts.task_writer import write_task_dir
 from dotenv import load_dotenv
 from argparse import ArgumentParser
 from prompt_toolkit import prompt
@@ -87,6 +88,96 @@ def gen_instruct_by_human(agent: AgentClient, generate: bool):
         if ok.strip().lower() == "y":
             add_data(query_result)
 
+def _load_parquet_tasks(path: Path, task_name: str | None, limit: int) -> list[dict]:
+    df = pd.read_parquet(path)
+    if task_name:
+        df = df[df["seed"].astype(str) == task_name].reset_index(drop=True)
+    if limit > 0:
+        df = df.head(limit).reset_index(drop=True)
+    out: list[dict] = []
+    for i in range(len(df)):
+        row = df.iloc[i]
+        seed = int(row["seed"])
+        apps = json.loads(row["apps"])
+        gt_env = json.loads(row["gt_env"])
+        gt_tool_cnt = json.loads(row["tool_cnt"])
+        level = row.get("level")
+        try:
+            level = int(level) if level is not None else None
+        except (TypeError, ValueError):
+            pass
+        name = f"parquet-ep{i + 1:03d}-seed{seed}"
+        if level is not None:
+            name = f"parquet-l{level}-ep{i + 1:03d}-seed{seed}"
+        out.append({
+            "name": name,
+            "query": row["query"],
+            "seed": seed,
+            "apps": apps,
+            "level": level,
+            "gt_env": gt_env,
+            "gt_tool_cnt": gt_tool_cnt,
+            "provide_tools": list(gt_tool_cnt.keys()),
+        })
+    return out
+
+
+def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> list[dict]:
+    import tomllib
+    task_dirs = sorted([d for d in dir_path.iterdir()
+                        if d.is_dir() and d.name.startswith("complexmcp")])
+    if task_name:
+        task_dirs = [d for d in task_dirs
+                     if d.name == task_name or d.name.startswith(task_name)]
+    if limit > 0:
+        task_dirs = task_dirs[:limit]
+    out: list[dict] = []
+    for td in task_dirs:
+        with open(td / "task.toml", "rb") as f:
+            info = tomllib.load(f)
+        meta = info["task"].get("metadata", {})
+        apps = meta.get("apps", [])
+        if isinstance(apps, str):
+            apps = json.loads(apps)
+        with open(td / "instruction.md") as f:
+            instr = f.read()
+        m = re.search(r"# Task\s*\n+([^\n]+(?:\n(?!Once)[^\n]+)*)", instr)
+        query = m.group(1).strip() if m else info["task"].get("description", "")
+        gt_env = None
+        gt_env_path = td / "tests" / "gt_env.json"
+        if gt_env_path.exists():
+            gt_env = json.loads(gt_env_path.read_text())
+        gt_tool_cnt = None
+        etc = meta.get("expected_tool_calls")
+        if isinstance(etc, str):
+            try:
+                gt_tool_cnt = json.loads(etc)
+            except json.JSONDecodeError:
+                gt_tool_cnt = None
+        provide_tools = list(gt_tool_cnt.keys()) if gt_tool_cnt else None
+        out.append({
+            "name": info["task"]["name"],
+            "query": query,
+            "seed": int(meta.get("seed")),
+            "apps": apps,
+            "level": meta.get("level"),
+            "gt_env": gt_env,
+            "gt_tool_cnt": gt_tool_cnt,
+            "provide_tools": provide_tools,
+        })
+    return out
+
+
+def load_tasks(source: str, path: Path, task_name: str | None, limit: int) -> list[dict]:
+    if source == "auto":
+        source = "harbor" if path.is_dir() else "parquet"
+    if source == "parquet":
+        return _load_parquet_tasks(path, task_name, limit)
+    if source == "harbor":
+        return _load_harbor_tasks(path, task_name, limit)
+    raise ValueError(f"unknown source: {source}")
+
+
 def main(args):
     model = args.__getattribute__("model")
     tool_config_path = args.__getattribute__("tool_config")
@@ -121,11 +212,18 @@ def main(args):
         )
         return
 
-    data_path = Path("benchmark") / "data" / "data.parquet"
-    dataset = pd.read_parquet(data_path)
+    source = getattr(args, "source", "auto")
+    task_name = getattr(args, "task", None) or None
     limit = getattr(args, "limit", 0) or 0
-    if limit > 0:
-        dataset = dataset.head(limit).reset_index(drop=True)
+    tasks_dir_arg = getattr(args, "tasks_dir", None)
+    if tasks_dir_arg:
+        data_path = Path(tasks_dir_arg)
+    else:
+        data_path = Path("benchmark") / "data" / "data.parquet"
+    tasks_list = load_tasks(source, data_path, task_name, limit)
+    if not tasks_list:
+        raise SystemExit(f"no tasks selected from {data_path} (source={source}, task={task_name!r})")
+    print(f"[input] loaded {len(tasks_list)} task(s) from {data_path}")
 
     avg_recall_rate = 0
     avg_misbehave_rate = 0
@@ -140,25 +238,25 @@ def main(args):
 
     output_dir = getattr(args, "output_dir", "runs") or ""
     run_dir = None
-    episodes_dir = None
+    tasks_dir = None
     per_episode: list = []
     if output_dir:
         safe_model = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_") or "model"
         run_id = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}__{safe_model}__{method}"
         run_dir = Path(output_dir) / run_id
-        episodes_dir = run_dir / "episodes"
-        episodes_dir.mkdir(parents=True, exist_ok=True)
+        tasks_dir = run_dir / "tasks"
+        tasks_dir.mkdir(parents=True, exist_ok=True)
         print(f"[output] writing results to {run_dir}")
 
-    for i in range(len(dataset)):
-        print(f"Completion: [{i + 1} / {len(dataset)}]")
-        data = dataset.iloc[i]
-        query = data["query"]
-        seed = int(data["seed"])
-        apps = json.loads(data["apps"])
-        gt_env = json.loads(data["gt_env"])
-        gt_tool_cnt = json.loads(data["tool_cnt"])
-        provide_tools = list(gt_tool_cnt.keys())
+    for i in range(len(tasks_list)):
+        print(f"Completion: [{i + 1} / {len(tasks_list)}]")
+        task_info = tasks_list[i]
+        query = task_info["query"]
+        seed = task_info["seed"]
+        apps = task_info["apps"]
+        gt_env = task_info.get("gt_env")
+        gt_tool_cnt = task_info.get("gt_tool_cnt") or {}
+        provide_tools = list(task_info.get("provide_tools") or gt_tool_cnt.keys() or [])
         if distraction > 0:
             distra_tools = list(set(toolbox.tools.keys()) - set(provide_tools))
             provide_tools += random.sample(distra_tools, k=min(len(distra_tools), distraction))
@@ -183,12 +281,19 @@ def main(args):
         tool_cnt = result["tool_cnt"]
         tokens = result["tokens"]
 
-        judge_result = judge_env(old_env, new_env, gt_env, verbose=True)
-        print(judge_result)
-        passed = int(judge_result["recall"] == judge_result["total"] and judge_result["misbehave"] == 0)
-        acc_cnt += passed
-        avg_recall_rate += judge_result["recall"] / (judge_result["total"]) if judge_result["total"] else (judge_result["recall"] == 0)
-        avg_misbehave_rate += min(judge_result["misbehave"] / judge_result["total"] if judge_result["total"] else (judge_result["misbehave"]), 3)
+        if gt_env is not None:
+            judge_result = judge_env(old_env, new_env, gt_env, verbose=True)
+            print(judge_result)
+            passed = int(judge_result["recall"] == judge_result["total"] and judge_result["misbehave"] == 0)
+            acc_cnt += passed
+            avg_recall_rate += judge_result["recall"] / (judge_result["total"]) if judge_result["total"] else (judge_result["recall"] == 0)
+            avg_misbehave_rate += min(judge_result["misbehave"] / judge_result["total"] if judge_result["total"] else (judge_result["misbehave"]), 3)
+            gradeable = True
+        else:
+            judge_result = {"recall": 0, "total": 0, "misbehave": 0}
+            passed = 0
+            gradeable = False
+            print("[judge] SKIP (no gt_env for this task; run scripts/bake_harbor_gt.py first)")
         ep_valid = ep_invalid = ep_error = 0
         for tool_cnt_info in tool_cnt.values():
             ep_valid += tool_cnt_info.get("ok", 0)
@@ -202,49 +307,77 @@ def main(args):
         llm_tokens += tokens["llm"]
         tool_tokens += tokens["tool"]
 
-        if episodes_dir is not None:
-            episode_record = {
+        if tasks_dir is not None:
+            level = task_info.get("level")
+            episode_name = task_info["name"]
+            recall = judge_result.get("recall", 0)
+            total = judge_result.get("total", 0)
+            reward = float(recall) / total if total else (1.0 if recall == 0 else None)
+            if gradeable:
+                score = {
+                    "gradeable": True,
+                    "reward": reward,
+                    "recall": recall,
+                    "misbehave": judge_result.get("misbehave", 0),
+                    "total": total,
+                    "passed": bool(passed),
+                    "gt_env": gt_env,
+                    "old_env": old_env,
+                    "new_env": new_env,
+                    "gt_tool_cnt": gt_tool_cnt,
+                }
+            else:
+                score = {
+                    "gradeable": False,
+                    "reason": "no gt_env for this task (run scripts/bake_harbor_gt.py to bake).",
+                    "reward": None,
+                    "recall": None,
+                    "misbehave": None,
+                    "total": None,
+                    "old_env": old_env,
+                    "new_env": new_env,
+                    "gt_tool_cnt": gt_tool_cnt,
+                }
+            record = {
                 "index": i + 1,
-                "seed": seed,
+                "name": episode_name,
                 "query": query,
+                "seed": seed,
                 "apps": apps,
-                "provide_tools": provide_tools,
-                "gt_env": gt_env,
-                "old_env": old_env,
-                "new_env": new_env,
-                "gt_tool_cnt": gt_tool_cnt,
+                "level": level,
                 "tool_cnt": tool_cnt,
                 "tokens": tokens,
-                "judge": judge_result,
-                "passed": bool(passed),
-                "output": result.get("output"),
+                "valid_tool_calls": ep_valid,
+                "invalid_tool_calls": ep_invalid,
+                "error_tool_calls": ep_error,
+                "output": result.get("output", ""),
             }
-            ep_path = episodes_dir / f"ep_{i + 1:03d}_seed_{seed}.json"
-            with open(ep_path, "w") as f:
-                json.dump(episode_record, f, indent=2, default=str)
+            task_dir = write_task_dir(tasks_dir, record, score=score)
             per_episode.append({
                 "index": i + 1,
+                "name": episode_name,
                 "seed": seed,
                 "passed": bool(passed),
+                "gradeable": gradeable,
                 "judge": judge_result,
                 "valid_tool_calls": ep_valid,
                 "invalid_tool_calls": ep_invalid,
                 "error_tool_calls": ep_error,
                 "tokens": tokens,
-                "file": str(ep_path.relative_to(run_dir)),
+                "dir": str(task_dir.relative_to(run_dir)),
             })
 
-    avg_recall_rate /= len(dataset)
-    avg_misbehave_rate /= len(dataset)
-    avg_valid_tc /= len(dataset)
-    avg_error_tc /= len(dataset)
-    avg_invalid_tc /= len(dataset)
+    avg_recall_rate /= len(tasks_list)
+    avg_misbehave_rate /= len(tasks_list)
+    avg_valid_tc /= len(tasks_list)
+    avg_error_tc /= len(tasks_list)
+    avg_invalid_tc /= len(tasks_list)
 
-    prompt_tokens /= len(dataset)
-    llm_tokens /= len(dataset)
-    tool_tokens /= len(dataset)
+    prompt_tokens /= len(tasks_list)
+    llm_tokens /= len(tasks_list)
+    tool_tokens /= len(tasks_list)
 
-    accuracy = acc_cnt / len(dataset)
+    accuracy = acc_cnt / len(tasks_list)
 
     print(f"Model: {model}")
     print(f"\t\taccuracy:\t{accuracy}")
@@ -270,7 +403,7 @@ def main(args):
                 "distraction": distraction,
                 "topk": topk,
                 "limit": limit,
-                "episodes": len(dataset),
+                "episodes": len(tasks_list),
             },
             "metrics": {
                 "accuracy": accuracy,
@@ -296,7 +429,7 @@ def main(args):
             f"- Model: `{model}`",
             f"- Method: `{method}`",
             f"- Tool config: `{tool_config_path}`",
-            f"- Episodes: {len(dataset)}" + (f" (limit={limit})" if limit else ""),
+            f"- Episodes: {len(tasks_list)}" + (f" (limit={limit})" if limit else ""),
             "",
             "## Aggregate metrics",
             "",
@@ -314,7 +447,7 @@ def main(args):
             "",
             "## Per-episode",
             "",
-            "| # | Seed | Passed | Recall / Total | Misbehave | Valid TC | Invalid TC | File |",
+            "| # | Seed | Passed | Recall / Total | Misbehave | Valid TC | Invalid TC | Dir |",
             "|---|---|---|---|---|---|---|---|",
         ]
         for ep in per_episode:
@@ -322,7 +455,7 @@ def main(args):
             report_lines.append(
                 f"| {ep['index']} | {ep['seed']} | {'✓' if ep['passed'] else '✗'} "
                 f"| {j['recall']} / {j['total']} | {j['misbehave']} "
-                f"| {ep['valid_tool_calls']} | {ep['invalid_tool_calls']} | `{ep['file']}` |"
+                f"| {ep['valid_tool_calls']} | {ep['invalid_tool_calls']} | `{ep['dir']}` |"
             )
         report_path = run_dir / "report.md"
         with open(report_path, "w") as f:
@@ -330,7 +463,7 @@ def main(args):
 
         print(f"[output] wrote {summary_path}")
         print(f"[output] wrote {report_path}")
-        print(f"[output] per-episode JSON in {episodes_dir}")
+        print(f"[output] per-task subdirs in {tasks_dir}")
 
 
 def load_dotenv_if_not_exist():
@@ -347,7 +480,10 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--distraction", type=int, default=-1, help="0: no other tools; -1: all tools' description will be put in system prompt; n: n tools' description will be put in system prompt")
     parser.add_argument("--topk", type=int, default=30)
     parser.add_argument("--limit", type=int, default=0, help="Max episodes to run (0 = all)")
-    parser.add_argument("--output-dir", type=str, default="runs", help="Directory to write per-run results (summary.json, report.md, episodes/). Set to '' to disable.")
+    parser.add_argument("--output-dir", type=str, default="runs", help="Directory to write per-run results (summary.json, report.md, tasks/task_NNN__slug/). Set to '' to disable.")
+    parser.add_argument("--source", type=str, default="auto", choices=["auto", "parquet", "harbor"], help="Task source. 'auto' picks 'harbor' if --tasks-dir is a directory, else 'parquet'.")
+    parser.add_argument("--tasks-dir", type=str, default=None, help="Path to task source. For harbor: directory of complexmcp-* task packages. For parquet: path to .parquet file. Defaults to benchmark/data/data.parquet.")
+    parser.add_argument("--task", type=str, default=None, help="Run only tasks whose name equals or starts with this string.")
 
     args = parser.parse_args()
     load_dotenv_if_not_exist()
