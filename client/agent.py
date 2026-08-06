@@ -329,6 +329,99 @@ class OpenAIBackend(ChatBackend):
 
         return resp
 
+class ClaudeCodeBackend(ChatBackend):
+    def __init__(self, model: str):
+        super().__init__()
+        self.model = model
+        self.claude_bin = os.environ.get("CLAUDE_BIN", "claude")
+
+    @staticmethod
+    def _serialize_messages(messages: List[Dict[str, Any]]) -> tuple:
+        system_msgs = [m["content"] for m in messages if m.get("role") == "system"]
+        convo = [m for m in messages if m.get("role") != "system"]
+        system_prompt = "\n\n".join(system_msgs) if system_msgs else None
+        lines: List[str] = []
+        for m in convo:
+            role = "User" if m.get("role") == "user" else "Assistant"
+            lines.append(f"[{role}]\n{m.get('content', '')}\n")
+        lines.append("[Assistant]\n")
+        return system_prompt, "\n".join(lines)
+
+    @retry(
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=1, min=2, max=15),
+        reraise=True,
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+    )
+    async def chat(
+        self,
+        messages: List[Dict[str, Any]],
+        max_tokens: int = 10000,
+        extra_body: Dict[str, Any] = {},
+    ) -> Dict[str, Any]:
+        system_prompt, prompt = self._serialize_messages(messages)
+
+        cmd = [
+            self.claude_bin,
+            "-p",
+            "--model", self.model,
+            "--output-format", "json",
+            "--dangerously-skip-permissions",
+        ]
+        if system_prompt:
+            cmd += ["--system-prompt", system_prompt]
+
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdin=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout_b, stderr_b = await proc.communicate(prompt.encode("utf-8"))
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"`claude` exited {proc.returncode}: {stderr_b.decode('utf-8', errors='replace')[:1000]}"
+            )
+
+        try:
+            data = json.loads(stdout_b.decode("utf-8"))
+        except json.JSONDecodeError as e:
+            raise RuntimeError(f"claude stdout not JSON: {e}. First 500 bytes: {stdout_b[:500]!r}")
+
+        content = data.get("result") or data.get("content") or ""
+        usage_data = data.get("usage") or {}
+        input_tokens = usage_data.get("input_tokens", 0)
+        output_tokens = usage_data.get("output_tokens", 0)
+
+        stops = extra_body.get("stop") or []
+        if isinstance(stops, str):
+            stops = [stops]
+        finish_reason = "stop"
+        for s in stops:
+            i = content.find(s)
+            if i != -1:
+                content = content[: i + len(s)]
+                break
+
+        if not content:
+            content = " "
+
+        resp = argparse.Namespace(
+            usage=argparse.Namespace(
+                prompt_tokens=input_tokens,
+                completion_tokens=output_tokens,
+                total_tokens=input_tokens + output_tokens,
+            ),
+            choices=[
+                argparse.Namespace(
+                    message=argparse.Namespace(content=content),
+                    finish_reason=finish_reason,
+                )
+            ],
+        )
+        return resp
+
+
 class HumanAnnotator(ChatBackend):
     def __init__(self):
         super().__init__()
