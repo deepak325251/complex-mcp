@@ -1,0 +1,175 @@
+meetings:
+- id: '85012345678'
+  host_id: u-amelia-9f4b2e8d
+  topic: Weekly Engineering Sync
+  type: '2'
+  status: waiting
+  start_time: '2026-05-29T16:00:00Z'
+  duration: '60'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345678
+  agenda: Sprint progress and blockers
+  created_at: '2026-05-20T10:00:00Z'
+- id: '85012345679'
+  host_id: u-amelia-9f4b2e8d
+  topic: Q2 Roadmap Review
+  type: '2'
+  status: waiting
+  start_time: '2026-05-30T18:00:00Z'
+  duration: '90'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345679
+  agenda: Review Q2 OKRs and roadmap
+  created_at: '2026-05-21T11:00:00Z'
+- id: '85012345680'
+  host_id: u-amelia-9f4b2e8d
+  topic: Customer Onboarding - Acme
+  type: '2'
+  status: waiting
+  start_time: '2026-06-02T15:00:00Z'
+  duration: '45'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345680
+  agenda: Walk Acme through setup
+  created_at: '2026-05-22T09:00:00Z'
+- id: '85012345670'
+  host_id: u-amelia-9f4b2e8d
+  topic: Sprint Retro 21
+  type: '2'
+  status: finished
+  start_time: '2026-05-22T16:00:00Z'
+  duration: '55'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345670
+  agenda: Retrospective for sprint 21
+  created_at: '2026-05-15T10:00:00Z'
+- id: '85012345671'
+  host_id: u-amelia-9f4b2e8d
+  topic: Architecture Deep Dive
+  type: '2'
+  status: finished
+  start_time: '2026-05-19T17:00:00Z'
+  duration: '75'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345671
+  agenda: Auth service redesign
+  created_at: '2026-05-12T10:00:00Z'
+- id: '85012345672'
+  host_id: u-amelia-9f4b2e8d
+  topic: All Hands May
+  type: '8'
+  status: finished
+  start_time: '2026-05-16T20:00:00Z'
+  duration: '40'
+  timezone: America/Los_Angeles
+  join_url: https://zoom.us/j/85012345672
+  agenda: Monthly all hands
+  created_at: '2026-05-09T10:00:00Z'
+recordings:
+- id: rec-0001
+  meeting_id: '85012345670'
+  recording_type: shared_screen_with_speaker_view
+  file_type: MP4
+  file_size: '524288000'
+  recording_start: '2026-05-22T16:01:00Z'
+  recording_end: '2026-05-22T16:55:00Z'
+  play_url: https://zoom.us/rec/play/aaa111
+  status: completed
+- id: rec-0002
+  meeting_id: '85012345670'
+  recording_type: audio_only
+  file_type: M4A
+  file_size: '31457280'
+  recording_start: '2026-05-22T16:01:00Z'
+  recording_end: '2026-05-22T16:55:00Z'
+  play_url: https://zoom.us/rec/play/aaa112
+  status: completed
+- id: rec-0003
+  meeting_id: '85012345671'
+  recording_type: shared_screen_with_speaker_view
+  file_type: MP4
+  file_size: '734003200'
+  recording_start: '2026-05-19T17:02:00Z'
+  recording_end: '2026-05-19T18:15:00Z'
+  play_url: https://zoom.us/rec/play/bbb221
+  status: completed
+- id: rec-0004
+  meeting_id: '85012345672'
+  recording_type: gallery_view
+  file_type: MP4
+  file_size: '419430400'
+  recording_start: '2026-05-16T20:01:00Z'
+  recording_end: '2026-05-16T20:39:00Z'
+  play_url: https://zoom.us/rec/play/ccc331
+  status: completed
+registrants:
+- id: reg-0001
+  meeting_id: '85012345679'
+  email: jonas.pereira@orbit-labs.com
+  first_name: Jonas
+  last_name: Pereira
+  status: approved
+  join_time: ''
+  create_time: '2026-05-21T12:00:00Z'
+- id: reg-0002
+  meeting_id: '85012345679'
+  email: helena.park@orbit-labs.com
+  first_name: Helena
+  last_name: Park
+  status: approved
+  join_time: ''
+  create_time: '2026-05-21T12:05:00Z'
+- id: reg-0003
+  meeting_id: '85012345679'
+  email: rohit.bansal@orbit-labs.com
+  first_name: Rohit
+  last_name: Bansal
+  status: pending
+  join_time: ''
+  create_time: '2026-05-21T13:00:00Z'
+- id: reg-0004
+  meeting_id: '85012345680'
+  email: buyer@acme.example.com
+  first_name: Dana
+  last_name: Reed
+  status: approved
+  join_time: ''
+  create_time: '2026-05-22T10:00:00Z'
+- id: reg-0005
+  meeting_id: '85012345680'
+  email: cto@acme.example.com
+  first_name: Marco
+  last_name: Vidal
+  status: approved
+  join_time: ''
+  create_time: '2026-05-22T10:10:00Z'
+- id: reg-0006
+  meeting_id: '85012345670'
+  email: jonas.pereira@orbit-labs.com
+  first_name: Jonas
+  last_name: Pereira
+  status: approved
+  join_time: '2026-05-22T16:00:30Z'
+  create_time: '2026-05-15T11:00:00Z'
+- id: reg-0007
+  meeting_id: '85012345670'
+  email: noor.aziz@orbit-labs.com
+  first_name: Noor
+  last_name: Aziz
+  status: approved
+  join_time: '2026-05-22T16:02:10Z'
+  create_time: '2026-05-15T11:10:00Z'
+user:
+  id: u-amelia-9f4b2e8d
+  first_name: Amelia
+  last_name: Ortega
+  email: amelia.ortega@orbit-labs.com
+  type: 2
+  role_name: Owner
+  pmi: 4155550123
+  timezone: America/Los_Angeles
+  verified: 1
+  dept: Engineering
+  account_id: acc-orbit-labs-001
+  status: active
+  created_at: '2025-09-01T10:00:00Z'

@@ -1,0 +1,113 @@
+assets:
+- id: asset-hero-1
+  created_at: '2025-09-09T08:00:00.000Z'
+  updated_at: '2025-09-09T08:00:00.000Z'
+  published_version: '2'
+  title: Headless diagram
+  description: Diagram of headless architecture
+  file_url: https://assets.example.com/headless-diagram.png
+  content_type: image/png
+  file_name: headless-diagram.png
+  size: '184320'
+- id: asset-hero-2
+  created_at: '2025-09-30T08:00:00.000Z'
+  updated_at: '2025-09-30T08:00:00.000Z'
+  published_version: '1'
+  title: Content model board
+  description: Whiteboard of a content model
+  file_url: https://assets.example.com/content-model.jpg
+  content_type: image/jpeg
+  file_name: content-model.jpg
+  size: '256000'
+- id: asset-author-mara
+  created_at: '2025-09-01T10:00:00.000Z'
+  updated_at: '2025-09-01T10:00:00.000Z'
+  published_version: '1'
+  title: Mara headshot
+  description: Author headshot for Mara
+  file_url: https://assets.example.com/mara.jpg
+  content_type: image/jpeg
+  file_name: mara.jpg
+  size: '64512'
+- id: asset-author-tomas
+  created_at: '2025-09-02T11:00:00.000Z'
+  updated_at: '2025-09-02T11:00:00.000Z'
+  published_version: '1'
+  title: Tomas headshot
+  description: Author headshot for Tomas
+  file_url: https://assets.example.com/tomas.jpg
+  content_type: image/jpeg
+  file_name: tomas.jpg
+  size: '61440'
+content_types:
+- id: blogPost
+  name: Blog Post
+  displayField: title
+  description: A single article or blog entry
+  fields_json: '[{"id":"title","name":"Title","type":"Symbol","required":true},{"id":"slug","name":"Slug","type":"Symbol","required":true},{"id":"body","name":"Body","type":"Text","required":false},{"id":"author","name":"Author","type":"Link","linkType":"Entry","required":false},{"id":"heroImage","name":"Hero
+    Image","type":"Link","linkType":"Asset","required":false},{"id":"published","name":"Published","type":"Boolean","required":false}]'
+- id: author
+  name: Author
+  displayField: name
+  description: A content author or contributor
+  fields_json: '[{"id":"name","name":"Name","type":"Symbol","required":true},{"id":"bio","name":"Bio","type":"Text","required":false},{"id":"twitter","name":"Twitter","type":"Symbol","required":false}]'
+- id: category
+  name: Category
+  displayField: title
+  description: A taxonomy category for blog posts
+  fields_json: '[{"id":"title","name":"Title","type":"Symbol","required":true},{"id":"slug","name":"Slug","type":"Symbol","required":true}]'
+entries:
+- id: author-mara
+  content_type: author
+  created_at: '2025-09-01T10:00:00.000Z'
+  updated_at: '2025-09-01T10:00:00.000Z'
+  published_version: '3'
+  fields_json: '{"name":"Mara Lindgren","bio":"Product writer covering headless CMS
+    workflows.","twitter":"@maralind"}'
+- id: author-tomas
+  content_type: author
+  created_at: '2025-09-02T11:00:00.000Z'
+  updated_at: '2025-09-02T11:00:00.000Z'
+  published_version: '2'
+  fields_json: '{"name":"Tomas Vega","bio":"Engineer and occasional technical blogger.","twitter":"@tvega"}'
+- id: cat-engineering
+  content_type: category
+  created_at: '2025-09-01T09:00:00.000Z'
+  updated_at: '2025-09-01T09:00:00.000Z'
+  published_version: '1'
+  fields_json: '{"title":"Engineering","slug":"engineering"}'
+- id: cat-product
+  content_type: category
+  created_at: '2025-09-01T09:05:00.000Z'
+  updated_at: '2025-09-01T09:05:00.000Z'
+  published_version: '1'
+  fields_json: '{"title":"Product","slug":"product"}'
+- id: post-getting-started
+  content_type: blogPost
+  created_at: '2025-09-10T08:00:00.000Z'
+  updated_at: '2025-09-12T14:00:00.000Z'
+  published_version: '5'
+  fields_json: '{"title":"Getting Started with Headless CMS","slug":"getting-started","body":"Headless
+    CMS decouples content from presentation.","author":{"sys":{"type":"Link","linkType":"Entry","id":"author-mara"}},"heroImage":{"sys":{"type":"Link","linkType":"Asset","id":"asset-hero-1"}},"published":true}'
+- id: post-content-modeling
+  content_type: blogPost
+  created_at: '2025-10-01T08:00:00.000Z'
+  updated_at: '2025-10-03T09:30:00.000Z'
+  published_version: '4'
+  fields_json: '{"title":"Content Modeling Best Practices","slug":"content-modeling","body":"Model
+    your content around reuse and relationships.","author":{"sys":{"type":"Link","linkType":"Entry","id":"author-tomas"}},"heroImage":{"sys":{"type":"Link","linkType":"Asset","id":"asset-hero-2"}},"published":true}'
+- id: post-draft-webhooks
+  content_type: blogPost
+  created_at: '2025-11-05T08:00:00.000Z'
+  updated_at: '2025-11-05T08:00:00.000Z'
+  published_version: '0'
+  fields_json: '{"title":"Using Webhooks Effectively","slug":"using-webhooks","body":"Draft
+    post about webhook patterns.","author":{"sys":{"type":"Link","linkType":"Entry","id":"author-mara"}},"published":false}'
+space:
+  id: space-orbit-cms
+  name: Orbit Labs CMS
+  default_environment: master
+  locales:
+  - en-US
+  created_at: '2025-09-01T09:00:00.000Z'
+  organization: org-orbit-labs

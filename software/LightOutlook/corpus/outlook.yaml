@@ -1,0 +1,207 @@
+contacts:
+- id: AAMkAGcnt0000001
+  display_name: Priya Nair
+  given_name: Priya
+  surname: Nair
+  email: priya.nair@contoso.com
+  job_title: Engineering Manager
+  company: Contoso
+  mobile_phone: +1-415-555-0101
+- id: AAMkAGcnt0000002
+  display_name: Diego Santos
+  given_name: Diego
+  surname: Santos
+  email: diego.santos@contoso.com
+  job_title: Senior Engineer
+  company: Contoso
+  mobile_phone: +1-415-555-0102
+- id: AAMkAGcnt0000003
+  display_name: Mei Tanaka
+  given_name: Mei
+  surname: Tanaka
+  email: mei.tanaka@contoso.com
+  job_title: Software Engineer
+  company: Contoso
+  mobile_phone: +1-415-555-0103
+- id: AAMkAGcnt0000004
+  display_name: Sam Okoro
+  given_name: Sam
+  surname: Okoro
+  email: sam.okoro@contoso.com
+  job_title: Product Manager
+  company: Contoso
+  mobile_phone: +1-415-555-0104
+- id: AAMkAGcnt0000005
+  display_name: Lena Fischer
+  given_name: Lena
+  surname: Fischer
+  email: lena.fischer@contoso.com
+  job_title: Head of Product
+  company: Contoso
+  mobile_phone: +1-415-555-0105
+- id: AAMkAGcnt0000006
+  display_name: Grace Lee
+  given_name: Grace
+  surname: Lee
+  email: grace.lee@contoso.com
+  job_title: Account Executive
+  company: Contoso
+  mobile_phone: +1-415-555-0106
+- id: AAMkAGcnt0000007
+  display_name: Omar Haddad
+  given_name: Omar
+  surname: Haddad
+  email: omar.haddad@vandelay.com
+  job_title: Procurement Lead
+  company: Vandelay Industries
+  mobile_phone: +1-212-555-0199
+events:
+- id: AAMkAGevt0000001
+  subject: Sprint Planning
+  organizer_name: Alex Carter
+  organizer_address: alex.carter@contoso.com
+  location: Teams Meeting
+  start_date: '2026-05-11T14:00:00Z'
+  end_date: '2026-05-11T15:00:00Z'
+  is_all_day: 'false'
+  is_online: 'true'
+  attendees: priya.nair@contoso.com;diego.santos@contoso.com
+- id: AAMkAGevt0000002
+  subject: 1:1 with Priya
+  organizer_name: Priya Nair
+  organizer_address: priya.nair@contoso.com
+  location: Office 4B
+  start_date: '2026-05-12T10:00:00Z'
+  end_date: '2026-05-12T10:30:00Z'
+  is_all_day: 'false'
+  is_online: 'false'
+  attendees: alex.carter@contoso.com
+- id: AAMkAGevt0000003
+  subject: Q3 Roadmap Workshop
+  organizer_name: Lena Fischer
+  organizer_address: lena.fischer@contoso.com
+  location: Boardroom
+  start_date: '2026-05-18T13:00:00Z'
+  end_date: '2026-05-18T16:00:00Z'
+  is_all_day: 'false'
+  is_online: 'false'
+  attendees: alex.carter@contoso.com;sam.okoro@contoso.com
+- id: AAMkAGevt0000004
+  subject: Company Holiday
+  organizer_name: HR
+  organizer_address: hr@contoso.com
+  location: ''
+  start_date: '2026-05-25T00:00:00Z'
+  end_date: '2026-05-26T00:00:00Z'
+  is_all_day: 'true'
+  is_online: 'false'
+  attendees: ''
+- id: AAMkAGevt0000005
+  subject: Customer Demo - Vandelay
+  organizer_name: Grace Lee
+  organizer_address: grace.lee@contoso.com
+  location: Teams Meeting
+  start_date: '2026-05-22T17:00:00Z'
+  end_date: '2026-05-22T18:00:00Z'
+  is_all_day: 'false'
+  is_online: 'true'
+  attendees: alex.carter@contoso.com;omar.haddad@contoso.com
+- id: AAMkAGevt0000006
+  subject: All Hands
+  organizer_name: Alex Carter
+  organizer_address: alex.carter@contoso.com
+  location: Auditorium
+  start_date: '2026-05-29T10:00:00Z'
+  end_date: '2026-05-29T11:00:00Z'
+  is_all_day: 'false'
+  is_online: 'true'
+  attendees: ''
+messages:
+- id: AAMkAGmsg0000001
+  subject: Q2 Budget Review
+  from_name: Priya Nair
+  from_address: priya.nair@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Please find attached the Q2 budget for your review before Friday.
+  content_type: html
+  is_read: 'false'
+  importance: high
+  received_date: '2026-05-04T08:30:00Z'
+- id: AAMkAGmsg0000002
+  subject: 'Re: Sprint Planning'
+  from_name: Diego Santos
+  from_address: diego.santos@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Sounds good I will prepare the backlog ahead of the meeting.
+  content_type: html
+  is_read: 'true'
+  importance: normal
+  received_date: '2026-05-05T13:10:00Z'
+- id: AAMkAGmsg0000003
+  subject: Welcome to the team!
+  from_name: Mei Tanaka
+  from_address: mei.tanaka@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Excited to have you onboard. Here is your first-week guide.
+  content_type: html
+  is_read: 'true'
+  importance: normal
+  received_date: '2026-05-06T09:00:00Z'
+- id: AAMkAGmsg0000004
+  subject: Invoice INV-2041 Past Due
+  from_name: Billing
+  from_address: billing@vandelay.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Our records show invoice INV-2041 is now 15 days past due.
+  content_type: html
+  is_read: 'false'
+  importance: high
+  received_date: '2026-05-09T11:45:00Z'
+- id: AAMkAGmsg0000005
+  subject: Lunch next week?
+  from_name: Sam Okoro
+  from_address: sam.okoro@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Are you free for lunch on Tuesday or Wednesday next week?
+  content_type: text
+  is_read: 'true'
+  importance: low
+  received_date: '2026-05-12T16:20:00Z'
+- id: AAMkAGmsg0000006
+  subject: 'Security advisory: rotate keys'
+  from_name: Security Team
+  from_address: security@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Please rotate your API keys before the end of the month.
+  content_type: html
+  is_read: 'false'
+  importance: high
+  received_date: '2026-05-15T07:55:00Z'
+- id: AAMkAGmsg0000007
+  subject: Conference travel approved
+  from_name: Lena Fischer
+  from_address: lena.fischer@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Your travel request for the May conference has been approved.
+  content_type: html
+  is_read: 'true'
+  importance: normal
+  received_date: '2026-05-18T10:30:00Z'
+- id: AAMkAGmsg0000008
+  subject: Weekly metrics digest
+  from_name: Analytics
+  from_address: analytics@contoso.com
+  to_name: Alex Carter
+  to_address: alex.carter@contoso.com
+  body_preview: Signups are up 12 percent week over week. Full report inside.
+  content_type: html
+  is_read: 'true'
+  importance: normal
+  received_date: '2026-05-25T06:00:00Z'

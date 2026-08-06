@@ -1,0 +1,339 @@
+customers:
+- id: cus_Nb1Aurora
+  name: Aurora Bistro LLC
+  email: billing@aurorabistro.com
+  description: Monthly POS subscription
+  currency: usd
+  delinquent: 'false'
+  balance: '0'
+  created: '1714579200'
+  phone: '+14155550101'
+- id: cus_Nb2Helix
+  name: Helix Robotics Inc
+  email: ap@helixrobotics.io
+  description: Enterprise plan
+  currency: usd
+  delinquent: 'false'
+  balance: '-2500'
+  created: '1709251200'
+  phone: '+14155550102'
+- id: cus_Nb3Lumen
+  name: Lumen Design Studio
+  email: accounts@lumendesign.co
+  description: Pro plan
+  currency: usd
+  delinquent: 'false'
+  balance: '0'
+  created: '1717200000'
+  phone: '+14155550103'
+- id: cus_Nb4Pelagic
+  name: Pelagic Freight Co
+  email: finance@pelagicfreight.com
+  description: Net-30 invoicing
+  currency: usd
+  delinquent: 'true'
+  balance: '15000'
+  created: '1701388800'
+  phone: '+14155550104'
+- id: cus_Nb5Verdant
+  name: Verdant Farms
+  email: hello@verdantfarms.org
+  description: Seasonal billing
+  currency: usd
+  delinquent: 'false'
+  balance: '0'
+  created: '1719792000'
+  phone: '+14155550105'
+- id: cus_Nb6Quanta
+  name: Quanta Analytics
+  email: billing@quanta.ai
+  description: Annual plan
+  currency: usd
+  delinquent: 'false'
+  balance: '0'
+  created: '1706745600'
+  phone: '+14155550106'
+products:
+- id: prod_Starter
+  name: Starter Plan
+  description: Up to 3 seats and basic reporting
+  active: 'true'
+  created: '1700000000'
+- id: prod_Pro
+  name: Pro Plan
+  description: Unlimited seats and advanced analytics
+  active: 'true'
+  created: '1700000000'
+- id: prod_Enterprise
+  name: Enterprise Plan
+  description: Dedicated support and SSO
+  active: 'true'
+  created: '1700000000'
+- id: prod_POS
+  name: POS Hardware Bundle
+  description: Card reader plus stand
+  active: 'true'
+  created: '1702000000'
+prices:
+- id: price_Starter_M
+  product: prod_Starter
+  unit_amount: '1900'
+  currency: usd
+  recurring_interval: month
+  active: 'true'
+  nickname: Starter Monthly
+- id: price_Pro_M
+  product: prod_Pro
+  unit_amount: '4900'
+  currency: usd
+  recurring_interval: month
+  active: 'true'
+  nickname: Pro Monthly
+- id: price_Pro_Y
+  product: prod_Pro
+  unit_amount: '49000'
+  currency: usd
+  recurring_interval: year
+  active: 'true'
+  nickname: Pro Annual
+- id: price_Ent_M
+  product: prod_Enterprise
+  unit_amount: '29900'
+  currency: usd
+  recurring_interval: month
+  active: 'true'
+  nickname: Enterprise Monthly
+- id: price_POS
+  product: prod_POS
+  unit_amount: '9900'
+  currency: usd
+  recurring_interval: ''
+  active: 'true'
+  nickname: POS Bundle One-time
+charges:
+- id: ch_3Aurora01
+  customer: cus_Nb1Aurora
+  amount: '1900'
+  currency: usd
+  status: succeeded
+  paid: 'true'
+  refunded: 'false'
+  amount_refunded: '0'
+  description: Starter Monthly
+  payment_intent: pi_3Aurora01
+  created: '1717286400'
+- id: ch_3Helix01
+  customer: cus_Nb2Helix
+  amount: '29900'
+  currency: usd
+  status: succeeded
+  paid: 'true'
+  refunded: 'false'
+  amount_refunded: '0'
+  description: Enterprise Monthly
+  payment_intent: pi_3Helix01
+  created: '1717372800'
+- id: ch_3Lumen01
+  customer: cus_Nb3Lumen
+  amount: '4900'
+  currency: usd
+  status: succeeded
+  paid: 'true'
+  refunded: 'true'
+  amount_refunded: '4900'
+  description: Pro Monthly refunded
+  payment_intent: pi_3Lumen01
+  created: '1717459200'
+- id: ch_3Pelagic01
+  customer: cus_Nb4Pelagic
+  amount: '12500'
+  currency: usd
+  status: failed
+  paid: 'false'
+  refunded: 'false'
+  amount_refunded: '0'
+  description: Net-30 charge attempt
+  payment_intent: pi_3Pelagic01
+  created: '1717545600'
+- id: ch_3Quanta01
+  customer: cus_Nb6Quanta
+  amount: '49000'
+  currency: usd
+  status: succeeded
+  paid: 'true'
+  refunded: 'false'
+  amount_refunded: '0'
+  description: Pro Annual
+  payment_intent: pi_3Quanta01
+  created: '1717632000'
+- id: ch_3Aurora02
+  customer: cus_Nb1Aurora
+  amount: '9900'
+  currency: usd
+  status: succeeded
+  paid: 'true'
+  refunded: 'true'
+  amount_refunded: '2000'
+  description: POS Bundle partial refund
+  payment_intent: pi_3Aurora02
+  created: '1717718400'
+- id: ch_3Verdant01
+  customer: cus_Nb5Verdant
+  amount: '4900'
+  currency: usd
+  status: pending
+  paid: 'false'
+  refunded: 'false'
+  amount_refunded: '0'
+  description: Pro Monthly pending
+  payment_intent: pi_3Verdant01
+  created: '1717804800'
+invoices:
+- id: in_Aurora001
+  customer: cus_Nb1Aurora
+  subscription: sub_Aurora
+  amount_due: '1900'
+  amount_paid: '1900'
+  currency: usd
+  status: paid
+  number: ORBIT-0001
+  charge: ch_3Aurora01
+  created: '1717286400'
+  due_date: '1717286400'
+- id: in_Helix001
+  customer: cus_Nb2Helix
+  subscription: sub_Helix
+  amount_due: '29900'
+  amount_paid: '29900'
+  currency: usd
+  status: paid
+  number: ORBIT-0002
+  charge: ch_3Helix01
+  created: '1717372800'
+  due_date: '1717372800'
+- id: in_Lumen001
+  customer: cus_Nb3Lumen
+  subscription: sub_Lumen
+  amount_due: '4900'
+  amount_paid: '4900'
+  currency: usd
+  status: paid
+  number: ORBIT-0003
+  charge: ch_3Lumen01
+  created: '1717459200'
+  due_date: '1717459200'
+- id: in_Pelagic001
+  customer: cus_Nb4Pelagic
+  subscription: ''
+  amount_due: '12500'
+  amount_paid: '0'
+  currency: usd
+  status: open
+  number: ORBIT-0004
+  charge: ''
+  created: '1717545600'
+  due_date: '1720137600'
+- id: in_Quanta001
+  customer: cus_Nb6Quanta
+  subscription: sub_Quanta
+  amount_due: '49000'
+  amount_paid: '49000'
+  currency: usd
+  status: paid
+  number: ORBIT-0005
+  charge: ch_3Quanta01
+  created: '1717632000'
+  due_date: '1717632000'
+- id: in_Verdant001
+  customer: cus_Nb5Verdant
+  subscription: sub_Verdant
+  amount_due: '4900'
+  amount_paid: '0'
+  currency: usd
+  status: open
+  number: ORBIT-0006
+  charge: ''
+  created: '1717804800'
+  due_date: '1720483200'
+- id: in_Lumen002
+  customer: cus_Nb3Lumen
+  subscription: sub_Lumen
+  amount_due: '4900'
+  amount_paid: '0'
+  currency: usd
+  status: draft
+  number: ORBIT-0007
+  charge: ''
+  created: '1719792000'
+  due_date: '1722384000'
+subscriptions:
+- id: sub_Aurora
+  customer: cus_Nb1Aurora
+  price: price_Starter_M
+  status: active
+  quantity: '1'
+  current_period_start: '1717286400'
+  current_period_end: '1719878400'
+  cancel_at_period_end: 'false'
+  created: '1714579200'
+- id: sub_Helix
+  customer: cus_Nb2Helix
+  price: price_Ent_M
+  status: active
+  quantity: '5'
+  current_period_start: '1717372800'
+  current_period_end: '1719964800'
+  cancel_at_period_end: 'false'
+  created: '1709251200'
+- id: sub_Lumen
+  customer: cus_Nb3Lumen
+  price: price_Pro_M
+  status: active
+  quantity: '2'
+  current_period_start: '1717459200'
+  current_period_end: '1720051200'
+  cancel_at_period_end: 'true'
+  created: '1717200000'
+- id: sub_Quanta
+  customer: cus_Nb6Quanta
+  price: price_Pro_Y
+  status: active
+  quantity: '3'
+  current_period_start: '1717632000'
+  current_period_end: '1749168000'
+  cancel_at_period_end: 'false'
+  created: '1706745600'
+- id: sub_Verdant
+  customer: cus_Nb5Verdant
+  price: price_Pro_M
+  status: past_due
+  quantity: '1'
+  current_period_start: '1717804800'
+  current_period_end: '1720396800'
+  cancel_at_period_end: 'false'
+  created: '1719792000'
+- id: sub_Pelagic
+  customer: cus_Nb4Pelagic
+  price: price_Starter_M
+  status: canceled
+  quantity: '1'
+  current_period_start: '1701388800'
+  current_period_end: '1703980800'
+  cancel_at_period_end: 'false'
+  created: '1701388800'
+balance:
+  object: balance
+  livemode: false
+  available:
+  - amount: 184200
+    currency: usd
+    source_types:
+      card: 184200
+  pending:
+  - amount: 4900
+    currency: usd
+    source_types:
+      card: 4900
+  connect_reserved:
+  - amount: 0
+    currency: usd

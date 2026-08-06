@@ -1,0 +1,424 @@
+blocks:
+- id: block-001
+  page_id: page-task-001
+  parent_block_id: ''
+  type: heading_2
+  text: Rollout plan
+  order: '0'
+  created_time: '2025-10-04T09:05:00.000Z'
+  last_edited_time: '2026-05-20T14:00:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-002
+  page_id: page-task-001
+  parent_block_id: ''
+  type: paragraph
+  text: Migrate session storage to Redis and ship cookie-based refresh tokens.
+  order: '1'
+  created_time: '2025-10-04T09:06:00.000Z'
+  last_edited_time: '2026-05-20T14:00:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-003
+  page_id: page-task-001
+  parent_block_id: ''
+  type: to_do
+  text: Audit current login flow
+  order: '2'
+  created_time: '2025-10-04T09:07:00.000Z'
+  last_edited_time: '2026-04-29T11:00:00.000Z'
+  has_children: 'false'
+  checked: 'true'
+- id: block-004
+  page_id: page-task-001
+  parent_block_id: ''
+  type: to_do
+  text: Draft RFC
+  order: '3'
+  created_time: '2025-10-04T09:08:00.000Z'
+  last_edited_time: '2026-05-02T11:00:00.000Z'
+  has_children: 'false'
+  checked: 'true'
+- id: block-005
+  page_id: page-task-001
+  parent_block_id: ''
+  type: to_do
+  text: Build dual-write shim
+  order: '4'
+  created_time: '2025-10-04T09:09:00.000Z'
+  last_edited_time: '2026-05-20T14:00:00.000Z'
+  has_children: 'false'
+  checked: 'false'
+- id: block-101
+  page_id: page-meeting-001
+  parent_block_id: ''
+  type: heading_2
+  text: Agenda
+  order: '0'
+  created_time: '2026-05-26T08:31:00.000Z'
+  last_edited_time: '2026-05-26T08:31:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-102
+  page_id: page-meeting-001
+  parent_block_id: ''
+  type: bulleted_list_item
+  text: Auth v2 status
+  order: '1'
+  created_time: '2026-05-26T08:32:00.000Z'
+  last_edited_time: '2026-05-26T08:32:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-103
+  page_id: page-meeting-001
+  parent_block_id: ''
+  type: bulleted_list_item
+  text: Billing migration blockers
+  order: '2'
+  created_time: '2026-05-26T08:33:00.000Z'
+  last_edited_time: '2026-05-26T08:33:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-104
+  page_id: page-meeting-001
+  parent_block_id: ''
+  type: bulleted_list_item
+  text: Vendor review wrap-up
+  order: '3'
+  created_time: '2026-05-26T08:34:00.000Z'
+  last_edited_time: '2026-05-26T08:34:00.000Z'
+  has_children: 'false'
+  checked: ''
+- id: block-201
+  page_id: page-research-001
+  parent_block_id: ''
+  type: callout
+  text: 12 customer interviews completed; full notes in linked database.
+  order: '0'
+  created_time: '2025-10-25T10:05:00.000Z'
+  last_edited_time: '2026-05-08T11:00:00.000Z'
+  has_children: 'false'
+  checked: ''
+comments:
+- id: comment-001
+  parent_page_id: page-task-001
+  parent_block_id: block-005
+  author_id: user-jonas
+  text: Can we land the shim behind a feature flag?
+  created_time: '2026-05-15T11:00:00.000Z'
+  resolved: 'false'
+- id: comment-002
+  parent_page_id: page-task-001
+  parent_block_id: block-005
+  author_id: user-amelia
+  text: Yes, gating on `auth_v2_rollout`.
+  created_time: '2026-05-15T11:05:00.000Z'
+  resolved: 'false'
+- id: comment-003
+  parent_page_id: page-okr-q2-2
+  parent_block_id: ''
+  author_id: user-amelia
+  text: Multi-region failover is blocked on capacity in eu-west-2.
+  created_time: '2026-05-11T11:00:00.000Z'
+  resolved: 'false'
+- id: comment-004
+  parent_page_id: page-task-004
+  parent_block_id: ''
+  author_id: user-noor
+  text: Closing — vendor report signed off.
+  created_time: '2026-05-12T12:00:00.000Z'
+  resolved: 'true'
+databases:
+- id: db-tasks
+  title: Engineering Tasks
+  parent_page_id: page-home
+  created_time: '2025-09-05T10:00:00.000Z'
+  last_edited_time: '2026-05-20T14:00:00.000Z'
+  created_by: user-amelia
+  icon: checkbox
+  archived: 'false'
+- id: db-okrs
+  title: Q2 OKRs
+  parent_page_id: page-home
+  created_time: '2025-09-08T11:00:00.000Z'
+  last_edited_time: '2026-05-12T09:30:00.000Z'
+  created_by: user-jonas
+  icon: bullseye
+  archived: 'false'
+- id: db-meetings
+  title: Meeting Notes
+  parent_page_id: page-home
+  created_time: '2025-09-10T13:00:00.000Z'
+  last_edited_time: '2026-05-26T08:45:00.000Z'
+  created_by: user-helena
+  icon: calendar
+  archived: 'false'
+- id: db-research
+  title: Customer Research
+  parent_page_id: page-research
+  created_time: '2025-10-01T15:00:00.000Z'
+  last_edited_time: '2026-05-19T11:20:00.000Z'
+  created_by: user-noor
+  icon: microscope
+  archived: 'false'
+page_properties:
+- page_id: page-task-001
+  property_name: Status
+  property_type: status
+  value: In progress
+- page_id: page-task-001
+  property_name: Priority
+  property_type: select
+  value: High
+- page_id: page-task-001
+  property_name: Assignee
+  property_type: people
+  value: user-amelia
+- page_id: page-task-001
+  property_name: Due
+  property_type: date
+  value: '2026-06-10'
+- page_id: page-task-002
+  property_name: Status
+  property_type: status
+  value: In progress
+- page_id: page-task-002
+  property_name: Priority
+  property_type: select
+  value: High
+- page_id: page-task-002
+  property_name: Assignee
+  property_type: people
+  value: user-jonas
+- page_id: page-task-002
+  property_name: Due
+  property_type: date
+  value: '2026-06-30'
+- page_id: page-task-003
+  property_name: Status
+  property_type: status
+  value: Todo
+- page_id: page-task-003
+  property_name: Priority
+  property_type: select
+  value: Medium
+- page_id: page-task-003
+  property_name: Assignee
+  property_type: people
+  value: user-helena
+- page_id: page-task-003
+  property_name: Due
+  property_type: date
+  value: '2026-07-05'
+- page_id: page-task-004
+  property_name: Status
+  property_type: status
+  value: Done
+- page_id: page-task-004
+  property_name: Priority
+  property_type: select
+  value: Low
+- page_id: page-task-004
+  property_name: Assignee
+  property_type: people
+  value: user-amelia
+- page_id: page-task-004
+  property_name: Due
+  property_type: date
+  value: '2026-05-12'
+- page_id: page-okr-q2-1
+  property_name: Status
+  property_type: status
+  value: On track
+- page_id: page-okr-q2-1
+  property_name: Owner
+  property_type: people
+  value: user-jonas
+- page_id: page-okr-q2-1
+  property_name: Progress
+  property_type: number
+  value: '0.62'
+- page_id: page-okr-q2-2
+  property_name: Status
+  property_type: status
+  value: At risk
+- page_id: page-okr-q2-2
+  property_name: Owner
+  property_type: people
+  value: user-jonas
+- page_id: page-okr-q2-2
+  property_name: Progress
+  property_type: number
+  value: '0.35'
+pages:
+- id: page-home
+  parent_type: workspace
+  parent_id: workspace-orbit-labs
+  title: Orbit Labs Home
+  created_time: '2025-09-01T10:05:00.000Z'
+  last_edited_time: '2026-05-22T09:00:00.000Z'
+  created_by: user-amelia
+  archived: 'false'
+  icon: home
+  cover_url: ''
+- id: page-research
+  parent_type: workspace
+  parent_id: workspace-orbit-labs
+  title: Research Hub
+  created_time: '2025-09-30T12:00:00.000Z'
+  last_edited_time: '2026-05-15T16:30:00.000Z'
+  created_by: user-noor
+  archived: 'false'
+  icon: microscope
+  cover_url: ''
+- id: page-task-001
+  parent_type: database
+  parent_id: db-tasks
+  title: Roll out auth v2
+  created_time: '2025-10-04T09:00:00.000Z'
+  last_edited_time: '2026-05-20T14:00:00.000Z'
+  created_by: user-amelia
+  archived: 'false'
+  icon: wrench
+  cover_url: ''
+- id: page-task-002
+  parent_type: database
+  parent_id: db-tasks
+  title: Migrate billing service to gRPC
+  created_time: '2025-10-10T11:00:00.000Z'
+  last_edited_time: '2026-05-19T10:00:00.000Z'
+  created_by: user-jonas
+  archived: 'false'
+  icon: wrench
+  cover_url: ''
+- id: page-task-003
+  parent_type: database
+  parent_id: db-tasks
+  title: Add tracing to ingestion pipeline
+  created_time: '2025-10-15T13:00:00.000Z'
+  last_edited_time: '2026-05-18T16:00:00.000Z'
+  created_by: user-helena
+  archived: 'false'
+  icon: zap
+  cover_url: ''
+- id: page-task-004
+  parent_type: database
+  parent_id: db-tasks
+  title: Vendor security review
+  created_time: '2025-11-02T08:30:00.000Z'
+  last_edited_time: '2026-05-12T12:00:00.000Z'
+  created_by: user-amelia
+  archived: 'false'
+  icon: shield
+  cover_url: ''
+- id: page-okr-q2-1
+  parent_type: database
+  parent_id: db-okrs
+  title: Reduce p95 latency to 250ms
+  created_time: '2025-09-08T11:30:00.000Z'
+  last_edited_time: '2026-05-12T09:30:00.000Z'
+  created_by: user-jonas
+  archived: 'false'
+  icon: bullseye
+  cover_url: ''
+- id: page-okr-q2-2
+  parent_type: database
+  parent_id: db-okrs
+  title: Ship multi-region failover
+  created_time: '2025-09-08T11:45:00.000Z'
+  last_edited_time: '2026-05-11T11:00:00.000Z'
+  created_by: user-jonas
+  archived: 'false'
+  icon: bullseye
+  cover_url: ''
+- id: page-meeting-001
+  parent_type: database
+  parent_id: db-meetings
+  title: 2026-05-26 weekly sync
+  created_time: '2026-05-26T08:30:00.000Z'
+  last_edited_time: '2026-05-26T09:30:00.000Z'
+  created_by: user-helena
+  archived: 'false'
+  icon: calendar
+  cover_url: ''
+- id: page-meeting-002
+  parent_type: database
+  parent_id: db-meetings
+  title: 2026-05-19 design review
+  created_time: '2026-05-19T14:00:00.000Z'
+  last_edited_time: '2026-05-19T15:30:00.000Z'
+  created_by: user-helena
+  archived: 'false'
+  icon: calendar
+  cover_url: ''
+- id: page-research-001
+  parent_type: database
+  parent_id: db-research
+  title: Onboarding friction interviews
+  created_time: '2025-10-25T10:00:00.000Z'
+  last_edited_time: '2026-05-08T11:00:00.000Z'
+  created_by: user-noor
+  archived: 'false'
+  icon: microphone
+  cover_url: ''
+users:
+- id: user-amelia
+  name: Amelia Ortega
+  email: amelia.ortega@orbit-labs.com
+  avatar_url: https://avatars.example.com/amelia.png
+  type: person
+  bot: 'false'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-09-01T10:00:00.000Z'
+- id: user-jonas
+  name: Jonas Pereira
+  email: jonas.pereira@orbit-labs.com
+  avatar_url: https://avatars.example.com/jonas.png
+  type: person
+  bot: 'false'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-09-04T11:30:00.000Z'
+- id: user-helena
+  name: Helena Park
+  email: helena.park@orbit-labs.com
+  avatar_url: https://avatars.example.com/helena.png
+  type: person
+  bot: 'false'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-09-12T14:20:00.000Z'
+- id: user-rohit
+  name: Rohit Bansal
+  email: rohit.bansal@orbit-labs.com
+  avatar_url: https://avatars.example.com/rohit.png
+  type: person
+  bot: 'false'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-10-02T09:10:00.000Z'
+- id: user-noor
+  name: Noor Aziz
+  email: noor.aziz@orbit-labs.com
+  avatar_url: https://avatars.example.com/noor.png
+  type: person
+  bot: 'false'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-10-18T16:45:00.000Z'
+- id: bot-notebot
+  name: Orbit Sync Bot
+  email: ''
+  avatar_url: https://avatars.example.com/bot.png
+  type: bot
+  bot: 'true'
+  owner_workspace: workspace-orbit-labs
+  created_time: '2025-09-02T08:00:00.000Z'
+workspace:
+  id: workspace-orbit-labs
+  name: Orbit Labs
+  domain: orbit-labs
+  owner_user_id: user-amelia
+  plan: team
+  created_time: '2025-09-01T10:00:00.000Z'
+  icon: https://www.notion.so/icons/orbit_blue.svg
+  settings:
+    default_page_size: 50
+    ai_blocks_enabled: true
+    public_sharing_enabled: false

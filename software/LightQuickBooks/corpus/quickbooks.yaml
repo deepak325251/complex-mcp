@@ -1,0 +1,3050 @@
+Corporate_Expense_Ledger:
+  document_name: Corporate Expense Ledger
+  account_id: 6
+  entries:
+  - date: 10/02/2024
+    merchant: Grand Lux Cafe
+    employee: Marcus Lee
+    amount: 69.25
+  - date: 10/05/2024
+    merchant: Green Field Churrascaria
+    employee: Alicia Gomez
+    amount: 56.58
+  - date: 10/07/2024
+    merchant: Primo Family Restaurant
+    employee: Ryan Patel
+    amount: 52.47
+  - date: 10/09/2024
+    merchant: Chili's Grill & Bar
+    employee: Alicia Gomez
+    amount: 26.37
+  - date: 10/12/2024
+    merchant: Lin Buffet
+    employee: Marcus Lee
+    amount: 33.73
+  - date: 10/15/2024
+    merchant: Firepoint Grill
+    employee: Alicia Gomez
+    amount: 142.93
+  - date: 10/18/2024
+    merchant: 730 Tavern
+    employee: Alicia Gomez
+    amount: 48.1
+  - date: 10/21/2024
+    merchant: Paradise Restaurant
+    employee: Marcus Lee
+    amount: 61.44
+Reimbursement_Policy:
+  policy_name: Reimbursement Policy
+  version: 2024.Q4_Updated
+  validation_rules:
+  - rule: Alcohol
+    requirement: Alcohol-heavy charges
+    action: Manual Review
+    notes: Client meals only
+  - rule: Duplicates
+    requirement: Duplicate uploads
+    action: Reject
+    notes: Only one valid receipt allowed
+  - rule: Reprints
+    requirement: Reprint receipts
+    action: Review
+    notes: Need bank match
+  - rule: Missing Total
+    requirement: Unreadable totals
+    action: Reject
+    notes: Low OCR confidence
+  - rule: Late Submission
+    requirement: After 30 days
+    action: Reject
+    notes: Policy violation
+  context: Rules used during reimbursement validation for conference meal receipts.
+accounts:
+  QueryResponse:
+    Account:
+    - Id: '1'
+      Name: Operating Checking
+      AccountType: Bank
+      AccountSubType: Checking
+      CurrentBalance: 5842.5
+      Active: true
+      Description: Primary operating account - OnPoint Credit Union
+    - Id: '2'
+      Name: Tournament Reserve
+      AccountType: Bank
+      AccountSubType: Savings
+      CurrentBalance: 1450.0
+      Active: true
+      Description: Set aside for tournament expenses and equipment replacement
+    - Id: '3'
+      Name: Membership Income
+      AccountType: Income
+      AccountSubType: ServiceFeeIncome
+      CurrentBalance: 0
+      Active: true
+      Description: Monthly membership dues - $95/member
+    - Id: '4'
+      Name: Drop-in Fees
+      AccountType: Income
+      AccountSubType: ServiceFeeIncome
+      CurrentBalance: 0
+      Active: true
+      Description: Walk-in class fees - $20/session
+    - Id: '5'
+      Name: Tournament Revenue
+      AccountType: Income
+      AccountSubType: ServiceFeeIncome
+      CurrentBalance: 0
+      Active: true
+      Description: Registration fees and spectator entry for tournaments
+    - Id: '6'
+      Name: Equipment Sales
+      AccountType: Income
+      AccountSubType: SalesOfProductIncome
+      CurrentBalance: 0
+      Active: true
+      Description: Gi, shinai, bokken sales to students
+    - Id: '7'
+      Name: Rent Expense
+      AccountType: Expense
+      AccountSubType: RentOrLeaseOfBuildings
+      CurrentBalance: 0
+      Active: true
+      Description: Monthly lease - Westbrook Property Mgmt
+    - Id: '8'
+      Name: Utilities
+      AccountType: Expense
+      AccountSubType: Utilities
+      CurrentBalance: 0
+      Active: true
+      Description: Electric + water/sewer
+    - Id: '9'
+      Name: Insurance
+      AccountType: Expense
+      AccountSubType: Insurance
+      CurrentBalance: 0
+      Active: true
+      Description: General liability + property - quarterly
+    - Id: '10'
+      Name: Instructor Pay
+      AccountType: Expense
+      AccountSubType: PayrollExpenses
+      CurrentBalance: 0
+      Active: true
+      Description: Raj Patel monthly draw
+    - Id: '11'
+      Name: Supplies & Equipment
+      AccountType: Expense
+      AccountSubType: SuppliesMaterials
+      CurrentBalance: 0
+      Active: true
+      Description: Training equipment, cleaning supplies, mat maintenance
+    - Id: '12'
+      Name: Cleaning Services
+      AccountType: Expense
+      AccountSubType: RepairMaintenance
+      CurrentBalance: 0
+      Active: true
+      Description: Willamette Cleaning - bi-weekly
+    - Id: '13'
+      Name: Tournament Expenses
+      AccountType: Expense
+      AccountSubType: EntertainmentMeals
+      CurrentBalance: 0
+      Active: true
+      Description: Mats rental, trophies, referee fees, event costs
+    - Id: '14'
+      Name: Marketing & Advertising
+      AccountType: Expense
+      AccountSubType: Advertising
+      CurrentBalance: 0
+      Active: true
+      Description: Flyers, social media ads, community board postings
+    - Id: '201'
+      Name: Beat Sales Revenue
+      AccountType: Income
+      AccountSubType: ServiceFeeIncome
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Revenue
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '202'
+      Name: Streaming Royalties
+      AccountType: Income
+      AccountSubType: OtherPrimaryIncome
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Revenue
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '203'
+      Name: Consulting Revenue
+      AccountType: Income
+      AccountSubType: ServiceFeeIncome
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Revenue
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '204'
+      Name: Business Checking
+      AccountType: Bank
+      AccountSubType: Checking
+      CurrentBalance: 2850000.0
+      Active: true
+      Classification: Asset
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '205'
+      Name: Software Expense
+      AccountType: Expense
+      AccountSubType: OtherBusinessExpenses
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '206'
+      Name: Equipment Expense
+      AccountType: Expense
+      AccountSubType: EquipmentRental
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '207'
+      Name: Studio Expense
+      AccountType: Expense
+      AccountSubType: OtherBusinessExpenses
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '208'
+      Name: Marketing Expense
+      AccountType: Expense
+      AccountSubType: Advertising
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '209'
+      Name: Meals Expense
+      AccountType: Expense
+      AccountSubType: Meals
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '210'
+      Name: Workspace Expense
+      AccountType: Expense
+      AccountSubType: OtherBusinessExpenses
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Description: ''
+    - Id: '421'
+      Name: Food Cost - Seafood
+      AccountType: Expense
+      AccountSubType: CostOfLaborCos
+      CurrentBalance: 0.0
+      Active: true
+      Classification: Expense
+      MetaData:
+        CreateTime: '2026-05-14T09:00:00'
+        LastUpdatedTime: '2026-05-14T09:00:00'
+      Description: ''
+    startPosition: 1
+    maxResults: 25
+    totalCount: 25
+bill-payments:
+  QueryResponse:
+    BillPayment:
+    - Id: '5001'
+      VendorRef:
+        value: '1'
+        name: Westbrook Property Management
+      TxnDate: '2026-03-03'
+      TotalAmt: 700.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3001'
+          TxnType: Bill
+        Amount: 700.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2001'
+    - Id: '5002'
+      VendorRef:
+        value: '3'
+        name: Portland General Electric
+      TxnDate: '2026-03-25'
+      TotalAmt: 185.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3002'
+          TxnType: Bill
+        Amount: 185.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: Auto-pay
+    - Id: '5003'
+      VendorRef:
+        value: '4'
+        name: Beaverton Water District
+      TxnDate: '2026-03-28'
+      TotalAmt: 62.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3003'
+          TxnType: Bill
+        Amount: 62.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: Auto-pay
+    - Id: '5004'
+      VendorRef:
+        value: '6'
+        name: Raj Patel (Instructor Pay)
+      TxnDate: '2026-03-15'
+      TotalAmt: 1200.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3004'
+          TxnType: Bill
+        Amount: 1200.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2002 - Raj monthly draw'
+    - Id: '5005'
+      VendorRef:
+        value: '7'
+        name: Willamette Cleaning Services
+      TxnDate: '2026-03-14'
+      TotalAmt: 150.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3005'
+          TxnType: Bill
+        Amount: 150.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2003'
+    - Id: '5006'
+      VendorRef:
+        value: '7'
+        name: Willamette Cleaning Services
+      TxnDate: '2026-03-28'
+      TotalAmt: 150.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3006'
+          TxnType: Bill
+        Amount: 150.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2004'
+    - Id: '5007'
+      VendorRef:
+        value: '1'
+        name: Westbrook Property Management
+      TxnDate: '2026-04-02'
+      TotalAmt: 700.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3007'
+          TxnType: Bill
+        Amount: 700.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2005'
+    - Id: '5008'
+      VendorRef:
+        value: '3'
+        name: Portland General Electric
+      TxnDate: '2026-04-25'
+      TotalAmt: 172.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3008'
+          TxnType: Bill
+        Amount: 172.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: Auto-pay
+    - Id: '5009'
+      VendorRef:
+        value: '4'
+        name: Beaverton Water District
+      TxnDate: '2026-04-28'
+      TotalAmt: 58.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3009'
+          TxnType: Bill
+        Amount: 58.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: Auto-pay
+    - Id: '5010'
+      VendorRef:
+        value: '6'
+        name: Raj Patel (Instructor Pay)
+      TxnDate: '2026-04-15'
+      TotalAmt: 1200.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3010'
+          TxnType: Bill
+        Amount: 1200.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2006 - Raj monthly draw'
+    - Id: '5011'
+      VendorRef:
+        value: '7'
+        name: Willamette Cleaning Services
+      TxnDate: '2026-04-11'
+      TotalAmt: 150.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3011'
+          TxnType: Bill
+        Amount: 150.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2007'
+    - Id: '5012'
+      VendorRef:
+        value: '7'
+        name: Willamette Cleaning Services
+      TxnDate: '2026-04-25'
+      TotalAmt: 150.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3012'
+          TxnType: Bill
+        Amount: 150.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2008'
+    - Id: '5013'
+      VendorRef:
+        value: '2'
+        name: Pacific Northwest Insurance Group
+      TxnDate: '2026-04-10'
+      TotalAmt: 900.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3013'
+          TxnType: Bill
+        Amount: 900.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Operating Checking
+      PrivateNote: 'Check #2009 - Q2 insurance'
+    - Id: '5014'
+      VendorRef:
+        value: '8'
+        name: Pacific Mat Rentals
+      TxnDate: '2026-04-03'
+      TotalAmt: 280.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3014'
+          TxnType: Bill
+        Amount: 280.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Tournament Reserve
+      PrivateNote: 'Check #TR-101 from tournament reserve'
+    - Id: '5015'
+      VendorRef:
+        value: '9'
+        name: Columbia Trophy & Awards
+      TxnDate: '2026-04-01'
+      TotalAmt: 345.0
+      Line:
+      - LinkedTxn:
+        - TxnId: '3015'
+          TxnType: Bill
+        Amount: 345.0
+      PayType: Check
+      CheckPayment:
+        BankAccountRef:
+          name: Tournament Reserve
+      PrivateNote: 'Check #TR-102 from tournament reserve'
+    startPosition: 1
+    maxResults: 100
+    totalCount: 15
+bills:
+- Id: '3001'
+  DocNumber: RENT-2026-03
+  VendorRef:
+    value: '1'
+    name: Westbrook Property Management
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-05'
+  Line:
+  - Amount: 700.0
+    Description: Monthly rent - March 2026. 4827 SW Cedar Hills Blvd.
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Rent Expense
+        value: '7'
+  TotalAmt: 700.0
+  Balance: 0
+  PrivateNote: Paid on time.
+- Id: '3002'
+  DocNumber: PGE-2026-03
+  VendorRef:
+    value: '3'
+    name: Portland General Electric
+  TxnDate: '2026-03-12'
+  DueDate: '2026-03-28'
+  Line:
+  - Amount: 185.0
+    Description: 'Electric service Feb 10 - Mar 10. Acct #8827-4401-55.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Utilities
+        value: '8'
+  TotalAmt: 185.0
+  Balance: 0
+- Id: '3003'
+  DocNumber: BWD-2026-03
+  VendorRef:
+    value: '4'
+    name: Beaverton Water District
+  TxnDate: '2026-03-15'
+  DueDate: '2026-03-31'
+  Line:
+  - Amount: 62.0
+    Description: 'Water/sewer service - March. Acct #WS-91204.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Utilities
+        value: '8'
+  TotalAmt: 62.0
+  Balance: 0
+- Id: '3004'
+  DocNumber: RAJ-2026-03
+  VendorRef:
+    value: '6'
+    name: Raj Patel (Instructor Pay)
+  TxnDate: '2026-03-15'
+  DueDate: '2026-03-15'
+  Line:
+  - Amount: 1200.0
+    Description: Instructor draw - March 2026. Judo T/Th + Sat.
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Instructor Pay
+        value: '10'
+  TotalAmt: 1200.0
+  Balance: 0
+- Id: '3005'
+  DocNumber: WCS-2026-03A
+  VendorRef:
+    value: '7'
+    name: Willamette Cleaning Services
+  TxnDate: '2026-03-07'
+  DueDate: '2026-03-14'
+  Line:
+  - Amount: 150.0
+    Description: Bi-weekly deep clean - Mar 7
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Cleaning Services
+        value: '12'
+  TotalAmt: 150.0
+  Balance: 0
+- Id: '3006'
+  DocNumber: WCS-2026-03B
+  VendorRef:
+    value: '7'
+    name: Willamette Cleaning Services
+  TxnDate: '2026-03-21'
+  DueDate: '2026-03-28'
+  Line:
+  - Amount: 150.0
+    Description: Bi-weekly deep clean - Mar 21
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Cleaning Services
+        value: '12'
+  TotalAmt: 150.0
+  Balance: 0
+- Id: '3007'
+  DocNumber: RENT-2026-04
+  VendorRef:
+    value: '1'
+    name: Westbrook Property Management
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-05'
+  Line:
+  - Amount: 700.0
+    Description: 'Monthly rent - April 2026. NOTE: Lease review scheduled Jun 2026.
+      Westbrook indicated potential increase to $850/mo effective Jul 1.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Rent Expense
+        value: '7'
+  TotalAmt: 700.0
+  Balance: 0
+  PrivateNote: Paid 4/2. Talk to Allison about rent increase impact before June meeting.
+- Id: '3008'
+  DocNumber: PGE-2026-04
+  VendorRef:
+    value: '3'
+    name: Portland General Electric
+  TxnDate: '2026-04-11'
+  DueDate: '2026-04-28'
+  Line:
+  - Amount: 172.0
+    Description: 'Electric service Mar 10 - Apr 10. Acct #8827-4401-55.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Utilities
+        value: '8'
+  TotalAmt: 172.0
+  Balance: 0
+- Id: '3009'
+  DocNumber: BWD-2026-04
+  VendorRef:
+    value: '4'
+    name: Beaverton Water District
+  TxnDate: '2026-04-14'
+  DueDate: '2026-04-30'
+  Line:
+  - Amount: 58.0
+    Description: 'Water/sewer service - April. Acct #WS-91204.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Utilities
+        value: '8'
+  TotalAmt: 58.0
+  Balance: 0
+- Id: '3010'
+  DocNumber: RAJ-2026-04
+  VendorRef:
+    value: '6'
+    name: Raj Patel (Instructor Pay)
+  TxnDate: '2026-04-15'
+  DueDate: '2026-04-15'
+  Line:
+  - Amount: 1200.0
+    Description: Instructor draw - April 2026. Judo T/Th + Sat.
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Instructor Pay
+        value: '10'
+  TotalAmt: 1200.0
+  Balance: 0
+- Id: '3011'
+  DocNumber: WCS-2026-04A
+  VendorRef:
+    value: '7'
+    name: Willamette Cleaning Services
+  TxnDate: '2026-04-04'
+  DueDate: '2026-04-11'
+  Line:
+  - Amount: 150.0
+    Description: Bi-weekly deep clean - Apr 4
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Cleaning Services
+        value: '12'
+  TotalAmt: 150.0
+  Balance: 0
+- Id: '3012'
+  DocNumber: WCS-2026-04B
+  VendorRef:
+    value: '7'
+    name: Willamette Cleaning Services
+  TxnDate: '2026-04-18'
+  DueDate: '2026-04-25'
+  Line:
+  - Amount: 150.0
+    Description: Bi-weekly deep clean - Apr 18
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Cleaning Services
+        value: '12'
+  TotalAmt: 150.0
+  Balance: 0
+- Id: '3013'
+  DocNumber: PNWIG-2026-Q2
+  VendorRef:
+    value: '2'
+    name: Pacific Northwest Insurance Group
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-15'
+  Line:
+  - Amount: 900.0
+    Description: 'Quarterly insurance premium - Q2 2026 (Apr-Jun). Policy #PNW-2026-04471.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Insurance
+        value: '9'
+  TotalAmt: 900.0
+  Balance: 0
+- Id: '3014'
+  DocNumber: PMR-2026-04
+  VendorRef:
+    value: '8'
+    name: Pacific Mat Rentals
+  TxnDate: '2026-03-28'
+  DueDate: '2026-04-05'
+  Line:
+  - Amount: 280.0
+    Description: Judo mat rental - Spring Tournament Apr 5. 8 extra mats × $35.
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Tournament Expenses
+        value: '13'
+  TotalAmt: 280.0
+  Balance: 0
+- Id: '3015'
+  DocNumber: CTA-2026-04
+  VendorRef:
+    value: '9'
+    name: Columbia Trophy & Awards
+  TxnDate: '2026-03-25'
+  DueDate: '2026-04-02'
+  Line:
+  - Amount: 345.0
+    Description: 'Spring Tournament medals (30) and trophies (6). Order #CT-8891.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Tournament Expenses
+        value: '13'
+  TotalAmt: 345.0
+  Balance: 0
+- Id: '3016'
+  DocNumber: BSC-2026-04
+  VendorRef:
+    value: '5'
+    name: Bushido Supply Co.
+  TxnDate: '2026-04-10'
+  DueDate: '2026-05-10'
+  Line:
+  - Amount: 425.0
+    Description: 'Quarterly restock: shinai (12), bokken (6), mat cleaner (4 gal).
+      PO#BSC-2290.'
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Supplies & Equipment
+        value: '11'
+  TotalAmt: 425.0
+  Balance: 425.0
+  PrivateNote: Net-30. Due May 10.
+- Id: '3017'
+  DocNumber: RENT-2026-05
+  VendorRef:
+    value: '1'
+    name: Westbrook Property Management
+  TxnDate: '2026-05-01'
+  DueDate: '2026-05-05'
+  Line:
+  - Amount: 700.0
+    Description: Monthly rent - May 2026. 4827 SW Cedar Hills Blvd.
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        name: Rent Expense
+        value: '7'
+  TotalAmt: 700.0
+  Balance: 700.0
+  PrivateNote: Due 5/5. Not yet paid as of report date.
+- Id: '3401'
+  DocNumber: INV-MC-8821
+  VendorRef:
+    value: '401'
+    name: Marine Catch Seafood
+  TxnDate: '2026-05-14'
+  DueDate: '2026-05-21'
+  Line:
+  - Amount: 797.5
+    Description: Atlantic Salmon (Invoice says 55lb, Maria counted 50lb)
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        value: '421'
+        name: Food Cost - Seafood
+    Quantity: 55
+    UnitPrice: 14.5
+    Id: '1'
+    LineNum: 1
+    DetailType: AccountBasedExpenseLineDetail
+  - Amount: 216.0
+    Description: Blue Point Oysters (12 doz) - TEMP 45F ON ARRIVAL
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        value: '421'
+        name: Food Cost - Seafood
+    Quantity: 12
+    UnitPrice: 18.0
+    Id: '2'
+    LineNum: 2
+    DetailType: AccountBasedExpenseLineDetail
+  - Amount: 285.0
+    Description: Sea Bass (10lb) - MISSING FROM DELIVERY
+    AccountBasedExpenseLineDetail:
+      AccountRef:
+        value: '421'
+        name: Food Cost - Seafood
+    Quantity: 10
+    UnitPrice: 28.5
+    Id: '3'
+    LineNum: 3
+    DetailType: AccountBasedExpenseLineDetail
+  TotalAmt: 1298.5
+  Balance: 1298.5
+  PrivateNote: Morning delivery check by Maria. Multiple discrepancies found.
+  Status: Open
+  MetaData:
+    CreateTime: '2026-05-14T09:00:00-07:00'
+    LastUpdatedTime: '2026-05-14T11:30:00-07:00'
+  SyncToken: '0'
+break-even-analysis:
+  BreakEvenAnalysis:
+    PreparedBy: Aaron Delgado
+    PreparedDate: '2025-10-22'
+    Context: Quick back-of-napkin after Sensei Iverson mentioned property taxes might
+      bump lease cost. Pre-Allison review.
+    CurrentState:
+      MonthlyRevenue:
+        MembershipDues:
+          Members: 55
+          Rate: 95
+          Total: 5225
+        DropIns:
+          AvgMonthly: 90
+        EquipmentSales:
+          AvgMonthly: 60
+        TotalMonthlyRevenue: 5375
+      MonthlyExpenses:
+        Rent: 650
+        Utilities:
+          Electric: 165
+          Water: 55
+          Total: 220
+        Insurance:
+          Quarterly: 840
+          Monthly: 280
+        InstructorPay_Raj: 1100
+        Cleaning:
+          BiWeekly: 140
+          Monthly: 280
+        Supplies:
+          AvgMonthly: 100
+        Marketing:
+          AvgMonthly: 40
+        TotalMonthlyExpenses: 2670
+      MonthlyNetIncome: 2705
+      AaronDrawFromNet: 700
+      RetainedForReserves: 2005
+      Note: Rough estimate only. Need to revisit with Allison once 2025 actuals are
+        closed.
+    Scenarios:
+      Scenario_A_RentTo750:
+        Label: Rent increases to $750/mo if property tax passes through
+        NewRent: 750
+        RentIncrease: 100
+        NewTotalExpenses: 2770
+        NewNetIncome: 2605
+        BreakEvenMembers: 30
+        BreakEvenCalculation: Fixed costs $2,670 + $100 increase = $2,770. At $95/member,
+          $2,770 / $95 = 29.2 → 30 members minimum.
+        Impact: Minimal. Well within buffer at 55 members.
+      Scenario_B_RentTo850:
+        Label: Worst case - rent to $850/mo (unlikely per Iverson)
+        NewRent: 850
+        RentIncrease: 200
+        NewTotalExpenses: 2870
+        NewNetIncome: 2505
+        BreakEvenMembers: 31
+        Impact: Still fine. Iverson said this was unlikely but wanted to stress test.
+    KeyInsight: Break-even is ~28-30 members at current cost structure. At 55 members
+      we have plenty of headroom. Main concern was seasonal dip but even at 48 (Dec
+      low) we're safe.
+    ActionItems:
+    - Wait for Iverson to confirm property tax situation
+    - Revisit after year-end with Allison for proper modeling
+company:
+  CompanyInfo:
+    CompanyName: Cedar Ridge Martial Arts Academy
+    LegalName: Cedar Ridge Martial Arts Academy LLC
+    CompanyAddr:
+      Line1: 4827 SW Cedar Hills Blvd
+      City: Beaverton
+      CountrySubDivisionCode: OR
+      PostalCode: '97005'
+    Email:
+      Address: aaron.delgado@cedarridgemartialarts.com
+    PrimaryPhone:
+      FreeFormNumber: (503) 555-0147
+    FiscalYearStartMonth: January
+    Country: US
+    IndustryType: Sports & Recreation
+    NameValue:
+    - Name: OwnerName
+      Value: Aaron Delgado
+    - Name: CoOwnerName
+      Value: Raj Patel
+    - Name: OwnershipSplit
+      Value: Aaron 40% / Raj 60%
+    MetaData:
+      CreateTime: '2021-03-15T10:00:00-07:00'
+      LastUpdatedTime: '2026-04-30T09:15:00-07:00'
+company_info:
+  CompanyName: Cedar Ridge Martial Arts Academy
+  LegalName: Cedar Ridge Martial Arts Academy LLC
+  CompanyAddr:
+    Line1: 4827 SW Cedar Hills Blvd
+    City: Beaverton
+    CountrySubDivisionCode: OR
+    PostalCode: '97005'
+  Email:
+    Address: aaron.delgado@cedarridgemartialarts.com
+  PrimaryPhone:
+    FreeFormNumber: (503) 555-0147
+  FiscalYearStartMonth: January
+  Country: US
+  IndustryType: Sports & Recreation
+  NameValue:
+  - Name: OwnerName
+    Value: Aaron Delgado
+  - Name: CoOwnerName
+    Value: Raj Patel
+  - Name: OwnershipSplit
+    Value: Aaron 40% / Raj 60%
+  MetaData:
+    CreateTime: '2021-03-15T10:00:00-07:00'
+    LastUpdatedTime: '2026-04-30T09:15:00-07:00'
+customers:
+  QueryResponse:
+    Customer:
+    - Id: '0'
+      DisplayName: Multiple - See Batch Detail
+      PrimaryEmailAddr: null
+      Balance: 0
+      Active: true
+      Notes: 'Aggregate: Batch billing placeholder for multi-member invoices'
+    - Id: '1'
+      DisplayName: Abrams, Derek
+      PrimaryEmailAddr:
+        Address: derek.abrams@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '2'
+      DisplayName: Alvarez, Sofia
+      PrimaryEmailAddr:
+        Address: s.alvarez88@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '3'
+      DisplayName: Anderson, Marcus
+      PrimaryEmailAddr:
+        Address: manderson@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '4'
+      DisplayName: Bakshi, Priya
+      PrimaryEmailAddr:
+        Address: priya.bakshi@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th + Sat
+    - Id: '5'
+      DisplayName: Callahan, Nate
+      PrimaryEmailAddr:
+        Address: ncallahan@proton.me
+      Balance: 95
+      Active: true
+      Notes: Kendo - M/W/F. Apr unpaid.
+    - Id: '6'
+      DisplayName: Chen, William
+      PrimaryEmailAddr:
+        Address: will.chen.pdx@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '7'
+      DisplayName: Cortez, Diana
+      PrimaryEmailAddr:
+        Address: dianac@comcast.net
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '8'
+      DisplayName: Davenport, Greg
+      PrimaryEmailAddr:
+        Address: greg.davenport@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '9'
+      DisplayName: Delgado, Hannah
+      PrimaryEmailAddr:
+        Address: aaron.delgado@cedarridgemartialarts.com
+      Balance: 0
+      Active: true
+      Notes: Youth Sat all-levels (owner family - comp)
+    - Id: '10'
+      DisplayName: Eriksson, Lars
+      PrimaryEmailAddr:
+        Address: lars.eriksson@intel.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '11'
+      DisplayName: Fernandez, Carlos
+      PrimaryEmailAddr:
+        Address: carlos.f@hotmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '12'
+      DisplayName: Fisher, Tammy
+      PrimaryEmailAddr:
+        Address: tammyfisher@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '13'
+      DisplayName: Graves, Alicia
+      PrimaryEmailAddr:
+        Address: alicia.graves@nike.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th + Sat
+    - Id: '14'
+      DisplayName: Gutierrez, Ramon
+      PrimaryEmailAddr:
+        Address: rgutierrez@pdx.edu
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '15'
+      DisplayName: Hammond, Steve
+      PrimaryEmailAddr:
+        Address: steve.hammond@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '16'
+      DisplayName: Harrison, Olivia
+      PrimaryEmailAddr:
+        Address: olivia.h@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '17'
+      DisplayName: Hayashi, Kenji
+      PrimaryEmailAddr:
+        Address: kenji.hayashi@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '18'
+      DisplayName: Hoffman, Brett
+      PrimaryEmailAddr:
+        Address: brett.hoffman@comcast.net
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '19'
+      DisplayName: Ibanez, Teresa
+      PrimaryEmailAddr:
+        Address: teresai@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '20'
+      DisplayName: Jackson, Darnell
+      PrimaryEmailAddr:
+        Address: darnellj@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '21'
+      DisplayName: Johansson, Erik
+      PrimaryEmailAddr:
+        Address: erik.johansson@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - Sat only
+    - Id: '22'
+      DisplayName: Kang, Minjun
+      PrimaryEmailAddr:
+        Address: minjun.kang@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '23'
+      DisplayName: Keller, Jason
+      PrimaryEmailAddr:
+        Address: jasonkeller@proton.me
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '24'
+      DisplayName: Kim, Soo-yeon
+      PrimaryEmailAddr:
+        Address: sooyeon.kim@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '25'
+      DisplayName: Larson, Pete
+      PrimaryEmailAddr:
+        Address: pete.larson@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th + Sat
+    - Id: '26'
+      DisplayName: Lee, Michael
+      PrimaryEmailAddr:
+        Address: michael.lee.bvtn@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '27'
+      DisplayName: Lopez, Mariana
+      PrimaryEmailAddr:
+        Address: mariana.lopez@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '28'
+      DisplayName: Matsuda, Yuki
+      PrimaryEmailAddr:
+        Address: yuki.matsuda@outlook.com
+      Balance: 95
+      Active: true
+      Notes: Kendo - M/W/F. Apr unpaid - emailed 4/8.
+    - Id: '29'
+      DisplayName: Mercer, Bridget
+      PrimaryEmailAddr:
+        Address: bridget.mercer@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '30'
+      DisplayName: Mitchell, Aaron T.
+      PrimaryEmailAddr:
+        Address: at.mitchell@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '31'
+      DisplayName: Morrison, Tyler
+      PrimaryEmailAddr:
+        Address: tyler.morrison@comcast.net
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '32'
+      DisplayName: Nakamura, Ren
+      PrimaryEmailAddr:
+        Address: ren.nakamura@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '33'
+      DisplayName: Nelson, Courtney
+      PrimaryEmailAddr:
+        Address: courtneyN@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '34'
+      DisplayName: Okafor, Chidi
+      PrimaryEmailAddr:
+        Address: chidi.okafor@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '35'
+      DisplayName: Olsen, Katie
+      PrimaryEmailAddr:
+        Address: katie.olsen@proton.me
+      Balance: 0
+      Active: true
+      Notes: Judo - Sat only
+    - Id: '36'
+      DisplayName: Park, Jisoo
+      PrimaryEmailAddr:
+        Address: jisoo.park@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '37'
+      DisplayName: Patterson, Diane
+      PrimaryEmailAddr:
+        Address: diane.patterson@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '38'
+      DisplayName: Pearson, Troy
+      PrimaryEmailAddr:
+        Address: troypearson@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '39'
+      DisplayName: Pham, Linh
+      PrimaryEmailAddr:
+        Address: linh.pham@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th + Sat
+    - Id: '40'
+      DisplayName: Ramirez, Jesse
+      PrimaryEmailAddr:
+        Address: jesse.ramirez@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '41'
+      DisplayName: Reeves, Sam
+      PrimaryEmailAddr:
+        Address: sam.reeves@hotmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '42'
+      DisplayName: Rivera, Marco
+      PrimaryEmailAddr:
+        Address: marco.rivera@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '43'
+      DisplayName: Robinson, Aisha
+      PrimaryEmailAddr:
+        Address: aisha.robinson@nike.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '44'
+      DisplayName: Rossi, Vincent
+      PrimaryEmailAddr:
+        Address: vrossi@pdx.edu
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '45'
+      DisplayName: Santos, Gabriel
+      PrimaryEmailAddr:
+        Address: gabriel.santos@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '46'
+      DisplayName: Schneider, Anna
+      PrimaryEmailAddr:
+        Address: anna.schneider@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '47'
+      DisplayName: Shaw, Devin
+      PrimaryEmailAddr:
+        Address: devinshaw@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '48'
+      DisplayName: Simmons, Jackie
+      PrimaryEmailAddr:
+        Address: jackie.simmons@comcast.net
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '49'
+      DisplayName: Tanaka, Hiro
+      PrimaryEmailAddr:
+        Address: hiro.tanaka@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '50'
+      DisplayName: Thomas, Wayne
+      PrimaryEmailAddr:
+        Address: wayne.thomas@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Judo - Sat only
+    - Id: '51'
+      DisplayName: Torres, Miguel
+      PrimaryEmailAddr:
+        Address: miguel.torres@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '52'
+      DisplayName: Turner, Brenda
+      PrimaryEmailAddr:
+        Address: brenda.turner@proton.me
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '53'
+      DisplayName: Ueda, Takeshi
+      PrimaryEmailAddr:
+        Address: takeshi.ueda@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '54'
+      DisplayName: Vasquez, Elena
+      PrimaryEmailAddr:
+        Address: elena.vasquez@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '55'
+      DisplayName: Volkov, Dmitri
+      PrimaryEmailAddr:
+        Address: dmitri.volkov@intel.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '56'
+      DisplayName: Walker, Ben
+      PrimaryEmailAddr:
+        Address: ben.walker@hotmail.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '57'
+      DisplayName: Whitfield, Renee
+      PrimaryEmailAddr:
+        Address: renee.whitfield@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '58'
+      DisplayName: Wong, Kevin
+      PrimaryEmailAddr:
+        Address: kevin.wong@yahoo.com
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '59'
+      DisplayName: Yamamoto, Sakura
+      PrimaryEmailAddr:
+        Address: sakura.yamamoto@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th + Sat
+    - Id: '60'
+      DisplayName: Young, Patrick
+      PrimaryEmailAddr:
+        Address: patrick.young@comcast.net
+      Balance: 0
+      Active: true
+      Notes: Kendo - M/W/F
+    - Id: '61'
+      DisplayName: Zhang, Leo
+      PrimaryEmailAddr:
+        Address: leo.zhang@gmail.com
+      Balance: 0
+      Active: true
+      Notes: Both programs - unlimited
+    - Id: '62'
+      DisplayName: Zimmerman, Chloe
+      PrimaryEmailAddr:
+        Address: chloe.z@outlook.com
+      Balance: 0
+      Active: true
+      Notes: Judo - T/Th
+    - Id: '63'
+      DisplayName: Spring Tournament 2026 - Registrations
+      PrimaryEmailAddr: null
+      Balance: 0
+      Active: true
+      Notes: 'Aggregate: Spring tournament individual registrations (Apr 5)'
+    - Id: '64'
+      DisplayName: Drop-in Sessions (Walk-ins)
+      PrimaryEmailAddr: null
+      Balance: 0
+      Active: true
+      Notes: 'Aggregate: Non-member drop-in fees $20/session'
+    - Id: '65'
+      DisplayName: Cooper, Nathan
+      PrimaryEmailAddr:
+        Address: ncooper@gmail.com
+      Balance: 0
+      Active: false
+      Notes: INACTIVE - cancelled Feb 2026. Kendo.
+    - Id: '66'
+      DisplayName: Huang, Mei
+      PrimaryEmailAddr:
+        Address: mei.huang@yahoo.com
+      Balance: 0
+      Active: false
+      Notes: INACTIVE - moved out of state Mar 2026. Judo.
+    - Id: '201'
+      DisplayName: Tunde Adeyemi
+      GivenName: Tunde
+      FamilyName: Adeyemi
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: tunde.adeyemi@gmail.com
+      PrimaryPhone:
+        FreeFormNumber: +234-555-0201
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Beat client - Lagos Nights exclusive
+      Job: false
+    - Id: '202'
+      DisplayName: Keisha Brown
+      GivenName: Keisha
+      FamilyName: Brown
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: keisha.b.music@gmail.com
+      PrimaryPhone:
+        FreeFormNumber: +1-404-555-0202
+      BillAddr:
+        Line1: ''
+        City: Atlanta
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Beat client
+      Job: false
+    - Id: '203'
+      DisplayName: Marcus Webb
+      GivenName: Marcus
+      FamilyName: Webb
+      CompanyName: TechVault Solutions Inc.
+      PrimaryEmailAddr:
+        Address: mwebb@techvault.io
+      PrimaryPhone:
+        FreeFormNumber: +1-919-555-0203
+      BillAddr:
+        Line1: ''
+        City: Durham NC
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 1800000.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Consulting client + beat client
+      Job: false
+    - Id: '204'
+      DisplayName: Yemi Olatunde
+      GivenName: Yemi
+      FamilyName: Olatunde
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: yemi.ola@gmail.com
+      PrimaryPhone:
+        FreeFormNumber: +234-555-0204
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 35000.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Beat client - pending payment
+      Job: false
+    - Id: '205'
+      DisplayName: Priya Nair
+      GivenName: Priya
+      FamilyName: Nair
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: priya.nair.music@gmail.com
+      PrimaryPhone:
+        FreeFormNumber: +1-212-555-0205
+      BillAddr:
+        Line1: ''
+        City: New York
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Beat client
+      Job: false
+    - Id: '206'
+      DisplayName: Diego Reyes
+      GivenName: Diego
+      FamilyName: Reyes
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: diego.reyes.beats@gmail.com
+      PrimaryPhone:
+        FreeFormNumber: +1-305-555-0206
+      BillAddr:
+        Line1: ''
+        City: Miami
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Beat client
+      Job: false
+    - Id: '207'
+      DisplayName: SoundCloud Sync
+      GivenName: ''
+      FamilyName: ''
+      CompanyName: SoundCloud Sync Licensing
+      PrimaryEmailAddr:
+        Address: sync@soundcloud.com
+      PrimaryPhone:
+        FreeFormNumber: +1-888-555-0207
+      BillAddr:
+        Line1: ''
+        City: Berlin
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Sync license
+      Job: false
+    - Id: '208'
+      DisplayName: BeatStars Free
+      GivenName: ''
+      FamilyName: ''
+      CompanyName: BeatStars Inc
+      PrimaryEmailAddr:
+        Address: promo@beatstars.com
+      PrimaryPhone:
+        FreeFormNumber: +1-888-555-0208
+      BillAddr:
+        Line1: ''
+        City: Boca Raton
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Free promo
+      Job: false
+    - Id: '301'
+      DisplayName: Bar Walk-In
+      GivenName: ''
+      FamilyName: ''
+      CompanyName: ''
+      PrimaryEmailAddr:
+        Address: ''
+      PrimaryPhone:
+        FreeFormNumber: ''
+      BillAddr:
+        Line1: ''
+        City: Atlanta
+        CountrySubDivisionCode: GA
+        PostalCode: '30317'
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      Notes: Generic walk-in bar customer for POS bar tabs
+      Job: false
+    startPosition: 1
+    maxResults: 76
+    totalCount: 76
+estimates:
+- Id: '4001'
+  DocNumber: E-1001
+  TxnDate: '2025-02-01'
+  ExpirationDate: '2025-03-03'
+  CustomerRef:
+    value: '7'
+    name: Amanda Foster
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 4500.0
+    DetailType: SalesItemLineDetail
+    Description: Paver patio installation - approx 250 sq ft
+    SalesItemLineDetail:
+      ItemRef:
+        value: '7'
+        name: Hardscaping - Patio/Walkway
+      UnitPrice: 18.0
+      Qty: 250
+  TotalAmt: 4500.0
+  TxnStatus: Accepted
+  AcceptedDate: '2025-02-05'
+  LinkedTxn:
+  - TxnId: '1011'
+    TxnType: Invoice
+  MetaData:
+    CreateTime: '2025-02-01T10:00:00-05:00'
+    LastUpdatedTime: '2025-03-07T10:00:00-05:00'
+  SyncToken: '2'
+- Id: '4002'
+  DocNumber: E-1002
+  TxnDate: '2025-02-10'
+  ExpirationDate: '2025-03-12'
+  CustomerRef:
+    value: '10'
+    name: William Carter
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 2500.0
+    DetailType: SalesItemLineDetail
+    Description: Irrigation system - front and back yard
+    SalesItemLineDetail:
+      ItemRef:
+        value: '6'
+        name: Irrigation System Install
+      UnitPrice: 2500.0
+      Qty: 1
+  TotalAmt: 2500.0
+  TxnStatus: Accepted
+  AcceptedDate: '2025-02-14'
+  LinkedTxn:
+  - TxnId: '1010'
+    TxnType: Invoice
+  MetaData:
+    CreateTime: '2025-02-10T14:00:00-05:00'
+    LastUpdatedTime: '2025-03-05T13:00:00-05:00'
+  SyncToken: '2'
+- Id: '4003'
+  DocNumber: E-1003
+  TxnDate: '2025-03-01'
+  ExpirationDate: '2025-03-31'
+  CustomerRef:
+    value: '23'
+    name: Kevin & Laura Adams
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 3600.0
+    DetailType: SalesItemLineDetail
+    Description: Paver walkway - approximately 200 sq ft
+    SalesItemLineDetail:
+      ItemRef:
+        value: '7'
+        name: Hardscaping - Patio/Walkway
+      UnitPrice: 18.0
+      Qty: 200
+  TotalAmt: 3600.0
+  TxnStatus: Accepted
+  AcceptedDate: '2025-03-05'
+  LinkedTxn:
+  - TxnId: '1021'
+    TxnType: Invoice
+  MetaData:
+    CreateTime: '2025-03-01T11:00:00-05:00'
+    LastUpdatedTime: '2025-04-03T11:00:00-04:00'
+  SyncToken: '2'
+- Id: '4004'
+  DocNumber: E-1004
+  TxnDate: '2025-03-15'
+  ExpirationDate: '2025-04-14'
+  CustomerRef:
+    value: '25'
+    name: Sandra Phillips
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 950.0
+    DetailType: SalesItemLineDetail
+    Description: Full front yard landscape redesign with seasonal plantings
+    SalesItemLineDetail:
+      ItemRef:
+        value: '10'
+        name: Landscape Design Plan
+      UnitPrice: 450.0
+      Qty: 1
+  - Id: '2'
+    LineNum: 2
+    Amount: 500.0
+    DetailType: SalesItemLineDetail
+    Description: Implementation and planting
+    SalesItemLineDetail:
+      ItemRef:
+        value: '5'
+        name: Mulch Installation
+      UnitPrice: 85.0
+      Qty: 5
+  TotalAmt: 950.0
+  TxnStatus: Pending
+  AcceptedDate: null
+  LinkedTxn: []
+  MetaData:
+    CreateTime: '2025-03-15T15:00:00-05:00'
+    LastUpdatedTime: '2025-03-15T15:00:00-05:00'
+  SyncToken: '0'
+- Id: '4005'
+  DocNumber: E-1005
+  TxnDate: '2025-03-20'
+  ExpirationDate: '2025-04-19'
+  CustomerRef:
+    value: '4'
+    name: Patricia Nguyen
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 1800.0
+    DetailType: SalesItemLineDetail
+    Description: Backyard patio - 100 sq ft with border
+    SalesItemLineDetail:
+      ItemRef:
+        value: '7'
+        name: Hardscaping - Patio/Walkway
+      UnitPrice: 18.0
+      Qty: 100
+  TotalAmt: 1800.0
+  TxnStatus: Closed
+  AcceptedDate: null
+  LinkedTxn: []
+  MetaData:
+    CreateTime: '2025-03-20T09:00:00-04:00'
+    LastUpdatedTime: '2025-04-01T10:00:00-04:00'
+  SyncToken: '1'
+- Id: '4006'
+  DocNumber: E-1006
+  TxnDate: '2025-04-01'
+  ExpirationDate: '2025-05-01'
+  CustomerRef:
+    value: '11'
+    name: Jennifer Martinez
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 2200.0
+    DetailType: SalesItemLineDetail
+    Description: Complete garden redesign - Japanese zen garden
+    SalesItemLineDetail:
+      ItemRef:
+        value: '10'
+        name: Landscape Design Plan
+      UnitPrice: 450.0
+      Qty: 1
+  - Id: '2'
+    LineNum: 2
+    Amount: 1750.0
+    DetailType: SalesItemLineDetail
+    Description: Zen garden materials and installation
+    SalesItemLineDetail:
+      ItemRef:
+        value: '5'
+        name: Mulch Installation
+      UnitPrice: 85.0
+      Qty: 20
+  TotalAmt: 2200.0
+  TxnStatus: Pending
+  AcceptedDate: null
+  LinkedTxn: []
+  MetaData:
+    CreateTime: '2025-04-01T14:00:00-04:00'
+    LastUpdatedTime: '2025-04-01T14:00:00-04:00'
+  SyncToken: '0'
+- Id: '4007'
+  DocNumber: E-1007
+  TxnDate: '2025-04-10'
+  ExpirationDate: '2025-05-10'
+  CustomerRef:
+    value: '22'
+    name: Nancy Wright
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 3200.0
+    DetailType: SalesItemLineDetail
+    Description: Irrigation system expansion - side yard and garden beds
+    SalesItemLineDetail:
+      ItemRef:
+        value: '6'
+        name: Irrigation System Install
+      UnitPrice: 3200.0
+      Qty: 1
+  TotalAmt: 3200.0
+  TxnStatus: Pending
+  AcceptedDate: null
+  LinkedTxn: []
+  MetaData:
+    CreateTime: '2025-04-10T10:30:00-04:00'
+    LastUpdatedTime: '2025-04-10T10:30:00-04:00'
+  SyncToken: '0'
+expenses:
+- Id: '5201'
+  TxnDate: '2024-04-01'
+  TotalAmt: 6500.0
+  Line:
+  - Description: Splice - Monthly sample subscription
+    Amount: 6500.0
+  MetaData:
+    CreateTime: '2024-04-01T09:00:00'
+- Id: '5202'
+  TxnDate: '2024-04-01'
+  TotalAmt: 42000.0
+  Line:
+  - Description: Ableton - Live 12 Suite renewal
+    Amount: 42000.0
+  MetaData:
+    CreateTime: '2024-04-01T09:05:00'
+- Id: '5203'
+  TxnDate: '2024-04-05'
+  TotalAmt: 5400.0
+  Line:
+  - Description: Canva Pro - Monthly design subscription
+    Amount: 5400.0
+  MetaData:
+    CreateTime: '2024-04-05T10:00:00'
+- Id: '5204'
+  TxnDate: '2024-04-08'
+  TotalAmt: 3200.0
+  Line:
+  - Description: Amazon NG - USB audio interface cable
+    Amount: 3200.0
+  MetaData:
+    CreateTime: '2024-04-08T11:00:00'
+- Id: '5205'
+  TxnDate: '2024-04-10'
+  TotalAmt: 95000.0
+  Line:
+  - Description: Soundz Music Store - Akai MPK Mini MK3 + Audio-Technica M20x + XLR
+      Cable
+    Amount: 95000.0
+  PrivateNote: Entered at subtotal 95000 before discount. Receipt SMS-2045 shows 90000
+    after 5000 discount.
+  MetaData:
+    CreateTime: '2024-04-10T14:00:00'
+- Id: '5206'
+  TxnDate: '2024-04-15'
+  TotalAmt: 6800.0
+  Line:
+  - Description: SoundCloud Pro - Monthly distribution plan
+    Amount: 6800.0
+  MetaData:
+    CreateTime: '2024-04-15T09:00:00'
+- Id: '5207'
+  TxnDate: '2024-04-20'
+  TotalAmt: 9600.0
+  Line:
+  - Description: Dropbox Business - Cloud storage monthly
+    Amount: 9600.0
+  MetaData:
+    CreateTime: '2024-04-20T10:00:00'
+invoices:
+- Id: '5001'
+  DocNumber: INV-2026-0301
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  CustomerRef:
+    value: '1'
+    name: Abrams, Derek
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - March 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '5002'
+  DocNumber: INV-2026-0302
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  CustomerRef:
+    value: '2'
+    name: Alvarez, Sofia
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - March 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '5003'
+  DocNumber: INV-2026-0303
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  CustomerRef:
+    value: '6'
+    name: Chen, William
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - March 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '5004'
+  DocNumber: INV-2026-0304
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  CustomerRef:
+    value: '28'
+    name: Matsuda, Yuki
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - March 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '5005'
+  DocNumber: INV-2026-0305
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  CustomerRef:
+    value: '17'
+    name: Hayashi, Kenji
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - March 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '5006'
+  DocNumber: BATCH-2026-03
+  TxnDate: '2026-03-01'
+  DueDate: '2026-03-10'
+  PrivateNote: Batch invoice for remaining 57 members not individually listed. All
+    paid by 3/12.
+  CustomerRef:
+    value: '0'
+    name: Multiple - See Batch Detail
+  Line:
+  - Amount: 5415.0
+    Description: Monthly Membership - March 2026 (57 members × $95)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 5415.0
+  Balance: 0
+  Status: Paid
+- Id: '5007'
+  DocNumber: INV-2026-0306
+  TxnDate: '2026-03-05'
+  DueDate: '2026-03-05'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  Line:
+  - Amount: 80.0
+    Description: Drop-in fees collected - first half March (4 sessions × $20)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Drop-in Fees
+  TotalAmt: 80.0
+  Balance: 0
+  Status: Paid
+- Id: '5008'
+  DocNumber: INV-2026-0307
+  TxnDate: '2026-03-19'
+  DueDate: '2026-03-19'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  Line:
+  - Amount: 60.0
+    Description: Drop-in fees collected - second half March (3 sessions × $20)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Drop-in Fees
+  TotalAmt: 60.0
+  Balance: 0
+  Status: Paid
+- Id: '2001'
+  DocNumber: INV-2026-0401
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '1'
+    name: Abrams, Derek
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2002'
+  DocNumber: INV-2026-0402
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '2'
+    name: Alvarez, Sofia
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2003'
+  DocNumber: INV-2026-0403
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '5'
+    name: Callahan, Nate
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 95.0
+  Status: Overdue
+  PrivateNote: Emailed 4/12, no response. Try again before May billing.
+- Id: '2004'
+  DocNumber: INV-2026-0404
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '6'
+    name: Chen, William
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2005'
+  DocNumber: INV-2026-0405
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '10'
+    name: Eriksson, Lars
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 45.0
+  Status: Partial
+  PrivateNote: Lars paid $50 on 4/8 - said remaining $45 coming with May payment.
+    OK per Aaron 4/9.
+- Id: '2006'
+  DocNumber: INV-2026-0406
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '17'
+    name: Hayashi, Kenji
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2007'
+  DocNumber: INV-2026-0407
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '28'
+    name: Matsuda, Yuki
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 95.0
+  Status: Overdue
+- Id: '2008'
+  DocNumber: INV-2026-0408
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '28'
+    name: Matsuda, Yuki
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 95.0
+  Status: Overdue
+  PrivateNote: System generated duplicate - needs void. See INV-2026-0407.
+- Id: '2009'
+  DocNumber: INV-2026-0409
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '31'
+    name: Morrison, Tyler
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2010'
+  DocNumber: INV-2026-0410
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  CustomerRef:
+    value: '42'
+    name: Rivera, Marco
+  Line:
+  - Amount: 95.0
+    Description: Monthly Membership - April 2026
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 95.0
+  Balance: 0
+  Status: Paid
+- Id: '2011'
+  DocNumber: BATCH-2026-04
+  TxnDate: '2026-04-01'
+  DueDate: '2026-04-10'
+  PrivateNote: Batch invoice for remaining 53 members not individually listed. All
+    paid by 4/14 except noted above.
+  CustomerRef:
+    value: '0'
+    name: Multiple - See Batch Detail
+  Line:
+  - Amount: 5035.0
+    Description: Monthly Membership - April 2026 (53 members × $95)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Membership Income
+  TotalAmt: 5035.0
+  Balance: 0
+  Status: Paid
+- Id: '2012'
+  DocNumber: INV-2026-0411
+  TxnDate: '2026-04-02'
+  DueDate: '2026-04-02'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  Line:
+  - Amount: 100.0
+    Description: Drop-in fees collected - April week 1 (5 sessions × $20)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Drop-in Fees
+  TotalAmt: 100.0
+  Balance: 0
+  Status: Paid
+- Id: '2013'
+  DocNumber: INV-2026-0412
+  TxnDate: '2026-04-05'
+  DueDate: '2026-04-12'
+  CustomerRef:
+    value: '63'
+    name: Spring Tournament 2026 - Registrations
+  Line:
+  - Amount: 1200.0
+    Description: Tournament registration fees - 40 competitors × $30
+    SalesItemLineDetail:
+      ItemRef:
+        name: Tournament Revenue
+  - Amount: 360.0
+    Description: Spectator entry - 72 × $5
+    SalesItemLineDetail:
+      ItemRef:
+        name: Tournament Revenue
+  TotalAmt: 1560.0
+  Balance: 0
+  Status: Paid
+  PrivateNote: Spring Tournament Apr 5. Smaller than fall - local clubs only.
+- Id: '2014'
+  DocNumber: INV-2026-0413
+  TxnDate: '2026-04-16'
+  DueDate: '2026-04-16'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  Line:
+  - Amount: 60.0
+    Description: Drop-in fees collected - April weeks 3-4 (3 sessions × $20)
+    SalesItemLineDetail:
+      ItemRef:
+        name: Drop-in Fees
+  TotalAmt: 60.0
+  Balance: 0
+  Status: Paid
+- Id: '1201'
+  DocNumber: ISC-2024-009
+  TxnDate: '2024-04-10'
+  DueDate: '2024-04-20'
+  CustomerRef:
+    value: '203'
+    name: Marcus Webb
+  TotalAmt: 1800000.0
+  Balance: 1800000.0
+  Line:
+  - Description: Penetration Testing - TechVault Portal
+    Amount: 600000.0
+  - Description: Infrastructure Security Audit
+    Amount: 480000.0
+  - Description: API Vulnerability Assessment
+    Amount: 360000.0
+  - Description: Security Policy Documentation
+    Amount: 240000.0
+  - Description: Client Handoff Walkthrough
+    Amount: 120000.0
+  EmailStatus: Sent
+  BillEmail:
+    Address: mwebb@techvault.io
+  MetaData:
+    CreateTime: '2024-04-10T10:00:00'
+  Status: Unpaid
+- Id: '1401'
+  DocNumber: BAR-1101
+  TxnDate: '2025-04-18'
+  DueDate: '2025-04-18'
+  CustomerRef:
+    value: '301'
+    name: Bar Walk-In
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 54.0
+    DetailType: SalesItemLineDetail
+    Description: Buffalo Trace pours
+    SalesItemLineDetail:
+      ItemRef:
+        value: '401'
+        name: Buffalo Trace
+      UnitPrice: 18.0
+      Qty: 3
+  - Amount: 54.0
+    DetailType: SubTotalLineDetail
+    SubTotalLineDetail: {}
+  TotalAmt: 54.0
+  Balance: 0.0
+  PrintStatus: NotSet
+  EmailStatus: NotSet
+  Status: Paid
+  MetaData:
+    CreateTime: '2025-04-18T20:15:00-04:00'
+    LastUpdatedTime: '2025-04-18T20:15:00-04:00'
+  SyncToken: '1'
+- Id: '1402'
+  DocNumber: BAR-1102
+  TxnDate: '2025-04-18'
+  DueDate: '2025-04-18'
+  CustomerRef:
+    value: '301'
+    name: Bar Walk-In
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 36.0
+    DetailType: SalesItemLineDetail
+    Description: Maker's Mark pours
+    SalesItemLineDetail:
+      ItemRef:
+        value: '402'
+        name: Maker's Mark
+      UnitPrice: 18.0
+      Qty: 2
+  - Amount: 36.0
+    DetailType: SubTotalLineDetail
+    SubTotalLineDetail: {}
+  TotalAmt: 36.0
+  Balance: 0.0
+  PrintStatus: NotSet
+  EmailStatus: NotSet
+  Status: Paid
+  MetaData:
+    CreateTime: '2025-04-18T21:05:00-04:00'
+    LastUpdatedTime: '2025-04-18T21:05:00-04:00'
+  SyncToken: '1'
+- Id: '1403'
+  DocNumber: BAR-1103
+  TxnDate: '2025-04-19'
+  DueDate: '2025-04-19'
+  CustomerRef:
+    value: '301'
+    name: Bar Walk-In
+  Line:
+  - Id: '1'
+    LineNum: 1
+    Amount: 44.0
+    DetailType: SalesItemLineDetail
+    Description: Olmeca Silver Tequila pours
+    SalesItemLineDetail:
+      ItemRef:
+        value: '405'
+        name: Olmeca Silver Tequila
+      UnitPrice: 22.0
+      Qty: 2
+  - Amount: 44.0
+    DetailType: SubTotalLineDetail
+    SubTotalLineDetail: {}
+  TotalAmt: 44.0
+  Balance: 0.0
+  PrintStatus: NotSet
+  EmailStatus: NotSet
+  Status: Paid
+  MetaData:
+    CreateTime: '2025-04-19T19:45:00-04:00'
+    LastUpdatedTime: '2025-04-19T19:45:00-04:00'
+  SyncToken: '1'
+items:
+- Id: '1'
+  Name: Emergency Motel Stay
+  Description: Temporary motel reimbursement for tenant relocation support
+  Type: Service
+  UnitPrice: '418.22'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '2'
+  Name: Volunteer Travel Mileage
+  Description: Verified volunteer mileage reimbursement
+  Type: Service
+  UnitPrice: '93.10'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '3'
+  Name: Food & Essentials
+  Description: Emergency household food and essential supplies reimbursement
+  Type: Service
+  UnitPrice: '152.87'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '4'
+  Name: Temporary Housing
+  Description: Temporary housing reimbursement for relocation case
+  Type: Service
+  UnitPrice: '624.00'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '5'
+  Name: Fuel Reimbursement
+  Description: Volunteer or coalition fuel reimbursement
+  Type: Service
+  UnitPrice: '204.51'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '6'
+  Name: Relocation Truck Rental
+  Description: Truck rental reimbursement for relocation support
+  Type: Service
+  UnitPrice: '312.45'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '7'
+  Name: Utility Deposit
+  Description: Utility deposit reimbursement for stabilized housing placement
+  Type: Service
+  UnitPrice: '950.00'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '8'
+  Name: Security Deposit
+  Description: Security deposit reimbursement for relocation intake case
+  Type: Service
+  UnitPrice: '1280.00'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+- Id: '9'
+  Name: Duplicate Review Adjustment
+  Description: Administrative line used to track duplicate reimbursement review
+  Type: Service
+  UnitPrice: '0.00'
+  IncomeAccountRef_value: '1'
+  IncomeAccountRef_name: Reimbursement Grant Revenue
+  Active: 'true'
+  Taxable: 'false'
+payments:
+- Id: '4001'
+  TxnDate: '2026-03-03'
+  CustomerRef:
+    value: '1'
+    name: Abrams, Derek
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5001'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: 'Check #1204'
+- Id: '4002'
+  TxnDate: '2026-03-04'
+  CustomerRef:
+    value: '2'
+    name: Alvarez, Sofia
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5002'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Venmo transfer
+- Id: '4003'
+  TxnDate: '2026-03-05'
+  CustomerRef:
+    value: '6'
+    name: Chen, William
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5003'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Auto-pay
+- Id: '4004'
+  TxnDate: '2026-03-06'
+  CustomerRef:
+    value: '28'
+    name: Matsuda, Yuki
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5004'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Cash at dojo
+- Id: '4005'
+  TxnDate: '2026-03-04'
+  CustomerRef:
+    value: '17'
+    name: Hayashi, Kenji
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5005'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Auto-pay
+- Id: '4006'
+  TxnDate: '2026-03-08'
+  CustomerRef:
+    value: '0'
+    name: Multiple - See Batch Detail
+  TotalAmt: 5415.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5006'
+      TxnType: Invoice
+    Amount: 5415.0
+  PrivateNote: Batch payment collection - 57 members. Mix of auto-pay, Venmo, checks.
+    All cleared by 3/12.
+- Id: '4007'
+  TxnDate: '2026-03-05'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  TotalAmt: 80.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5007'
+      TxnType: Invoice
+    Amount: 80.0
+  PrivateNote: Cash collected at door
+- Id: '4008'
+  TxnDate: '2026-03-19'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  TotalAmt: 60.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '5008'
+      TxnType: Invoice
+    Amount: 60.0
+  PrivateNote: Cash collected at door
+- Id: '4009'
+  TxnDate: '2026-04-03'
+  CustomerRef:
+    value: '1'
+    name: Abrams, Derek
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2001'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: 'Check #1218'
+- Id: '4010'
+  TxnDate: '2026-04-04'
+  CustomerRef:
+    value: '2'
+    name: Alvarez, Sofia
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2002'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Venmo transfer
+- Id: '4011'
+  TxnDate: '2026-04-05'
+  CustomerRef:
+    value: '6'
+    name: Chen, William
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2004'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Auto-pay
+- Id: '4012'
+  TxnDate: '2026-04-08'
+  CustomerRef:
+    value: '10'
+    name: Eriksson, Lars
+  TotalAmt: 50.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2005'
+      TxnType: Invoice
+    Amount: 50.0
+  PrivateNote: Partial payment - Lars said $45 remainder will come with May dues.
+    Aaron OK'd 4/9.
+- Id: '4013'
+  TxnDate: '2026-04-04'
+  CustomerRef:
+    value: '17'
+    name: Hayashi, Kenji
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2006'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Auto-pay
+- Id: '4014'
+  TxnDate: '2026-04-06'
+  CustomerRef:
+    value: '31'
+    name: Morrison, Tyler
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2009'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Venmo transfer
+- Id: '4015'
+  TxnDate: '2026-04-05'
+  CustomerRef:
+    value: '42'
+    name: Rivera, Marco
+  TotalAmt: 95.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2010'
+      TxnType: Invoice
+    Amount: 95.0
+  PrivateNote: Auto-pay
+- Id: '4016'
+  TxnDate: '2026-04-08'
+  CustomerRef:
+    value: '0'
+    name: Multiple - See Batch Detail
+  TotalAmt: 5035.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2011'
+      TxnType: Invoice
+    Amount: 5035.0
+  PrivateNote: Batch payment collection - 53 members. All cleared by 4/14.
+- Id: '4017'
+  TxnDate: '2026-04-02'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  TotalAmt: 100.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2012'
+      TxnType: Invoice
+    Amount: 100.0
+  PrivateNote: Cash collected at door
+- Id: '4018'
+  TxnDate: '2026-04-05'
+  CustomerRef:
+    value: '63'
+    name: Spring Tournament 2026 - Registrations
+  TotalAmt: 1560.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2013'
+      TxnType: Invoice
+    Amount: 1560.0
+  PrivateNote: Cash + card at door. Tournament day collection.
+- Id: '4019'
+  TxnDate: '2026-04-16'
+  CustomerRef:
+    value: '64'
+    name: Drop-in Sessions (Walk-ins)
+  TotalAmt: 60.0
+  Line:
+  - LinkedTxn:
+    - TxnId: '2014'
+      TxnType: Invoice
+    Amount: 60.0
+  PrivateNote: Cash collected at door
+vendors:
+  QueryResponse:
+    Vendor:
+    - Id: '1'
+      DisplayName: Westbrook Property Management
+      PrimaryEmailAddr:
+        Address: leasing@westbrookpm.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0291
+      Balance: 0
+      Active: true
+      Notes: Landlord - 4827 SW Cedar Hills Blvd. Lease renewed Jan 2026. Current
+        rent $700/mo.
+    - Id: '2'
+      DisplayName: Pacific Northwest Insurance Group
+      PrimaryEmailAddr:
+        Address: commercial@pnwig.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0188
+      Balance: 0
+      Active: true
+      Notes: 'General liability + property. Policy #PNW-2026-04471. Annual $3,600
+        paid quarterly ($900/qtr).'
+    - Id: '3'
+      DisplayName: Portland General Electric
+      PrimaryEmailAddr:
+        Address: business@portlandgeneral.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0100
+      Balance: 0
+      Active: true
+      Notes: 'Electric utility. Acct #8827-4401-55.'
+    - Id: '4'
+      DisplayName: Beaverton Water District
+      PrimaryEmailAddr:
+        Address: billing@beavertonwater.gov
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0076
+      Balance: 0
+      Active: true
+      Notes: 'Water/sewer. Acct #WS-91204.'
+    - Id: '5'
+      DisplayName: Bushido Supply Co.
+      PrimaryEmailAddr:
+        Address: orders@bushidosupply.com
+      PrimaryPhone:
+        FreeFormNumber: (971) 555-0342
+      Balance: 0
+      Active: true
+      Notes: Shinai, bokken, gi, belts, mat cleaner. Net-30 terms.
+    - Id: '6'
+      DisplayName: Raj Patel (Instructor Pay)
+      PrimaryEmailAddr:
+        Address: raj.patel@cedarridgemartialarts.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0264
+      Balance: 0
+      Active: true
+      Notes: Co-owner 60%. Monthly instructor draw $1,200. Judo T/Th + Sat.
+    - Id: '7'
+      DisplayName: Willamette Cleaning Services
+      PrimaryEmailAddr:
+        Address: schedule@willametteclean.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0419
+      Balance: 0
+      Active: true
+      Notes: Bi-weekly deep clean. $150/visit.
+    - Id: '8'
+      DisplayName: Pacific Mat Rentals
+      PrimaryEmailAddr:
+        Address: rentals@pacificmats.com
+      PrimaryPhone:
+        FreeFormNumber: (971) 555-0188
+      Balance: 0
+      Active: true
+      Notes: Extra judo mats for spring tournament. One-time rental Apr 2026.
+    - Id: '9'
+      DisplayName: Columbia Trophy & Awards
+      PrimaryEmailAddr:
+        Address: info@columbiatrophy.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-0527
+      Balance: 0
+      Active: true
+      Notes: Medals and trophies for spring tournament Apr 2026.
+    - Id: '201'
+      DisplayName: Splice
+      CompanyName: Splice Inc
+      PrimaryEmailAddr:
+        Address: billing@splice.com
+      PrimaryPhone:
+        FreeFormNumber: +1-888-555-0101
+      BillAddr:
+        Line1: ''
+        City: New York
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '202'
+      DisplayName: Ableton
+      CompanyName: Ableton AG
+      PrimaryEmailAddr:
+        Address: accounts@ableton.com
+      PrimaryPhone:
+        FreeFormNumber: +49-555-0102
+      BillAddr:
+        Line1: ''
+        City: Berlin
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '203'
+      DisplayName: Canva Pro
+      CompanyName: Canva Pty Ltd
+      PrimaryEmailAddr:
+        Address: billing@canva.com
+      PrimaryPhone:
+        FreeFormNumber: +61-555-0103
+      BillAddr:
+        Line1: ''
+        City: Sydney
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '204'
+      DisplayName: Amazon NG
+      CompanyName: Amazon.com Inc
+      PrimaryEmailAddr:
+        Address: business@amazon.com
+      PrimaryPhone:
+        FreeFormNumber: +234-555-0104
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '205'
+      DisplayName: SoundCloud Pro
+      CompanyName: SoundCloud Ltd
+      PrimaryEmailAddr:
+        Address: billing@soundcloud.com
+      PrimaryPhone:
+        FreeFormNumber: +49-555-0105
+      BillAddr:
+        Line1: ''
+        City: Berlin
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '206'
+      DisplayName: Dropbox Business
+      CompanyName: Dropbox Inc
+      PrimaryEmailAddr:
+        Address: billing@dropbox.com
+      PrimaryPhone:
+        FreeFormNumber: +1-888-555-0106
+      BillAddr:
+        Line1: ''
+        City: San Francisco
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '207'
+      DisplayName: Soundz Music Store
+      CompanyName: Soundz Music Store
+      PrimaryEmailAddr:
+        Address: orders@soundzmusicstore.com
+      PrimaryPhone:
+        FreeFormNumber: 0803-111-2222
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '208'
+      DisplayName: Daily Grind Coffee Co.
+      CompanyName: Daily Grind Coffee Co.
+      PrimaryEmailAddr:
+        Address: info@dailygrind.ng
+      PrimaryPhone:
+        FreeFormNumber: 0812-345-6789
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '209'
+      DisplayName: Creative Hub Workspace
+      CompanyName: Creative Hub Workspace Ltd
+      PrimaryEmailAddr:
+        Address: bookings@creativehub.ng
+      PrimaryPhone:
+        FreeFormNumber: 0909-876-5432
+      BillAddr:
+        Line1: ''
+        City: Lagos
+        CountrySubDivisionCode: ''
+        PostalCode: ''
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: ''
+      Vendor1099: false
+    - Id: '401'
+      DisplayName: Marine Catch Seafood
+      CompanyName: Marine Catch Wholesalers LLC
+      PrimaryEmailAddr:
+        Address: orders@marinecatch.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-3001
+      BillAddr:
+        Line1: 4521 Dockside Way
+        City: Portland
+        CountrySubDivisionCode: OR
+        PostalCode: '97203'
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: SUPP-001
+      Vendor1099: false
+    - Id: '402'
+      DisplayName: Coastal Fresh Produce
+      CompanyName: Coastal Fresh & Farms
+      PrimaryEmailAddr:
+        Address: billing@coastalfresh.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-3102
+      BillAddr:
+        Line1: 8900 Greenhouse Rd
+        City: Hillsboro
+        CountrySubDivisionCode: OR
+        PostalCode: '97124'
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: SUPP-002
+      Vendor1099: false
+    - Id: '403'
+      DisplayName: Pacific Kitchen Supplies
+      CompanyName: Pacific Restaurant Supply Inc
+      PrimaryEmailAddr:
+        Address: sales@packitchen.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-3203
+      BillAddr:
+        Line1: 3400 Industrial Way
+        City: Beaverton
+        CountrySubDivisionCode: OR
+        PostalCode: '97005'
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: SUPP-003
+      Vendor1099: false
+    - Id: '404'
+      DisplayName: Liberty Insurance - Alt 19
+      CompanyName: Liberty Mutual Business
+      PrimaryEmailAddr:
+        Address: agent@liberty.com
+      PrimaryPhone:
+        FreeFormNumber: (503) 555-3304
+      BillAddr:
+        Line1: 555 Insurance Center Dr
+        City: Portland
+        CountrySubDivisionCode: OR
+        PostalCode: '97201'
+      Balance: 0.0
+      Active: true
+      MetaData:
+        CreateTime: '2024-01-15T10:00:00'
+        LastUpdatedTime: '2024-06-01T10:00:00'
+      AcctNum: INS-004
+      Vendor1099: false
+    startPosition: 1
+    maxResults: 22
+    totalCount: 22

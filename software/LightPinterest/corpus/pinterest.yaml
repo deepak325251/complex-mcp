@@ -1,0 +1,952 @@
+ad_accounts:
+- ad_account_id: ad_acct_7001
+  name: Erin Russell Orchid Pins
+  currency: USD
+  country: US
+  status: ACTIVE
+  created_at: '2026-02-15T09:00:00'
+board_sections:
+- section_id: section_2001
+  board_id: board_1002
+  name: Phalaenopsis
+  pin_count: '7'
+- section_id: section_2002
+  board_id: board_1002
+  name: Cattleya
+  pin_count: '6'
+- section_id: section_2003
+  board_id: board_1002
+  name: Paphiopedilum
+  pin_count: '5'
+- section_id: section_2004
+  board_id: board_1003
+  name: Flavors & Recipes
+  pin_count: '8'
+- section_id: section_2005
+  board_id: board_1003
+  name: Techniques
+  pin_count: '5'
+- section_id: section_2006
+  board_id: board_1004
+  name: Layout & Benches
+  pin_count: '4'
+- section_id: section_2007
+  board_id: board_1004
+  name: Climate Systems
+  pin_count: '3'
+- section_id: section_2008
+  board_id: board_1005
+  name: Weeknight Meals
+  pin_count: '5'
+- section_id: section_2009
+  board_id: board_1005
+  name: Sunday Baking
+  pin_count: '4'
+- section_id: section_2010
+  board_id: board_1006
+  name: Perennials
+  pin_count: '5'
+- section_id: section_2011
+  board_id: board_1006
+  name: Container Gardens
+  pin_count: '3'
+boards:
+- board_id: board_1001
+  name: Orchid Show Mood
+  description: Greenhouse setups and display ideas for orchid society shows and competitions
+  privacy: PUBLIC
+  created_at: '2025-11-03T09:10:00'
+  updated_at: '2026-05-12T14:30:00'
+  pin_count: '18'
+  follower_count: '324'
+  collaborator_count: '0'
+- board_id: board_1002
+  name: Orchid Care & Growing Tips
+  description: Cultivation advice potting techniques watering schedules and troubleshooting
+    for Phalaenopsis Cattleya and Paphiopedilum
+  privacy: PUBLIC
+  created_at: '2023-01-10T08:00:00'
+  updated_at: '2026-05-15T11:00:00'
+  pin_count: '20'
+  follower_count: '512'
+  collaborator_count: '1'
+- board_id: board_1003
+  name: Spring Macaron Collection
+  description: Inspo and product shots for seasonal macarons. Flavors techniques and
+    styling ideas
+  privacy: PUBLIC
+  created_at: '2026-02-10T14:22:00'
+  updated_at: '2026-04-18T09:45:00'
+  pin_count: '15'
+  follower_count: '189'
+  collaborator_count: '0'
+- board_id: board_1004
+  name: Greenhouse Design Ideas
+  description: Layouts bench configurations climate control systems and lighting for
+    hobby greenhouses
+  privacy: PUBLIC
+  created_at: '2023-06-20T11:30:00'
+  updated_at: '2026-04-22T16:00:00'
+  pin_count: '8'
+  follower_count: '145'
+  collaborator_count: '0'
+- board_id: board_1005
+  name: Comfort Food Recipes
+  description: Southern comfort cooking weeknight meals Sunday baking and family favorites
+  privacy: PUBLIC
+  created_at: '2023-03-15T10:00:00'
+  updated_at: '2026-04-10T12:15:00'
+  pin_count: '12'
+  follower_count: '203'
+  collaborator_count: '0'
+- board_id: board_1006
+  name: Garden & Outdoor Spaces
+  description: Perennial gardens container planting outdoor living and native Charlotte
+    plants
+  privacy: PUBLIC
+  created_at: '2023-08-01T15:45:00'
+  updated_at: '2026-04-19T10:30:00'
+  pin_count: '10'
+  follower_count: '167'
+  collaborator_count: '0'
+- board_id: board_1007
+  name: Reading Nook & Cozy Corners
+  description: Cozy reading spots book displays and quiet space inspiration
+  privacy: PUBLIC
+  created_at: '2023-09-12T10:15:00'
+  updated_at: '2026-04-21T08:00:00'
+  pin_count: '6'
+  follower_count: '88'
+  collaborator_count: '0'
+- board_id: board_1008
+  name: Yoga & Wellness
+  description: Morning routines stretches for desk workers and wrist-friendly yoga
+    flows
+  privacy: PUBLIC
+  created_at: '2024-02-05T09:00:00'
+  updated_at: '2026-04-17T15:20:00'
+  pin_count: '5'
+  follower_count: '72'
+  collaborator_count: '0'
+- board_id: board_1009
+  name: Show Prep Private Notes
+  description: Private planning board for June Southeast Regional Orchid Show entry
+    prep
+  privacy: SECRET
+  created_at: '2026-01-15T08:00:00'
+  updated_at: '2026-05-18T11:45:00'
+  pin_count: '4'
+  follower_count: '0'
+  collaborator_count: '0'
+campaigns:
+- campaign_id: camp_8001
+  ad_account_id: ad_acct_7001
+  name: Orchid Show Awareness June 2026
+  status: ACTIVE
+  objective_type: AWARENESS
+  daily_spend_cap_micro: '2000000'
+  lifetime_spend_cap_micro: '60000000'
+  start_time: '2026-05-01T00:00:00'
+  end_time: '2026-06-14T23:59:59'
+  created_at: '2026-04-20T10:00:00'
+  updated_at: '2026-05-10T08:30:00'
+- campaign_id: camp_8002
+  ad_account_id: ad_acct_7001
+  name: Orchid Care Content Boost
+  status: ACTIVE
+  objective_type: TRAFFIC
+  daily_spend_cap_micro: '1500000'
+  lifetime_spend_cap_micro: '45000000'
+  start_time: '2026-03-01T00:00:00'
+  end_time: '2026-06-30T23:59:59'
+  created_at: '2026-02-20T14:00:00'
+  updated_at: '2026-04-20T11:00:00'
+- campaign_id: camp_8003
+  ad_account_id: ad_acct_7001
+  name: Holiday Macaron Pins
+  status: PAUSED
+  objective_type: TRAFFIC
+  daily_spend_cap_micro: '3000000'
+  lifetime_spend_cap_micro: '75000000'
+  start_time: '2025-11-15T00:00:00'
+  end_time: '2025-12-31T23:59:59'
+  created_at: '2025-11-01T09:00:00'
+  updated_at: '2025-12-31T23:59:59'
+pin_analytics:
+- pin_id: pin_3001
+  date: '2026-04-01'
+  impressions: '165'
+  saves: '14'
+  pin_clicks: '9'
+  outbound_clicks: '6'
+- pin_id: pin_3001
+  date: '2026-04-02'
+  impressions: '148'
+  saves: '12'
+  pin_clicks: '8'
+  outbound_clicks: '5'
+- pin_id: pin_3001
+  date: '2026-04-03'
+  impressions: '182'
+  saves: '16'
+  pin_clicks: '11'
+  outbound_clicks: '7'
+- pin_id: pin_3001
+  date: '2026-04-04'
+  impressions: '155'
+  saves: '13'
+  pin_clicks: '8'
+  outbound_clicks: '5'
+- pin_id: pin_3001
+  date: '2026-04-05'
+  impressions: '172'
+  saves: '15'
+  pin_clicks: '10'
+  outbound_clicks: '6'
+- pin_id: pin_3003
+  date: '2026-04-01'
+  impressions: '105'
+  saves: '8'
+  pin_clicks: '5'
+  outbound_clicks: '3'
+- pin_id: pin_3003
+  date: '2026-04-02'
+  impressions: '118'
+  saves: '10'
+  pin_clicks: '6'
+  outbound_clicks: '4'
+- pin_id: pin_3003
+  date: '2026-04-03'
+  impressions: '95'
+  saves: '7'
+  pin_clicks: '4'
+  outbound_clicks: '2'
+- pin_id: pin_3003
+  date: '2026-04-04'
+  impressions: '128'
+  saves: '11'
+  pin_clicks: '7'
+  outbound_clicks: '5'
+- pin_id: pin_3003
+  date: '2026-04-05'
+  impressions: '112'
+  saves: '9'
+  pin_clicks: '6'
+  outbound_clicks: '4'
+- pin_id: pin_3005
+  date: '2026-04-01'
+  impressions: '185'
+  saves: '16'
+  pin_clicks: '10'
+  outbound_clicks: '7'
+- pin_id: pin_3005
+  date: '2026-04-02'
+  impressions: '198'
+  saves: '18'
+  pin_clicks: '12'
+  outbound_clicks: '8'
+- pin_id: pin_3005
+  date: '2026-04-03'
+  impressions: '172'
+  saves: '14'
+  pin_clicks: '9'
+  outbound_clicks: '6'
+- pin_id: pin_3005
+  date: '2026-04-04'
+  impressions: '210'
+  saves: '19'
+  pin_clicks: '13'
+  outbound_clicks: '9'
+- pin_id: pin_3005
+  date: '2026-04-05'
+  impressions: '195'
+  saves: '17'
+  pin_clicks: '11'
+  outbound_clicks: '8'
+- pin_id: pin_3006
+  date: '2026-04-01'
+  impressions: '130'
+  saves: '11'
+  pin_clicks: '7'
+  outbound_clicks: '4'
+- pin_id: pin_3006
+  date: '2026-04-02'
+  impressions: '118'
+  saves: '10'
+  pin_clicks: '6'
+  outbound_clicks: '3'
+- pin_id: pin_3006
+  date: '2026-04-03'
+  impressions: '125'
+  saves: '10'
+  pin_clicks: '6'
+  outbound_clicks: '4'
+- pin_id: pin_3006
+  date: '2026-04-04'
+  impressions: '110'
+  saves: '9'
+  pin_clicks: '5'
+  outbound_clicks: '3'
+- pin_id: pin_3006
+  date: '2026-04-05'
+  impressions: '122'
+  saves: '10'
+  pin_clicks: '6'
+  outbound_clicks: '4'
+- pin_id: pin_3009
+  date: '2026-04-01'
+  impressions: '32'
+  saves: '2'
+  pin_clicks: '1'
+  outbound_clicks: '0'
+- pin_id: pin_3009
+  date: '2026-04-02'
+  impressions: '28'
+  saves: '2'
+  pin_clicks: '1'
+  outbound_clicks: '1'
+- pin_id: pin_3009
+  date: '2026-04-03'
+  impressions: '35'
+  saves: '3'
+  pin_clicks: '2'
+  outbound_clicks: '1'
+- pin_id: pin_3009
+  date: '2026-04-04'
+  impressions: '30'
+  saves: '2'
+  pin_clicks: '1'
+  outbound_clicks: '0'
+- pin_id: pin_3009
+  date: '2026-04-05'
+  impressions: '33'
+  saves: '3'
+  pin_clicks: '2'
+  outbound_clicks: '1'
+- pin_id: pin_3014
+  date: '2026-04-01'
+  impressions: '140'
+  saves: '12'
+  pin_clicks: '8'
+  outbound_clicks: '5'
+- pin_id: pin_3014
+  date: '2026-04-02'
+  impressions: '152'
+  saves: '13'
+  pin_clicks: '9'
+  outbound_clicks: '6'
+- pin_id: pin_3014
+  date: '2026-04-03'
+  impressions: '128'
+  saves: '10'
+  pin_clicks: '7'
+  outbound_clicks: '4'
+- pin_id: pin_3014
+  date: '2026-04-04'
+  impressions: '165'
+  saves: '14'
+  pin_clicks: '10'
+  outbound_clicks: '7'
+- pin_id: pin_3014
+  date: '2026-04-05'
+  impressions: '155'
+  saves: '13'
+  pin_clicks: '9'
+  outbound_clicks: '6'
+pins:
+- pin_id: pin_3001
+  board_id: board_1001
+  board_section_id: ''
+  title: Paphiopedilum Show Display Setup
+  description: 'Elegant arrangement ideas for slipper orchids on competition tables.
+    Moss bases and accent lighting. #orchidshow #paphiopedilum #orchiddisplay'
+  link: https://www.aos.org/orchids/orchid-shows.aspx
+  media_type: image
+  created_at: '2025-11-10T09:00:00'
+  updated_at: '2026-05-10T14:00:00'
+  dominant_color: '#4A6741'
+  alt_text: Three Paphiopedilum orchids arranged on moss-covered display stands with
+    soft lighting
+  is_promoted: 'true'
+  pin_metrics_impressions: '4820'
+  pin_metrics_saves: '385'
+  pin_metrics_clicks: '245'
+- pin_id: pin_3002
+  board_id: board_1001
+  board_section_id: ''
+  title: Orchid Society Judging Table Layout
+  description: 'How regional shows set up judging tables. Tips on spacing labels and
+    presentation standards. #orchidsociety #orchidshow'
+  link: https://www.aos.org/orchids/orchid-judging.aspx
+  media_type: image
+  created_at: '2025-12-05T11:30:00'
+  updated_at: '2026-04-18T10:00:00'
+  dominant_color: '#E8DFD6'
+  alt_text: A long judging table with numbered orchid entries and AOS scoring cards
+  is_promoted: 'false'
+  pin_metrics_impressions: '2340'
+  pin_metrics_saves: '178'
+  pin_metrics_clicks: '112'
+- pin_id: pin_3003
+  board_id: board_1001
+  board_section_id: ''
+  title: Greenhouse to Show Floor Transport Tips
+  description: 'How to safely transport orchids from greenhouse to show venue. Packing
+    materials and temperature management. #orchidtransport #greenhouse'
+  link: https://www.orchidweb.com/articles/transporting-orchids
+  media_type: image
+  created_at: '2026-01-15T14:00:00'
+  updated_at: '2026-05-01T09:30:00'
+  dominant_color: '#8B6F4E'
+  alt_text: Orchid plants secured in cardboard dividers inside a plastic tote for
+    transport
+  is_promoted: 'false'
+  pin_metrics_impressions: '3150'
+  pin_metrics_saves: '267'
+  pin_metrics_clicks: '189'
+- pin_id: pin_3004
+  board_id: board_1002
+  board_section_id: section_2001
+  title: Phalaenopsis Watering Schedule by Season
+  description: 'Seasonal watering guide for moth orchids. Includes ice cube method
+    debunk and proper soak technique. #phalaenopsis #orchidcare #watering'
+  link: https://www.orchidbliss.com/watering-phalaenopsis/
+  media_type: image
+  created_at: '2023-02-20T08:45:00'
+  updated_at: '2026-04-05T11:20:00'
+  dominant_color: '#5B9E7A'
+  alt_text: Infographic showing monthly watering frequency chart for Phalaenopsis
+    orchids
+  is_promoted: 'false'
+  pin_metrics_impressions: '4650'
+  pin_metrics_saves: '412'
+  pin_metrics_clicks: '278'
+- pin_id: pin_3005
+  board_id: board_1002
+  board_section_id: section_2002
+  title: Cattleya Light Requirements Guide
+  description: 'Understanding foot-candles and light exposure for Cattleya blooming.
+    South-facing window vs grow light comparison. #cattleya #orchidlighting'
+  link: https://www.orchidsmadeeasy.com/cattleya-light/
+  media_type: image
+  created_at: '2023-05-12T10:00:00'
+  updated_at: '2026-04-20T16:00:00'
+  dominant_color: '#F5E6D0'
+  alt_text: Side by side comparison of a Cattleya orchid under natural light and under
+    LED grow lights
+  is_promoted: 'true'
+  pin_metrics_impressions: '5230'
+  pin_metrics_saves: '456'
+  pin_metrics_clicks: '312'
+- pin_id: pin_3006
+  board_id: board_1002
+  board_section_id: section_2003
+  title: Repotting Paphiopedilum Step by Step
+  description: 'Complete visual guide to repotting slipper orchids. Medium selection
+    root trimming and pot sizing. #paphiopedilum #repotting #orchidcare'
+  link: https://www.orchidweb.com/articles/repotting-paphiopedilum
+  media_type: video
+  created_at: '2023-09-08T13:00:00'
+  updated_at: '2026-03-15T14:45:00'
+  dominant_color: '#6B4E3D'
+  alt_text: Hands removing a Paphiopedilum from its pot showing healthy white roots
+    and old bark medium
+  is_promoted: 'false'
+  pin_metrics_impressions: '3890'
+  pin_metrics_saves: '342'
+  pin_metrics_clicks: '198'
+- pin_id: pin_3007
+  board_id: board_1002
+  board_section_id: section_2001
+  title: Root Health Check Visual Guide
+  description: 'How to tell healthy orchid roots from dehydrated or rotted ones. Color
+    and texture indicators. #orchidroots #orchidhealth'
+  link: https://www.orchidbliss.com/orchid-root-health/
+  media_type: image
+  created_at: '2024-01-15T09:20:00'
+  updated_at: '2026-04-10T12:00:00'
+  dominant_color: '#C9B99A'
+  alt_text: Close-up of orchid roots showing green healthy roots versus brown mushy
+    roots
+  is_promoted: 'false'
+  pin_metrics_impressions: '2780'
+  pin_metrics_saves: '234'
+  pin_metrics_clicks: '156'
+- pin_id: pin_3008
+  board_id: board_1003
+  board_section_id: section_2004
+  title: Lemon-Elderflower Macaron Color Palette
+  description: 'Lemon-elderflower color palette and good packaging idea for spring
+    macaron gift boxes. #macarons #springbaking #lemonelderflower'
+  link: https://www.sallysbakingaddiction.com/lemon-macarons/
+  media_type: image
+  created_at: '2026-03-01T11:05:00'
+  updated_at: '2026-04-02T08:00:00'
+  dominant_color: '#FFF5E6'
+  alt_text: Pale yellow macarons arranged in a white gift box with dried elderflowers
+    and a lemon slice
+  is_promoted: 'false'
+  pin_metrics_impressions: '1560'
+  pin_metrics_saves: '124'
+  pin_metrics_clicks: '78'
+- pin_id: pin_3009
+  board_id: board_1003
+  board_section_id: section_2005
+  title: Almond Flour Texture Close-Up
+  description: 'Almond flour texture close-up useful for recipe step documentation.
+    Blanched vs unblanched comparison. #almondflour #macarontips #bakingtips'
+  link: https://www.sallysbakingaddiction.com/macaron-tips/
+  media_type: image
+  created_at: '2026-03-02T09:30:00'
+  updated_at: '2026-03-28T10:00:00'
+  dominant_color: '#F0E6D3'
+  alt_text: Macro photo of finely sifted blanched almond flour next to coarser unblanched
+    flour
+  is_promoted: 'false'
+  pin_metrics_impressions: '980'
+  pin_metrics_saves: '67'
+  pin_metrics_clicks: '42'
+- pin_id: pin_3010
+  board_id: board_1003
+  board_section_id: section_2004
+  title: Spring Macaron Tower Display Ideas
+  description: 'Beautiful tiered tower displays for spring macaron collections. Color
+    coordination and height arrangements. #macarontower #springdessert'
+  link: https://www.pinterest.com/ideas/macaron-tower/
+  media_type: image
+  created_at: '2026-03-15T14:30:00'
+  updated_at: '2026-04-08T11:00:00'
+  dominant_color: '#E8C4D0'
+  alt_text: A three-tier macaron tower in pastel pink lavender and mint green on a
+    marble stand
+  is_promoted: 'false'
+  pin_metrics_impressions: '1890'
+  pin_metrics_saves: '145'
+  pin_metrics_clicks: '89'
+- pin_id: pin_3011
+  board_id: board_1004
+  board_section_id: section_2006
+  title: Three-Tier Orchid Bench Setup
+  description: 'How to build and organize three-tier aluminum benches for a hobby
+    greenhouse. Maximizes growing space for 200 plus plants. #greenhouse #orchidgrowing
+    #benchsetup'
+  link: https://www.greenhouse.org/bench-systems/
+  media_type: image
+  created_at: '2024-03-10T10:00:00'
+  updated_at: '2026-04-15T09:00:00'
+  dominant_color: '#8B9E7A'
+  alt_text: Inside of a hobby greenhouse showing three levels of aluminum benches
+    filled with potted orchids
+  is_promoted: 'false'
+  pin_metrics_impressions: '1450'
+  pin_metrics_saves: '118'
+  pin_metrics_clicks: '72'
+- pin_id: pin_3012
+  board_id: board_1004
+  board_section_id: section_2007
+  title: Humidity Controller Comparison for Orchid Greenhouses
+  description: 'Comparing Ecowitt Inkbird and SensorPush humidity controllers for
+    orchid greenhouse automation. Pros cons and pricing. #greenhousetech #humidity
+    #orchids'
+  link: https://www.orchidboard.com/community/greenhouse-chat/
+  media_type: image
+  created_at: '2024-06-22T15:30:00'
+  updated_at: '2026-04-22T11:00:00'
+  dominant_color: '#B8C5D4'
+  alt_text: Three different digital humidity controllers displayed side by side on
+    a greenhouse bench
+  is_promoted: 'false'
+  pin_metrics_impressions: '2100'
+  pin_metrics_saves: '189'
+  pin_metrics_clicks: '134'
+- pin_id: pin_3013
+  board_id: board_1005
+  board_section_id: section_2008
+  title: One-Pot Chicken and Dumplings
+  description: 'Classic Southern chicken and dumplings recipe. Comfort food for busy
+    weeknights in under 45 minutes. #comfortfood #chickendumplings #weeknightdinner'
+  link: https://www.southernliving.com/chicken-dumplings-recipe
+  media_type: image
+  created_at: '2023-10-05T16:00:00'
+  updated_at: '2026-04-08T10:30:00'
+  dominant_color: '#C4A882'
+  alt_text: A cast iron pot filled with creamy chicken and dumpling stew with fresh
+    parsley on top
+  is_promoted: 'false'
+  pin_metrics_impressions: '3240'
+  pin_metrics_saves: '256'
+  pin_metrics_clicks: '178'
+- pin_id: pin_3014
+  board_id: board_1005
+  board_section_id: section_2009
+  title: Buttermilk Biscuits from Scratch
+  description: 'Fluffy buttermilk biscuits that rise every time. Includes the cold
+    butter cutting technique. #biscuits #sundaybaking #southernrecipes'
+  link: https://www.kingarthurbaking.com/recipes/buttermilk-biscuits
+  media_type: image
+  created_at: '2024-04-18T09:15:00'
+  updated_at: '2026-04-23T08:30:00'
+  dominant_color: '#DED0C0'
+  alt_text: Golden brown buttermilk biscuits on a baking sheet with a butter knife
+    and honey jar
+  is_promoted: 'false'
+  pin_metrics_impressions: '4120'
+  pin_metrics_saves: '345'
+  pin_metrics_clicks: '223'
+- pin_id: pin_3015
+  board_id: board_1006
+  board_section_id: section_2010
+  title: Native Charlotte Perennial Garden Plan
+  description: 'Zone 7b perennial garden layout for Charlotte NC. Includes coneflower
+    black-eyed Susan and native grasses. #nativegarden #charlotte #perennials'
+  link: https://www.ncbg.unc.edu/native-plants/
+  media_type: image
+  created_at: '2024-08-01T10:00:00'
+  updated_at: '2026-04-25T15:00:00'
+  dominant_color: '#4A6741'
+  alt_text: Garden bed layout diagram showing placement of native perennials with
+    bloom season color coding
+  is_promoted: 'false'
+  pin_metrics_impressions: '1870'
+  pin_metrics_saves: '142'
+  pin_metrics_clicks: '95'
+- pin_id: pin_3016
+  board_id: board_1006
+  board_section_id: section_2011
+  title: Porch Container Garden Ideas for Shade
+  description: 'Container combinations for shaded porches. Ferns hostas and caladiums
+    in decorative pots. #containergarden #shadegarden #porchplants'
+  link: https://www.bhg.com/shade-container-gardens/
+  media_type: image
+  created_at: '2025-03-20T12:00:00'
+  updated_at: '2026-04-14T10:15:00'
+  dominant_color: '#2D5016'
+  alt_text: Three decorative ceramic pots on a porch with ferns hostas and trailing
+    ivy
+  is_promoted: 'false'
+  pin_metrics_impressions: '1340'
+  pin_metrics_saves: '98'
+  pin_metrics_clicks: '63'
+- pin_id: pin_3017
+  board_id: board_1007
+  board_section_id: ''
+  title: Cozy Reading Corner with Throw Blankets
+  description: 'Transform any unused corner into the perfect reading nook. Lamp blanket
+    and bookshelf essentials. #readingnook #cozyspaces #booklover'
+  link: https://www.apartmenttherapy.com/reading-nook-ideas
+  media_type: image
+  created_at: '2024-11-01T10:00:00'
+  updated_at: '2026-04-20T14:00:00'
+  dominant_color: '#C8B8A4'
+  alt_text: A window seat reading nook with cushions throw blanket and a stack of
+    Louise Penny novels
+  is_promoted: 'false'
+  pin_metrics_impressions: '1120'
+  pin_metrics_saves: '87'
+  pin_metrics_clicks: '54'
+- pin_id: pin_3018
+  board_id: board_1008
+  board_section_id: ''
+  title: Morning Yoga Routine for Wrist Health
+  description: 'Gentle yoga flow designed for people with carpal tunnel and wrist
+    strain. 15 minute morning routine. #yoga #carpaltunnel #wristhealth #morningroutine'
+  link: https://www.yogajournal.com/wrist-friendly-yoga/
+  media_type: video
+  created_at: '2024-05-10T08:00:00'
+  updated_at: '2026-04-06T09:45:00'
+  dominant_color: '#E8E0D8'
+  alt_text: Woman performing a modified downward dog with wrists on yoga blocks in
+    a sunny room
+  is_promoted: 'false'
+  pin_metrics_impressions: '2560'
+  pin_metrics_saves: '198'
+  pin_metrics_clicks: '134'
+- pin_id: pin_3019
+  board_id: board_1009
+  board_section_id: ''
+  title: June Show Plant Selection Notes
+  description: Private planning notes for Southeast Regional Orchid Show June 13-14.
+    Six entry candidates with bloom timeline and condition tracking.
+  link: ''
+  media_type: image
+  created_at: '2026-01-20T08:00:00'
+  updated_at: '2026-05-18T08:00:00'
+  dominant_color: '#FFFFFF'
+  alt_text: ''
+  is_promoted: 'false'
+  pin_metrics_impressions: '0'
+  pin_metrics_saves: '0'
+  pin_metrics_clicks: '0'
+- pin_id: pin_3020
+  board_id: board_1002
+  board_section_id: section_2002
+  title: Cattleya Bloom Timeline Documentation
+  description: 'Photo journal showing Cattleya bloom development from sheath to full
+    flower over 6 weeks. Useful for show timing. #cattleya #orchidbloom #bloomtimeline'
+  link: https://www.orchidsmadeeasy.com/cattleya-bloom-cycle/
+  media_type: image
+  created_at: '2025-02-28T15:30:00'
+  updated_at: '2026-05-09T13:00:00'
+  dominant_color: '#8B5E83'
+  alt_text: Four sequential photos of a purple Cattleya orchid from tight bud to fully
+    open bloom
+  is_promoted: 'false'
+  pin_metrics_impressions: '3450'
+  pin_metrics_saves: '298'
+  pin_metrics_clicks: '187'
+user_account:
+- account_type: BUSINESS
+  username: cozynestinteriors
+  profile_image: https://i.pinimg.com/avatars/cozynestinteriors_1680000000_150.jpg
+  website_url: https://www.cozynestinteriors.com
+  business_name: CozyNest Interiors
+  board_count: 9
+  pin_count: 127
+  follower_count: 12043
+  following_count: 340
+  monthly_views: 285000
+  created_at: '2023-03-12T08:15:00'
+- account_type: BUSINESS
+  username: elena_erickson_style
+  profile_image: https://i.pinimg.com/avatars/elena_erickson_style_1700000000_150.jpg
+  website_url: https://www.alderandfinch.com
+  business_name: Alder & Finch Contemporary Womenswear
+  board_count: 12
+  pin_count: 89
+  follower_count: 4320
+  following_count: 215
+  monthly_views: 67000
+  created_at: '2024-06-18T10:30:00'
+- account_type: BUSINESS
+  username: amandaxo_beats
+  profile_image: https://i.pinimg.com/avatars/amandaxo_beats_150.jpg
+  website_url: https://www.beatstars.com/amandaxo
+  business_name: AmandaXO Beats
+  board_count: 3
+  pin_count: 8
+  follower_count: 890
+  following_count: 145
+  monthly_views: 15200
+  created_at: '2023-06-10T08:00:00'
+- account_type: PERSONAL
+  username: ashleyrogers_home
+  profile_image: https://i.pinimg.com/avatars/ashleyrogers_home_1710000000_150.jpg
+  website_url: ''
+  business_name: ''
+  board_count: 6
+  pin_count: 58
+  follower_count: 842
+  following_count: 191
+  monthly_views: 18400
+  created_at: '2024-01-18T09:20:00'
+user_analytics:
+- date: '2026-03-27'
+  impressions: '520'
+  saves: '38'
+  pin_clicks: '26'
+  outbound_clicks: '17'
+  profile_visits: '10'
+  follows: '1'
+- date: '2026-03-28'
+  impressions: '580'
+  saves: '42'
+  pin_clicks: '30'
+  outbound_clicks: '20'
+  profile_visits: '12'
+  follows: '2'
+- date: '2026-03-29'
+  impressions: '465'
+  saves: '33'
+  pin_clicks: '23'
+  outbound_clicks: '15'
+  profile_visits: '8'
+  follows: '0'
+- date: '2026-03-30'
+  impressions: '540'
+  saves: '39'
+  pin_clicks: '27'
+  outbound_clicks: '18'
+  profile_visits: '10'
+  follows: '1'
+- date: '2026-03-31'
+  impressions: '645'
+  saves: '47'
+  pin_clicks: '33'
+  outbound_clicks: '22'
+  profile_visits: '14'
+  follows: '2'
+- date: '2026-04-01'
+  impressions: '610'
+  saves: '45'
+  pin_clicks: '31'
+  outbound_clicks: '21'
+  profile_visits: '13'
+  follows: '1'
+- date: '2026-04-02'
+  impressions: '660'
+  saves: '48'
+  pin_clicks: '34'
+  outbound_clicks: '23'
+  profile_visits: '15'
+  follows: '2'
+- date: '2026-04-03'
+  impressions: '530'
+  saves: '38'
+  pin_clicks: '26'
+  outbound_clicks: '17'
+  profile_visits: '10'
+  follows: '1'
+- date: '2026-04-04'
+  impressions: '710'
+  saves: '52'
+  pin_clicks: '36'
+  outbound_clicks: '25'
+  profile_visits: '16'
+  follows: '3'
+- date: '2026-04-05'
+  impressions: '680'
+  saves: '50'
+  pin_clicks: '35'
+  outbound_clicks: '24'
+  profile_visits: '15'
+  follows: '2'
+- date: '2026-04-06'
+  impressions: '555'
+  saves: '40'
+  pin_clicks: '28'
+  outbound_clicks: '18'
+  profile_visits: '11'
+  follows: '1'
+- date: '2026-04-07'
+  impressions: '510'
+  saves: '37'
+  pin_clicks: '25'
+  outbound_clicks: '16'
+  profile_visits: '9'
+  follows: '0'
+- date: '2026-04-08'
+  impressions: '590'
+  saves: '43'
+  pin_clicks: '30'
+  outbound_clicks: '20'
+  profile_visits: '12'
+  follows: '1'
+- date: '2026-04-09'
+  impressions: '625'
+  saves: '46'
+  pin_clicks: '32'
+  outbound_clicks: '21'
+  profile_visits: '13'
+  follows: '2'
+- date: '2026-04-10'
+  impressions: '720'
+  saves: '53'
+  pin_clicks: '37'
+  outbound_clicks: '25'
+  profile_visits: '17'
+  follows: '3'
+- date: '2026-04-11'
+  impressions: '685'
+  saves: '50'
+  pin_clicks: '35'
+  outbound_clicks: '24'
+  profile_visits: '15'
+  follows: '2'
+- date: '2026-04-12'
+  impressions: '565'
+  saves: '41'
+  pin_clicks: '28'
+  outbound_clicks: '19'
+  profile_visits: '11'
+  follows: '1'
+- date: '2026-04-13'
+  impressions: '525'
+  saves: '38'
+  pin_clicks: '26'
+  outbound_clicks: '17'
+  profile_visits: '10'
+  follows: '1'
+- date: '2026-04-14'
+  impressions: '605'
+  saves: '44'
+  pin_clicks: '31'
+  outbound_clicks: '20'
+  profile_visits: '13'
+  follows: '1'
+- date: '2026-04-15'
+  impressions: '650'
+  saves: '48'
+  pin_clicks: '33'
+  outbound_clicks: '22'
+  profile_visits: '14'
+  follows: '2'
+- date: '2026-04-16'
+  impressions: '745'
+  saves: '55'
+  pin_clicks: '38'
+  outbound_clicks: '26'
+  profile_visits: '18'
+  follows: '3'
+- date: '2026-04-17'
+  impressions: '700'
+  saves: '52'
+  pin_clicks: '36'
+  outbound_clicks: '24'
+  profile_visits: '16'
+  follows: '2'
+- date: '2026-04-18'
+  impressions: '580'
+  saves: '42'
+  pin_clicks: '29'
+  outbound_clicks: '19'
+  profile_visits: '12'
+  follows: '1'
+- date: '2026-04-19'
+  impressions: '535'
+  saves: '39'
+  pin_clicks: '27'
+  outbound_clicks: '18'
+  profile_visits: '10'
+  follows: '1'
+- date: '2026-04-20'
+  impressions: '665'
+  saves: '49'
+  pin_clicks: '34'
+  outbound_clicks: '23'
+  profile_visits: '15'
+  follows: '2'
+- date: '2026-04-21'
+  impressions: '635'
+  saves: '47'
+  pin_clicks: '32'
+  outbound_clicks: '22'
+  profile_visits: '14'
+  follows: '2'
+- date: '2026-04-22'
+  impressions: '715'
+  saves: '53'
+  pin_clicks: '37'
+  outbound_clicks: '25'
+  profile_visits: '17'
+  follows: '3'
+- date: '2026-04-23'
+  impressions: '670'
+  saves: '49'
+  pin_clicks: '34'
+  outbound_clicks: '23'
+  profile_visits: '15'
+  follows: '2'
+- date: '2026-04-24'
+  impressions: '570'
+  saves: '41'
+  pin_clicks: '29'
+  outbound_clicks: '19'
+  profile_visits: '12'
+  follows: '1'
+- date: '2026-04-25'
+  impressions: '620'
+  saves: '45'
+  pin_clicks: '31'
+  outbound_clicks: '21'
+  profile_visits: '13'
+  follows: '2'

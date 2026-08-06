@@ -1,0 +1,170 @@
+business:
+  business_account_id: wba-orbit-labs
+  name: Orbit Labs Support
+  phone_number_id: PNI-1551550100
+  display_phone_number: +1 555-0100
+  verified_name: Orbit Labs
+  messaging_limit_tier: TIER_1K
+contacts:
+- wa_id: '15551550101'
+  profile_name: Emily Carson
+  phone_number: '+15551550101'
+  opted_in: 'true'
+  last_seen: '2026-05-26T09:00:00Z'
+- wa_id: '15551550102'
+  profile_name: Daniel Reyes
+  phone_number: '+15551550102'
+  opted_in: 'true'
+  last_seen: '2026-05-25T18:30:00Z'
+- wa_id: '15551550103'
+  profile_name: Priya Shah
+  phone_number: '+15551550103'
+  opted_in: 'true'
+  last_seen: '2026-05-22T14:15:00Z'
+- wa_id: '15551550104'
+  profile_name: Marcus Lee
+  phone_number: '+15551550104'
+  opted_in: 'false'
+  last_seen: '2026-05-19T08:00:00Z'
+- wa_id: '15551550105'
+  profile_name: Yara Cohen
+  phone_number: '+15551550105'
+  opted_in: 'true'
+  last_seen: '2026-05-26T07:45:00Z'
+conversations:
+- conversation_id: conv-001
+  wa_id: '15551550101'
+  started_at: '2026-05-26T08:55:00Z'
+  last_message_at: '2026-05-26T09:00:00Z'
+  origin: user_initiated
+  within_24h_window: 'true'
+- conversation_id: conv-002
+  wa_id: '15551550102'
+  started_at: '2026-05-25T18:00:00Z'
+  last_message_at: '2026-05-25T18:30:00Z'
+  origin: business_initiated
+  within_24h_window: 'true'
+- conversation_id: conv-003
+  wa_id: '15551550103'
+  started_at: '2026-05-22T13:00:00Z'
+  last_message_at: '2026-05-22T14:15:00Z'
+  origin: user_initiated
+  within_24h_window: 'false'
+- conversation_id: conv-004
+  wa_id: '15551550105'
+  started_at: '2026-05-26T07:30:00Z'
+  last_message_at: '2026-05-26T07:45:00Z'
+  origin: user_initiated
+  within_24h_window: 'true'
+messages:
+- message_id: msg-001
+  conversation_id: conv-001
+  direction: inbound
+  from_wa_id: '15551550101'
+  to_wa_id: '15551550100'
+  type: text
+  text: 'Hi — my order #SF-220 still shows as preparing. Any update?'
+  template_name: ''
+  status: delivered
+  sent_at: '2026-05-26T08:55:00Z'
+- message_id: msg-002
+  conversation_id: conv-001
+  direction: outbound
+  from_wa_id: '15551550100'
+  to_wa_id: '15551550101'
+  type: template
+  text: ''
+  template_name: order_shipped
+  status: delivered
+  sent_at: '2026-05-26T09:00:00Z'
+- message_id: msg-003
+  conversation_id: conv-002
+  direction: outbound
+  from_wa_id: '15551550100'
+  to_wa_id: '15551550102'
+  type: template
+  text: ''
+  template_name: appointment_reminder
+  status: read
+  sent_at: '2026-05-25T18:00:00Z'
+- message_id: msg-004
+  conversation_id: conv-002
+  direction: inbound
+  from_wa_id: '15551550102'
+  to_wa_id: '15551550100'
+  type: text
+  text: Thanks — confirmed!
+  template_name: ''
+  status: delivered
+  sent_at: '2026-05-25T18:30:00Z'
+- message_id: msg-005
+  conversation_id: conv-003
+  direction: inbound
+  from_wa_id: '15551550103'
+  to_wa_id: '15551550100'
+  type: text
+  text: Can I exchange my recent purchase?
+  template_name: ''
+  status: read
+  sent_at: '2026-05-22T13:00:00Z'
+- message_id: msg-006
+  conversation_id: conv-003
+  direction: outbound
+  from_wa_id: '15551550100'
+  to_wa_id: '15551550103'
+  type: text
+  text: Of course! Reply with the order number and we'll get that going.
+  template_name: ''
+  status: read
+  sent_at: '2026-05-22T14:15:00Z'
+- message_id: msg-007
+  conversation_id: conv-004
+  direction: inbound
+  from_wa_id: '15551550105'
+  to_wa_id: '15551550100'
+  type: text
+  text: 'Order #WC-414 — any tracking yet?'
+  template_name: ''
+  status: delivered
+  sent_at: '2026-05-26T07:30:00Z'
+- message_id: msg-008
+  conversation_id: conv-004
+  direction: outbound
+  from_wa_id: '15551550100'
+  to_wa_id: '15551550105'
+  type: template
+  text: ''
+  template_name: order_shipped
+  status: sent
+  sent_at: '2026-05-26T07:45:00Z'
+templates:
+- name: order_shipped
+  language: en_US
+  category: UTILITY
+  status: APPROVED
+  body_text: Hi {{1}}, your order {{2}} has shipped and will arrive by {{3}}.
+  header_text: Order update
+- name: appointment_reminder
+  language: en_US
+  category: UTILITY
+  status: APPROVED
+  body_text: 'Reminder: your appointment on {{1}} at {{2}} is confirmed.'
+  header_text: ''
+- name: welcome_offer
+  language: en_US
+  category: MARKETING
+  status: APPROVED
+  body_text: Welcome, {{1}}! Use code {{2}} for 10% off your first order.
+  header_text: Welcome to Orbit
+- name: otp_verify
+  language: en_US
+  category: AUTHENTICATION
+  status: APPROVED
+  body_text: Your verification code is {{1}}. It expires in 10 minutes.
+  header_text: ''
+- name: support_followup
+  language: en_US
+  category: UTILITY
+  status: PENDING
+  body_text: Hi {{1}}, did our support resolve your issue today?
+  header_text: ''

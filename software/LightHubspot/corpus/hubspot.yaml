@@ -1,0 +1,228 @@
+companies:
+- id: '301'
+  name: Helix Robotics Inc
+  domain: helixrobotics.io
+  industry: Robotics
+  city: Austin
+  state: TX
+  numberofemployees: '240'
+  annualrevenue: '42000000'
+  createdate: '2025-09-15T09:30:00Z'
+- id: '302'
+  name: Lumen Design Studio
+  domain: lumendesign.co
+  industry: Design Services
+  city: Portland
+  state: OR
+  numberofemployees: '28'
+  annualrevenue: '3200000'
+  createdate: '2026-01-10T14:00:00Z'
+- id: '303'
+  name: Pelagic Freight Co
+  domain: pelagicfreight.com
+  industry: Logistics
+  city: Long Beach
+  state: CA
+  numberofemployees: '510'
+  annualrevenue: '88000000'
+  createdate: '2026-02-20T16:00:00Z'
+- id: '304'
+  name: Quanta Analytics
+  domain: quanta.ai
+  industry: Software
+  city: San Francisco
+  state: CA
+  numberofemployees: '75'
+  annualrevenue: '11000000'
+  createdate: '2025-12-01T08:00:00Z'
+contacts:
+- id: '201'
+  firstname: Maya
+  lastname: Fernandez
+  email: maya.fernandez@aurorabistro.com
+  phone: '+14155551201'
+  jobtitle: Owner
+  company: Aurora Bistro LLC
+  lifecyclestage: customer
+  createdate: '2025-11-02T10:00:00Z'
+  lastmodifieddate: '2026-05-20T12:00:00Z'
+- id: '202'
+  firstname: Daniel
+  lastname: Cho
+  email: daniel.cho@helixrobotics.io
+  phone: '+14155551202'
+  jobtitle: VP Engineering
+  company: Helix Robotics Inc
+  lifecyclestage: customer
+  createdate: '2025-09-15T09:30:00Z'
+  lastmodifieddate: '2026-05-18T08:00:00Z'
+- id: '203'
+  firstname: Priya
+  lastname: Nair
+  email: priya.nair@lumendesign.co
+  phone: '+14155551203'
+  jobtitle: Creative Director
+  company: Lumen Design Studio
+  lifecyclestage: opportunity
+  createdate: '2026-01-10T14:00:00Z'
+  lastmodifieddate: '2026-05-22T11:00:00Z'
+- id: '204'
+  firstname: Tomas
+  lastname: Reyes
+  email: tomas.reyes@pelagicfreight.com
+  phone: '+14155551204'
+  jobtitle: CFO
+  company: Pelagic Freight Co
+  lifecyclestage: lead
+  createdate: '2026-02-20T16:00:00Z'
+  lastmodifieddate: '2026-05-10T09:00:00Z'
+- id: '205'
+  firstname: Sara
+  lastname: Lindqvist
+  email: sara.lindqvist@verdantfarms.org
+  phone: '+14155551205'
+  jobtitle: Operations Lead
+  company: Verdant Farms
+  lifecyclestage: marketingqualifiedlead
+  createdate: '2026-03-05T11:30:00Z'
+  lastmodifieddate: '2026-05-12T15:00:00Z'
+- id: '206'
+  firstname: Kenji
+  lastname: Watanabe
+  email: kenji.watanabe@quanta.ai
+  phone: '+14155551206'
+  jobtitle: Head of Data
+  company: Quanta Analytics
+  lifecyclestage: customer
+  createdate: '2025-12-01T08:00:00Z'
+  lastmodifieddate: '2026-05-25T10:00:00Z'
+- id: '207'
+  firstname: Olivia
+  lastname: Brandt
+  email: olivia.brandt@nimbus.coffee
+  phone: '+14155551207'
+  jobtitle: Founder
+  company: Nimbus Coffee
+  lifecyclestage: lead
+  createdate: '2026-04-12T13:00:00Z'
+  lastmodifieddate: '2026-05-26T09:00:00Z'
+- id: '208'
+  firstname: Marcus
+  lastname: Webb
+  email: marcus.webb@driftwood.co
+  phone: '+14155551208'
+  jobtitle: Procurement Manager
+  company: Driftwood Co
+  lifecyclestage: salesqualifiedlead
+  createdate: '2026-04-25T10:15:00Z'
+  lastmodifieddate: '2026-05-24T14:00:00Z'
+deals:
+- id: '401'
+  dealname: Helix Enterprise Renewal
+  pipeline: default
+  dealstage: closedwon
+  amount: '358800'
+  closedate: '2026-04-30T00:00:00Z'
+  dealtype: existingbusiness
+  associated_company: '301'
+  associated_contact: '202'
+  createdate: '2026-02-01T10:00:00Z'
+  lastmodifieddate: '2026-04-30T12:00:00Z'
+- id: '402'
+  dealname: Lumen Pro Upgrade
+  pipeline: default
+  dealstage: decisionmakerboughtin
+  amount: '11760'
+  closedate: '2026-06-15T00:00:00Z'
+  dealtype: existingbusiness
+  associated_company: '302'
+  associated_contact: '203'
+  createdate: '2026-03-10T14:00:00Z'
+  lastmodifieddate: '2026-05-22T11:00:00Z'
+- id: '403'
+  dealname: Pelagic Logistics Pilot
+  pipeline: default
+  dealstage: qualifiedtobuy
+  amount: '45000'
+  closedate: '2026-07-01T00:00:00Z'
+  dealtype: newbusiness
+  associated_company: '303'
+  associated_contact: '204'
+  createdate: '2026-02-25T16:00:00Z'
+  lastmodifieddate: '2026-05-10T09:00:00Z'
+- id: '404'
+  dealname: Quanta Annual Expansion
+  pipeline: default
+  dealstage: presentationscheduled
+  amount: '98000'
+  closedate: '2026-06-30T00:00:00Z'
+  dealtype: existingbusiness
+  associated_company: '304'
+  associated_contact: '206'
+  createdate: '2026-04-01T08:00:00Z'
+  lastmodifieddate: '2026-05-25T10:00:00Z'
+- id: '405'
+  dealname: Nimbus POS Deal
+  pipeline: default
+  dealstage: appointmentscheduled
+  amount: '9900'
+  closedate: '2026-08-01T00:00:00Z'
+  dealtype: newbusiness
+  associated_company: ''
+  associated_contact: '207'
+  createdate: '2026-04-15T13:00:00Z'
+  lastmodifieddate: '2026-05-26T09:00:00Z'
+- id: '406'
+  dealname: Driftwood Trial
+  pipeline: default
+  dealstage: closedlost
+  amount: '15000'
+  closedate: '2026-05-01T00:00:00Z'
+  dealtype: newbusiness
+  associated_company: ''
+  associated_contact: '208'
+  createdate: '2026-04-25T10:15:00Z'
+  lastmodifieddate: '2026-05-24T14:00:00Z'
+pipeline_stages:
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: appointmentscheduled
+  stage_label: Appointment Scheduled
+  display_order: '0'
+  probability: '0.2'
+  closed: 'false'
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: qualifiedtobuy
+  stage_label: Qualified To Buy
+  display_order: '1'
+  probability: '0.4'
+  closed: 'false'
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: presentationscheduled
+  stage_label: Presentation Scheduled
+  display_order: '2'
+  probability: '0.6'
+  closed: 'false'
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: decisionmakerboughtin
+  stage_label: Decision Maker Bought-In
+  display_order: '3'
+  probability: '0.8'
+  closed: 'false'
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: closedwon
+  stage_label: Closed Won
+  display_order: '4'
+  probability: '1.0'
+  closed: 'true'
+- pipeline_id: default
+  pipeline_label: Sales Pipeline
+  stage_id: closedlost
+  stage_label: Closed Lost
+  display_order: '5'
+  probability: '0.0'
+  closed: 'true'

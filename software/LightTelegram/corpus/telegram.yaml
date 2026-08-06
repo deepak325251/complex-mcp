@@ -1,0 +1,169 @@
+bot:
+  id: 7654321098
+  is_bot: true
+  first_name: Orbit Ops Bot
+  username: orbit_ops_bot
+  can_join_groups: true
+  can_read_all_group_messages: false
+  supports_inline_queries: false
+users:
+- id: '9001'
+  is_bot: 'false'
+  first_name: Amelia
+  last_name: Ortega
+  username: amelia_o
+  language_code: en
+- id: '9002'
+  is_bot: 'false'
+  first_name: Jonas
+  last_name: Pereira
+  username: jonas_p
+  language_code: pt
+- id: '9003'
+  is_bot: 'false'
+  first_name: Helena
+  last_name: Park
+  username: helena_park
+  language_code: en
+- id: '9004'
+  is_bot: 'false'
+  first_name: Rohit
+  last_name: Bansal
+  username: rohit_b
+  language_code: en
+- id: '9005'
+  is_bot: 'false'
+  first_name: Noor
+  last_name: Aziz
+  username: noor_codes
+  language_code: ar
+- id: '7654321098'
+  is_bot: 'true'
+  first_name: Orbit Ops Bot
+  last_name: ''
+  username: orbit_ops_bot
+  language_code: en
+chats:
+- id: '1001'
+  type: private
+  title: ''
+  username: amelia_o
+  first_name: Amelia
+  last_name: Ortega
+  description: ''
+  member_count: '2'
+- id: '1002'
+  type: private
+  title: ''
+  username: jonas_p
+  first_name: Jonas
+  last_name: Pereira
+  description: ''
+  member_count: '2'
+- id: '-200500'
+  type: group
+  title: Orbit Eng Standup
+  username: ''
+  first_name: ''
+  last_name: ''
+  description: Daily standup and incident coordination for the platform team.
+  member_count: '6'
+- id: '-200501'
+  type: supergroup
+  title: Orbit Deploys
+  username: ''
+  first_name: ''
+  last_name: ''
+  description: Automated deploy and alerting notifications.
+  member_count: '12'
+- id: '-200502'
+  type: group
+  title: Orbit Random
+  username: ''
+  first_name: ''
+  last_name: ''
+  description: Off-topic chatter and memes.
+  member_count: '9'
+messages:
+- message_id: '5001'
+  chat_id: '-200500'
+  from_id: '9001'
+  text: Standup in 5. Drop blockers in the thread.
+  date: '1748240000'
+  reply_to_message_id: ''
+- message_id: '5002'
+  chat_id: '-200500'
+  from_id: '9002'
+  text: Blocked on the billing migration freeze. Need sign-off.
+  date: '1748240120'
+  reply_to_message_id: '5001'
+- message_id: '5003'
+  chat_id: '-200500'
+  from_id: '9003'
+  text: Frontend tokens migration is done. No drift left.
+  date: '1748240240'
+  reply_to_message_id: '5001'
+- message_id: '5004'
+  chat_id: '-200501'
+  from_id: '7654321098'
+  text: 'deploy: billing-api v1.42.0 to prod succeeded in 3m12s'
+  date: '1748241000'
+  reply_to_message_id: ''
+- message_id: '5005'
+  chat_id: '-200501'
+  from_id: '7654321098'
+  text: 'deploy: auth-api v2.18.0 to staging succeeded in 2m08s'
+  date: '1748241300'
+  reply_to_message_id: ''
+- message_id: '5006'
+  chat_id: '1001'
+  from_id: '7654321098'
+  text: Your on-call shift starts tomorrow at 09:00 UTC.
+  date: '1748242000'
+  reply_to_message_id: ''
+- message_id: '5007'
+  chat_id: '1001'
+  from_id: '9001'
+  text: Got it, thanks bot.
+  date: '1748242060'
+  reply_to_message_id: '5006'
+- message_id: '5008'
+  chat_id: '-200502'
+  from_id: '9004'
+  text: Who broke the coffee machine integration again?
+  date: '1748243000'
+  reply_to_message_id: ''
+- message_id: '5009'
+  chat_id: '-200502'
+  from_id: '9005'
+  text: Not me this time, promise.
+  date: '1748243120'
+  reply_to_message_id: '5008'
+chat_members:
+- chat_id: '-200500'
+  user_id: '9001'
+  status: creator
+- chat_id: '-200500'
+  user_id: '9002'
+  status: administrator
+- chat_id: '-200500'
+  user_id: '9003'
+  status: member
+- chat_id: '-200500'
+  user_id: '9004'
+  status: member
+- chat_id: '-200500'
+  user_id: '7654321098'
+  status: administrator
+- chat_id: '-200501'
+  user_id: '9001'
+  status: creator
+- chat_id: '-200501'
+  user_id: '7654321098'
+  status: administrator
+- chat_id: '-200502'
+  user_id: '9004'
+  status: creator
+- chat_id: '-200502'
+  user_id: '9005'
+  status: member

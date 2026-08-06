@@ -1,0 +1,357 @@
+categories:
+- id: '10'
+  name: Engineering
+  slug: engineering
+  description: Posts about how we build software.
+  parent: '0'
+  count: '4'
+- id: '11'
+  name: Reliability
+  slug: reliability
+  description: On-call, incidents, and SLOs.
+  parent: '10'
+  count: '2'
+- id: '12'
+  name: Frontend
+  slug: frontend
+  description: UI, design systems, and accessibility.
+  parent: '10'
+  count: '1'
+- id: '13'
+  name: Announcements
+  slug: announcements
+  description: Product and company news.
+  parent: '0'
+  count: '2'
+- id: '14'
+  name: Tutorials
+  slug: tutorials
+  description: Step-by-step guides.
+  parent: '0'
+  count: '1'
+comments:
+- id: '301'
+  post: '101'
+  author_name: Dana Li
+  author_email: dana.li@example.com
+  content: Great write-up. The missing index gotcha bites everyone eventually.
+  status: approved
+  date: '2026-05-20T16:10:00'
+  parent: '0'
+- id: '302'
+  post: '101'
+  author_name: Marco Ferri
+  author_email: marco.ferri@example.com
+  content: Did you consider a partial index instead?
+  status: approved
+  date: '2026-05-20T17:00:00'
+  parent: '0'
+- id: '303'
+  post: '101'
+  author_name: Amelia Ortega
+  author_email: amelia.ortega@orbit-labs.com
+  content: We did, but the query patterns made a full index simpler to reason about.
+  status: approved
+  date: '2026-05-20T17:30:00'
+  parent: '302'
+- id: '304'
+  post: '104'
+  author_name: Sara Koenig
+  author_email: sara.koenig@example.com
+  content: Congrats on the launch! The plugin system looks slick.
+  status: approved
+  date: '2026-05-21T18:00:00'
+  parent: '0'
+- id: '305'
+  post: '103'
+  author_name: Tom Becker
+  author_email: tom.becker@example.com
+  content: Bookmarking this checklist for our next sprint.
+  status: approved
+  date: '2026-05-23T13:00:00'
+  parent: '0'
+- id: '306'
+  post: '102'
+  author_name: spammer
+  author_email: spam@example.com
+  content: Buy cheap followers now!!!
+  status: hold
+  date: '2026-05-22T10:00:00'
+  parent: '0'
+- id: '307'
+  post: '105'
+  author_name: Jonas Pereira
+  author_email: jonas.pereira@orbit-labs.com
+  content: The downtime-free approach saved us during our own migration.
+  status: approved
+  date: '2026-05-24T12:00:00'
+  parent: '0'
+media:
+- id: '401'
+  title: latency-graph
+  slug: latency-graph
+  media_type: image
+  mime_type: image/png
+  source_url: https://cdn.example.com/uploads/latency-graph.png
+  alt_text: Graph showing p95 latency dropping
+  author: '1'
+  post: '101'
+  date: '2026-05-20T14:50:00'
+- id: '402'
+  title: memory-flat
+  slug: memory-flat
+  media_type: image
+  mime_type: image/png
+  source_url: https://cdn.example.com/uploads/memory-flat.png
+  alt_text: Flat memory usage graph
+  author: '2'
+  post: '102'
+  date: '2026-05-22T08:55:00'
+- id: '403'
+  title: orbit-cli-banner
+  slug: orbit-cli-banner
+  media_type: image
+  mime_type: image/jpeg
+  source_url: https://cdn.example.com/uploads/orbit-cli-banner.jpg
+  alt_text: Orbit CLI 2.0 launch banner
+  author: '1'
+  post: '104'
+  date: '2026-05-21T16:55:00'
+- id: '404'
+  title: a11y-checklist
+  slug: a11y-checklist
+  media_type: image
+  mime_type: image/png
+  source_url: https://cdn.example.com/uploads/a11y-checklist.png
+  alt_text: Accessibility checklist screenshot
+  author: '3'
+  post: '103'
+  date: '2026-05-23T11:55:00'
+- id: '405'
+  title: team-photo
+  slug: team-photo
+  media_type: image
+  mime_type: image/jpeg
+  source_url: https://cdn.example.com/uploads/team-photo.jpg
+  alt_text: Engineering team group photo
+  author: '1'
+  post: '0'
+  date: '2025-02-01T10:55:00'
+- id: '406'
+  title: plugin-diagram
+  slug: plugin-diagram
+  media_type: image
+  mime_type: image/svg+xml
+  source_url: https://cdn.example.com/uploads/plugin-diagram.svg
+  alt_text: Plugin API architecture diagram
+  author: '4'
+  post: '105'
+  date: '2026-05-24T10:55:00'
+pages:
+- id: '201'
+  title: About
+  slug: about
+  status: publish
+  author: '1'
+  content: Orbit Labs builds developer tooling for the modern stack. This blog shares
+    how we work.
+  date: '2025-01-10T10:00:00'
+  modified: '2025-06-01T10:00:00'
+  parent: '0'
+- id: '202'
+  title: Contact
+  slug: contact
+  status: publish
+  author: '1'
+  content: Reach the team at hello@orbit-labs.example. We read everything.
+  date: '2025-01-10T10:05:00'
+  modified: '2025-01-10T10:05:00'
+  parent: '0'
+- id: '203'
+  title: Privacy Policy
+  slug: privacy-policy
+  status: publish
+  author: '1'
+  content: 'How we handle your data on this blog. Short version: minimally.'
+  date: '2025-01-12T09:00:00'
+  modified: '2025-04-02T09:00:00'
+  parent: '0'
+- id: '204'
+  title: Engineering Team
+  slug: engineering-team
+  status: publish
+  author: '1'
+  content: Meet the people behind the platform.
+  date: '2025-02-01T11:00:00'
+  modified: '2025-05-20T11:00:00'
+  parent: '201'
+posts:
+- id: '101'
+  title: Cutting session-store latency by 40 percent
+  slug: cutting-session-store-latency
+  status: publish
+  author: '1'
+  content: We traced our p95 latency to a missing index. Here is how we found it and
+    what we changed.
+  excerpt: A deep dive into a sneaky indexing bug.
+  category_ids: 10;11
+  tag_ids: 20;25
+  comment_status: open
+  date: '2026-05-20T15:00:00'
+  modified: '2026-05-20T15:30:00'
+- id: '102'
+  title: Event-driven cleanup beats cron
+  slug: event-driven-cleanup
+  status: publish
+  author: '2'
+  content: Replacing our cron-based reaper with an event-driven pipeline flattened
+    our memory graphs.
+  excerpt: Why we ditched cron for events.
+  category_ids: 10;11
+  tag_ids: 22;25
+  comment_status: open
+  date: '2026-05-22T09:00:00'
+  modified: '2026-05-22T09:10:00'
+- id: '103'
+  title: Accessibility is the floor not the ceiling
+  slug: accessibility-floor-not-ceiling
+  status: publish
+  author: '3'
+  content: WCAG AA is a baseline. Here is the per-sprint checklist my team uses to
+    go further.
+  excerpt: Our accessibility checklist.
+  category_ids: 10;12
+  tag_ids: '23'
+  comment_status: open
+  date: '2026-05-23T12:00:00'
+  modified: '2026-05-23T12:00:00'
+- id: '104'
+  title: Orbit CLI 2.0 is here
+  slug: orbit-cli-2-launch
+  status: publish
+  author: '1'
+  content: Faster cold starts and a brand new plugin system. Full changelog and migration
+    notes inside.
+  excerpt: Announcing Orbit CLI 2.0.
+  category_ids: '13'
+  tag_ids: '24'
+  comment_status: open
+  date: '2026-05-21T17:00:00'
+  modified: '2026-05-21T17:05:00'
+- id: '105'
+  title: Migrating to the plugin API without downtime
+  slug: plugin-api-migration-guide
+  status: publish
+  author: '4'
+  content: A step-by-step guide to adopting the new plugin API while keeping production
+    green.
+  excerpt: Zero-downtime plugin migration.
+  category_ids: '14'
+  tag_ids: '24'
+  comment_status: open
+  date: '2026-05-24T11:00:00'
+  modified: '2026-05-24T11:00:00'
+- id: '106'
+  title: 'Draft: rethinking our on-call rotation'
+  slug: rethinking-oncall-rotation
+  status: draft
+  author: '2'
+  content: Early notes on a follow-the-sun on-call model. Not ready to publish yet.
+  excerpt: Work in progress.
+  category_ids: '11'
+  tag_ids: '22'
+  comment_status: closed
+  date: '2026-05-25T08:00:00'
+  modified: '2026-05-26T10:00:00'
+- id: '107'
+  title: Hiring senior backend engineers
+  slug: hiring-backend-engineers
+  status: publish
+  author: '1'
+  content: We are growing the platform team. Remote-friendly roles across EU and US
+    time zones.
+  excerpt: Join the platform team.
+  category_ids: '13'
+  tag_ids: ''
+  comment_status: open
+  date: '2026-05-24T16:00:00'
+  modified: '2026-05-24T16:00:00'
+- id: '108'
+  title: 'Draft: observability that measures health'
+  slug: observability-measures-health
+  status: draft
+  author: '3'
+  content: Most dashboards measure activity, not health. Draft on SLO-first observability.
+  excerpt: SLO-first observability draft.
+  category_ids: '11'
+  tag_ids: '25'
+  comment_status: open
+  date: '2026-05-26T09:00:00'
+  modified: '2026-05-26T09:30:00'
+tags:
+- id: '20'
+  name: python
+  slug: python
+  description: Posts mentioning Python.
+  count: '3'
+- id: '21'
+  name: rust
+  slug: rust
+  description: Posts mentioning Rust.
+  count: '1'
+- id: '22'
+  name: kubernetes
+  slug: kubernetes
+  description: Container orchestration.
+  count: '2'
+- id: '23'
+  name: accessibility
+  slug: accessibility
+  description: Inclusive design and a11y.
+  count: '1'
+- id: '24'
+  name: release
+  slug: release
+  description: Release notes and launches.
+  count: '2'
+- id: '25'
+  name: observability
+  slug: observability
+  description: Metrics, logs, and traces.
+  count: '2'
+users:
+- id: '1'
+  name: Amelia Ortega
+  slug: amelia-ortega
+  description: Editor in chief and platform lead.
+  url: https://blog.example.com/author/amelia
+  roles: administrator
+  avatar_url: https://gravatar.example.com/amelia.png
+- id: '2'
+  name: Jonas Pereira
+  slug: jonas-pereira
+  description: Infrastructure writer and SRE.
+  url: https://blog.example.com/author/jonas
+  roles: editor
+  avatar_url: https://gravatar.example.com/jonas.png
+- id: '3'
+  name: Helena Park
+  slug: helena-park
+  description: Frontend and accessibility contributor.
+  url: https://blog.example.com/author/helena
+  roles: author
+  avatar_url: https://gravatar.example.com/helena.png
+- id: '4'
+  name: Noor Aziz
+  slug: noor-aziz
+  description: Developer advocate and tutorial author.
+  url: https://blog.example.com/author/noor
+  roles: author
+  avatar_url: https://gravatar.example.com/noor.png
+- id: '5'
+  name: Guest Contributor
+  slug: guest-contributor
+  description: Occasional guest posts.
+  url: https://blog.example.com/author/guest
+  roles: contributor
+  avatar_url: https://gravatar.example.com/guest.png

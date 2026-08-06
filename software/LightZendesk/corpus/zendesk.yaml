@@ -1,0 +1,225 @@
+comments:
+- id: '801'
+  ticket_id: '701'
+  author_id: '604'
+  body: The receipts stopped printing right after the v3.2 update.
+  public: 'true'
+  created_at: '2026-05-10T09:00:00Z'
+- id: '802'
+  ticket_id: '701'
+  author_id: '602'
+  body: Thanks for reporting. Can you share the printer model?
+  public: 'true'
+  created_at: '2026-05-11T10:00:00Z'
+- id: '803'
+  ticket_id: '701'
+  author_id: '604'
+  body: It is the Star TSP143 model.
+  public: 'true'
+  created_at: '2026-05-12T08:00:00Z'
+- id: '804'
+  ticket_id: '702'
+  author_id: '605'
+  body: The login just keeps redirecting in a loop.
+  public: 'true'
+  created_at: '2026-05-12T11:00:00Z'
+- id: '805'
+  ticket_id: '702'
+  author_id: '603'
+  body: We are investigating the SSO config on our side.
+  public: 'false'
+  created_at: '2026-05-13T09:00:00Z'
+- id: '806'
+  ticket_id: '703'
+  author_id: '606'
+  body: Could you send last month invoice as PDF?
+  public: 'true'
+  created_at: '2026-05-05T14:00:00Z'
+- id: '807'
+  ticket_id: '703'
+  author_id: '602'
+  body: Attached the invoice PDF. Marking this solved.
+  public: 'true'
+  created_at: '2026-05-08T16:00:00Z'
+- id: '808'
+  ticket_id: '705'
+  author_id: '604'
+  body: Still no sign of the refund after five days.
+  public: 'true'
+  created_at: '2026-05-18T15:00:00Z'
+- id: '809'
+  ticket_id: '707'
+  author_id: '605'
+  body: App crashes on a Pixel 8 running Android 14.
+  public: 'true'
+  created_at: '2026-05-21T13:00:00Z'
+- id: '810'
+  ticket_id: '707'
+  author_id: '603'
+  body: Reproduced on our side and escalating to engineering.
+  public: 'false'
+  created_at: '2026-05-22T10:00:00Z'
+organizations:
+- id: '501'
+  name: Aurora Bistro LLC
+  domain_names: aurorabistro.com
+  created_at: '2025-11-02T10:00:00Z'
+- id: '502'
+  name: Helix Robotics Inc
+  domain_names: helixrobotics.io
+  created_at: '2025-09-15T09:30:00Z'
+- id: '503'
+  name: Lumen Design Studio
+  domain_names: lumendesign.co
+  created_at: '2026-01-10T14:00:00Z'
+- id: '504'
+  name: Pelagic Freight Co
+  domain_names: pelagicfreight.com
+  created_at: '2026-02-20T16:00:00Z'
+tickets:
+- id: '701'
+  subject: POS terminal not printing receipts
+  description: Receipts fail to print after the latest update
+  status: open
+  priority: high
+  type: problem
+  requester_id: '604'
+  assignee_id: '602'
+  organization_id: '501'
+  tags: pos;hardware
+  created_at: '2026-05-10T09:00:00Z'
+  updated_at: '2026-05-20T12:00:00Z'
+- id: '702'
+  subject: Cannot log into dashboard
+  description: SSO redirect loops back to login
+  status: pending
+  priority: urgent
+  type: incident
+  requester_id: '605'
+  assignee_id: '603'
+  organization_id: '502'
+  tags: sso;login
+  created_at: '2026-05-12T11:00:00Z'
+  updated_at: '2026-05-22T08:00:00Z'
+- id: '703'
+  subject: Request for invoice copy
+  description: Need a PDF copy of last month invoice
+  status: solved
+  priority: low
+  type: question
+  requester_id: '606'
+  assignee_id: '602'
+  organization_id: '503'
+  tags: billing
+  created_at: '2026-05-05T14:00:00Z'
+  updated_at: '2026-05-08T16:00:00Z'
+- id: '704'
+  subject: API rate limit too low
+  description: We hit 429s during nightly sync
+  status: new
+  priority: normal
+  type: task
+  requester_id: '607'
+  assignee_id: ''
+  organization_id: '504'
+  tags: api;rate-limit
+  created_at: '2026-05-24T10:00:00Z'
+  updated_at: '2026-05-24T10:00:00Z'
+- id: '705'
+  subject: Refund not received
+  description: Refund issued 5 days ago not showing
+  status: open
+  priority: high
+  type: problem
+  requester_id: '604'
+  assignee_id: '603'
+  organization_id: '501'
+  tags: billing;refund
+  created_at: '2026-05-18T15:00:00Z'
+  updated_at: '2026-05-25T09:00:00Z'
+- id: '706'
+  subject: Feature request dark mode
+  description: Customers asking for a dark theme
+  status: new
+  priority: low
+  type: task
+  requester_id: '606'
+  assignee_id: ''
+  organization_id: '503'
+  tags: feature-request
+  created_at: '2026-05-26T08:00:00Z'
+  updated_at: '2026-05-26T08:00:00Z'
+- id: '707'
+  subject: Mobile app crashes on launch
+  description: App crashes immediately on Android 14
+  status: open
+  priority: urgent
+  type: incident
+  requester_id: '605'
+  assignee_id: '603'
+  organization_id: '502'
+  tags: mobile;crash
+  created_at: '2026-05-21T13:00:00Z'
+  updated_at: '2026-05-26T11:00:00Z'
+- id: '708'
+  subject: How to add a team member
+  description: Where do I invite a new agent
+  status: solved
+  priority: normal
+  type: question
+  requester_id: '607'
+  assignee_id: '602'
+  organization_id: '504'
+  tags: onboarding
+  created_at: '2026-05-02T09:30:00Z'
+  updated_at: '2026-05-03T10:00:00Z'
+users:
+- id: '601'
+  name: Amelia Ortega
+  email: amelia.ortega@orbit-labs.com
+  role: admin
+  organization_id: ''
+  active: 'true'
+  created_at: '2025-09-01T10:00:00Z'
+- id: '602'
+  name: Jonas Pereira
+  email: jonas.pereira@orbit-labs.com
+  role: agent
+  organization_id: ''
+  active: 'true'
+  created_at: '2025-09-04T11:30:00Z'
+- id: '603'
+  name: Helena Park
+  email: helena.park@orbit-labs.com
+  role: agent
+  organization_id: ''
+  active: 'true'
+  created_at: '2025-09-12T14:20:00Z'
+- id: '604'
+  name: Maya Fernandez
+  email: maya.fernandez@aurorabistro.com
+  role: end-user
+  organization_id: '501'
+  active: 'true'
+  created_at: '2025-11-02T10:00:00Z'
+- id: '605'
+  name: Daniel Cho
+  email: daniel.cho@helixrobotics.io
+  role: end-user
+  organization_id: '502'
+  active: 'true'
+  created_at: '2025-09-15T09:30:00Z'
+- id: '606'
+  name: Priya Nair
+  email: priya.nair@lumendesign.co
+  role: end-user
+  organization_id: '503'
+  active: 'true'
+  created_at: '2026-01-10T14:00:00Z'
+- id: '607'
+  name: Tomas Reyes
+  email: tomas.reyes@pelagicfreight.com
+  role: end-user
+  organization_id: '504'
+  active: 'true'
+  created_at: '2026-02-20T16:00:00Z'

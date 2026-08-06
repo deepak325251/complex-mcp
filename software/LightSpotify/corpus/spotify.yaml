@@ -1,0 +1,212 @@
+albums:
+- album_id: 5aB3cD4eF5gH6iJ7kL8mN9
+  name: Northern Lights
+  artist_id: 4kP954pQ2teQUd0Ctg37b1
+  album_type: album
+  release_date: '2024-09-13'
+  total_tracks: '10'
+  label: Polar Sound
+- album_id: 7pQ8rS9tU0vW1xY2zA3bC4
+  name: Last Express
+  artist_id: 6mZ8tQ1nXpLkWv7Yd0fJ3a
+  album_type: album
+  release_date: '2023-05-19'
+  total_tracks: '8'
+  label: Neon Tape
+- album_id: 1dE2fG3hI4jK5lM6nO7pQ8
+  name: Calor
+  artist_id: 3rT0fQ8sNuVbXc2Yd9Lm4p
+  album_type: album
+  release_date: '2025-02-28'
+  total_tracks: '12'
+  label: Sol Records
+- album_id: 9rS0tU1vW2xY3zA4bC5dE6
+  name: Tidewater
+  artist_id: 2wQ5kP3nXvLbWc8Yd1Fm6t
+  album_type: single
+  release_date: '2025-04-04'
+  total_tracks: '3'
+  label: Harbor Lights
+artists:
+- artist_id: 4kP954pQ2teQUd0Ctg37b1
+  name: Aurora Skies
+  genres: indie pop,dream pop
+  followers: '1840221'
+  popularity: '72'
+- artist_id: 6mZ8tQ1nXpLkWv7Yd0fJ3a
+  name: The Midnight Trains
+  genres: synthwave,electronic
+  followers: '980554'
+  popularity: '68'
+- artist_id: 3rT0fQ8sNuVbXc2Yd9Lm4p
+  name: Cassia Moreno
+  genres: latin pop,reggaeton
+  followers: '4521900'
+  popularity: '84'
+- artist_id: 2wQ5kP3nXvLbWc8Yd1Fm6t
+  name: Glass Harbor
+  genres: alt rock,indie rock
+  followers: '672110'
+  popularity: '61'
+playlist_tracks:
+- playlist_id: 37i9dQZF1DXcBWIGoYBM5M
+  track_id: 5fE6gF7hG8iH9jI0kJ1lK2
+  position: '0'
+  added_at: '2026-05-20T08:00:00Z'
+- playlist_id: 37i9dQZF1DXcBWIGoYBM5M
+  track_id: 0aZ1bY2cX3dW4eV5fU6gT7
+  position: '1'
+  added_at: '2026-05-20T08:00:00Z'
+- playlist_id: 37i9dQZF1DXcBWIGoYBM5M
+  track_id: 3dC4eD5fE6gF7hG8iH9jI0
+  position: '2'
+  added_at: '2026-05-20T08:00:00Z'
+- playlist_id: 2v3iNvBX8Ay1Gt2uXtUKUg
+  track_id: 1bA2cB3dC4eD5fE6gF7hG8
+  position: '0'
+  added_at: '2026-05-18T12:30:00Z'
+- playlist_id: 2v3iNvBX8Ay1Gt2uXtUKUg
+  track_id: 2cB3dC4eD5fE6gF7hG8iH9
+  position: '1'
+  added_at: '2026-05-18T12:31:00Z'
+- playlist_id: 2v3iNvBX8Ay1Gt2uXtUKUg
+  track_id: 8iH9jI0kJ1lK2mL3nM4oN5
+  position: '2'
+  added_at: '2026-05-18T12:32:00Z'
+- playlist_id: 1hP3rT9sNuVbXc2Yd9Lm4q
+  track_id: 3dC4eD5fE6gF7hG8iH9jI0
+  position: '0'
+  added_at: '2026-05-15T21:10:00Z'
+- playlist_id: 1hP3rT9sNuVbXc2Yd9Lm4q
+  track_id: 4eD5fE6gF7hG8iH9jI0kJ1
+  position: '1'
+  added_at: '2026-05-15T21:11:00Z'
+- playlist_id: 5kQ2wP3nXvLbWc8Yd1Fm6r
+  track_id: 5fE6gF7hG8iH9jI0kJ1lK2
+  position: '0'
+  added_at: '2026-05-22T18:45:00Z'
+- playlist_id: 5kQ2wP3nXvLbWc8Yd1Fm6r
+  track_id: 6gF7hG8iH9jI0kJ1lK2mL3
+  position: '1'
+  added_at: '2026-05-22T18:46:00Z'
+- playlist_id: 5kQ2wP3nXvLbWc8Yd1Fm6r
+  track_id: 7hG8iH9jI0kJ1lK2mL3nM4
+  position: '2'
+  added_at: '2026-05-22T18:47:00Z'
+playlists:
+- playlist_id: 37i9dQZF1DXcBWIGoYBM5M
+  name: Today's Top Hits
+  description: The hottest tracks right now.
+  owner_id: user-leo
+  public: 'true'
+  collaborative: 'false'
+- playlist_id: 2v3iNvBX8Ay1Gt2uXtUKUg
+  name: Indie Chill
+  description: Laid-back indie for focus and calm.
+  owner_id: user-leo
+  public: 'true'
+  collaborative: 'false'
+- playlist_id: 1hP3rT9sNuVbXc2Yd9Lm4q
+  name: Sunset Drive
+  description: Synthwave for the open road at dusk.
+  owner_id: user-leo
+  public: 'false'
+  collaborative: 'false'
+- playlist_id: 5kQ2wP3nXvLbWc8Yd1Fm6r
+  name: Fiesta Latina
+  description: Reggaeton and latin pop bangers.
+  owner_id: user-leo
+  public: 'true'
+  collaborative: 'true'
+tracks:
+- track_id: 0aZ1bY2cX3dW4eV5fU6gT7
+  name: Glacier
+  artist_id: 4kP954pQ2teQUd0Ctg37b1
+  album_id: 5aB3cD4eF5gH6iJ7kL8mN9
+  duration_ms: '214000'
+  popularity: '70'
+  explicit: 'false'
+  track_number: '1'
+- track_id: 1bA2cB3dC4eD5fE6gF7hG8
+  name: Polar Bloom
+  artist_id: 4kP954pQ2teQUd0Ctg37b1
+  album_id: 5aB3cD4eF5gH6iJ7kL8mN9
+  duration_ms: '238500'
+  popularity: '66'
+  explicit: 'false'
+  track_number: '2'
+- track_id: 2cB3dC4eD5fE6gF7hG8iH9
+  name: Borealis
+  artist_id: 4kP954pQ2teQUd0Ctg37b1
+  album_id: 5aB3cD4eF5gH6iJ7kL8mN9
+  duration_ms: '201200'
+  popularity: '64'
+  explicit: 'false'
+  track_number: '3'
+- track_id: 3dC4eD5fE6gF7hG8iH9jI0
+  name: Midnight Line
+  artist_id: 6mZ8tQ1nXpLkWv7Yd0fJ3a
+  album_id: 7pQ8rS9tU0vW1xY2zA3bC4
+  duration_ms: '256800'
+  popularity: '69'
+  explicit: 'false'
+  track_number: '1'
+- track_id: 4eD5fE6gF7hG8iH9jI0kJ1
+  name: Neon Rails
+  artist_id: 6mZ8tQ1nXpLkWv7Yd0fJ3a
+  album_id: 7pQ8rS9tU0vW1xY2zA3bC4
+  duration_ms: '243300'
+  popularity: '62'
+  explicit: 'false'
+  track_number: '2'
+- track_id: 5fE6gF7hG8iH9jI0kJ1lK2
+  name: Caliente
+  artist_id: 3rT0fQ8sNuVbXc2Yd9Lm4p
+  album_id: 1dE2fG3hI4jK5lM6nO7pQ8
+  duration_ms: '198400'
+  popularity: '88'
+  explicit: 'true'
+  track_number: '1'
+- track_id: 6gF7hG8iH9jI0kJ1lK2mL3
+  name: Verano
+  artist_id: 3rT0fQ8sNuVbXc2Yd9Lm4p
+  album_id: 1dE2fG3hI4jK5lM6nO7pQ8
+  duration_ms: '205700'
+  popularity: '81'
+  explicit: 'false'
+  track_number: '2'
+- track_id: 7hG8iH9jI0kJ1lK2mL3nM4
+  name: Bajo el Sol
+  artist_id: 3rT0fQ8sNuVbXc2Yd9Lm4p
+  album_id: 1dE2fG3hI4jK5lM6nO7pQ8
+  duration_ms: '221900'
+  popularity: '76'
+  explicit: 'false'
+  track_number: '3'
+- track_id: 8iH9jI0kJ1lK2mL3nM4oN5
+  name: Driftwood
+  artist_id: 2wQ5kP3nXvLbWc8Yd1Fm6t
+  album_id: 9rS0tU1vW2xY3zA4bC5dE6
+  duration_ms: '189600'
+  popularity: '58'
+  explicit: 'false'
+  track_number: '1'
+- track_id: 9jI0kJ1lK2mL3nM4oN5pO6
+  name: Saltwater
+  artist_id: 2wQ5kP3nXvLbWc8Yd1Fm6t
+  album_id: 9rS0tU1vW2xY3zA4bC5dE6
+  duration_ms: '212100'
+  popularity: '55'
+  explicit: 'false'
+  track_number: '2'
+user:
+  id: user-leo
+  display_name: Leo Vasquez
+  email: leo.vasquez@example.com
+  country: US
+  product: premium
+  followers: 312
+  images:
+  - url: https://img.example.com/leo.png
+    height: 300
+    width: 300

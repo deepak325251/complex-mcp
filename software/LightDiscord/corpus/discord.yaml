@@ -1,0 +1,246 @@
+channels:
+- id: '800100200300400001'
+  guild_id: '900100200300400001'
+  name: general
+  type: '0'
+  position: '0'
+  topic: General chatter and announcements
+  nsfw: 'false'
+- id: '800100200300400002'
+  guild_id: '900100200300400001'
+  name: support
+  type: '0'
+  position: '1'
+  topic: Ask for help with Orbit Labs products
+  nsfw: 'false'
+- id: '800100200300400003'
+  guild_id: '900100200300400001'
+  name: off-topic
+  type: '0'
+  position: '2'
+  topic: Anything goes (within reason)
+  nsfw: 'false'
+- id: '800100200300400004'
+  guild_id: '900100200300400001'
+  name: Voice Lounge
+  type: '2'
+  position: '3'
+  topic: ''
+  nsfw: 'false'
+- id: '800100200300400005'
+  guild_id: '900100200300400002'
+  name: general
+  type: '0'
+  position: '0'
+  topic: Welcome indie devs
+  nsfw: 'false'
+- id: '800100200300400006'
+  guild_id: '900100200300400002'
+  name: showcase
+  type: '0'
+  position: '1'
+  topic: Share your work-in-progress builds
+  nsfw: 'false'
+- id: '800100200300400007'
+  guild_id: '900100200300400002'
+  name: Standup VC
+  type: '2'
+  position: '2'
+  topic: ''
+  nsfw: 'false'
+guilds:
+- id: '900100200300400001'
+  name: Orbit Labs Community
+  owner_id: '500100200300400001'
+  member_count: '5'
+  description: Hangout for Orbit Labs makers and users
+  icon: f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6
+  region: us-east
+- id: '900100200300400002'
+  name: Indie Game Devs
+  owner_id: '500100200300400003'
+  member_count: '4'
+  description: A guild for solo and small-team game developers
+  icon: a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4
+  region: eu-west
+me:
+  id: '300100200300400001'
+  username: orbitbot
+  discriminator: '0'
+  global_name: Orbit Bot
+  avatar: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
+  bot: true
+  verified: true
+  email: bot@orbit-labs.example.com
+  flags: 0
+members:
+- guild_id: '900100200300400001'
+  user_id: '500100200300400001'
+  username: amelia
+  global_name: Amelia O
+  nick: Amelia
+  bot: 'false'
+  joined_at: '2024-11-02T10:00:00Z'
+  roles: 700100200300400001;700100200300400002
+- guild_id: '900100200300400001'
+  user_id: '500100200300400002'
+  username: jonas
+  global_name: Jonas P
+  nick: ''
+  bot: 'false'
+  joined_at: '2024-11-05T12:30:00Z'
+  roles: '700100200300400002'
+- guild_id: '900100200300400001'
+  user_id: '500100200300400003'
+  username: helena
+  global_name: Helena K
+  nick: Hel
+  bot: 'false'
+  joined_at: '2024-12-01T09:15:00Z'
+  roles: '700100200300400003'
+- guild_id: '900100200300400001'
+  user_id: '500100200300400004'
+  username: rohit
+  global_name: Rohit B
+  nick: ''
+  bot: 'false'
+  joined_at: '2025-01-10T14:45:00Z'
+  roles: '700100200300400003'
+- guild_id: '900100200300400001'
+  user_id: '300100200300400001'
+  username: orbitbot
+  global_name: Orbit Bot
+  nick: ''
+  bot: 'true'
+  joined_at: '2024-11-02T10:05:00Z'
+  roles: '700100200300400004'
+- guild_id: '900100200300400002'
+  user_id: '500100200300400003'
+  username: helena
+  global_name: Helena K
+  nick: ''
+  bot: 'false'
+  joined_at: '2025-02-01T08:00:00Z'
+  roles: '700100200300400005'
+- guild_id: '900100200300400002'
+  user_id: '500100200300400005'
+  username: bode
+  global_name: Bode L
+  nick: Bode
+  bot: 'false'
+  joined_at: '2025-02-03T11:20:00Z'
+  roles: '700100200300400006'
+- guild_id: '900100200300400002'
+  user_id: '500100200300400006'
+  username: cleo
+  global_name: Cleo F
+  nick: ''
+  bot: 'false'
+  joined_at: '2025-02-09T17:40:00Z'
+  roles: '700100200300400006'
+messages:
+- id: '1001000200030004001'
+  channel_id: '800100200300400001'
+  author_id: '500100200300400001'
+  author_username: amelia
+  content: Welcome everyone to the Orbit Labs community!
+  timestamp: '2025-05-01T09:00:00Z'
+  pinned: 'true'
+- id: '1001000200030004002'
+  channel_id: '800100200300400001'
+  author_id: '500100200300400002'
+  author_username: jonas
+  content: Glad to be here. The new dashboard looks great.
+  timestamp: '2025-05-01T09:05:00Z'
+  pinned: 'false'
+- id: '1001000200030004003'
+  channel_id: '800100200300400001'
+  author_id: '300100200300400001'
+  author_username: orbitbot
+  content: Release v2.18.0 is now live in production.
+  timestamp: '2025-05-01T12:00:00Z'
+  pinned: 'false'
+- id: '1001000200030004004'
+  channel_id: '800100200300400002'
+  author_id: '500100200300400004'
+  author_username: rohit
+  content: My API key keeps returning 401 after rotation. Any ideas?
+  timestamp: '2025-05-02T10:30:00Z'
+  pinned: 'false'
+- id: '1001000200030004005'
+  channel_id: '800100200300400002'
+  author_id: '500100200300400003'
+  author_username: helena
+  content: 'Rohit: make sure you regenerated the token after the rotation window closed.'
+  timestamp: '2025-05-02T10:42:00Z'
+  pinned: 'false'
+- id: '1001000200030004006'
+  channel_id: '800100200300400003'
+  author_id: '500100200300400002'
+  author_username: jonas
+  content: 'Friday demo idea: live latency dashboard on the big screen.'
+  timestamp: '2025-05-02T15:10:00Z'
+  pinned: 'false'
+- id: '1001000200030004007'
+  channel_id: '800100200300400005'
+  author_id: '500100200300400005'
+  author_username: bode
+  content: Anyone using a custom physics engine or sticking with off-the-shelf?
+  timestamp: '2025-05-03T08:20:00Z'
+  pinned: 'false'
+- id: '1001000200030004008'
+  channel_id: '800100200300400006'
+  author_id: '500100200300400006'
+  author_username: cleo
+  content: Posted my roguelike prototype build in the link below. Feedback welcome!
+  timestamp: '2025-05-03T16:00:00Z'
+  pinned: 'true'
+roles:
+- id: '700100200300400001'
+  guild_id: '900100200300400001'
+  name: Admin
+  color: '15158332'
+  position: '4'
+  hoist: 'true'
+  mentionable: 'true'
+  permissions: '8'
+- id: '700100200300400002'
+  guild_id: '900100200300400001'
+  name: Moderator
+  color: '3447003'
+  position: '3'
+  hoist: 'true'
+  mentionable: 'true'
+  permissions: '268435456'
+- id: '700100200300400003'
+  guild_id: '900100200300400001'
+  name: Member
+  color: '0'
+  position: '1'
+  hoist: 'false'
+  mentionable: 'false'
+  permissions: '104324673'
+- id: '700100200300400004'
+  guild_id: '900100200300400001'
+  name: Bots
+  color: '9807270'
+  position: '2'
+  hoist: 'false'
+  mentionable: 'false'
+  permissions: '104324673'
+- id: '700100200300400005'
+  guild_id: '900100200300400002'
+  name: Organizer
+  color: '10181046'
+  position: '3'
+  hoist: 'true'
+  mentionable: 'true'
+  permissions: '8'
+- id: '700100200300400006'
+  guild_id: '900100200300400002'
+  name: Dev
+  color: '5763719'
+  position: '1'
+  hoist: 'false'
+  mentionable: 'true'
+  permissions: '104324673'

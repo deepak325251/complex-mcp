@@ -1,0 +1,168 @@
+dashboards:
+- id: abc-123-def
+  title: Platform Overview
+  description: Top-level platform health and SLOs
+  layout_type: ordered
+  author: amelia-ortega
+  widget_count: '12'
+  is_read_only: 'false'
+  created: '2025-11-01T10:00:00+00:00'
+  modified: '2026-05-26T09:00:00+00:00'
+- id: ghi-456-jkl
+  title: Auth Service Deep Dive
+  description: Latency and error breakdown for auth-service
+  layout_type: ordered
+  author: helena-park
+  widget_count: '8'
+  is_read_only: 'false'
+  created: '2025-11-10T10:00:00+00:00'
+  modified: '2026-05-25T15:00:00+00:00'
+- id: mno-789-pqr
+  title: Infra Hosts
+  description: CPU memory and disk across hosts
+  layout_type: free
+  author: rohit-bansal
+  widget_count: '15'
+  is_read_only: 'true'
+  created: '2025-12-01T10:00:00+00:00'
+  modified: '2026-05-24T12:00:00+00:00'
+events:
+- id: '500001'
+  title: Deployment auth-service 2.0.3
+  text: Deployed auth-service version 2.0.3 to production.
+  alert_type: info
+  priority: normal
+  host: web-01
+  tags: service:auth-service;event:deploy
+  date_happened: '1748250000'
+- id: '500002'
+  title: 'Monitor alert: High API p95 latency'
+  text: 'Monitor triggered: avg latency exceeded 0.6s.'
+  alert_type: error
+  priority: normal
+  host: web-01
+  tags: service:auth-service;monitor:1001
+  date_happened: '1748250600'
+- id: '500003'
+  title: 'Monitor recovered: Host CPU saturation'
+  text: 'Monitor recovered: CPU back under threshold on web-01.'
+  alert_type: success
+  priority: low
+  host: web-01
+  tags: host:web-01;monitor:1003
+  date_happened: '1748190000'
+- id: '500004'
+  title: Scaling event web-frontend
+  text: Autoscaler added 2 pods to web-frontend.
+  alert_type: warning
+  priority: normal
+  host: web-02
+  tags: service:web-frontend;event:autoscale
+  date_happened: '1748232000'
+hosts:
+- name: web-01
+  up: 'true'
+  apps: nginx;auth-service
+  sources: agent
+  cpu_pct: '72.4'
+  mem_pct: '61.0'
+  last_reported: '1748250600'
+- name: web-02
+  up: 'true'
+  apps: nginx;web-frontend
+  sources: agent
+  cpu_pct: '48.1'
+  mem_pct: '55.3'
+  last_reported: '1748250600'
+- name: db-01
+  up: 'true'
+  apps: postgres
+  sources: agent
+  cpu_pct: '33.7'
+  mem_pct: '82.5'
+  last_reported: '1748250600'
+- name: worker-01
+  up: 'false'
+  apps: billing-service
+  sources: agent
+  cpu_pct: '0.0'
+  mem_pct: '0.0'
+  last_reported: '1748160000'
+metrics:
+- metric: trace.http.request.duration
+  scope: service:auth-service
+  base_value: '0.42'
+  amplitude: '0.18'
+  unit: second
+- metric: trace.http.request.errors
+  scope: service:web-frontend
+  base_value: '38.0'
+  amplitude: '22.0'
+  unit: error
+- metric: system.cpu.user
+  scope: host:web-01
+  base_value: '68.0'
+  amplitude: '15.0'
+  unit: percent
+- metric: billing.queue.depth
+  scope: service:billing-service
+  base_value: '640.0'
+  amplitude: '210.0'
+  unit: job
+- metric: system.disk.in_use
+  scope: host:db-01
+  base_value: '0.82'
+  amplitude: '0.06'
+  unit: fraction
+monitors:
+- id: '1001'
+  name: High API p95 latency
+  type: metric alert
+  query: avg(last_5m):avg:trace.http.request.duration{service:auth-service} > 0.6
+  message: Auth API latency is high
+  overall_state: Alert
+  priority: '1'
+  tags: service:auth-service;team:platform
+  created: '2025-11-01T10:00:00+00:00'
+  modified: '2026-05-26T09:00:00+00:00'
+- id: '1002'
+  name: Error rate above threshold
+  type: metric alert
+  query: sum(last_5m):sum:trace.http.request.errors{service:web-frontend}.as_count()
+    > 50
+  message: Web error rate elevated
+  overall_state: Warn
+  priority: '2'
+  tags: service:web-frontend;team:frontend
+  created: '2025-11-05T10:00:00+00:00'
+  modified: '2026-05-26T07:30:00+00:00'
+- id: '1003'
+  name: Host CPU saturation
+  type: metric alert
+  query: avg(last_10m):avg:system.cpu.user{host:web-01} > 90
+  message: CPU saturated on web-01
+  overall_state: OK
+  priority: '3'
+  tags: host:web-01;team:infra
+  created: '2025-12-01T10:00:00+00:00'
+  modified: '2026-05-25T18:00:00+00:00'
+- id: '1004'
+  name: Billing queue backlog
+  type: metric alert
+  query: avg(last_15m):avg:billing.queue.depth{service:billing-service} > 1000
+  message: Billing queue is backing up
+  overall_state: OK
+  priority: '2'
+  tags: service:billing-service;team:platform
+  created: '2026-01-10T10:00:00+00:00'
+  modified: '2026-05-24T12:00:00+00:00'
+- id: '1005'
+  name: Disk space low
+  type: service check
+  query: avg(last_5m):avg:system.disk.in_use{host:db-01} > 0.9
+  message: Disk usage high on db-01
+  overall_state: Warn
+  priority: '1'
+  tags: host:db-01;team:infra
+  created: '2026-02-01T10:00:00+00:00'
+  modified: '2026-05-26T06:00:00+00:00'

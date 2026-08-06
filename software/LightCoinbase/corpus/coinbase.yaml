@@ -1,0 +1,148 @@
+accounts:
+- id: acct-btc-001
+  name: BTC Wallet
+  primary: 'true'
+  type: wallet
+  currency_code: BTC
+  currency_name: Bitcoin
+  balance_amount: '0.45120000'
+  native_balance_amount: '29328.00'
+  native_currency: USD
+  created_at: '2025-01-10T09:00:00Z'
+  updated_at: '2026-05-20T12:00:00Z'
+- id: acct-eth-002
+  name: ETH Wallet
+  primary: 'false'
+  type: wallet
+  currency_code: ETH
+  currency_name: Ethereum
+  balance_amount: '3.20000000'
+  native_balance_amount: '9920.00'
+  native_currency: USD
+  created_at: '2025-01-10T09:00:00Z'
+  updated_at: '2026-05-22T08:30:00Z'
+- id: acct-usd-003
+  name: USD Wallet
+  primary: 'false'
+  type: fiat
+  currency_code: USD
+  currency_name: US Dollar
+  balance_amount: '1450.75'
+  native_balance_amount: '1450.75'
+  native_currency: USD
+  created_at: '2025-01-10T09:00:00Z'
+  updated_at: '2026-05-25T16:45:00Z'
+- id: acct-sol-004
+  name: SOL Wallet
+  primary: 'false'
+  type: wallet
+  currency_code: SOL
+  currency_name: Solana
+  balance_amount: '18.50000000'
+  native_balance_amount: '2664.00'
+  native_currency: USD
+  created_at: '2025-03-01T09:00:00Z'
+  updated_at: '2026-05-18T10:15:00Z'
+prices:
+- pair: BTC-USD
+  base: BTC
+  currency: USD
+  amount: '65000.00'
+- pair: ETH-USD
+  base: ETH
+  currency: USD
+  amount: '3100.00'
+- pair: SOL-USD
+  base: SOL
+  currency: USD
+  amount: '144.00'
+- pair: BTC-EUR
+  base: BTC
+  currency: EUR
+  amount: '60100.00'
+- pair: ETH-EUR
+  base: ETH
+  currency: EUR
+  amount: '2867.00'
+transactions:
+- id: txn-btc-001
+  account_id: acct-btc-001
+  type: buy
+  status: completed
+  amount: '0.10000000'
+  currency: BTC
+  native_amount: '6500.00'
+  native_currency: USD
+  description: Bought 0.1 BTC
+  created_at: '2026-02-01T10:00:00Z'
+- id: txn-btc-002
+  account_id: acct-btc-001
+  type: buy
+  status: completed
+  amount: '0.20000000'
+  currency: BTC
+  native_amount: '12800.00'
+  native_currency: USD
+  description: Bought 0.2 BTC
+  created_at: '2026-03-15T14:30:00Z'
+- id: txn-btc-003
+  account_id: acct-btc-001
+  type: sell
+  status: completed
+  amount: '-0.05000000'
+  currency: BTC
+  native_amount: '-3250.00'
+  native_currency: USD
+  description: Sold 0.05 BTC
+  created_at: '2026-04-10T09:15:00Z'
+- id: txn-eth-001
+  account_id: acct-eth-002
+  type: buy
+  status: completed
+  amount: '2.00000000'
+  currency: ETH
+  native_amount: '6200.00'
+  native_currency: USD
+  description: Bought 2 ETH
+  created_at: '2026-02-20T11:00:00Z'
+- id: txn-eth-002
+  account_id: acct-eth-002
+  type: buy
+  status: pending
+  amount: '1.20000000'
+  currency: ETH
+  native_amount: '3720.00'
+  native_currency: USD
+  description: Bought 1.2 ETH
+  created_at: '2026-05-22T08:30:00Z'
+- id: txn-usd-001
+  account_id: acct-usd-003
+  type: fiat_deposit
+  status: completed
+  amount: '2000.00'
+  currency: USD
+  native_amount: '2000.00'
+  native_currency: USD
+  description: Bank deposit
+  created_at: '2026-01-15T08:00:00Z'
+- id: txn-sol-001
+  account_id: acct-sol-004
+  type: buy
+  status: completed
+  amount: '18.50000000'
+  currency: SOL
+  native_amount: '2664.00'
+  native_currency: USD
+  description: Bought 18.5 SOL
+  created_at: '2026-03-01T09:00:00Z'
+user:
+  id: user-orbit-001
+  name: Amelia Ortega
+  username: amelia.ortega
+  profile_location: Portland, OR
+  email: amelia.ortega@orbit-labs.com
+  country:
+    code: US
+    name: United States
+  native_currency: USD
+  created_at: '2025-01-10T09:00:00Z'

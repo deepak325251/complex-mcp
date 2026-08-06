@@ -1,0 +1,265 @@
+employees:
+- id: emp-101
+  firstName: Amelia
+  lastName: Ortega
+  workEmail: amelia.ortega@orbit-labs.com
+  department: Engineering
+  jobTitle: VP of Engineering
+  location: San Francisco
+  hireDate: '2019-03-04'
+  status: Active
+  supervisorId: ''
+- id: emp-102
+  firstName: Jonas
+  lastName: Pereira
+  workEmail: jonas.pereira@orbit-labs.com
+  department: Engineering
+  jobTitle: Staff Software Engineer
+  location: San Francisco
+  hireDate: '2020-06-15'
+  status: Active
+  supervisorId: emp-101
+- id: emp-103
+  firstName: Helena
+  lastName: Park
+  workEmail: helena.park@orbit-labs.com
+  department: Engineering
+  jobTitle: Senior Software Engineer
+  location: Remote
+  hireDate: '2021-01-11'
+  status: Active
+  supervisorId: emp-101
+- id: emp-104
+  firstName: Rohit
+  lastName: Bansal
+  workEmail: rohit.bansal@orbit-labs.com
+  department: Engineering
+  jobTitle: Software Engineer
+  location: Austin
+  hireDate: '2022-09-19'
+  status: Active
+  supervisorId: emp-102
+- id: emp-105
+  firstName: Noor
+  lastName: Aziz
+  workEmail: noor.aziz@orbit-labs.com
+  department: People
+  jobTitle: People Operations Manager
+  location: San Francisco
+  hireDate: '2020-02-03'
+  status: Active
+  supervisorId: emp-110
+- id: emp-106
+  firstName: Diego
+  lastName: Santos
+  workEmail: diego.santos@orbit-labs.com
+  department: Sales
+  jobTitle: Account Executive
+  location: New York
+  hireDate: '2021-11-08'
+  status: Active
+  supervisorId: emp-109
+- id: emp-107
+  firstName: Yuki
+  lastName: Tanaka
+  workEmail: yuki.tanaka@orbit-labs.com
+  department: Marketing
+  jobTitle: Content Strategist
+  location: Remote
+  hireDate: '2023-04-17'
+  status: Active
+  supervisorId: emp-108
+- id: emp-108
+  firstName: Priya
+  lastName: Nair
+  workEmail: priya.nair@orbit-labs.com
+  department: Marketing
+  jobTitle: Director of Marketing
+  location: New York
+  hireDate: '2019-08-26'
+  status: Active
+  supervisorId: emp-110
+- id: emp-109
+  firstName: Marcus
+  lastName: Reed
+  workEmail: marcus.reed@orbit-labs.com
+  department: Sales
+  jobTitle: VP of Sales
+  location: New York
+  hireDate: '2018-05-21'
+  status: Active
+  supervisorId: emp-110
+- id: emp-110
+  firstName: Sofia
+  lastName: Lindqvist
+  workEmail: sofia.lindqvist@orbit-labs.com
+  department: Executive
+  jobTitle: Chief Operating Officer
+  location: San Francisco
+  hireDate: '2017-01-09'
+  status: Active
+  supervisorId: ''
+- id: emp-111
+  firstName: Tariq
+  lastName: Hassan
+  workEmail: tariq.hassan@orbit-labs.com
+  department: Engineering
+  jobTitle: QA Engineer
+  location: Austin
+  hireDate: '2022-03-14'
+  status: Inactive
+  supervisorId: emp-102
+- id: emp-112
+  firstName: Lena
+  lastName: Fischer
+  workEmail: lena.fischer@orbit-labs.com
+  department: People
+  jobTitle: Recruiter
+  location: Remote
+  hireDate: '2023-10-02'
+  status: Active
+  supervisorId: emp-105
+time_off:
+- id: tor-5001
+  employeeId: emp-102
+  type: Vacation
+  status: approved
+  start: '2026-06-08'
+  end: '2026-06-12'
+  amount: '5'
+  unit: days
+  notes: Family trip
+  created: '2026-05-10'
+- id: tor-5002
+  employeeId: emp-103
+  type: Sick
+  status: approved
+  start: '2026-05-19'
+  end: '2026-05-20'
+  amount: '2'
+  unit: days
+  notes: Flu recovery
+  created: '2026-05-18'
+- id: tor-5003
+  employeeId: emp-104
+  type: Vacation
+  status: requested
+  start: '2026-07-01'
+  end: '2026-07-10'
+  amount: '8'
+  unit: days
+  notes: Summer holiday
+  created: '2026-05-22'
+- id: tor-5004
+  employeeId: emp-106
+  type: Personal
+  status: denied
+  start: '2026-06-15'
+  end: '2026-06-16'
+  amount: '2'
+  unit: days
+  notes: Overlaps with quarter close
+  created: '2026-05-12'
+- id: tor-5005
+  employeeId: emp-107
+  type: Vacation
+  status: approved
+  start: '2026-05-28'
+  end: '2026-05-30'
+  amount: '3'
+  unit: days
+  notes: Long weekend
+  created: '2026-05-05'
+- id: tor-5006
+  employeeId: emp-108
+  type: Vacation
+  status: requested
+  start: '2026-08-04'
+  end: '2026-08-15'
+  amount: '10'
+  unit: days
+  notes: Annual leave
+  created: '2026-05-25'
+- id: tor-5007
+  employeeId: emp-105
+  type: Sick
+  status: approved
+  start: '2026-05-26'
+  end: '2026-05-26'
+  amount: '1'
+  unit: days
+  notes: Doctor appointment
+  created: '2026-05-25'
+- id: tor-5008
+  employeeId: emp-112
+  type: Personal
+  status: requested
+  start: '2026-06-20'
+  end: '2026-06-20'
+  amount: '1'
+  unit: days
+  notes: Moving day
+  created: '2026-05-24'
+- id: tor-5009
+  employeeId: emp-109
+  type: Vacation
+  status: denied
+  start: '2026-09-01'
+  end: '2026-09-05'
+  amount: '5'
+  unit: days
+  notes: Sales kickoff conflict
+  created: '2026-05-20'
+- id: tor-5010
+  employeeId: emp-103
+  type: Vacation
+  status: approved
+  start: '2026-12-22'
+  end: '2026-12-31'
+  amount: '8'
+  unit: days
+  notes: Winter break
+  created: '2026-05-15'
+whos_out:
+- id: who-9001
+  employeeId: emp-102
+  name: Jonas Pereira
+  type: Vacation
+  start: '2026-06-08'
+  end: '2026-06-12'
+- id: who-9002
+  employeeId: emp-107
+  name: Yuki Tanaka
+  type: Vacation
+  start: '2026-05-28'
+  end: '2026-05-30'
+- id: who-9003
+  employeeId: emp-105
+  name: Noor Aziz
+  type: Sick
+  start: '2026-05-26'
+  end: '2026-05-26'
+- id: who-9004
+  employeeId: emp-103
+  name: Helena Park
+  type: Vacation
+  start: '2026-12-22'
+  end: '2026-12-31'
+- id: who-9005
+  employeeId: emp-110
+  name: Sofia Lindqvist
+  type: Holiday
+  start: '2026-07-04'
+  end: '2026-07-04'
+company:
+  subdomain: orbitlabs
+  name: Orbit Labs Inc.
+  employeeCount: 12
+  industry: Software
+  headquarters: San Francisco, CA
+  fiscalYearStart: 01-01
+  timeOffPolicies:
+  - Vacation
+  - Sick
+  - Personal
+  - Holiday

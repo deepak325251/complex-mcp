@@ -1,0 +1,229 @@
+users:
+- id: '2001'
+  username: maya_dev
+  name: Maya Chen
+  description: Backend engineer. Distributed systems and coffee.
+  verified: 'true'
+  protected: 'false'
+  location: Seattle WA
+  profile_image_url: https://pbs.example.com/maya.png
+  created_at: '2018-03-12T09:00:00.000Z'
+  followers_count: '18432'
+  following_count: '312'
+  tweet_count: '1840'
+- id: '2002'
+  username: orbit_labs
+  name: Orbit Labs
+  description: Building developer tooling for the modern stack.
+  verified: 'true'
+  protected: 'false'
+  location: Remote
+  profile_image_url: https://pbs.example.com/orbit.png
+  created_at: '2019-06-01T10:00:00.000Z'
+  followers_count: '54210'
+  following_count: '128'
+  tweet_count: '920'
+- id: '2003'
+  username: jonas_p
+  name: Jonas Pereira
+  description: Infra @ Orbit Labs. Opinions are my own.
+  verified: 'false'
+  protected: 'false'
+  location: Lisbon
+  profile_image_url: https://pbs.example.com/jonas.png
+  created_at: '2020-01-22T14:30:00.000Z'
+  followers_count: '3120'
+  following_count: '540'
+  tweet_count: '2310'
+- id: '2004'
+  username: helena_park
+  name: Helena Park
+  description: Frontend dev. Accessibility advocate.
+  verified: 'false'
+  protected: 'false'
+  location: Austin TX
+  profile_image_url: https://pbs.example.com/helena.png
+  created_at: '2019-11-08T11:15:00.000Z'
+  followers_count: '7820'
+  following_count: '410'
+  tweet_count: '1605'
+- id: '2005'
+  username: rohit_b
+  name: Rohit Bansal
+  description: SRE. On-call survivor.
+  verified: 'false'
+  protected: 'true'
+  location: Bangalore
+  profile_image_url: https://pbs.example.com/rohit.png
+  created_at: '2021-04-19T08:45:00.000Z'
+  followers_count: '980'
+  following_count: '220'
+  tweet_count: '640'
+- id: '2006'
+  username: noor_codes
+  name: Noor Aziz
+  description: DevRel. I write docs so you don't have to.
+  verified: 'true'
+  protected: 'false'
+  location: Dubai
+  profile_image_url: https://pbs.example.com/noor.png
+  created_at: '2017-09-30T16:00:00.000Z'
+  followers_count: '29870'
+  following_count: '1042'
+  tweet_count: '5120'
+tweets:
+- id: '3001'
+  author_id: '2001'
+  text: Shipped a 40% latency cut on our session store today. Turns out the bottleneck
+    was a missing index. Classic.
+  created_at: '2026-05-20T15:04:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '412'
+  retweet_count: '88'
+  reply_count: '23'
+  quote_count: '5'
+- id: '3002'
+  author_id: '2002'
+  text: Orbit CLI 2.0 is out. Faster cold starts and a brand new plugin system. Changelog
+    in the thread.
+  created_at: '2026-05-21T17:30:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '1820'
+  retweet_count: '640'
+  reply_count: '140'
+  quote_count: '72'
+- id: '3003'
+  author_id: '2003'
+  text: Replaced our cron-based reaper with an event-driven cleanup. Memory graphs
+    are finally flat.
+  created_at: '2026-05-22T09:12:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '96'
+  retweet_count: '14'
+  reply_count: '8'
+  quote_count: '1'
+- id: '3004'
+  author_id: '2004'
+  text: Reminder that color contrast is not optional. WCAG AA is the floor not the
+    ceiling.
+  created_at: '2026-05-22T13:40:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '540'
+  retweet_count: '210'
+  reply_count: '44'
+  quote_count: '12'
+- id: '3005'
+  author_id: '2001'
+  text: 'Hot take: most observability dashboards measure activity not health. Track
+    SLOs instead.'
+  created_at: '2026-05-23T08:00:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '734'
+  retweet_count: '182'
+  reply_count: '67'
+  quote_count: '19'
+- id: '3006'
+  author_id: '2006'
+  text: 'New guide up: migrating to the Orbit plugin API without downtime. Link below.'
+  created_at: '2026-05-23T11:25:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '388'
+  retweet_count: '121'
+  reply_count: '15'
+  quote_count: '9'
+- id: '3007'
+  author_id: '2003'
+  text: '@maya_dev totally agree on the SLO point. We gated our last rollout on p95
+    and it caught a regression.'
+  created_at: '2026-05-23T08:45:00.000Z'
+  lang: en
+  reply_to_tweet_id: '3005'
+  like_count: '52'
+  retweet_count: '3'
+  reply_count: '2'
+  quote_count: '0'
+- id: '3008'
+  author_id: '2005'
+  text: On-call week starting. Pray for my pager.
+  created_at: '2026-05-24T07:00:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '143'
+  retweet_count: '6'
+  reply_count: '31'
+  quote_count: '0'
+- id: '3009'
+  author_id: '2002'
+  text: We are hiring two senior backend engineers. Remote friendly. Apply via the
+    careers page.
+  created_at: '2026-05-24T16:10:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '210'
+  retweet_count: '95'
+  reply_count: '18'
+  quote_count: '4'
+- id: '3010'
+  author_id: '2004'
+  text: Finally migrated our design tokens to a single source of truth. No more drift
+    between Figma and code.
+  created_at: '2026-05-25T10:05:00.000Z'
+  lang: en
+  reply_to_tweet_id: ''
+  like_count: '302'
+  retweet_count: '58'
+  reply_count: '22'
+  quote_count: '7'
+follows:
+- follower_id: '2001'
+  following_id: '2002'
+- follower_id: '2001'
+  following_id: '2006'
+- follower_id: '2003'
+  following_id: '2001'
+- follower_id: '2003'
+  following_id: '2002'
+- follower_id: '2004'
+  following_id: '2001'
+- follower_id: '2004'
+  following_id: '2002'
+- follower_id: '2004'
+  following_id: '2006'
+- follower_id: '2005'
+  following_id: '2001'
+- follower_id: '2005'
+  following_id: '2003'
+- follower_id: '2006'
+  following_id: '2002'
+- follower_id: '2002'
+  following_id: '2001'
+- follower_id: '2001'
+  following_id: '2004'
+likes:
+- user_id: '2003'
+  tweet_id: '3001'
+- user_id: '2004'
+  tweet_id: '3001'
+- user_id: '2005'
+  tweet_id: '3005'
+- user_id: '2006'
+  tweet_id: '3002'
+- user_id: '2001'
+  tweet_id: '3002'
+- user_id: '2004'
+  tweet_id: '3005'
+retweets:
+- user_id: '2001'
+  tweet_id: '3002'
+- user_id: '2003'
+  tweet_id: '3002'
+- user_id: '2006'
+  tweet_id: '3001'
+- user_id: '2004'
+  tweet_id: '3006'

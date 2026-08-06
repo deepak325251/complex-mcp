@@ -1,0 +1,112 @@
+indices:
+- name: products
+  records_csv: records_products.json
+  entries: '8'
+  data_size: '4096'
+  created_at: '2025-09-01T10:00:00.000Z'
+  updated_at: '2026-05-01T10:00:00.000Z'
+- name: docs
+  records_csv: records_docs.json
+  entries: '6'
+  data_size: '3072'
+  created_at: '2025-09-01T10:00:00.000Z'
+  updated_at: '2026-05-10T10:00:00.000Z'
+records_docs:
+- objectID: doc-quickstart
+  title: Quickstart Guide
+  body: Get up and running with the search API in minutes
+  section: getting-started
+  tags: intro
+- objectID: doc-indexing
+  title: Indexing Records
+  body: How to add and update records in an index
+  section: guides
+  tags: indexing
+- objectID: doc-querying
+  title: Querying an Index
+  body: Search records using query and filters
+  section: guides
+  tags: search
+- objectID: doc-settings
+  title: Configuring Settings
+  body: Set searchable attributes and ranking
+  section: guides
+  tags: settings
+- objectID: doc-pagination
+  title: Pagination
+  body: Use page and hitsPerPage to paginate results
+  section: guides
+  tags: search
+- objectID: doc-faq
+  title: Frequently Asked Questions
+  body: Answers to common questions about the API
+  section: reference
+  tags: faq
+records_products:
+- objectID: prod-001
+  name: Aurora Wireless Headphones
+  description: Over-ear noise cancelling wireless headphones
+  category: audio
+  brand: Aurora
+  price: '199.99'
+  in_stock: 'true'
+- objectID: prod-002
+  name: Aurora Earbuds Mini
+  description: Compact true wireless earbuds with charging case
+  category: audio
+  brand: Aurora
+  price: '89.99'
+  in_stock: 'true'
+- objectID: prod-003
+  name: Nimbus 4K Monitor
+  description: 27 inch 4K UHD monitor with USB-C
+  category: displays
+  brand: Nimbus
+  price: '449.0'
+  in_stock: 'true'
+- objectID: prod-004
+  name: Nimbus Curved Monitor
+  description: 34 inch ultrawide curved gaming monitor
+  category: displays
+  brand: Nimbus
+  price: '599.0'
+  in_stock: 'false'
+- objectID: prod-005
+  name: Helio Mechanical Keyboard
+  description: Hot-swappable mechanical keyboard with RGB
+  category: peripherals
+  brand: Helio
+  price: '129.99'
+  in_stock: 'true'
+- objectID: prod-006
+  name: Helio Wireless Mouse
+  description: Ergonomic wireless mouse with silent clicks
+  category: peripherals
+  brand: Helio
+  price: '49.99'
+  in_stock: 'true'
+- objectID: prod-007
+  name: Vela USB-C Hub
+  description: Seven-port USB-C hub with HDMI and ethernet
+  category: accessories
+  brand: Vela
+  price: '69.99'
+  in_stock: 'true'
+- objectID: prod-008
+  name: Vela Laptop Stand
+  description: Adjustable aluminum laptop stand
+  category: accessories
+  brand: Vela
+  price: '39.99'
+  in_stock: 'false'
+settings:
+- index: products
+  searchableAttributes: name,description,brand,category
+  attributesForFaceting: category,brand,in_stock
+  hitsPerPage: '20'
+  ranking: typo,geo,words,proximity,attribute,exact,custom
+- index: docs
+  searchableAttributes: title,body,section,tags
+  attributesForFaceting: section,tags
+  hitsPerPage: '20'
+  ranking: typo,geo,words,proximity,attribute,exact,custom

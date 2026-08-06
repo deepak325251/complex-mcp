@@ -1,0 +1,10 @@
+from shortuuid import uuid
+from typing import Dict
+
+from mixpanel import MixpanelSession
+
+
+class LightMixpanelSession:
+    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+        self.session_id = f"session_{uuid()}"
+        self.mixpanel_session = MixpanelSession(seed=seed, os_cfg=os_cfg)

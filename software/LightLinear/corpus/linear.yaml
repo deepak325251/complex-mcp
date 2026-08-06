@@ -1,0 +1,793 @@
+comments:
+- id: cmt-201-1
+  body: 'PR #482 merged. Tested at 768px and 1024px breakpoints in Chrome and Safari
+    - cards no longer overlap. Moving to Done.'
+  issueId: BUG-201
+  userId: user-tyler
+  createdAt: '2026-04-28T11:00:00'
+  updatedAt: '2026-04-28T11:00:00'
+- id: cmt-201-2
+  body: Pulled the dashboard on a tablet during break - cards holding their grid now
+    at 768px. Signing off as charge nurse - safe to close for the ER floor.
+  issueId: BUG-201
+  userId: user-david
+  createdAt: '2026-04-28T19:30:00'
+  updatedAt: '2026-04-28T19:30:00'
+- id: cmt-202-1
+  body: Still seeing long drug names cut off (Hydroxyzine Pamoate Metoprolol Succinate).
+    Need tooltip on hover or a min column width.
+  issueId: BUG-202
+  userId: user-david
+  createdAt: '2026-03-15T08:20:00'
+  updatedAt: '2026-03-15T08:20:00'
+- id: cmt-202-2
+  body: Picked this up. Will land tooltip on hover + ellipsis pattern next sprint.
+  issueId: BUG-202
+  userId: user-mira
+  createdAt: '2026-05-04T09:30:00'
+  updatedAt: '2026-05-04T09:30:00'
+- id: cmt-204-1
+  body: 'PR #514 merged 2026-05-06. Password error now wraps above the submit button
+    on iOS Safari and Android Chrome at 360px.'
+  issueId: BUG-204
+  userId: user-tyler
+  createdAt: '2026-05-06T10:45:00'
+  updatedAt: '2026-05-06T10:45:00'
+- id: cmt-204-2
+  body: Looks good in QA staging on my end. Moving to Done.
+  issueId: BUG-204
+  userId: user-patty
+  createdAt: '2026-05-06T14:10:00'
+  updatedAt: '2026-05-06T14:10:00'
+- id: cmt-204-3
+  body: Confirmed on Android Chrome too. Closing.
+  issueId: BUG-204
+  userId: user-mira
+  createdAt: '2026-05-06T15:20:00'
+  updatedAt: '2026-05-06T15:20:00'
+- id: cmt-205-1
+  body: Marking Wont Fix - design team says zebra striping is on the v2 roadmap not
+    this sprint.
+  issueId: BUG-205
+  userId: user-patty
+  createdAt: '2026-03-21T09:00:00'
+  updatedAt: '2026-03-21T09:00:00'
+- id: cmt-209-1
+  body: Reproduced on night shift - timestamps unreadable on the Recent Activity card
+    under low-light ER lighting. Tagging Critical.
+  issueId: BUG-209
+  userId: user-david
+  createdAt: '2026-04-01T22:15:00'
+  updatedAt: '2026-04-01T22:15:00'
+- id: cmt-209-2
+  body: Token swap landing in next theme refresh. Tracking for sprint 5.
+  issueId: BUG-209
+  userId: user-tyler
+  createdAt: '2026-05-04T09:00:00'
+  updatedAt: '2026-05-04T09:00:00'
+- id: cmt-210-1
+  body: EHR vendor confirms the indication field is in the v3 payload. Waiting on
+    integration ticket BKD-118 before we can wire it through.
+  issueId: BUG-210
+  userId: user-mira
+  createdAt: '2026-04-12T10:00:00'
+  updatedAt: '2026-04-12T10:00:00'
+- id: comment-01
+  body: Started prototyping the token-bucket implementation. Initial benchmarks suggest
+    10ms p99 overhead per request, which is within budget.
+  issueId: issue-01
+  userId: user-01
+  createdAt: '2026-04-22T10:00:00'
+  updatedAt: '2026-04-22T10:00:00'
+- id: comment-25
+  body: Confirmed the deprecated widgets are no longer referenced in the dashboard
+    repo. Safe to remove.
+  issueId: issue-26
+  userId: user-05
+  createdAt: '2026-04-30T15:00:00'
+  updatedAt: '2026-04-30T15:00:00'
+cycles:
+- id: cycle-port-1
+  name: Sprint 1
+  number: '1'
+  teamId: team-ux
+  startsAt: '2026-03-09'
+  endsAt: '2026-03-22'
+  completedAt: '2026-03-22T17:00:00'
+  createdAt: '2026-02-28T09:00:00'
+  updatedAt: '2026-03-22T17:00:00'
+- id: cycle-port-2
+  name: Sprint 2
+  number: '2'
+  teamId: team-ux
+  startsAt: '2026-03-23'
+  endsAt: '2026-04-05'
+  completedAt: '2026-04-05T17:00:00'
+  createdAt: '2026-03-15T09:00:00'
+  updatedAt: '2026-04-05T17:00:00'
+- id: cycle-port-3
+  name: Sprint 3
+  number: '3'
+  teamId: team-ux
+  startsAt: '2026-04-06'
+  endsAt: '2026-04-19'
+  completedAt: '2026-04-19T17:00:00'
+  createdAt: '2026-03-29T09:00:00'
+  updatedAt: '2026-04-19T17:00:00'
+- id: cycle-port-4
+  name: Sprint 4
+  number: '4'
+  teamId: team-ux
+  startsAt: '2026-04-20'
+  endsAt: '2026-05-03'
+  completedAt: '2026-05-03T17:00:00'
+  createdAt: '2026-04-13T09:00:00'
+  updatedAt: '2026-05-03T17:00:00'
+- id: cycle-port-5
+  name: Sprint 5
+  number: '5'
+  teamId: team-ux
+  startsAt: '2026-05-04'
+  endsAt: '2026-05-17'
+  completedAt: ''
+  createdAt: '2026-04-27T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: cycle-port-6
+  name: Sprint 6
+  number: '6'
+  teamId: team-ux
+  startsAt: '2026-05-18'
+  endsAt: '2026-05-31'
+  completedAt: ''
+  createdAt: '2026-05-10T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: cycle-bkd-1
+  name: Backend Sprint 1
+  number: '1'
+  teamId: team-backend
+  startsAt: '2026-04-06'
+  endsAt: '2026-04-19'
+  completedAt: '2026-04-19T17:00:00'
+  createdAt: '2026-03-29T09:00:00'
+  updatedAt: '2026-04-19T17:00:00'
+- id: cycle-bkd-2
+  name: Backend Sprint 2
+  number: '2'
+  teamId: team-backend
+  startsAt: '2026-04-20'
+  endsAt: '2026-05-03'
+  completedAt: ''
+  createdAt: '2026-04-13T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+issues:
+- id: BUG-201
+  identifier: PORT-201
+  number: '201'
+  title: Stats cards overlap on tablet viewport below 768px
+  description: Dashboard stats cards overlap each other on tablet viewports under
+    768px. Reported by Patty during the Apr review walkthrough.
+  priority: '2'
+  estimate: '3'
+  stateId: state-port-done
+  assigneeId: user-tyler
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-4
+  labelIds: label-bug,label-high,label-dashboard,label-charge-nurse-review
+  dueDate: '2026-04-30'
+  sortOrder: '1.0'
+  branchName: tyler.boone/port-201-stats-cards-overlap
+  createdAt: '2026-03-12T10:00:00'
+  updatedAt: '2026-04-28T19:35:00'
+  startedAt: '2026-04-21T09:00:00'
+  completedAt: '2026-04-28T17:00:00'
+  canceledAt: ''
+- id: BUG-202
+  identifier: PORT-202
+  number: '202'
+  title: Drug name column truncates at 15 characters without tooltip
+  description: Medications form drug name column truncates without a tooltip on hover.
+    Long drug names (Hydroxyzine Pamoate, Metoprolol Succinate) are unreadable.
+  priority: '3'
+  estimate: '5'
+  stateId: state-port-inprogress
+  assigneeId: user-mira
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-5
+  labelIds: label-bug,label-medium,label-medications
+  dueDate: ''
+  sortOrder: '2.0'
+  branchName: mira.chen/port-202-drug-name-truncation
+  createdAt: '2026-03-14T08:00:00'
+  updatedAt: '2026-05-10T11:00:00'
+  startedAt: '2026-05-04T09:00:00'
+  completedAt: ''
+  canceledAt: ''
+- id: BUG-204
+  identifier: PORT-204
+  number: '204'
+  title: Password field validation error message overlaps submit button on mobile
+  description: Create Account form password validation error overlaps the submit button
+    on iOS Safari and Android Chrome at sub-400px widths.
+  priority: '2'
+  estimate: '3'
+  stateId: state-port-done
+  assigneeId: user-tyler
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-5
+  labelIds: label-bug,label-high,label-form-validation,label-charge-nurse-review
+  dueDate: '2026-05-15'
+  sortOrder: '3.0'
+  branchName: tyler.boone/port-204-password-validation-overlap
+  createdAt: '2026-03-18T09:00:00'
+  updatedAt: '2026-05-06T15:25:00'
+  startedAt: '2026-05-04T10:00:00'
+  completedAt: '2026-05-06T14:30:00'
+  canceledAt: ''
+- id: BUG-205
+  identifier: PORT-205
+  number: '205'
+  title: Symptoms Reported table has no alternating row colors hard to scan
+  description: Symptoms Reported table on the dashboard has no zebra striping. Hard
+    to track which row you are reading. Design says wont fix until v2.
+  priority: '4'
+  estimate: '2'
+  stateId: state-port-canceled
+  assigneeId: user-mira
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-3
+  labelIds: label-bug,label-low,label-dashboard
+  dueDate: ''
+  sortOrder: '4.0'
+  branchName: ''
+  createdAt: '2026-03-20T10:00:00'
+  updatedAt: '2026-03-21T09:05:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: '2026-03-21T09:05:00'
+- id: BUG-206
+  identifier: PORT-206
+  number: '206'
+  title: Add Medication form Dosage field has no label only placeholder text
+  description: Add Medication form Dosage input shows placeholder text "e.g. 200mg"
+    but no persistent visible label. Violates portal spec rule that requires visible
+    labels for clinical inputs.
+  priority: '3'
+  estimate: '2'
+  stateId: state-port-todo
+  assigneeId: user-mira
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-5
+  labelIds: label-bug,label-medium,label-medications,label-form-validation
+  dueDate: ''
+  sortOrder: '5.0'
+  branchName: ''
+  createdAt: '2026-03-22T09:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: BUG-209
+  identifier: PORT-209
+  number: '209'
+  title: Dark mode Recent Activity timestamps invisible white text on light gray
+  description: Dark mode renders Recent Activity timestamps as white text on a near-white
+    card. Completely unreadable in low-light ER lighting.
+  priority: '1'
+  estimate: '5'
+  stateId: state-port-inprogress
+  assigneeId: user-tyler
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-5
+  labelIds: label-bug,label-critical,label-dark-mode
+  dueDate: ''
+  sortOrder: '6.0'
+  branchName: tyler.boone/port-209-dark-mode-timestamps
+  createdAt: '2026-04-01T22:30:00'
+  updatedAt: '2026-05-10T09:00:00'
+  startedAt: '2026-05-04T09:00:00'
+  completedAt: ''
+  canceledAt: ''
+- id: BUG-210
+  identifier: PORT-210
+  number: '210'
+  title: Reason For Taking column is always empty no data flowing from EHR integration
+  description: Reason For Taking column on the Medications table is blank for every
+    patient. EHR integration is not piping the indication field through.
+  priority: '2'
+  estimate: '8'
+  stateId: state-port-todo
+  assigneeId: user-mira
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-5
+  labelIds: label-bug,label-high,label-medications
+  dueDate: ''
+  sortOrder: '7.0'
+  branchName: ''
+  createdAt: '2026-04-05T08:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: BUG-212
+  identifier: PORT-212
+  number: '212'
+  title: Create Account form email validation fires before user finishes typing distracting
+  description: Create Account form email field fires the invalid-email error after
+    the second keystroke. Should debounce or wait for blur.
+  priority: '4'
+  estimate: '2'
+  stateId: state-port-todo
+  assigneeId: user-tyler
+  teamId: team-ux
+  projectId: PROJ-PORTAL
+  cycleId: cycle-port-6
+  labelIds: label-bug,label-low,label-form-validation
+  dueDate: ''
+  sortOrder: '8.0'
+  branchName: ''
+  createdAt: '2026-04-12T11:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: issue-01
+  identifier: BKD-1
+  number: '1'
+  title: Add rate limiting to public API endpoints
+  description: Implement per-user rate limiting on /v1/* using a token-bucket algorithm
+    in Redis. Need X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset headers
+    on all responses. Initial benchmarks suggest 10ms p99 overhead per request, which
+    is within budget.
+  priority: '2'
+  estimate: '5'
+  stateId: state-bkd-inprogress
+  assigneeId: user-01
+  teamId: team-backend
+  projectId: proj-api-v2
+  cycleId: cycle-bkd-2
+  labelIds: label-bug,label-api,label-performance
+  dueDate: '2026-05-10'
+  sortOrder: '1.0'
+  branchName: alex.rivera/issue-01-rate-limiting
+  createdAt: '2026-04-01T09:00:00'
+  updatedAt: '2026-05-08T11:00:00'
+  startedAt: '2026-04-22T09:00:00'
+  completedAt: ''
+  canceledAt: ''
+- id: issue-07
+  identifier: BKD-7
+  number: '7'
+  title: Cache invalidation cascade on user profile updates
+  description: Profile edits should invalidate downstream cached views in the dashboard
+    service. Today the dashboard can show stale display names for up to 30 minutes
+    after a profile update.
+  priority: '3'
+  estimate: '3'
+  stateId: state-bkd-todo
+  assigneeId: user-02
+  teamId: team-backend
+  projectId: proj-dashboard
+  cycleId: cycle-bkd-2
+  labelIds: label-feature,label-frontend
+  dueDate: ''
+  sortOrder: '2.0'
+  branchName: ''
+  createdAt: '2026-04-03T09:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: issue-09
+  identifier: BKD-9
+  number: '9'
+  title: Investigate intermittent 504 on bulk export endpoint
+  description: Bulk export occasionally times out at 30s under high load. Need to
+    add streaming responses and tune connection keep-alive on the upstream proxy.
+  priority: '2'
+  estimate: '8'
+  stateId: state-bkd-todo
+  assigneeId: user-01
+  teamId: team-backend
+  projectId: proj-api-v2
+  cycleId: cycle-bkd-2
+  labelIds: label-bug,label-performance
+  dueDate: ''
+  sortOrder: '3.0'
+  branchName: ''
+  createdAt: '2026-04-05T09:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: issue-15
+  identifier: BKD-15
+  number: '15'
+  title: Add OpenAPI 3.1 schema export for v2 endpoints
+  description: Generate complete OpenAPI 3.1 schema from the FastAPI app and publish
+    it to the docs site.
+  priority: '4'
+  estimate: '3'
+  stateId: state-bkd-todo
+  assigneeId: user-02
+  teamId: team-backend
+  projectId: proj-api-v2
+  cycleId: cycle-bkd-2
+  labelIds: label-feature,label-api
+  dueDate: ''
+  sortOrder: '4.0'
+  branchName: ''
+  createdAt: '2026-04-10T09:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+- id: issue-26
+  identifier: BKD-26
+  number: '26'
+  title: Old metrics dashboard cleanup
+  description: Remove deprecated metrics widgets superseded by the new dashboard project.
+    Confirmed the deprecated widgets are no longer referenced in the dashboard repo.
+  priority: '4'
+  estimate: '2'
+  stateId: state-bkd-todo
+  assigneeId: user-05
+  teamId: team-backend
+  projectId: proj-dashboard
+  cycleId: cycle-bkd-2
+  labelIds: label-frontend
+  dueDate: ''
+  sortOrder: '5.0'
+  branchName: ''
+  createdAt: '2026-04-15T09:00:00'
+  updatedAt: '2026-04-30T10:00:00'
+  startedAt: ''
+  completedAt: ''
+  canceledAt: ''
+labels:
+- id: label-bug
+  name: Bug
+  color: '#eb5757'
+  description: Something isn't working correctly
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-critical
+  name: Critical
+  color: '#eb5757'
+  description: Critical severity
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-high
+  name: High
+  color: '#f2994a'
+  description: High severity
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-medium
+  name: Medium
+  color: '#f2c94c'
+  description: Medium severity
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-low
+  name: Low
+  color: '#bdbdbd'
+  description: Low severity
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-dark-mode
+  name: Dark Mode
+  color: '#5e6ad2'
+  description: Dark mode contrast and theming issues
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-form-validation
+  name: Form Validation
+  color: '#26b5ce'
+  description: Form validation behavior and copy
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-medications
+  name: Medications
+  color: '#bb6bd9'
+  description: Medications module of the patient portal
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-dashboard
+  name: Dashboard
+  color: '#6fcf97'
+  description: Dashboard module of the patient portal
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-charge-nurse-review
+  name: Charge Nurse Review
+  color: '#f2c94c'
+  description: Requires charge nurse spot-test sign-off
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-feature
+  name: Feature
+  color: '#26B5CE'
+  description: New feature work
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-api
+  name: API
+  color: '#5E6AD2'
+  description: API surface changes
+  teamId: team-backend
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-frontend
+  name: Frontend
+  color: '#F2994A'
+  description: Frontend client changes
+  teamId: team-frontend
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-performance
+  name: Performance
+  color: '#6FCF97'
+  description: Performance and latency work
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+- id: label-blocked
+  name: Blocked
+  color: '#EB5757'
+  description: Blocked on external dependency
+  teamId: ''
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-01-15T09:00:00'
+projects:
+- id: PROJ-PORTAL
+  name: Patient Portal UX Redesign
+  description: Cross-functional redesign of the Cumberland patient portal covering
+    medications, dashboard, dark mode, and form validation flows. Charge nurse David
+    Nelson signs off in this tracker before go-live.
+  state: started
+  leadId: user-patty
+  teamIds: team-ux
+  startDate: '2026-02-01'
+  targetDate: '2026-05-30'
+  createdAt: '2026-01-25T10:00:00'
+  updatedAt: '2026-05-10T14:00:00'
+- id: proj-api-v2
+  name: API v2 Migration
+  description: Migrate public REST endpoints from v1 to v2 with consistent error envelopes,
+    rate-limit headers, and uniform pagination
+  state: started
+  leadId: user-01
+  teamIds: team-backend
+  startDate: '2026-02-01'
+  targetDate: '2026-06-30'
+  createdAt: '2026-01-20T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: proj-dashboard
+  name: Customer Dashboard
+  description: New customer-facing dashboard for usage analytics and billing
+  state: started
+  leadId: user-06
+  teamIds: team-frontend,team-backend
+  startDate: '2026-03-01'
+  targetDate: '2026-07-15'
+  createdAt: '2026-02-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+teams:
+- id: team-ux
+  name: Patient Portal UX
+  key: PORT
+  description: UX team building and reviewing the Cumberland patient portal redesign
+  color: '#5E6AD2'
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-01T10:00:00'
+- id: team-backend
+  name: Backend Engineering
+  key: BKD
+  description: Backend services team owning API gateway, auth, and core data services
+  color: '#26B5CE'
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: team-frontend
+  name: Frontend Engineering
+  key: FRT
+  description: Frontend team owning the web and mobile clients
+  color: '#F2C94C'
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: team-platform
+  name: Platform Engineering
+  key: PLT
+  description: Platform team owning infrastructure, CI/CD, and observability
+  color: '#6FCF97'
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+users:
+- id: user-david
+  name: david.nelson
+  displayName: David Nelson
+  email: david.nelson@cumberlandregional.org
+  avatarUrl: https://avatars.example.com/david.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-ux
+  createdAt: '2026-01-20T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-patty
+  name: patty.oglesby
+  displayName: Patty Oglesby
+  email: patty.oglesby@cumberlandregional.org
+  avatarUrl: https://avatars.example.com/patty.png
+  active: 'true'
+  admin: 'true'
+  teamId: team-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-tyler
+  name: tyler.boone
+  displayName: Tyler Boone
+  email: tyler.boone@cumberlandregional.org
+  avatarUrl: https://avatars.example.com/tyler.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-ux
+  createdAt: '2026-01-22T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-mira
+  name: mira.chen
+  displayName: Mira Chen
+  email: mira.chen@cumberlandregional.org
+  avatarUrl: https://avatars.example.com/mira.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-ux
+  createdAt: '2026-01-25T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-01
+  name: alex.rivera
+  displayName: Alex Rivera
+  email: alex.rivera@meridianlabs.io
+  avatarUrl: https://avatars.example.com/alex.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-backend
+  createdAt: '2026-01-20T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-02
+  name: jordan.kim
+  displayName: Jordan Kim
+  email: jordan.kim@meridianlabs.io
+  avatarUrl: https://avatars.example.com/jordan.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-backend
+  createdAt: '2026-01-22T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-05
+  name: sam.patel
+  displayName: Sam Patel
+  email: sam.patel@meridianlabs.io
+  avatarUrl: https://avatars.example.com/sam.png
+  active: 'true'
+  admin: 'false'
+  teamId: team-backend
+  createdAt: '2026-01-25T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+- id: user-06
+  name: morgan.lee
+  displayName: Morgan Lee
+  email: morgan.lee@meridianlabs.io
+  avatarUrl: https://avatars.example.com/morgan.png
+  active: 'true'
+  admin: 'true'
+  teamId: team-frontend
+  createdAt: '2026-01-28T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'
+workflow_states:
+- id: state-port-backlog
+  name: Backlog
+  type: backlog
+  color: '#bec2c8'
+  position: '0'
+  teamId: team-ux
+  description: Issues that are not yet prioritized
+- id: state-port-todo
+  name: Todo
+  type: unstarted
+  color: '#e2e2e2'
+  position: '1'
+  teamId: team-ux
+  description: Issues ready to be picked up
+- id: state-port-inprogress
+  name: In Progress
+  type: started
+  color: '#f2c94c'
+  position: '2'
+  teamId: team-ux
+  description: Issues actively being worked on
+- id: state-port-inreview
+  name: In Review
+  type: started
+  color: '#f2994a'
+  position: '3'
+  teamId: team-ux
+  description: Issues in code review
+- id: state-port-done
+  name: Done
+  type: completed
+  color: '#5e6ad2'
+  position: '4'
+  teamId: team-ux
+  description: Completed issues
+- id: state-port-canceled
+  name: Canceled
+  type: canceled
+  color: '#95a2b3'
+  position: '5'
+  teamId: team-ux
+  description: Won't fix or otherwise canceled
+- id: state-bkd-backlog
+  name: Backlog
+  type: backlog
+  color: '#bec2c8'
+  position: '0'
+  teamId: team-backend
+  description: Issues that are not yet prioritized
+- id: state-bkd-todo
+  name: Todo
+  type: unstarted
+  color: '#e2e2e2'
+  position: '1'
+  teamId: team-backend
+  description: Issues ready to be picked up
+- id: state-bkd-inprogress
+  name: In Progress
+  type: started
+  color: '#f2c94c'
+  position: '2'
+  teamId: team-backend
+  description: Issues actively being worked on
+- id: state-bkd-inreview
+  name: In Review
+  type: started
+  color: '#f2994a'
+  position: '3'
+  teamId: team-backend
+  description: Issues in code review
+- id: state-bkd-done
+  name: Done
+  type: completed
+  color: '#5e6ad2'
+  position: '4'
+  teamId: team-backend
+  description: Completed issues
+- id: state-bkd-canceled
+  name: Canceled
+  type: canceled
+  color: '#95a2b3'
+  position: '5'
+  teamId: team-backend
+  description: Won't fix or otherwise canceled
+workspace:
+  id: workspace-cumberland-ux
+  name: Cumberland Regional UX
+  urlKey: cumberland-ux
+  createdAt: '2026-01-15T09:00:00'
+  updatedAt: '2026-05-10T10:00:00'

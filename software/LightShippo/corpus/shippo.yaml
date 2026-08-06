@@ -1,0 +1,208 @@
+addresses:
+- object_id: addr-sender-01
+  name: Orbit Labs Fulfillment
+  company: Orbit Labs
+  street1: 500 Treat Ave
+  street2: Suite 200
+  city: San Francisco
+  state: CA
+  zip: '94110'
+  country: US
+  phone: '4155550111'
+  email: ship@orbit-labs.com
+  is_residential: 'false'
+  validated: 'true'
+- object_id: addr-recv-01
+  name: Amelia Ortega
+  company: ''
+  street1: 1842 Maple Grove Rd
+  street2: Apt 4B
+  city: Austin
+  state: TX
+  zip: '78704'
+  country: US
+  phone: '5125550182'
+  email: amelia.ortega@orbit-labs.com
+  is_residential: 'true'
+  validated: 'true'
+- object_id: addr-recv-02
+  name: Jonas Pereira
+  company: Pereira Studio
+  street1: 77 Beacon St
+  street2: ''
+  city: Boston
+  state: MA
+  zip: 02108
+  country: US
+  phone: '6175550199'
+  email: jonas@example.com
+  is_residential: 'false'
+  validated: 'true'
+- object_id: addr-recv-03
+  name: Helena Park
+  company: ''
+  street1: 940 NE 12th Ave
+  street2: Unit 310
+  city: Portland
+  state: OR
+  zip: '97232'
+  country: US
+  phone: '5035550144'
+  email: helena.park@orbit-labs.com
+  is_residential: 'true'
+  validated: 'false'
+parcels:
+- object_id: parcel-01
+  length: '10'
+  width: '8'
+  height: '4'
+  distance_unit: in
+  weight: '2.5'
+  mass_unit: lb
+  template: ''
+- object_id: parcel-02
+  length: '16'
+  width: '12'
+  height: '8'
+  distance_unit: in
+  weight: '7.0'
+  mass_unit: lb
+  template: ''
+- object_id: parcel-03
+  length: '5'
+  width: '5'
+  height: '5'
+  distance_unit: in
+  weight: '0.75'
+  mass_unit: lb
+  template: USPS_FlatRatePaddedEnvelope
+rates:
+- object_id: rate-usps-prio-01
+  shipment: ship-1001
+  provider: USPS
+  servicelevel_token: usps_priority
+  servicelevel_name: Priority Mail
+  amount: '8.45'
+  currency: USD
+  estimated_days: '2'
+- object_id: rate-usps-first-01
+  shipment: ship-1001
+  provider: USPS
+  servicelevel_token: usps_first
+  servicelevel_name: First Class Package
+  amount: '5.20'
+  currency: USD
+  estimated_days: '3'
+- object_id: rate-ups-ground-01
+  shipment: ship-1001
+  provider: UPS
+  servicelevel_token: ups_ground
+  servicelevel_name: UPS Ground
+  amount: '11.30'
+  currency: USD
+  estimated_days: '3'
+- object_id: rate-fedex-2day-01
+  shipment: ship-1001
+  provider: FedEx
+  servicelevel_token: fedex_2day
+  servicelevel_name: FedEx 2Day
+  amount: '18.75'
+  currency: USD
+  estimated_days: '2'
+- object_id: rate-usps-prio-02
+  shipment: ship-1002
+  provider: USPS
+  servicelevel_token: usps_priority
+  servicelevel_name: Priority Mail
+  amount: '12.60'
+  currency: USD
+  estimated_days: '2'
+- object_id: rate-ups-ground-02
+  shipment: ship-1002
+  provider: UPS
+  servicelevel_token: ups_ground
+  servicelevel_name: UPS Ground
+  amount: '14.10'
+  currency: USD
+  estimated_days: '4'
+- object_id: rate-fedex-exp-02
+  shipment: ship-1002
+  provider: FedEx
+  servicelevel_token: fedex_express_saver
+  servicelevel_name: FedEx Express Saver
+  amount: '21.40'
+  currency: USD
+  estimated_days: '3'
+shipments:
+- object_id: ship-1001
+  address_from: addr-sender-01
+  address_to: addr-recv-01
+  parcel: parcel-01
+  status: SUCCESS
+  created_time: '2026-05-25T14:00:00Z'
+- object_id: ship-1002
+  address_from: addr-sender-01
+  address_to: addr-recv-02
+  parcel: parcel-02
+  status: SUCCESS
+  created_time: '2026-05-26T09:30:00Z'
+tracking:
+- carrier: USPS
+  tracking_number: '9400111202555842761023'
+  status: DELIVERED
+  status_detail: Delivered front porch
+  location_city: Austin
+  location_state: TX
+  status_time: '2026-05-27T16:20:00Z'
+- carrier: USPS
+  tracking_number: '9400111202555842761023'
+  status: TRANSIT
+  status_detail: Out for delivery
+  location_city: Austin
+  location_state: TX
+  status_time: '2026-05-27T08:10:00Z'
+- carrier: USPS
+  tracking_number: '9400111202555842761023'
+  status: TRANSIT
+  status_detail: Arrived at facility
+  location_city: Dallas
+  location_state: TX
+  status_time: '2026-05-26T22:00:00Z'
+- carrier: USPS
+  tracking_number: '9400111202555842761023'
+  status: PRE_TRANSIT
+  status_detail: Shipping label created
+  location_city: San Francisco
+  location_state: CA
+  status_time: '2026-05-25T14:05:00Z'
+- carrier: UPS
+  tracking_number: 1Z999AA10123456784
+  status: TRANSIT
+  status_detail: On the way
+  location_city: Memphis
+  location_state: TN
+  status_time: '2026-05-27T11:45:00Z'
+- carrier: UPS
+  tracking_number: 1Z999AA10123456784
+  status: PRE_TRANSIT
+  status_detail: Label created
+  location_city: San Francisco
+  location_state: CA
+  status_time: '2026-05-26T10:00:00Z'
+- carrier: FedEx
+  tracking_number: '794611112222'
+  status: PRE_TRANSIT
+  status_detail: Shipment information sent to FedEx
+  location_city: San Francisco
+  location_state: CA
+  status_time: '2026-05-26T12:00:00Z'
+transactions:
+- object_id: txn-9001
+  rate: rate-usps-prio-01
+  shipment: ship-1001
+  status: SUCCESS
+  tracking_number: '9400111202555842761023'
+  tracking_status: DELIVERED
+  carrier: USPS
+  label_url: https://shippo-delivery.s3.amazonaws.com/labels/txn-9001.pdf
+  created_time: '2026-05-25T14:05:00Z'

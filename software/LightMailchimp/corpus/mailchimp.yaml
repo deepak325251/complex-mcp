@@ -1,0 +1,150 @@
+campaigns:
+- id: camp-sep-news
+  list_id: list-newsletter
+  type: regular
+  status: sent
+  subject_line: September Highlights
+  from_name: Orbit Labs
+  reply_to: news@orbit-labs.com
+  title: September Newsletter
+  emails_sent: '5'
+  send_time: '2025-09-28T15:00:00.000Z'
+  create_time: '2025-09-25T10:00:00.000Z'
+- id: camp-oct-news
+  list_id: list-newsletter
+  type: regular
+  status: sent
+  subject_line: October Roundup
+  from_name: Orbit Labs
+  reply_to: news@orbit-labs.com
+  title: October Newsletter
+  emails_sent: '5'
+  send_time: '2025-10-30T15:00:00.000Z'
+  create_time: '2025-10-27T10:00:00.000Z'
+- id: camp-launch
+  list_id: list-product
+  type: regular
+  status: sent
+  subject_line: Introducing Smart Sync
+  from_name: Orbit Product
+  reply_to: product@orbit-labs.com
+  title: Smart Sync Launch
+  emails_sent: '4'
+  send_time: '2025-10-15T16:00:00.000Z'
+  create_time: '2025-10-12T10:00:00.000Z'
+- id: camp-nov-draft
+  list_id: list-newsletter
+  type: regular
+  status: save
+  subject_line: November Preview
+  from_name: Orbit Labs
+  reply_to: news@orbit-labs.com
+  title: November Newsletter
+  emails_sent: '0'
+  send_time: ''
+  create_time: '2025-11-01T10:00:00.000Z'
+lists:
+- id: list-newsletter
+  name: Orbit Monthly Newsletter
+  company: Orbit Labs
+  from_name: Orbit Labs
+  from_email: news@orbit-labs.com
+  subject: Orbit Monthly
+  member_count: '5'
+  unsubscribe_count: '1'
+  date_created: '2025-09-01T10:00:00.000Z'
+- id: list-product
+  name: Product Updates
+  company: Orbit Labs
+  from_name: Orbit Product
+  from_email: product@orbit-labs.com
+  subject: Product Updates
+  member_count: '4'
+  unsubscribe_count: '0'
+  date_created: '2025-09-15T10:00:00.000Z'
+members:
+- list_id: list-newsletter
+  email_address: mara@brightpath.io
+  full_name: Mara Lindgren
+  status: subscribed
+  timestamp_signup: '2025-09-02T08:00:00.000Z'
+  member_rating: '4'
+- list_id: list-newsletter
+  email_address: tomas@brightpath.io
+  full_name: Tomas Vega
+  status: subscribed
+  timestamp_signup: '2025-09-05T09:00:00.000Z'
+  member_rating: '3'
+- list_id: list-newsletter
+  email_address: yara@nimbus-co.com
+  full_name: Yara Khalil
+  status: unsubscribed
+  timestamp_signup: '2025-09-10T10:00:00.000Z'
+  member_rating: '2'
+- list_id: list-newsletter
+  email_address: ethan@nimbus-co.com
+  full_name: Ethan Walsh
+  status: subscribed
+  timestamp_signup: '2025-09-18T11:00:00.000Z'
+  member_rating: '5'
+- list_id: list-newsletter
+  email_address: grace@helio-labs.com
+  full_name: Grace Okafor
+  status: cleaned
+  timestamp_signup: '2025-10-01T12:00:00.000Z'
+  member_rating: '1'
+- list_id: list-product
+  email_address: sven@helio-labs.com
+  full_name: Sven Nyberg
+  status: subscribed
+  timestamp_signup: '2025-09-20T08:00:00.000Z'
+  member_rating: '4'
+- list_id: list-product
+  email_address: lucia@orbit-mark.com
+  full_name: Lucia Romano
+  status: subscribed
+  timestamp_signup: '2025-09-22T09:00:00.000Z'
+  member_rating: '3'
+- list_id: list-product
+  email_address: kenji@orbit-mark.com
+  full_name: Kenji Sato
+  status: subscribed
+  timestamp_signup: '2025-10-05T10:00:00.000Z'
+  member_rating: '4'
+- list_id: list-product
+  email_address: hannah@vela-tech.com
+  full_name: Hannah Frost
+  status: subscribed
+  timestamp_signup: '2025-10-12T11:00:00.000Z'
+  member_rating: '5'
+reports:
+- campaign_id: camp-sep-news
+  emails_sent: '5'
+  opens_total: '18'
+  unique_opens: '4'
+  open_rate: '0.8'
+  clicks_total: '7'
+  unique_clicks: '3'
+  click_rate: '0.6'
+  unsubscribed: '0'
+  bounces: '0'
+- campaign_id: camp-oct-news
+  emails_sent: '5'
+  opens_total: '22'
+  unique_opens: '5'
+  open_rate: '1.0'
+  clicks_total: '9'
+  unique_clicks: '4'
+  click_rate: '0.8'
+  unsubscribed: '1'
+  bounces: '0'
+- campaign_id: camp-launch
+  emails_sent: '4'
+  opens_total: '15'
+  unique_opens: '4'
+  open_rate: '1.0'
+  clicks_total: '11'
+  unique_clicks: '4'
+  click_rate: '1.0'
+  unsubscribed: '0'
+  bounces: '0'

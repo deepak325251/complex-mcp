@@ -1,0 +1,226 @@
+channel_members:
+- channel_id: C01GENERAL
+  user_id: U01AMELIA
+- channel_id: C01GENERAL
+  user_id: U01JONAS
+- channel_id: C01GENERAL
+  user_id: U01HELENA
+- channel_id: C01GENERAL
+  user_id: U01ROHIT
+- channel_id: C01GENERAL
+  user_id: U01NOOR
+- channel_id: C01ENG
+  user_id: U01AMELIA
+- channel_id: C01ENG
+  user_id: U01JONAS
+- channel_id: C01ENG
+  user_id: U01HELENA
+- channel_id: C01ENG
+  user_id: U01ROHIT
+- channel_id: C01ENG
+  user_id: U01NOOR
+- channel_id: C01DEPLOY
+  user_id: U01AMELIA
+- channel_id: C01DEPLOY
+  user_id: U01JONAS
+- channel_id: C01DEPLOY
+  user_id: U01HELENA
+- channel_id: C01DEPLOY
+  user_id: U01ROHIT
+- channel_id: C01DEPLOY
+  user_id: U01BOT
+- channel_id: C01RANDOM
+  user_id: U01AMELIA
+- channel_id: C01RANDOM
+  user_id: U01JONAS
+- channel_id: C01RANDOM
+  user_id: U01HELENA
+- channel_id: C01RANDOM
+  user_id: U01ROHIT
+- channel_id: C01RANDOM
+  user_id: U01NOOR
+- channel_id: C01AUTHV2
+  user_id: U01AMELIA
+- channel_id: C01AUTHV2
+  user_id: U01JONAS
+- channel_id: C01AUTHV2
+  user_id: U01HELENA
+- channel_id: G01LEADS
+  user_id: U01AMELIA
+- channel_id: G01LEADS
+  user_id: U01JONAS
+channels:
+- id: C01GENERAL
+  name: general
+  is_private: 'false'
+  is_archived: 'false'
+  topic: Company-wide announcements
+  purpose: Default channel for all
+  creator: U01AMELIA
+  created: '1700000000'
+  num_members: '5'
+- id: C01ENG
+  name: eng
+  is_private: 'false'
+  is_archived: 'false'
+  topic: All engineering discussion
+  purpose: Engineering team chat
+  creator: U01AMELIA
+  created: '1700000100'
+  num_members: '5'
+- id: C01DEPLOY
+  name: deploys
+  is_private: 'false'
+  is_archived: 'false'
+  topic: Deploy notifications
+  purpose: Automated deploy + incident notifications
+  creator: U01AMELIA
+  created: '1700000200'
+  num_members: '5'
+- id: C01RANDOM
+  name: random
+  is_private: 'false'
+  is_archived: 'false'
+  topic: Off-topic
+  purpose: Memes welcome
+  creator: U01JONAS
+  created: '1700000300'
+  num_members: '5'
+- id: C01AUTHV2
+  name: proj-auth-v2
+  is_private: 'false'
+  is_archived: 'false'
+  topic: Auth v2 rollout tracking
+  purpose: Project channel for auth migration
+  creator: U01AMELIA
+  created: '1740000000'
+  num_members: '3'
+- id: G01LEADS
+  name: leads
+  is_private: 'true'
+  is_archived: 'false'
+  topic: Engineering leads sync
+  purpose: Private leads channel
+  creator: U01AMELIA
+  created: '1740000100'
+  num_members: '2'
+messages:
+- ts: '1748210000.000100'
+  channel_id: C01ENG
+  user_id: U01AMELIA
+  text: 'Kicking off auth v2 weekly. Status doc in #proj-auth-v2.'
+  thread_ts: ''
+  reply_count: '1'
+  reactions: ''
+- ts: '1748210100.000200'
+  channel_id: C01ENG
+  user_id: U01JONAS
+  text: Will need a billing migration freeze for the cutover.
+  thread_ts: '1748210000.000100'
+  reply_count: '0'
+  reactions: ''
+- ts: '1748220500.000300'
+  channel_id: C01AUTHV2
+  user_id: U01AMELIA
+  text: Shim is dual-writing to old + new session store. Holding rollout until p95
+    drops below 250ms.
+  thread_ts: ''
+  reply_count: '2'
+  reactions: +1:U01JONAS,U01HELENA
+- ts: '1748221000.000400'
+  channel_id: C01AUTHV2
+  user_id: U01HELENA
+  text: Saw a spike on auth.refresh latency at 10:42 UTC — dashboard link incoming.
+  thread_ts: '1748220500.000300'
+  reply_count: '0'
+  reactions: ''
+- ts: '1748221500.000500'
+  channel_id: C01DEPLOY
+  user_id: U01BOT
+  text: 'deploy: billing-api v1.42.0 to prod (✅ 3m12s)'
+  thread_ts: ''
+  reply_count: '0'
+  reactions: ''
+- ts: '1748222000.000600'
+  channel_id: C01DEPLOY
+  user_id: U01BOT
+  text: 'deploy: auth-api v2.18.0 to staging (✅ 2m08s)'
+  thread_ts: ''
+  reply_count: '0'
+  reactions: ''
+- ts: '1748230000.000700'
+  channel_id: C01GENERAL
+  user_id: U01AMELIA
+  text: 'Reminder: company offsite RSVP deadline is Friday.'
+  thread_ts: ''
+  reply_count: '0'
+  reactions: ''
+- ts: '1748230500.000800'
+  channel_id: C01RANDOM
+  user_id: U01ROHIT
+  text: Anyone else surprised the build is faster than the CI green-light?
+  thread_ts: ''
+  reply_count: '1'
+  reactions: ''
+team:
+  id: T01CASCADE
+  name: Cascade Engineering
+  domain: cascade-eng
+  email_domain: cascade-eng.com
+  icon:
+    image_132: https://avatars.example.com/team-cascade.png
+users:
+- id: U01AMELIA
+  name: amelia
+  real_name: Amelia Ortega
+  email: amelia@cascade-eng.com
+  is_admin: 'true'
+  is_bot: 'false'
+  tz: America/Los_Angeles
+  status_text: heads-down on auth v2
+  presence: active
+- id: U01JONAS
+  name: jonas
+  real_name: Jonas Pereira
+  email: jonas@cascade-eng.com
+  is_admin: 'false'
+  is_bot: 'false'
+  tz: America/Sao_Paulo
+  status_text: ''
+  presence: active
+- id: U01HELENA
+  name: helena
+  real_name: Helena Park
+  email: helena@cascade-eng.com
+  is_admin: 'false'
+  is_bot: 'false'
+  tz: America/New_York
+  status_text: reviewing PRs
+  presence: active
+- id: U01ROHIT
+  name: rohit
+  real_name: Rohit Bansal
+  email: rohit@cascade-eng.com
+  is_admin: 'false'
+  is_bot: 'false'
+  tz: Asia/Kolkata
+  status_text: ''
+  presence: away
+- id: U01NOOR
+  name: noor
+  real_name: Noor Aziz
+  email: noor@cascade-eng.com
+  is_admin: 'false'
+  is_bot: 'false'
+  tz: Asia/Dubai
+  status_text: onboarding
+  presence: active
+- id: U01BOT
+  name: deployer
+  real_name: Deployer Bot
+  email: ''
+  is_admin: 'false'
+  is_bot: 'true'
+  tz: America/Los_Angeles
+  status_text: ''
+  presence: active
