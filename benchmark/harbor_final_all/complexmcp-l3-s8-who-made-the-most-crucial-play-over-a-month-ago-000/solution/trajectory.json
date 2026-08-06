@@ -1,0 +1,82 @@
+[
+  {
+    "tool": "list_all_sections",
+    "args": {},
+    "purpose": "call list_all_sections -> structured result"
+  },
+  {
+    "tool": "search",
+    "args": {
+      "section": "Sports",
+      "query": "LightTown High Football homecoming",
+      "maxn": 10
+    },
+    "purpose": "call search -> structured result"
+  },
+  {
+    "tool": "search",
+    "args": {
+      "section": "Sports",
+      "query": "homecoming",
+      "maxn": 10
+    },
+    "purpose": "call search -> structured result"
+  },
+  {
+    "tool": "get_details",
+    "args": {
+      "nid": "news_SaLjC5PPAin7q6GAML3gU7"
+    },
+    "purpose": "call get_details -> structured result"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Judy Bailey"
+    },
+    "purpose": "call get_uid_from_name (observed status: internel error)"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Judy Bailey"
+    },
+    "purpose": "call get_uid_from_name -> user_bgKcuR3cnTqNTS76etCuLR"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_bgKcuR3cnTqNTS76etCuLR",
+      "content": "Jake Morales"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Judy Bailey (user_bgKcuR3cnTqNTS76e..."
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "endive"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Eggplant Emporium"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_75k77uBTnQrMLEWJUZWnJL"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_75k77uBTnQrMLEWJUZWnJL",
+      "tid": "item_4M8ZAZbnevXAjkM59BTMds",
+      "cnt": 5
+    },
+    "purpose": "call add_to_cart -> Added 5 × 'endive (100g)' (ID: item_4M8ZAZbnevXAjkM59BTMds) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

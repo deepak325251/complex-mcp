@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Date Depot"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_7yo44FwEgwevGA3m7yiCpB"
+  },
+  {
+    "tool": "list_items",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB"
+    },
+    "purpose": "call list_items -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB",
+      "tid": "item_PMP3Da5CiHLFq7erDSodP4",
+      "cnt": 4
+    },
+    "purpose": "call add_to_cart -> Added 4 × 'date (500g)' (ID: item_PMP3Da5CiHLFq7erDSodP4) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

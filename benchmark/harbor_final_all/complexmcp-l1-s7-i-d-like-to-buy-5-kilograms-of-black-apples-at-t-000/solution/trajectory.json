@@ -1,0 +1,38 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "black apple"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Date Depot"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_7yo44FwEgwevGA3m7yiCpB"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB",
+      "tid": "item_isBfsziUtc8WPhot2akEke"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB",
+      "tid": "item_isBfsziUtc8WPhot2akEke",
+      "cnt": 5
+    },
+    "purpose": "call add_to_cart -> Added 5 × 'arkansas black apple (1kg)' (ID: item_isBfsziUtc8WPhot2akEke) to y..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

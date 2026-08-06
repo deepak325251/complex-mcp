@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "arugula"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Zucchini Zone"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_M8vA98ewPquBfby5z5DybV"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_M8vA98ewPquBfby5z5DybV",
+      "tid": "item_P62bidnSkceZgZ7giSyVBX",
+      "cnt": 2
+    },
+    "purpose": "call add_to_cart -> Added 2 × 'arugula (100g)' (ID: item_P62bidnSkceZgZ7giSyVBX) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

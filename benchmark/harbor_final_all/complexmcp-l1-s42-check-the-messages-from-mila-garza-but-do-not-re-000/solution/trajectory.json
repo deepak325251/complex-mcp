@@ -1,0 +1,23 @@
+[
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Mila Garza"
+    },
+    "purpose": "call get_uid_from_name -> user_FMTR7SfPAv5q77kpZbaL8N"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_FMTR7SfPAv5q77kpZbaL8N"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "mark_as_unread",
+    "args": {
+      "uid": "user_FMTR7SfPAv5q77kpZbaL8N"
+    },
+    "purpose": "call mark_as_unread -> You have successfully marked the messages from contact `Mila Garza` (UID=user..."
+  }
+]

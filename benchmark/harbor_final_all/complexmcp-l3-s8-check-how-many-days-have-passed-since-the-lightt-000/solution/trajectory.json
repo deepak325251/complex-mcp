@@ -1,0 +1,68 @@
+[
+  {
+    "tool": "list_all_sections",
+    "args": {},
+    "purpose": "call list_all_sections -> structured result"
+  },
+  {
+    "tool": "search",
+    "args": {
+      "section": "Local Business",
+      "query": "LightTown fashion brand launch",
+      "maxn": 10
+    },
+    "purpose": "call search -> structured result"
+  },
+  {
+    "tool": "search",
+    "args": {
+      "section": "Local Business",
+      "query": "LightTown fashion",
+      "maxn": 10
+    },
+    "purpose": "call search -> structured result"
+  },
+  {
+    "tool": "get_details",
+    "args": {
+      "nid": "news_ti4fP7RS2MsYT4By2MYfLN"
+    },
+    "purpose": "call get_details -> structured result"
+  },
+  {
+    "tool": "days_diff",
+    "args": {
+      "t1": "2025-01-04",
+      "t2": "2026-07-27"
+    },
+    "purpose": "call days_diff -> 569 days"
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "chickpeas"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Eggplant Emporium"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_75k77uBTnQrMLEWJUZWnJL"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_75k77uBTnQrMLEWJUZWnJL",
+      "tid": "item_3HL8DponxiiCafFvW7QyWV",
+      "cnt": 4
+    },
+    "purpose": "call add_to_cart -> Added 4 × 'chickpeas (500g)' (ID: item_3HL8DponxiiCafFvW7QyWV) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

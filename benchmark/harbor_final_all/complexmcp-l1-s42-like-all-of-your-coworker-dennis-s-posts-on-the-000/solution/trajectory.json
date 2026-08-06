@@ -1,0 +1,64 @@
+[
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Dennis"
+    },
+    "purpose": "call get_uid_from_name (observed status: failed)"
+  },
+  {
+    "tool": "fuzzy_search_uids_from_name",
+    "args": {
+      "name": "Dennis"
+    },
+    "purpose": "call fuzzy_search_uids_from_name -> structured result"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_contact_info -> structured result"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n"
+    },
+    "purpose": "call get_contact_info (observed status: internel error)"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n"
+    },
+    "purpose": "call get_contact_info (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n"
+    },
+    "purpose": "call get_contact_info -> structured result"
+  },
+  {
+    "tool": "get_all_moments",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n"
+    },
+    "purpose": "call get_all_moments -> structured result"
+  },
+  {
+    "tool": "like_moment",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n",
+      "moid": "mo_wZ9xYbUktSeYuVE7KRA2Xm"
+    },
+    "purpose": "call like_moment -> You have successfully liked the moment (MOID=mo_wZ9xYbUktSeYuVE7KRA2Xm) of co..."
+  }
+]

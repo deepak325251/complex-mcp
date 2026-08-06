@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Sean Baker"
+    },
+    "purpose": "call get_uid_from_name -> user_3vqHCiKM2saQAe3kERMPjn"
+  },
+  {
+    "tool": "mark_as_read",
+    "args": {
+      "uid": "user_3vqHCiKM2saQAe3kERMPjn"
+    },
+    "purpose": "call mark_as_read -> You have successfully marked the messages from contact `Sean Baker` (UID=user..."
+  }
+]

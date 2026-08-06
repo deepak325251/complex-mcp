@@ -1,0 +1,43 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "iPad"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "search_shops",
+    "args": {
+      "shop_name": "Watt Works"
+    },
+    "purpose": "call search_shops"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_xc3j39hRCTieNYmVFVmP2a",
+      "tid": "item_UmTSxUGkRUqdWEfyHzfbx3"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 21444"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_xc3j39hRCTieNYmVFVmP2a",
+      "tid": "item_UmTSxUGkRUqdWEfyHzfbx3",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'iPad Pro 12.9\" (M2, 256GB)' (ID: item_UmTSxUGkRUqdWEfyHzfbx3) to y..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

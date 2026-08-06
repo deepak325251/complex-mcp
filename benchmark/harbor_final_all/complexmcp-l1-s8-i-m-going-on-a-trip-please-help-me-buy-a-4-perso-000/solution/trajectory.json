@@ -1,0 +1,65 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "tent"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "4-Person"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "fuzzy_search_items",
+    "args": {
+      "item_name": "4 person tent"
+    },
+    "purpose": "call fuzzy_search_items -> structured result"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "",
+      "tid": "item_jW8yUfcigMoyCN5ujCN2yZ"
+    },
+    "purpose": "call get_item_info (observed status: failed)"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Total Training"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_eJxWsU6gyBVfVtvkSahdks"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_eJxWsU6gyBVfVtvkSahdks",
+      "tid": "item_jW8yUfcigMoyCN5ujCN2yZ"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 21444"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_eJxWsU6gyBVfVtvkSahdks",
+      "tid": "item_jW8yUfcigMoyCN5ujCN2yZ",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'Coleman Sundome 4-Person Tent' (ID: item_jW8yUfcigMoyCN5ujCN2yZ) t..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

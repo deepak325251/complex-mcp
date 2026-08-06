@@ -1,0 +1,56 @@
+[
+  {
+    "tool": "list_ip_choices",
+    "args": {},
+    "purpose": "call list_ip_choices -> structured result"
+  },
+  {
+    "tool": "change_my_ip",
+    "args": {
+      "where": "New York"
+    },
+    "purpose": "call change_my_ip -> Your IP address has already been set to New York"
+  },
+  {
+    "tool": "post_moment",
+    "args": {
+      "content": "Hello, world.",
+      "img_urls": []
+    },
+    "purpose": "call post_moment (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "post_moment",
+    "args": {
+      "content": "Hello, world.",
+      "img_urls": []
+    },
+    "purpose": "call post_moment (observed status: internel error)"
+  },
+  {
+    "tool": "post_moment",
+    "args": {
+      "content": "Hello, world.",
+      "img_urls": []
+    },
+    "purpose": "call post_moment (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "post_moment",
+    "args": {
+      "content": "Hello, world.",
+      "img_urls": []
+    },
+    "purpose": "call post_moment -> You have successfully post a moment (MOID = mo_hKSLq5DRpeGcR8CFqUZSe4)"
+  }
+]

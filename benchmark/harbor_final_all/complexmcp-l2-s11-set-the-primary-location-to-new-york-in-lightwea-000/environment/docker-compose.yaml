@@ -1,0 +1,13 @@
+# Boots the ComplexMCP LightTalk, LightWeather app(s) as a seeded MCP server + an admin dump
+# endpoint used by the verifier. Built from the ComplexMCP repo image.
+services:
+  complexmcp:
+    image: complexmcp:latest
+    environment:
+      COMPLEXMCP_SEED: "11"
+      COMPLEXMCP_APPS: '["LightTalk", "LightWeather"]'
+    command: ["bash", "start_servers.sh"]   # + admin dump on :8900
+    ports:
+      - "8902:8902"
+      - "8904:8904"
+      - "8900:8900"

@@ -1,0 +1,77 @@
+[
+  {
+    "tool": "set_primary_location",
+    "args": {
+      "location": "New York"
+    },
+    "purpose": "call set_primary_location -> Primary location set to New York"
+  },
+  {
+    "tool": "get_sun_times",
+    "args": {
+      "location": "New York"
+    },
+    "purpose": "call get_sun_times -> structured result"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Aaliyah Gonzalez"
+    },
+    "purpose": "call get_uid_from_name (observed status: internel error)"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Aaliyah Gonzalez"
+    },
+    "purpose": "call get_uid_from_name (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Aaliyah Gonzalez"
+    },
+    "purpose": "call get_uid_from_name -> user_yXQoaVh5YRxvHU9SpuVLCd (blocked)"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_yXQoaVh5YRxvHU9SpuVLCd",
+      "content": "50.00%"
+    },
+    "purpose": "call send_message (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_yXQoaVh5YRxvHU9SpuVLCd"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_yXQoaVh5YRxvHU9SpuVLCd"
+    },
+    "purpose": "call unblock -> You have successfully unblocked contact Aaliyah Gonzalez (user_yXQoaVh5YRxvHU..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_yXQoaVh5YRxvHU9SpuVLCd",
+      "content": "50.00%"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Aaliyah Gonzalez (user_yXQoaVh5YRxv..."
+  }
+]

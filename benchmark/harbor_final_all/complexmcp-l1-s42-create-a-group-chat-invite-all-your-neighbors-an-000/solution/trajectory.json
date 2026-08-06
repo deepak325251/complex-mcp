@@ -1,0 +1,100 @@
+[
+  {
+    "tool": "list_all_tags",
+    "args": {},
+    "purpose": "call list_all_tags -> structured result"
+  },
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "neighbors"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_zf2pKfw988ZHciDeHVur7S",
+        "user_CxH8SjKcXPaGi2vYjkgN5f",
+        "user_dDhWFf2km8SCxX4GrUogzb",
+        "user_9Fhi5RYRDRubhrmP2NkrxR",
+        "user_aJ9hhwWW64SLG7xqaxzgH4",
+        "user_ougBTMbeSGrDPVFaazJyfH",
+        "user_FMTR7SfPAv5q77kpZbaL8N",
+        "user_fksjycNaEfE8rNmaprypce",
+        "user_MjppFADcmfCnWmmTvaedsd"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_zf2pKfw988ZHciDeHVur7S",
+        "user_CxH8SjKcXPaGi2vYjkgN5f",
+        "user_dDhWFf2km8SCxX4GrUogzb",
+        "user_9Fhi5RYRDRubhrmP2NkrxR",
+        "user_aJ9hhwWW64SLG7xqaxzgH4",
+        "user_ougBTMbeSGrDPVFaazJyfH",
+        "user_FMTR7SfPAv5q77kpZbaL8N",
+        "user_fksjycNaEfE8rNmaprypce",
+        "user_MjppFADcmfCnWmmTvaedsd"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: internel error)"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_zf2pKfw988ZHciDeHVur7S",
+        "user_CxH8SjKcXPaGi2vYjkgN5f",
+        "user_dDhWFf2km8SCxX4GrUogzb",
+        "user_9Fhi5RYRDRubhrmP2NkrxR",
+        "user_aJ9hhwWW64SLG7xqaxzgH4",
+        "user_ougBTMbeSGrDPVFaazJyfH",
+        "user_FMTR7SfPAv5q77kpZbaL8N",
+        "user_fksjycNaEfE8rNmaprypce",
+        "user_MjppFADcmfCnWmmTvaedsd"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_zf2pKfw988ZHciDeHVur7S",
+        "user_CxH8SjKcXPaGi2vYjkgN5f",
+        "user_dDhWFf2km8SCxX4GrUogzb",
+        "user_9Fhi5RYRDRubhrmP2NkrxR",
+        "user_aJ9hhwWW64SLG7xqaxzgH4",
+        "user_ougBTMbeSGrDPVFaazJyfH",
+        "user_FMTR7SfPAv5q77kpZbaL8N",
+        "user_fksjycNaEfE8rNmaprypce",
+        "user_MjppFADcmfCnWmmTvaedsd"
+      ]
+    },
+    "purpose": "call create_group_chat -> You have successfully created a group (GID=group_hKSLq5DRpeGcR8CFqUZSe4)"
+  },
+  {
+    "tool": "change_owner_of_group",
+    "args": {
+      "gid": "group_hKSLq5DRpeGcR8CFqUZSe4",
+      "uid": "user_MjppFADcmfCnWmmTvaedsd"
+    },
+    "purpose": "call change_owner_of_group -> The owner of group chat (GID=group_hKSLq5DRpeGcR8CFqUZSe4) has already been c..."
+  }
+]

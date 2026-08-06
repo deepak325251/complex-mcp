@@ -1,0 +1,120 @@
+[
+  {
+    "tool": "list_all_tags",
+    "args": {},
+    "purpose": "call list_all_tags -> structured result"
+  },
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "family"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "classmates"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: internel error)"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat -> You have successfully created a group (GID=group_hKSLq5DRpeGcR8CFqUZSe4)"
+  },
+  {
+    "tool": "rename_group",
+    "args": {
+      "gid": "group_hKSLq5DRpeGcR8CFqUZSe4",
+      "name": "My family"
+    },
+    "purpose": "call rename_group -> You have successfully renamed the group chat (GID=group_hKSLq5DRpeGcR8CFqUZSe..."
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_DG7ntRdAwsypt3jLwospHn",
+        "user_kZcEES3MgRBU9d3Qa3e9U4",
+        "user_H2x6jVmheVo7EhKbUYSkLi",
+        "user_yRXzfYRCNmdmDZvSh8ycFB",
+        "user_oRwWpJKbzVAYMZYTLChaFn"
+      ]
+    },
+    "purpose": "call create_group_chat -> You have successfully created a group (GID=group_B9GofCrxV3r6csuRNf7wjA)"
+  },
+  {
+    "tool": "rename_group",
+    "args": {
+      "gid": "group_B9GofCrxV3r6csuRNf7wjA",
+      "name": "Forever 404"
+    },
+    "purpose": "call rename_group -> You have successfully renamed the group chat (GID=group_B9GofCrxV3r6csuRNf7wj..."
+  },
+  {
+    "tool": "change_owner_of_group",
+    "args": {
+      "gid": "group_B9GofCrxV3r6csuRNf7wjA",
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call change_owner_of_group -> The owner of group chat (GID=group_B9GofCrxV3r6csuRNf7wjA) has already been c..."
+  },
+  {
+    "tool": "send_message_to_group",
+    "args": {
+      "gid": "group_B9GofCrxV3r6csuRNf7wjA",
+      "content": "How about having dinner at my house tonight?"
+    },
+    "purpose": "call send_message_to_group -> You have successfully sent one message to group chat (GID=group_B9GofCrxV3r6c..."
+  }
+]

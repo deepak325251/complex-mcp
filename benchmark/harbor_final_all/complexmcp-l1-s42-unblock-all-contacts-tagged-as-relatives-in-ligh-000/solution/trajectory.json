@@ -1,0 +1,96 @@
+[
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "relatives"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_iFQgKLk6Uzz6EHwttPAqic"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_iFQgKLk6Uzz6EHwttPAqic"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_xtciWqZukVGGemXdH6JHLY"
+    },
+    "purpose": "call unblock (observed status: internel error)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_xtciWqZukVGGemXdH6JHLY"
+    },
+    "purpose": "call unblock (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_xtciWqZukVGGemXdH6JHLY"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_PELmPkqG63YzMfnfkxD3A9"
+    },
+    "purpose": "call unblock -> You have successfully unblocked contact Timothy Thomas (user_PELmPkqG63YzMfnf..."
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_mUfvCbeW7MLgrLhJwpZTKL"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_ZZ7zvU8qWiXHqyFZPvWtsH"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_yMhfrrrPLims45dvzkS7es"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_KE9GL2kCPiWqo6s43vsaai"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_fLVA57uMiWBGSTXBPJRMcn"
+    },
+    "purpose": "call unblock -> You have successfully unblocked contact Valeria Watson (user_fLVA57uMiWBGSTXB..."
+  }
+]

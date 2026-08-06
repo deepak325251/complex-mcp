@@ -1,0 +1,83 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "seedless grapes"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "grapes"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "fuzzy_search_items",
+    "args": {
+      "item_name": "grapes"
+    },
+    "purpose": "call fuzzy_search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Pomegranate Pavilion"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_7EpQHsj32kNUr7nLXfCAAs"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_xNJY8u84Jc2RqoCnbBTgBr"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "search_items_in_shop",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "item_name": "seedless"
+    },
+    "purpose": "call search_items_in_shop -> structured result"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_5BYBHiTLV3QRC8uXDcp33A"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_5BYBHiTLV3QRC8uXDcp33A",
+      "cnt": 10
+    },
+    "purpose": "call add_to_cart -> Added 10 × 'thompson seedless grape (1kg)' (ID: item_5BYBHiTLV3QRC8uXDcp33A) ..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 57126"
+  },
+  {
+    "tool": "wait_payment_password",
+    "args": {},
+    "purpose": "call wait_payment_password -> The user has entered the correct payment password."
+  },
+  {
+    "tool": "checkout_all",
+    "args": {},
+    "purpose": "call checkout_all -> Checkout successful. Transaction ID: trans_Eezd3HD8osr9kjAwwhbw3E."
+  }
+]

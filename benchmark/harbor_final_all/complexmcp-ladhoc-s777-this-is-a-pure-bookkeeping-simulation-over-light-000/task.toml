@@ -1,0 +1,75 @@
+schema_version = "1.0"
+
+[task]
+name = "complexmcp-ladhoc-s777-this-is-a-pure-bookkeeping-simulation-over-light-000"
+version = "1.0.0"
+description = "This is a PURE BOOKKEEPING SIMULATION over LightShop price data. You must NOT purchase anything, must NOT modify any shop, cart, or balance. You may only look up item prices (e.g. via list_items) and, at the very end, send exactly one message."
+keywords = ["mcp", "tool-use", "stateful", "complexmcp", "LightTalk", "LightShop", "LightWeather", "LightFlight", "LightStock", "LightNews", "messaging"]
+
+[task.metadata]
+source = "ComplexMCP (ATH-MaaS/complex-mcp, ICML 2026) — runs/ log (seed=777, level=adhoc)"
+level = "adhoc"
+seed = 777
+apps = ["LightTalk", "LightShop", "LightWeather", "LightFlight", "LightStock", "LightNews"]
+# Illustrative only (diagnostic); the agent discovers tools from the NL query.
+expected_tool_calls = "{\"get_shop_id_by_name\": {\"ok\": 4}, \"list_items\": {\"ok\": 4}, \"get_uid_from_name\": {\"ok\": 1}, \"send_message\": {\"internel error\": 2, \"failed\": 1, \"ok\": 1}, \"unblock\": {\"failed\": 1, \"ok\": 1}, \"ask_for_privilege\": {\"ok\": 1}, \"block\": {\"ok\": 1}}"
+gradeable = true
+gt_env_status = "generate with tests/gen_gt.py from the seed=777 initial dump (see tests/GT_GENERATION.md)"
+grading = "state-diff (Rc=recall/total, Rb=misbehave/total; pass iff Rc==1 and Rb==0)"
+
+[agent]
+timeout_sec = 1800
+network_mode = "allowlist"
+
+[verifier]
+timeout_sec = 300
+network_mode = "no-network"
+environment_mode = "shared"
+
+[environment]
+build_timeout_sec = 1800
+os = "linux"
+cpus = 2
+memory_mb = 4096
+docker_image = "complexmcp:latest"
+
+[environment.env]
+COMPLEXMCP_SEED = "777"
+COMPLEXMCP_APPS = "[\"LightTalk\", \"LightShop\", \"LightWeather\", \"LightFlight\", \"LightStock\", \"LightNews\"]"
+DUMP_URL = "http://localhost:8900/__dump__"
+
+[[environment.mcp_servers]]
+name = "LightTalk"
+transport = "sse"
+url = "http://localhost:8902/sse"
+
+[[environment.mcp_servers]]
+name = "LightShop"
+transport = "sse"
+url = "http://localhost:8903/sse"
+
+[[environment.mcp_servers]]
+name = "LightWeather"
+transport = "sse"
+url = "http://localhost:8904/sse"
+
+[[environment.mcp_servers]]
+name = "LightFlight"
+transport = "sse"
+url = "http://localhost:8905/sse"
+
+[[environment.mcp_servers]]
+name = "LightStock"
+transport = "sse"
+url = "http://localhost:8906/sse"
+
+[[environment.mcp_servers]]
+name = "LightNews"
+transport = "sse"
+url = "http://localhost:8907/sse"
+
+[environment.healthcheck]
+command = "curl -sf http://localhost:8900/__health__ || exit 1"
+interval_sec = 5
+timeout_sec = 3
+retries = 20

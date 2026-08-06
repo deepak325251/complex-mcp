@@ -1,0 +1,27 @@
+[
+  {
+    "tool": "search_flights",
+    "args": {
+      "departure": "San Francisco",
+      "arrival": "New York",
+      "date": "2027-02-27"
+    },
+    "purpose": "call search_flights (observed status: failed)"
+  },
+  {
+    "tool": "search_flights",
+    "args": {
+      "departure": "San Francisco",
+      "arrival": "New York",
+      "date": "2026-02-27"
+    },
+    "purpose": "call search_flights -> structured result"
+  },
+  {
+    "tool": "get_flight_details",
+    "args": {
+      "fid": "flight_WUqey8YVGFi6YMrZQrfM2t"
+    },
+    "purpose": "call get_flight_details -> structured result"
+  }
+]

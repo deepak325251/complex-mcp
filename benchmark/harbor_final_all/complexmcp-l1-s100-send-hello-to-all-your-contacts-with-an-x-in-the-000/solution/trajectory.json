@@ -1,0 +1,89 @@
+[
+  {
+    "tool": "get_all_contacts",
+    "args": {},
+    "purpose": "call get_all_contacts -> structured result"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_uDXUcfqTM65zASDGxQuQMj",
+      "content": "Hello"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Ximena Ramos (user_uDXUcfqTM65zASDG..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_qiQZk2HhpCRufEEAXZn7bu",
+      "content": "Hello"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Terry Cox (user_qiQZk2HhpCRufEEAXZn..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_hd5ErE8UdVynUhVkGWGQu7",
+      "content": "Hello"
+    },
+    "purpose": "call send_message (observed status: internel error)"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_hd5ErE8UdVynUhVkGWGQu7",
+      "content": "Hello"
+    },
+    "purpose": "call send_message (observed status: internel error)"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_hd5ErE8UdVynUhVkGWGQu7",
+      "content": "Hello"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Jace Hernandez (user_hd5ErE8UdVynUh..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_wv2dYs47diQVcZgWfQ73Kq",
+      "content": "Hello"
+    },
+    "purpose": "call send_message (observed status: failed)"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_wv2dYs47diQVcZgWfQ73Kq"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_wv2dYs47diQVcZgWfQ73Kq"
+    },
+    "purpose": "call unblock -> You have successfully unblocked contact Axel Mcdonald (user_wv2dYs47diQVcZgWf..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_wv2dYs47diQVcZgWfQ73Kq",
+      "content": "Hello"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Axel Mcdonald (user_wv2dYs47diQVcZg..."
+  },
+  {
+    "tool": "block",
+    "args": {
+      "uid": "user_wv2dYs47diQVcZgWfQ73Kq"
+    },
+    "purpose": "call block -> You have successfully blocked contact Axel Mcdonald (user_wv2dYs47diQVcZgWfQ7..."
+  }
+]

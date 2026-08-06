@@ -1,0 +1,50 @@
+schema_version = "1.0"
+
+[task]
+name = "complexmcp-l1-s8-please-help-me-purchase-1-kilogram-of-mangosteen-000"
+version = "1.0.0"
+description = "Please help me purchase 1 kilogram of mangosteen and 1 kilogram of mango."
+keywords = ["mcp", "tool-use", "stateful", "complexmcp", "LightShop", "shopping"]
+
+[task.metadata]
+source = "ComplexMCP (ATH-MaaS/complex-mcp, ICML 2026) — runs/ log (seed=8, level=1)"
+level = 1
+seed = 8
+apps = ["LightShop"]
+# Illustrative only (diagnostic); the agent discovers tools from the NL query.
+expected_tool_calls = "{\"search_items\": {\"ok\": 2}, \"get_shop_id_by_name\": {\"ok\": 1}, \"add_to_cart\": {\"ok\": 2}, \"get_cart_summary\": {\"ok\": 1}}"
+gradeable = true
+gt_env_status = "generate with tests/gen_gt.py from the seed=8 initial dump (see tests/GT_GENERATION.md)"
+grading = "state-diff (Rc=recall/total, Rb=misbehave/total; pass iff Rc==1 and Rb==0)"
+
+[agent]
+timeout_sec = 1800
+network_mode = "allowlist"
+
+[verifier]
+timeout_sec = 300
+network_mode = "no-network"
+environment_mode = "shared"
+
+[environment]
+build_timeout_sec = 1800
+os = "linux"
+cpus = 2
+memory_mb = 4096
+docker_image = "complexmcp:latest"
+
+[environment.env]
+COMPLEXMCP_SEED = "8"
+COMPLEXMCP_APPS = "[\"LightShop\"]"
+DUMP_URL = "http://localhost:8900/__dump__"
+
+[[environment.mcp_servers]]
+name = "LightShop"
+transport = "sse"
+url = "http://localhost:8903/sse"
+
+[environment.healthcheck]
+command = "curl -sf http://localhost:8900/__health__ || exit 1"
+interval_sec = 5
+timeout_sec = 3
+retries = 20

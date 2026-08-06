@@ -1,0 +1,35 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "MacBook Air"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 21444"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Watt Works"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_xc3j39hRCTieNYmVFVmP2a"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_xc3j39hRCTieNYmVFVmP2a",
+      "tid": "item_5CGS3BfR2sPrzi39xhSyYF",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'MacBook Air M2 (13-inch, 256GB)' (ID: item_5CGS3BfR2sPrzi39xhSyYF)..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

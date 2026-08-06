@@ -1,0 +1,125 @@
+[
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "family"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "create_group_chat",
+    "args": {
+      "uids": [
+        "user_ahk4cWuJocNedgjfqdueKT",
+        "user_Vu66c5HeZLzYTc7irfmjET",
+        "user_R83Lodqv7rFbXQKMLBX8Xu"
+      ]
+    },
+    "purpose": "call create_group_chat -> You have successfully created a group (GID=group_AAhKSLq5DRpeGcR8CFqUZS)"
+  },
+  {
+    "tool": "rename_group",
+    "args": {
+      "gid": "group_AAhKSLq5DRpeGcR8CFqUZS",
+      "name": "My Family"
+    },
+    "purpose": "call rename_group -> You have successfully renamed the group chat (GID=group_AAhKSLq5DRpeGcR8CFqUZ..."
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "AirPods"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "fuzzy_search_items",
+    "args": {
+      "item_name": "AirPods"
+    },
+    "purpose": "call fuzzy_search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Memory Market"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_Xj7GFzJU7B4JoKk7m4rfBN"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_Xj7GFzJU7B4JoKk7m4rfBN",
+      "tid": "item_E96r7mqt4Mm9PBqmpBSRgF",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'Apple AirPods Pro (2nd Gen)' (ID: item_E96r7mqt4Mm9PBqmpBSRgF) to ..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "delete_item_in_cart",
+    "args": {
+      "caid": "cart_vP6n7i6WD9ibKr29ug2yXo"
+    },
+    "purpose": "call delete_item_in_cart -> Removed item (ID: cart_vP6n7i6WD9ibKr29ug2yXo) from your cart."
+  },
+  {
+    "tool": "wait_payment_password",
+    "args": {},
+    "purpose": "call wait_payment_password -> The user has entered the correct payment password."
+  },
+  {
+    "tool": "checkout_all",
+    "args": {},
+    "purpose": "call checkout_all -> Checkout successful. Transaction ID: trans_d8z8aJGAMs6FvE4cSfQRGM."
+  },
+  {
+    "tool": "send_message_to_group",
+    "args": {
+      "gid": "group_AAhKSLq5DRpeGcR8CFqUZS",
+      "content": "I spent $222.04 to buy one AirPods"
+    },
+    "purpose": "call send_message_to_group (observed status: internel error)"
+  },
+  {
+    "tool": "send_message_to_group",
+    "args": {
+      "gid": "group_AAhKSLq5DRpeGcR8CFqUZS",
+      "content": "I spent $222.04 to buy one AirPods"
+    },
+    "purpose": "call send_message_to_group (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "send_message_to_group",
+    "args": {
+      "gid": "group_AAhKSLq5DRpeGcR8CFqUZS",
+      "content": "I spent $222.04 to buy one AirPods"
+    },
+    "purpose": "call send_message_to_group -> You have successfully sent one message to group chat (GID=group_AAhKSLq5DRpeG..."
+  }
+]

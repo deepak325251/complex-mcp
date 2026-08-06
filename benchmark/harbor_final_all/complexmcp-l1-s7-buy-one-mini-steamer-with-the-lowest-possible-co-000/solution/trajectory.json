@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "mini steamer"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Stand Mixer Spot"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_jKm2DQc3dNHDGFc6qH2w6h"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_jKm2DQc3dNHDGFc6qH2w6h",
+      "tid": "item_bw6sWTFzEEqAf2W4eWDDAy",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'Conair Travel Smart Mini Steamer' (ID: item_bw6sWTFzEEqAf2W4eWDDAy..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

@@ -1,0 +1,50 @@
+schema_version = "1.0"
+
+[task]
+name = "complexmcp-l1-s42-like-the-latest-post-in-jeremy-guzman-s-moments-000"
+version = "1.0.0"
+description = "Like the latest post in Jeremy Guzman's Moments on LightTalk."
+keywords = ["mcp", "tool-use", "stateful", "complexmcp", "LightTalk", "messaging"]
+
+[task.metadata]
+source = "ComplexMCP (ATH-MaaS/complex-mcp, ICML 2026) — runs/ log (seed=42, level=1)"
+level = 1
+seed = 42
+apps = ["LightTalk"]
+# Illustrative only (diagnostic); the agent discovers tools from the NL query.
+expected_tool_calls = "{\"get_uid_from_name\": {\"ok\": 1}, \"get_last_k_moments\": {\"ok\": 1}, \"like_moment\": {\"internel error\": 2, \"ok\": 1}, \"acc_network\": {\"ok\": 1}}"
+gradeable = true
+gt_env_status = "generate with tests/gen_gt.py from the seed=42 initial dump (see tests/GT_GENERATION.md)"
+grading = "state-diff (Rc=recall/total, Rb=misbehave/total; pass iff Rc==1 and Rb==0)"
+
+[agent]
+timeout_sec = 1800
+network_mode = "allowlist"
+
+[verifier]
+timeout_sec = 300
+network_mode = "no-network"
+environment_mode = "shared"
+
+[environment]
+build_timeout_sec = 1800
+os = "linux"
+cpus = 2
+memory_mb = 4096
+docker_image = "complexmcp:latest"
+
+[environment.env]
+COMPLEXMCP_SEED = "42"
+COMPLEXMCP_APPS = "[\"LightTalk\"]"
+DUMP_URL = "http://localhost:8900/__dump__"
+
+[[environment.mcp_servers]]
+name = "LightTalk"
+transport = "sse"
+url = "http://localhost:8902/sse"
+
+[environment.healthcheck]
+command = "curl -sf http://localhost:8900/__health__ || exit 1"
+interval_sec = 5
+timeout_sec = 3
+retries = 20

@@ -1,0 +1,101 @@
+[
+  {
+    "tool": "list_all_tags",
+    "args": {},
+    "purpose": "call list_all_tags -> structured result"
+  },
+  {
+    "tool": "get_contacts_by_tag",
+    "args": {
+      "tag": "classmates"
+    },
+    "purpose": "call get_contacts_by_tag -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_chat_history (observed status: internel error)"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_chat_history (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_H2x6jVmheVo7EhKbUYSkLi"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_yRXzfYRCNmdmDZvSh8ycFB"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_oRwWpJKbzVAYMZYTLChaFn"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "delete_contact",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call delete_contact (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "delete_contact",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call delete_contact -> You have successfully deleted the contact Paisley Lee (UID=user_DG7ntRdAwsypt..."
+  },
+  {
+    "tool": "delete_contact",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call delete_contact -> You have successfully deleted the contact Dennis Schmidt (UID=user_kZcEES3MgR..."
+  },
+  {
+    "tool": "delete_contact",
+    "args": {
+      "uid": "user_oRwWpJKbzVAYMZYTLChaFn"
+    },
+    "purpose": "call delete_contact -> You have successfully deleted the contact Stephanie Price (UID=user_oRwWpJKbz..."
+  }
+]

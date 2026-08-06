@@ -1,0 +1,90 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "grape"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 57126"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Pomegranate Pavilion"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_7EpQHsj32kNUr7nLXfCAAs"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_5BYBHiTLV3QRC8uXDcp33A"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_xNJY8u84Jc2RqoCnbBTgBr"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_5BYBHiTLV3QRC8uXDcp33A",
+      "cnt": 92
+    },
+    "purpose": "call add_to_cart -> Added 92 × 'thompson seedless grape (1kg)' (ID: item_5BYBHiTLV3QRC8uXDcp33A) ..."
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_xNJY8u84Jc2RqoCnbBTgBr",
+      "cnt": 55
+    },
+    "purpose": "call add_to_cart -> Added 55 × 'grape (1kg)' (ID: item_xNJY8u84Jc2RqoCnbBTgBr) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "checkout_all",
+    "args": {},
+    "purpose": "call checkout_all (observed status: failed)"
+  },
+  {
+    "tool": "wait_payment_password",
+    "args": {},
+    "purpose": "call wait_payment_password -> The user has entered the correct payment password."
+  },
+  {
+    "tool": "checkout_all",
+    "args": {},
+    "purpose": "call checkout_all -> Checkout successful. Transaction ID: trans_mKHtisvyTsMJcXTQvBYQ8g."
+  },
+  {
+    "tool": "star_item",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs",
+      "tid": "item_5BYBHiTLV3QRC8uXDcp33A"
+    },
+    "purpose": "call star_item -> You have successfully starred the item 'thompson seedless grape (1kg)' (ID: i..."
+  },
+  {
+    "tool": "star_shop",
+    "args": {
+      "sid": "shop_7EpQHsj32kNUr7nLXfCAAs"
+    },
+    "purpose": "call star_shop -> You have successfully starred the shop Pomegranate Pavilion (shop_7EpQHsj32kN..."
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Jeremy Guzman"
+    },
+    "purpose": "call get_uid_from_name -> user_KE9GL2kCPiWqo6s43vsaai"
+  },
+  {
+    "tool": "get_last_k_moments",
+    "args": {
+      "uid": "user_KE9GL2kCPiWqo6s43vsaai",
+      "k": 1
+    },
+    "purpose": "call get_last_k_moments -> structured result"
+  },
+  {
+    "tool": "like_moment",
+    "args": {
+      "uid": "user_KE9GL2kCPiWqo6s43vsaai",
+      "moid": "mo_nnvT3VWCvjXnAspwg9jUiX"
+    },
+    "purpose": "call like_moment (observed status: internel error)"
+  },
+  {
+    "tool": "like_moment",
+    "args": {
+      "uid": "user_KE9GL2kCPiWqo6s43vsaai",
+      "moid": "mo_nnvT3VWCvjXnAspwg9jUiX"
+    },
+    "purpose": "call like_moment (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "like_moment",
+    "args": {
+      "uid": "user_KE9GL2kCPiWqo6s43vsaai",
+      "moid": "mo_nnvT3VWCvjXnAspwg9jUiX"
+    },
+    "purpose": "call like_moment -> You have successfully liked the moment (MOID=mo_nnvT3VWCvjXnAspwg9jUiX) of co..."
+  }
+]

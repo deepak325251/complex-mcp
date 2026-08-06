@@ -1,0 +1,74 @@
+[
+  {
+    "tool": "fuzzy_search_uids_from_name",
+    "args": {
+      "name": "Dennis"
+    },
+    "purpose": "call fuzzy_search_uids_from_name -> structured result"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_contact_info -> structured result"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_Rx3PTxr7hZyNQC8rTfec3n"
+    },
+    "purpose": "call get_contact_info -> structured result"
+  },
+  {
+    "tool": "edit_remark",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4",
+      "remark": "Boyfriend"
+    },
+    "purpose": "call edit_remark (observed status: internel error)"
+  },
+  {
+    "tool": "edit_remark",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4",
+      "remark": "Boyfriend"
+    },
+    "purpose": "call edit_remark (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "edit_remark",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4",
+      "remark": "Boyfriend"
+    },
+    "purpose": "call edit_remark -> The remark for contact Dennis Schmidt (UID=user_kZcEES3MgRBU9d3Qa3e9U4) has b..."
+  },
+  {
+    "tool": "get_shared_url_of_contact",
+    "args": {
+      "uid": "user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call get_shared_url_of_contact -> light://contact.talk.so?uid=user_kZcEES3MgRBU9d3Qa3e9U4"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Jonah Palmer"
+    },
+    "purpose": "call get_uid_from_name -> user_mUfvCbeW7MLgrLhJwpZTKL"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_mUfvCbeW7MLgrLhJwpZTKL",
+      "content": "Here is the contact sharing link for Dennis: light://contact.talk.so?uid=user_kZcEES3MgRBU9d3Qa3e9U4"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Jonah Palmer (user_mUfvCbeW7MLgrLhJ..."
+  }
+]

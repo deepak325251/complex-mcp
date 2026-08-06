@@ -1,0 +1,25 @@
+[
+  {
+    "tool": "gcd",
+    "args": {
+      "a": 121312,
+      "b": 123178
+    },
+    "purpose": "call gcd -> 2"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Hayden Parker"
+    },
+    "purpose": "call get_uid_from_name -> user_iFQgKLk6Uzz6EHwttPAqic"
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_iFQgKLk6Uzz6EHwttPAqic",
+      "content": "2"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Hayden Parker (user_iFQgKLk6Uzz6EHw..."
+  }
+]

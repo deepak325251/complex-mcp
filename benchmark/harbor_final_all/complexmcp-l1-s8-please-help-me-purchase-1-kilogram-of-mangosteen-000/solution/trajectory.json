@@ -1,0 +1,46 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "mangosteen"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "mango"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Lychee Loft"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_tYG5KZRcgLYPem85pfB3W3"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_tYG5KZRcgLYPem85pfB3W3",
+      "tid": "item_tRNyokGpcqNnoQfnzvn9ch",
+      "cnt": 2
+    },
+    "purpose": "call add_to_cart -> Added 2 × 'mangosteen (500g)' (ID: item_tRNyokGpcqNnoQfnzvn9ch) to your cart."
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_tYG5KZRcgLYPem85pfB3W3",
+      "tid": "item_Tny3JvLUZHN4ZCJsiv6iau",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'mango (1kg)' (ID: item_Tny3JvLUZHN4ZCJsiv6iau) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

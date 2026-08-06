@@ -1,0 +1,38 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "mouse"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Watt Works"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_xc3j39hRCTieNYmVFVmP2a"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_xc3j39hRCTieNYmVFVmP2a",
+      "tid": "item_hxgWkfSZbi3SKPUfv7LLHu"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_xc3j39hRCTieNYmVFVmP2a",
+      "tid": "item_hxgWkfSZbi3SKPUfv7LLHu",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'Logitech MX Master 3S Mouse' (ID: item_hxgWkfSZbi3SKPUfv7LLHu) to ..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

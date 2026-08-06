@@ -1,0 +1,30 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "mint"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Leafy Greens Market"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_4RdGCWuFGhFGGDX9gWsP5f"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_4RdGCWuFGhFGGDX9gWsP5f",
+      "tid": "item_CYHminXGvXPJQipVjETNKN",
+      "cnt": 2
+    },
+    "purpose": "call add_to_cart -> Added 2 × 'mint (50g)' (ID: item_CYHminXGvXPJQipVjETNKN) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  }
+]

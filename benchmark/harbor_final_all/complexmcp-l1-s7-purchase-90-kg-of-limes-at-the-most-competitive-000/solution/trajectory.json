@@ -1,0 +1,107 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "lime"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Peach Paradise"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_NxgX7PQZatxVTdzMYpBLyq"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_NxgX7PQZatxVTdzMYpBLyq",
+      "tid": "item_rV3rXfstL2qu8GEixDMrUD"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Date Depot"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_7yo44FwEgwevGA3m7yiCpB"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB",
+      "tid": "item_nVCxqZBBnFGxBM7e9hVVi2"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_NxgX7PQZatxVTdzMYpBLyq",
+      "tid": "item_rV3rXfstL2qu8GEixDMrUD",
+      "cnt": 60
+    },
+    "purpose": "call add_to_cart -> Added 60 × 'lime (1kg)' (ID: item_rV3rXfstL2qu8GEixDMrUD) to your cart."
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_7yo44FwEgwevGA3m7yiCpB",
+      "tid": "item_nVCxqZBBnFGxBM7e9hVVi2",
+      "cnt": 30
+    },
+    "purpose": "call add_to_cart -> Added 30 × 'lime (1kg)' (ID: item_nVCxqZBBnFGxBM7e9hVVi2) to your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_XeqtPzQjqNRNMRr5zoZeKm",
+      "tid": "item_WkpjPiDd2CBNk3s7xxdqwT"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "get_item_info",
+    "args": {
+      "sid": "shop_XeqtPzQjqNRNMRr5zoZeKm",
+      "tid": "item_2NnggV7qmVaoWVVjjMnPgP"
+    },
+    "purpose": "call get_item_info -> structured result"
+  },
+  {
+    "tool": "delete_item_in_cart",
+    "args": {
+      "caid": "cart_A75LCUeJ8mPfp5avEwhbym"
+    },
+    "purpose": "call delete_item_in_cart -> Removed item (ID: cart_A75LCUeJ8mPfp5avEwhbym) from your cart."
+  },
+  {
+    "tool": "delete_item_in_cart",
+    "args": {
+      "caid": "cart_X7M5Px84kFZatHvqMLJdcw"
+    },
+    "purpose": "call delete_item_in_cart -> Removed item (ID: cart_X7M5Px84kFZatHvqMLJdcw) from your cart."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "check_balance",
+    "args": {},
+    "purpose": "call check_balance -> 37933"
+  },
+  {
+    "tool": "wait_payment_password",
+    "args": {},
+    "purpose": "call wait_payment_password (observed status: internal error)"
+  }
+]

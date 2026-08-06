@@ -1,0 +1,47 @@
+[
+  {
+    "tool": "search_items",
+    "args": {
+      "item_name": "Apple Watch Series 9"
+    },
+    "purpose": "call search_items -> structured result"
+  },
+  {
+    "tool": "get_shop_id_by_name",
+    "args": {
+      "shop_name": "Dynamic Motion"
+    },
+    "purpose": "call get_shop_id_by_name -> shop_F9tbWPqzJayndNBa2SdQpE"
+  },
+  {
+    "tool": "add_to_cart",
+    "args": {
+      "sid": "shop_F9tbWPqzJayndNBa2SdQpE",
+      "tid": "item_FUEG2aENFEPakyBf7EyjVg",
+      "cnt": 1
+    },
+    "purpose": "call add_to_cart -> Added 1 × 'Apple Watch Series 9 GPS + Cellular' (ID: item_FUEG2aENFEPakyBf7Ey..."
+  },
+  {
+    "tool": "get_cart_summary",
+    "args": {},
+    "purpose": "call get_cart_summary -> structured result"
+  },
+  {
+    "tool": "wait_payment_password",
+    "args": {},
+    "purpose": "call wait_payment_password -> The user has entered the correct payment password."
+  },
+  {
+    "tool": "checkout_all",
+    "args": {},
+    "purpose": "call checkout_all -> Checkout successful. Transaction ID: trans_Eezd3HD8osr9kjAwwhbw3E."
+  },
+  {
+    "tool": "delete_trans_history",
+    "args": {
+      "trid": "trans_Eezd3HD8osr9kjAwwhbw3E"
+    },
+    "purpose": "call delete_trans_history -> You have successfully deleted one transaction history (TRID=trans_Eezd3HD8osr..."
+  }
+]

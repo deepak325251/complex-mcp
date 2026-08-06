@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Deborah Collins"
+    },
+    "purpose": "call get_uid_from_name -> user_gaEhmBck8px83KgxQi6hd7"
+  },
+  {
+    "tool": "delete_chat_history",
+    "args": {
+      "uid": "user_gaEhmBck8px83KgxQi6hd7"
+    },
+    "purpose": "call delete_chat_history -> The chat history with Deborah Collins (user_gaEhmBck8px83KgxQi6hd7) has been ..."
+  }
+]

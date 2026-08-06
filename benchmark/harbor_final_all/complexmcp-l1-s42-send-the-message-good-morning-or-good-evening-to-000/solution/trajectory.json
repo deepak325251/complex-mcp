@@ -1,0 +1,88 @@
+[
+  {
+    "tool": "now",
+    "args": {},
+    "purpose": "call now -> 2026-09-06 07:53:23"
+  },
+  {
+    "tool": "get_uid_from_name",
+    "args": {
+      "name": "Paisley"
+    },
+    "purpose": "call get_uid_from_name (observed status: failed)"
+  },
+  {
+    "tool": "fuzzy_search_uids_from_name",
+    "args": {
+      "name": "Paisley"
+    },
+    "purpose": "call fuzzy_search_uids_from_name -> structured result"
+  },
+  {
+    "tool": "get_contact_info",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call get_contact_info -> structured result"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call get_chat_history (observed status: internel error)"
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call get_chat_history (observed status: internel error)"
+  },
+  {
+    "tool": "acc_network",
+    "args": {},
+    "purpose": "call acc_network -> You have successfully accelerated the network for the LightTalk app."
+  },
+  {
+    "tool": "get_chat_history",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call get_chat_history -> structured result"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call unblock (observed status: failed)"
+  },
+  {
+    "tool": "ask_for_privilege",
+    "args": {},
+    "purpose": "call ask_for_privilege -> You have successfully got the privilege"
+  },
+  {
+    "tool": "unblock",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call unblock -> You have successfully unblocked contact Paisley Lee (user_DG7ntRdAwsypt3jLwos..."
+  },
+  {
+    "tool": "send_message",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn",
+      "content": "Good morning"
+    },
+    "purpose": "call send_message -> You have successfully sent one message to Paisley Lee (user_DG7ntRdAwsypt3jLw..."
+  },
+  {
+    "tool": "block",
+    "args": {
+      "uid": "user_DG7ntRdAwsypt3jLwospHn"
+    },
+    "purpose": "call block -> You have successfully blocked contact Paisley Lee (user_DG7ntRdAwsypt3jLwospHn)"
+  }
+]

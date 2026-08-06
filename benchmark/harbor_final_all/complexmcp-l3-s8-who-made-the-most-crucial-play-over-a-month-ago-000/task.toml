@@ -1,0 +1,60 @@
+schema_version = "1.0"
+
+[task]
+name = "complexmcp-l3-s8-who-made-the-most-crucial-play-over-a-month-ago-000"
+version = "1.0.0"
+description = "Who made the most crucial play over a month ago in LightTown High Football's homecoming game? Send his name to contact Judy Bailey on the LightTalk app. Also, I’d like to eat some endive tonight—please buy 0.5 kg for me."
+keywords = ["mcp", "tool-use", "stateful", "complexmcp", "LightTalk", "LightShop", "LightNews", "messaging"]
+
+[task.metadata]
+source = "ComplexMCP (ATH-MaaS/complex-mcp, ICML 2026) — runs/ log (seed=8, level=3)"
+level = 3
+seed = 8
+apps = ["LightTalk", "LightShop", "LightNews"]
+# Illustrative only (diagnostic); the agent discovers tools from the NL query.
+expected_tool_calls = "{\"list_all_sections\": {\"ok\": 1}, \"search\": {\"ok\": 2}, \"get_details\": {\"ok\": 1}, \"get_uid_from_name\": {\"internel error\": 1, \"ok\": 1}, \"send_message\": {\"ok\": 1}, \"search_items\": {\"ok\": 1}, \"get_shop_id_by_name\": {\"ok\": 1}, \"add_to_cart\": {\"ok\": 1}, \"get_cart_summary\": {\"ok\": 1}}"
+gradeable = true
+gt_env_status = "generate with tests/gen_gt.py from the seed=8 initial dump (see tests/GT_GENERATION.md)"
+grading = "state-diff (Rc=recall/total, Rb=misbehave/total; pass iff Rc==1 and Rb==0)"
+
+[agent]
+timeout_sec = 1800
+network_mode = "allowlist"
+
+[verifier]
+timeout_sec = 300
+network_mode = "no-network"
+environment_mode = "shared"
+
+[environment]
+build_timeout_sec = 1800
+os = "linux"
+cpus = 2
+memory_mb = 4096
+docker_image = "complexmcp:latest"
+
+[environment.env]
+COMPLEXMCP_SEED = "8"
+COMPLEXMCP_APPS = "[\"LightTalk\", \"LightShop\", \"LightNews\"]"
+DUMP_URL = "http://localhost:8900/__dump__"
+
+[[environment.mcp_servers]]
+name = "LightTalk"
+transport = "sse"
+url = "http://localhost:8902/sse"
+
+[[environment.mcp_servers]]
+name = "LightShop"
+transport = "sse"
+url = "http://localhost:8903/sse"
+
+[[environment.mcp_servers]]
+name = "LightNews"
+transport = "sse"
+url = "http://localhost:8907/sse"
+
+[environment.healthcheck]
+command = "curl -sf http://localhost:8900/__health__ || exit 1"
+interval_sec = 5
+timeout_sec = 3
+retries = 20
