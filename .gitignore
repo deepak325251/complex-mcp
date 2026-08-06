@@ -3,6 +3,12 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Benchmark run artifacts
+runs/
+
+# Serena IDE metadata
+.serena/
+
 # C extensions
 *.so
 
