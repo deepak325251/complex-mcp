@@ -1,0 +1,56 @@
+services:
+  servers:
+    image: complexmcp:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: bash start_servers.sh
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 8000), 2).close()"]
+      interval: 5s
+      retries: 60
+      start_period: 20s
+    networks: [complexmcp-net]
+
+  software:
+    image: complexmcp:latest
+    command: bash start_softwares.sh
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 9000), 2).close()"]
+      interval: 5s
+      retries: 120
+      start_period: 60s
+    networks: [complexmcp-net]
+
+  runner:
+    image: complexmcp:latest
+    command:
+      - python
+      - run_benchmark.py
+      - -m
+      - ${MODEL:-claude-opus-4-8}
+      - --method
+      - ${METHOD:-rag}
+      - -t
+      - config/general.docker.yaml
+      - --source
+      - harbor
+      - --tasks-dir
+      - benchmark/harbor_final_all
+      - --limit
+      - "${LIMIT:-4}"
+    environment:
+      - CLAUDE_FORCE_OAUTH=1
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:?set CLAUDE_CODE_OAUTH_TOKEN in your env or .env}
+    volumes:
+      - ../runs:/app/runs
+    depends_on:
+      servers:
+        condition: service_healthy
+      software:
+        condition: service_healthy
+    networks: [complexmcp-net]
+
+networks:
+  complexmcp-net:
+    driver: bridge
