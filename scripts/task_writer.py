@@ -2,8 +2,15 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from benchmark.classify_failure import classify, parse_expected_tools  # noqa: E402
 
 
 _TOOL_RE = re.compile(r"<tool>\s*(\{.*?\})\s*</tool>", re.DOTALL)
@@ -101,7 +108,8 @@ def render_output_md(record: dict, traj: dict) -> str:
 
 
 def write_task_dir(tasks_root: Path, record: dict, *,
-                   score: dict | None = None) -> Path:
+                   score: dict | None = None,
+                   task_context: dict | None = None) -> tuple[Path, dict]:
     slug = _slug(record["name"])
     task_dir = tasks_root / f"task_{record['index']:03d}__{slug}"
     task_dir.mkdir(parents=True, exist_ok=True)
@@ -132,6 +140,21 @@ def write_task_dir(tasks_root: Path, record: dict, *,
             "misbehave": None,
             "total": None,
         }
+
+    passed = bool(score.get("passed", False))
+    if not passed:
+        ctx = dict(task_context or {})
+        if "expected_tools" not in ctx and record.get("expected_tool_calls"):
+            ctx["expected_tools"] = parse_expected_tools(record.get("expected_tool_calls"))
+        verdict = classify(
+            trajectory=traj,
+            tool_summary=tool_summary,
+            score=score,
+            task_context=ctx,
+            final_message=traj.get("final_message"),
+        )
+        score = {**score, **verdict.to_dict()}
+
     (task_dir / "score.json").write_text(json.dumps(score, indent=2))
 
-    return task_dir
+    return task_dir, score

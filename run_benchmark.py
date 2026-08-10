@@ -1,7 +1,8 @@
 from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
 from benchmark.judge import judge_env
-from scripts.task_writer import write_task_dir
+from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
+from scripts.task_writer import write_task_dir, parse_trajectory
 from dotenv import load_dotenv
 from argparse import ArgumentParser
 from prompt_toolkit import prompt
@@ -15,6 +16,7 @@ import os
 import re
 import yaml
 import asyncio
+from collections import Counter
 from datetime import datetime
 
 import pandas as pd
@@ -155,6 +157,12 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             except json.JSONDecodeError:
                 gt_tool_cnt = None
         provide_tools = list(gt_tool_cnt.keys()) if gt_tool_cnt else None
+        stump_levers = meta.get("stump_levers") or []
+        if isinstance(stump_levers, str):
+            try:
+                stump_levers = json.loads(stump_levers)
+            except json.JSONDecodeError:
+                stump_levers = [stump_levers]
         out.append({
             "name": info["task"]["name"],
             "query": query,
@@ -164,6 +172,10 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             "gt_env": gt_env,
             "gt_tool_cnt": gt_tool_cnt,
             "provide_tools": provide_tools,
+            "stump_levers": list(stump_levers),
+            "capability_level": meta.get("capability_level"),
+            "expected_tool_calls": meta.get("expected_tool_calls"),
+            "task_dir": str(td),
         })
     return out
 
@@ -338,6 +350,20 @@ def main(args):
                     "new_env": new_env,
                     "gt_tool_cnt": gt_tool_cnt,
                 }
+            rubric_path = find_rubric_for_task(task_info.get("task_dir"))
+            if rubric_path is not None:
+                try:
+                    rubric = load_rubric(rubric_path)
+                    parsed_traj = parse_trajectory(result.get("output", ""))
+                    rubric_result = evaluate_rubric(rubric, parsed_traj, score)
+                    score["rubric_score"] = rubric_result["rubric_score"]
+                    score["rubric_per_check"] = rubric_result["per_check"]
+                    score["rubric_path"] = str(rubric_path)
+                    print(f"[rubric] {rubric_path.name}: {rubric_result['rubric_score']:.2f}")
+                except (ValueError, KeyError) as exc:
+                    score["rubric_error"] = f"{type(exc).__name__}: {exc}"
+                    print(f"[rubric] SKIP {rubric_path.name}: {exc}")
+
             record = {
                 "index": i + 1,
                 "name": episode_name,
@@ -351,8 +377,17 @@ def main(args):
                 "invalid_tool_calls": ep_invalid,
                 "error_tool_calls": ep_error,
                 "output": result.get("output", ""),
+                "expected_tool_calls": task_info.get("expected_tool_calls"),
             }
-            task_dir = write_task_dir(tasks_dir, record, score=score)
+            task_context = {
+                "expected_tools": list(gt_tool_cnt.keys()) if gt_tool_cnt else None,
+                "stump_levers": task_info.get("stump_levers") or [],
+                "capability_level": task_info.get("capability_level"),
+                "apps": apps,
+            }
+            task_dir, final_score = write_task_dir(
+                tasks_dir, record, score=score, task_context=task_context
+            )
             per_episode.append({
                 "index": i + 1,
                 "name": episode_name,
@@ -365,6 +400,8 @@ def main(args):
                 "error_tool_calls": ep_error,
                 "tokens": tokens,
                 "dir": str(task_dir.relative_to(run_dir)),
+                "failure_class": final_score.get("failure_class"),
+                "failure_reason": final_score.get("reason"),
             })
 
     avg_recall_rate /= len(tasks_list)
@@ -447,16 +484,33 @@ def main(args):
             "",
             "## Per-episode",
             "",
-            "| # | Seed | Passed | Recall / Total | Misbehave | Valid TC | Invalid TC | Dir |",
-            "|---|---|---|---|---|---|---|---|",
+            "| # | Seed | Passed | Recall / Total | Misbehave | Valid TC | Invalid TC | Failure | Dir |",
+            "|---|---|---|---|---|---|---|---|---|",
         ]
         for ep in per_episode:
             j = ep["judge"]
+            fc = ep.get("failure_class") or ""
             report_lines.append(
                 f"| {ep['index']} | {ep['seed']} | {'✓' if ep['passed'] else '✗'} "
                 f"| {j['recall']} / {j['total']} | {j['misbehave']} "
-                f"| {ep['valid_tool_calls']} | {ep['invalid_tool_calls']} | `{ep['dir']}` |"
+                f"| {ep['valid_tool_calls']} | {ep['invalid_tool_calls']} "
+                f"| `{fc}` | `{ep['dir']}` |"
             )
+
+        failure_counts = Counter(
+            ep.get("failure_class") for ep in per_episode
+            if ep.get("failure_class") and ep.get("failure_class") != "unknown"
+        )
+        if failure_counts:
+            report_lines += [
+                "",
+                "## Failure breakdown",
+                "",
+                "| Failure class | Count |",
+                "|---|---|",
+            ]
+            for fc, count in failure_counts.most_common():
+                report_lines.append(f"| `{fc}` | {count} |")
         report_path = run_dir / "report.md"
         with open(report_path, "w") as f:
             f.write("\n".join(report_lines) + "\n")

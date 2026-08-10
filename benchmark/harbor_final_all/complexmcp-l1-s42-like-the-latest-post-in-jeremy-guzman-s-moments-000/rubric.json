@@ -1,0 +1,33 @@
+{
+  "task": "Like the latest post in Jeremy Guzman's Moments on LightTalk",
+  "checks": [
+    {
+      "check_id": "resolved_uid_by_name",
+      "weight": 0.2,
+      "check_type": "tool_called",
+      "tool_name": "get_uid_from_name",
+      "min_calls": 1
+    },
+    {
+      "check_id": "fetched_latest_moments",
+      "weight": 0.25,
+      "check_type": "tool_called",
+      "tool_name": "get_last_k_moments",
+      "min_calls": 1
+    },
+    {
+      "check_id": "liked_moment",
+      "weight": 0.4,
+      "check_type": "tool_called",
+      "tool_name": "like_moment",
+      "min_calls": 1
+    },
+    {
+      "check_id": "no_extra_writes",
+      "weight": 0.15,
+      "check_type": "state_predicate",
+      "predicate": "misbehave_leq",
+      "value": 0
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "task": "Send 'Good morning' or 'Good evening' to classmate Paisley (time-conditional)",
+  "checks": [
+    {
+      "check_id": "resolved_uid_by_name",
+      "weight": 0.2,
+      "check_type": "tool_called",
+      "tool_name": "get_uid_from_name",
+      "min_calls": 1
+    },
+    {
+      "check_id": "checked_current_time",
+      "weight": 0.15,
+      "check_type": "tool_called",
+      "tool_name": "get_current_time",
+      "min_calls": 1
+    },
+    {
+      "check_id": "sent_message",
+      "weight": 0.4,
+      "check_type": "tool_called",
+      "tool_name": "send_message",
+      "min_calls": 1
+    },
+    {
+      "check_id": "recall_full",
+      "weight": 0.15,
+      "check_type": "state_predicate",
+      "predicate": "recall_geq",
+      "value": 1
+    },
+    {
+      "check_id": "no_extra_writes",
+      "weight": 0.1,
+      "check_type": "state_predicate",
+      "predicate": "misbehave_leq",
+      "value": 0
+    }
+  ]
+}
