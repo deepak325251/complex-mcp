@@ -9,10 +9,10 @@ WORK_DIR = Path('.').__str__()
 if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
-from converted_software.utils.core import OSConnector, DummyOSConnector
-from converted_software.utils.time import TimeMachine
+from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.time import TimeMachine
 
-CORPUS_PATH = Path("converted_software") / "instacart" / "corpus"
+CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
 
 _TRUE_TOKENS = {"true", "1", "yes"}
 _FALSE_TOKENS = {"false", "0", "no"}

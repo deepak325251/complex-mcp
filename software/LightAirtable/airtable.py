@@ -10,10 +10,10 @@ WORK_DIR = Path('.').__str__()
 if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
-from converted_software.utils.core import OSConnector, DummyOSConnector
-from converted_software.utils.time import TimeMachine
+from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.time import TimeMachine
 
-CORPUS_PATH = Path("converted_software") / "airtable" / "corpus"
+CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
 
 
 def _to_bool(v) -> bool:

@@ -11,10 +11,10 @@ WORK_DIR = Path('.').__str__()
 if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
-from converted_software.utils.core import OSConnector, DummyOSConnector
-from converted_software.utils.time import TimeMachine
+from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.time import TimeMachine
 
-CORPUS_PATH = Path("converted_software") / "google_maps" / "corpus"
+CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
 
 EARTH_RADIUS_M = 6371000.0  # mean Earth radius in meters
 WALK_SPEED_MPS = 1.39       # ~5 km/h
