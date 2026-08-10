@@ -180,17 +180,30 @@ def _next_run_number(model_dir: Path) -> int:
     return (max(nums) + 1) if nums else 1
 
 
+_GT_FILES = (
+    "expected_state.json",
+    "gold_plan.json",
+    "initial_state.json",
+    "judge_spec.json",
+    "gt_env.json",
+)
+
+
 def _write_ground_truth(trials_dir: Path, task_dir_source: str | Path | None) -> None:
     if not task_dir_source:
         return
-    src = Path(task_dir_source) / "tests" / "gt_env.json"
-    if not src.exists():
+    tests_dir = Path(task_dir_source) / "tests"
+    if not tests_dir.exists():
         return
     gt_dir = trials_dir / "ground_truth"
-    gt_dir.mkdir(parents=True, exist_ok=True)
-    dest = gt_dir / "gt_env.json"
-    if not dest.exists():
-        dest.write_text(src.read_text())
+    for name in _GT_FILES:
+        src = tests_dir / name
+        if not src.exists():
+            continue
+        gt_dir.mkdir(parents=True, exist_ok=True)
+        dest = gt_dir / name
+        if not dest.exists():
+            dest.write_text(src.read_text())
 
 
 def _write_rubric_json(run_dir: Path, rubric_result: dict | None) -> None:

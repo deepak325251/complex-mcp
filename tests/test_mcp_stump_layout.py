@@ -117,18 +117,30 @@ def test_write_mcp_stump_run_emits_rubric_detail_ctrf(tmp_path: Path):
 
 
 def test_write_mcp_stump_run_copies_ground_truth(tmp_path: Path):
+    # Literal list (not task_writer._GT_FILES) so a typo in the source tuple
+    # is caught rather than mirrored on both sides.
+    gt_files = (
+        "expected_state.json",
+        "gold_plan.json",
+        "initial_state.json",
+        "judge_spec.json",
+        "gt_env.json",
+    )
     task_dir_source = tmp_path / "src_task"
     (task_dir_source / "tests").mkdir(parents=True)
-    (task_dir_source / "tests" / "gt_env.json").write_text('{"k":"v"}')
+    for name in gt_files:
+        (task_dir_source / "tests" / name).write_text(json.dumps({"k": name}))
     output_root = tmp_path / "out"
     rec = _record()
     score = {"gradeable": True, "reward": 1.0, "recall": 1, "total": 1,
              "misbehave": 0, "passed": True}
     run_dir, _ = write_mcp_stump_run(output_root, rec, model="claude-opus-4-8",
                                      score=score, task_dir_source=str(task_dir_source))
-    gt = run_dir.parent.parent.parent / "ground_truth" / "gt_env.json"
-    assert gt.exists()
-    assert json.loads(gt.read_text()) == {"k": "v"}
+    gt_dir = run_dir.parent.parent.parent / "ground_truth"
+    for name in gt_files:
+        gt = gt_dir / name
+        assert gt.exists(), f"{name} was not copied"
+        assert json.loads(gt.read_text()) == {"k": name}
 
 
 def test_write_trials_aggregate_writes_summary_pairs_failures(tmp_path: Path):
