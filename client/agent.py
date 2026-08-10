@@ -369,23 +369,39 @@ class ClaudeCodeBackend(ChatBackend):
             "--dangerously-skip-permissions",
         ]
 
-        # Inline system prompt via stdin: `--system-prompt <huge>` hits OS ARG_MAX (silent exit-1 with 500+ tools).
+        # Write system prompt to a tempfile and reference via --system-prompt-file.
+        # Inline `--system-prompt <huge>` hits OS ARG_MAX (~256KB on macOS) → silent exit-1.
+        # Prior workaround (inline via stdin) made claude treat the system prompt as USER input,
+        # causing Opus to refuse the <tool>{...}</tool> protocol as "pasted transcript".
+        system_prompt_file = None
         if system_prompt:
-            stdin_input = f"{system_prompt}\n\n{prompt}"
-        else:
-            stdin_input = prompt
-
-        proc = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdin=asyncio.subprocess.PIPE,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        stdout_b, stderr_b = await proc.communicate(stdin_input.encode("utf-8"))
-        if proc.returncode != 0:
-            raise RuntimeError(
-                f"`claude` exited {proc.returncode}: {stderr_b.decode('utf-8', errors='replace')[:1000]}"
+            import tempfile
+            tf = tempfile.NamedTemporaryFile(
+                "w", suffix=".txt", delete=False, encoding="utf-8"
             )
+            tf.write(system_prompt)
+            tf.close()
+            system_prompt_file = tf.name
+            cmd += ["--system-prompt-file", system_prompt_file]
+
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdin=asyncio.subprocess.PIPE,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            stdout_b, stderr_b = await proc.communicate(prompt.encode("utf-8"))
+            if proc.returncode != 0:
+                raise RuntimeError(
+                    f"`claude` exited {proc.returncode}: {stderr_b.decode('utf-8', errors='replace')[:1000]}"
+                )
+        finally:
+            if system_prompt_file:
+                try:
+                    os.unlink(system_prompt_file)
+                except OSError:
+                    pass
 
         try:
             data = json.loads(stdout_b.decode("utf-8"))
