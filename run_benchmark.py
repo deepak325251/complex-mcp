@@ -2,7 +2,7 @@ from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
 from benchmark.judge import judge_env
 from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
-from scripts.task_writer import write_task_dir, parse_trajectory
+from scripts.task_writer import write_task_dir, write_mcp_stump_run, write_trials_aggregate, parse_trajectory as _parse_traj_for_layout, parse_trajectory
 from dotenv import load_dotenv
 from argparse import ArgumentParser
 from prompt_toolkit import prompt
@@ -29,6 +29,7 @@ def parse_toolbox(tool_config_path: str | Path, method: str, rag_conf: Dict = {}
         config["servers"] = data["servers"]
 
     toolbox = Toolbox(method=method) if method not in ["rag", "fetch"] else Toolbox(method=method, rag_cls=ChromaRAG, default_k=rag_conf["topk"])
+    skipped = []
     for server in config["servers"]:
         if not server["use"]: continue
         server_args = {
@@ -37,8 +38,12 @@ def parse_toolbox(tool_config_path: str | Path, method: str, rag_conf: Dict = {}
             "desc_path": server.get("desc"),
             "use_sandbox": server.get("use_sandbox", False)
         }
-        toolbox.register_server(**server_args)
-    
+        try:
+            toolbox.register_server(**server_args)
+        except Exception as exc:
+            skipped.append((server["name"], type(exc).__name__))
+    if skipped:
+        print(f"[toolbox] skipped {len(skipped)} unreachable server(s): " + ", ".join(f"{n}({e})" for n, e in skipped[:5]) + (" ..." if len(skipped) > 5 else ""))
     return toolbox
 
 def add_data(query_result: Dict[str, Any]):
@@ -127,7 +132,7 @@ def _load_parquet_tasks(path: Path, task_name: str | None, limit: int) -> list[d
 def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> list[dict]:
     import tomllib
     task_dirs = sorted([d for d in dir_path.iterdir()
-                        if d.is_dir() and d.name.startswith("complexmcp")])
+                        if d.is_dir() and (d / "task.toml").exists()])
     if task_name:
         task_dirs = [d for d in task_dirs
                      if d.name == task_name or d.name.startswith(task_name)]
@@ -137,7 +142,7 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
     for td in task_dirs:
         with open(td / "task.toml", "rb") as f:
             info = tomllib.load(f)
-        meta = info["task"].get("metadata", {})
+        meta = info.get("task", {}).get("metadata", {}) or info.get("metadata", {})
         apps = meta.get("apps", [])
         if isinstance(apps, str):
             apps = json.loads(apps)
@@ -248,17 +253,25 @@ def main(args):
     llm_tokens = 0
     tool_tokens = 0
 
-    output_dir = getattr(args, "output_dir", "runs") or ""
+    layout = getattr(args, "layout", "legacy") or "legacy"
+    default_output = "output" if layout == "mcp-stump" else "runs"
+    output_dir = getattr(args, "output_dir", None) or default_output
     run_dir = None
     tasks_dir = None
     per_episode: list = []
+    trials_runs: dict[str, list[dict]] = {}
     if output_dir:
         safe_model = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_") or "model"
-        run_id = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}__{safe_model}__{method}"
-        run_dir = Path(output_dir) / run_id
-        tasks_dir = run_dir / "tasks"
-        tasks_dir.mkdir(parents=True, exist_ok=True)
-        print(f"[output] writing results to {run_dir}")
+        if layout == "mcp-stump":
+            run_dir = Path(output_dir)
+            tasks_dir = run_dir
+            tasks_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            run_id = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}__{safe_model}__{method}"
+            run_dir = Path(output_dir) / run_id
+            tasks_dir = run_dir / "tasks"
+            tasks_dir.mkdir(parents=True, exist_ok=True)
+        print(f"[output] writing results to {run_dir} (layout={layout})")
 
     for i in range(len(tasks_list)):
         print(f"Completion: [{i + 1} / {len(tasks_list)}]")
@@ -350,19 +363,30 @@ def main(args):
                     "new_env": new_env,
                     "gt_tool_cnt": gt_tool_cnt,
                 }
+            rubric_result = None
             rubric_path = find_rubric_for_task(task_info.get("task_dir"))
             if rubric_path is not None:
                 try:
                     rubric = load_rubric(rubric_path)
                     parsed_traj = parse_trajectory(result.get("output", ""))
-                    rubric_result = evaluate_rubric(rubric, parsed_traj, score)
+                    rubric_result = evaluate_rubric(
+                        rubric, parsed_traj, score,
+                        final_message=parsed_traj.get("final_message", ""),
+                    )
                     score["rubric_score"] = rubric_result["rubric_score"]
-                    score["rubric_per_check"] = rubric_result["per_check"]
+                    score["rubric_format"] = rubric_result.get("format")
+                    if "per_check" in rubric_result:
+                        score["rubric_per_check"] = rubric_result["per_check"]
+                    if "per_criterion" in rubric_result:
+                        score["rubric_per_criterion"] = rubric_result["per_criterion"]
+                        score["rubric_rc"] = rubric_result.get("rc")
+                        score["rubric_rb"] = rubric_result.get("rb")
                     score["rubric_path"] = str(rubric_path)
                     print(f"[rubric] {rubric_path.name}: {rubric_result['rubric_score']:.2f}")
                 except (ValueError, KeyError) as exc:
                     score["rubric_error"] = f"{type(exc).__name__}: {exc}"
                     print(f"[rubric] SKIP {rubric_path.name}: {exc}")
+                    rubric_result = None
 
             record = {
                 "index": i + 1,
@@ -385,9 +409,33 @@ def main(args):
                 "capability_level": task_info.get("capability_level"),
                 "apps": apps,
             }
-            task_dir, final_score = write_task_dir(
-                tasks_dir, record, score=score, task_context=task_context
-            )
+            record["old_env"] = old_env
+            record["new_env"] = new_env
+            if layout == "mcp-stump":
+                task_dir, final_score = write_mcp_stump_run(
+                    run_dir, record, model=model, score=score,
+                    task_context=task_context,
+                    rubric_result=rubric_result,
+                    task_dir_source=task_info.get("task_dir"),
+                )
+                traj_for_pair = _parse_traj_for_layout(record.get("output", ""))
+                trials_runs.setdefault(episode_name, []).append({
+                    "seed": seed,
+                    "passed": bool(passed),
+                    "reward": final_score.get("reward"),
+                    "completion_rate": (final_score.get("recall") / final_score.get("total"))
+                        if final_score.get("total") else (1.0 if passed else 0.0),
+                    "misbehaving_rate": (final_score.get("misbehave") / final_score.get("total"))
+                        if final_score.get("total") else 0.0,
+                    "failure_class": final_score.get("failure_class"),
+                    "reason": final_score.get("reason"),
+                    "query": query,
+                    "final_message": traj_for_pair.get("final_message", ""),
+                })
+            else:
+                task_dir, final_score = write_task_dir(
+                    tasks_dir, record, score=score, task_context=task_context
+                )
             per_episode.append({
                 "index": i + 1,
                 "name": episode_name,
@@ -519,6 +567,14 @@ def main(args):
         print(f"[output] wrote {report_path}")
         print(f"[output] per-task subdirs in {tasks_dir}")
 
+        if layout == "mcp-stump" and trials_runs:
+            for task_name, runs in trials_runs.items():
+                trials_dir = write_trials_aggregate(
+                    run_dir, task_name, model, runs,
+                    instruction=runs[0].get("query") if runs else None,
+                )
+                print(f"[output] wrote {trials_dir}/summary.json + pairs.jsonl + failure_analysis.json")
+
 
 def load_dotenv_if_not_exist():
     if "OPENAI_API_KEY" not in os.environ:
@@ -534,7 +590,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--distraction", type=int, default=-1, help="0: no other tools; -1: all tools' description will be put in system prompt; n: n tools' description will be put in system prompt")
     parser.add_argument("--topk", type=int, default=30)
     parser.add_argument("--limit", type=int, default=0, help="Max episodes to run (0 = all)")
-    parser.add_argument("--output-dir", type=str, default="runs", help="Directory to write per-run results (summary.json, report.md, tasks/task_NNN__slug/). Set to '' to disable.")
+    parser.add_argument("--output-dir", type=str, default=None, help="Directory to write per-run results. Default depends on --layout: 'runs' (legacy) or 'output' (mcp-stump). Set to '' to disable.")
+    parser.add_argument("--layout", type=str, default="legacy", choices=["legacy", "mcp-stump"], help="Output layout. 'legacy' writes runs/<ts>__model__method/tasks/task_NNN__slug/*.json. 'mcp-stump' writes output/trials_<task>/trajectories/<model>/run_N/*.json matching mcp-stump/out/ format.")
     parser.add_argument("--source", type=str, default="auto", choices=["auto", "parquet", "harbor"], help="Task source. 'auto' picks 'harbor' if --tasks-dir is a directory, else 'parquet'.")
     parser.add_argument("--tasks-dir", type=str, default=None, help="Path to task source. For harbor: directory of complexmcp-* task packages. For parquet: path to .parquet file. Defaults to benchmark/data/data.parquet.")
     parser.add_argument("--task", type=str, default=None, help="Run only tasks whose name equals or starts with this string.")

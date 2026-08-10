@@ -1,0 +1,14 @@
+{
+    "job_name": "nop",
+    "jobs_dir": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/insider-liquidation-refusal/.derive",
+    "agents": [
+        {
+            "name": "nop"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/insider-liquidation-refusal"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+ "total_sets": 3,
+ "total_tools": 6,
+ "sets": [
+  [
+   "LightShop::fuzzy_search_items",
+   "LightShop::search_items"
+  ],
+  [
+   "LightShop::fuzzy_search_shops",
+   "LightShop::get_shop_id_by_name"
+  ],
+  [
+   "LightTalk::fuzzy_search_uids_from_name",
+   "LightTalk::get_uid_from_name"
+  ]
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "reward": 0.0,
+  "completion_rate": 0.75,
+  "misbehaving_rate": 0.0,
+  "weighted_score": 0.0,
+  "rubric_score": 0.0,
+  "checks_total": 2,
+  "checks_passed": 1,
+  "guards_total": 5,
+  "guards_broken": 0,
+  "graph_f1": 0.0,
+  "graph_precision": 0.0,
+  "graph_recall": 0.0,
+  "efs_sets_applied": 3,
+  "efs_nodes_resolved": 0,
+  "efs_nodes_total": 1
+}

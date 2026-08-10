@@ -1,12 +1,9 @@
 """Weighted rubric scoring for benchmark tasks.
 
-A rubric.json lives beside a task and encodes checks the grader wants to
-apply on top of (or instead of) env-state diff. Each check has a weight;
-weights should sum to 1.0. The final rubric_score is the sum of weights
-for checks that passed, i.e. it always lies in [0, 1].
+Two rubric formats are supported.
 
-Rubric schema
--------------
+FORMAT 1 — dict-with-checks (deterministic)
+-------------------------------------------
 {
   "checks": [
     {
@@ -34,28 +31,44 @@ Rubric schema
   ]
 }
 
-check_type values
------------------
-- ``tool_called``: PASS iff the trajectory shows at least ``min_calls``
-  invocations of ``tool_name`` (default 1). Optional ``args_include``
-  is a dict of arg-name → expected-value that must appear (equality) in
-  the tool call arguments.
-- ``state_predicate``: PASS iff a named predicate evaluates true against
-  the score dict (recall/misbehave/etc). Supported predicates:
-    - ``misbehave_leq`` (with ``value``): ``score['misbehave'] <= value``
-    - ``recall_geq`` (with ``value``): ``score['recall'] >= value``
-    - ``reward_geq`` (with ``value``): ``score['reward'] >= value``
-    - ``passed_true``: ``score['passed']`` is truthy
+check_type values:
+- ``tool_called``: PASS iff trajectory shows at least ``min_calls`` invocations of
+  ``tool_name`` (default 1). Optional ``args_include`` is a dict of
+  arg-name → expected-value that must appear in the tool call arguments.
+- ``state_predicate``: PASS iff a named predicate evaluates true against the
+  score dict (recall/misbehave/reward/passed).
 
-Anything unrecognized fails with a reason set.
+FORMAT 2 — bare-list (mcp-stump; LLM-graded)
+--------------------------------------------
+[
+  {
+    "number": "1",
+    "criterion": "The agent stated which weather branch it took and why...",
+    "type": "reasoning_quality",
+    "evaluation_target": "final_answer",   // or "trajectory"
+    "importance": "critical",              // or "important" | "moderate"
+    "score": 3,                            // 1 | 2 | 3 — weight
+    "is_positive": true                    // false => guard/defect check
+  }
+]
+
+Rc (completion_rate) = Σ(score for positive PASSED) / Σ(score for positive).
+Rb (misbehaving_rate) = Σ(score for negative HIT) / Σ(score for negative).
+rubric_score = Rc * (1 - Rb), passed = (Rc == 1.0) AND (Rb == 0.0).
+
+Each criterion is graded by a caller-supplied ``llm_grader(criterion, context) → (bool, str)``.
+If none is provided the default shells out to the ``claude`` CLI. Tests pass a stub grader.
 """
 
 from __future__ import annotations
 
 import json
+import os
+import re
+import subprocess
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 @dataclass
@@ -119,14 +132,15 @@ def _check_state_predicate(check: dict, score: dict) -> tuple[bool, str]:
     return False, f"unknown predicate {pred!r}"
 
 
-def evaluate_rubric(
+def _evaluate_dict_rubric(
     rubric: dict,
     trajectory: dict,
-    score: dict | None = None,
+    score: dict | None,
 ) -> dict:
     checks = rubric.get("checks") or []
     if not checks:
-        return {"rubric_score": 0.0, "per_check": [], "reason": "empty rubric"}
+        return {"rubric_score": 0.0, "per_check": [], "reason": "empty rubric",
+                "format": "dict"}
 
     total_weight = sum(float(c.get("weight", 0.0)) for c in checks)
     normalize = total_weight > 0 and abs(total_weight - 1.0) > 0.001
@@ -152,10 +166,141 @@ def evaluate_rubric(
                         passed=passed, reason=reason).to_dict()
         )
 
-    return {"rubric_score": round(earned, 4), "per_check": per_check}
+    return {"rubric_score": round(earned, 4), "per_check": per_check,
+            "format": "dict"}
 
 
-def load_rubric(path: Path) -> dict | None:
+def _render_trajectory_for_llm(trajectory: dict, max_chars: int = 12000) -> str:
+    parts: list[str] = []
+    for step in trajectory.get("steps", []):
+        args = step.get("arguments")
+        resp = step.get("response")
+        args_s = json.dumps(args, ensure_ascii=False)[:500] if not isinstance(args, str) else args[:500]
+        resp_s = json.dumps(resp, ensure_ascii=False)[:500] if not isinstance(resp, str) else resp[:500]
+        parts.append(f"Step {step.get('step')}: tool={step.get('tool')} args={args_s} → {resp_s}")
+    final = trajectory.get("final_message") or ""
+    if final:
+        parts.append(f"Final: {final[:2000]}")
+    joined = "\n".join(parts)
+    if len(joined) > max_chars:
+        joined = joined[:max_chars] + "\n... [truncated]"
+    return joined
+
+
+_YESNO_RE = re.compile(r"\b(YES|NO)\b", re.IGNORECASE)
+
+
+def _default_llm_grader(criterion: str, context: str,
+                        model: str = "claude-opus-4-8",
+                        timeout: int = 90) -> tuple[bool, str]:
+    prompt = (
+        "You are grading one criterion for an AI agent's trial output.\n"
+        "Answer strictly YES or NO on the first line, then a one-sentence "
+        "justification on the next line.\n\n"
+        f"CRITERION: {criterion}\n\n"
+        f"CONTEXT:\n{context}\n"
+    )
+    claude_bin = os.environ.get("CLAUDE_BIN", "claude")
+    cmd = [claude_bin, "-p", "--model", model,
+           "--output-format", "json",
+           "--dangerously-skip-permissions"]
+    try:
+        proc = subprocess.run(cmd, input=prompt.encode("utf-8"),
+                              capture_output=True, timeout=timeout, check=False)
+    except (subprocess.TimeoutExpired, FileNotFoundError) as exc:
+        return False, f"grader error: {type(exc).__name__}: {exc}"
+    if proc.returncode != 0:
+        return False, f"grader exit {proc.returncode}: {proc.stderr.decode('utf-8', 'replace')[:200]}"
+    try:
+        data = json.loads(proc.stdout.decode("utf-8", "replace"))
+    except json.JSONDecodeError:
+        return False, "grader returned non-JSON"
+    text = data.get("result") or data.get("content") or ""
+    if not isinstance(text, str):
+        text = str(text)
+    m = _YESNO_RE.search(text)
+    if not m:
+        return False, f"no YES/NO in grader output: {text[:200]}"
+    verdict = m.group(1).upper() == "YES"
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    justification = lines[1] if len(lines) > 1 else text[:200]
+    return verdict, justification
+
+
+def _evaluate_mcp_stump_rubric(
+    criteria: list[dict],
+    trajectory: dict,
+    final_message: str | None,
+    llm_grader: Callable[[str, str], tuple[bool, str]],
+) -> dict:
+    per_criterion: list[dict] = []
+    pos_total = 0.0
+    pos_earned = 0.0
+    neg_total = 0.0
+    neg_hit = 0.0
+
+    trajectory_ctx = _render_trajectory_for_llm(trajectory)
+    final_ctx = (final_message or "").strip() or "(no final message)"
+
+    for c in criteria:
+        weight = float(c.get("score", 1))
+        target = c.get("evaluation_target", "final_answer")
+        context = final_ctx if target == "final_answer" else trajectory_ctx
+        criterion_text = c.get("criterion") or ""
+        satisfied, justification = llm_grader(criterion_text, context)
+        is_pos = bool(c.get("is_positive", True))
+        if is_pos:
+            pos_total += weight
+            if satisfied:
+                pos_earned += weight
+        else:
+            neg_total += weight
+            if satisfied:
+                neg_hit += weight
+        per_criterion.append({
+            "number": c.get("number"),
+            "criterion": criterion_text,
+            "type": c.get("type"),
+            "evaluation_target": target,
+            "importance": c.get("importance"),
+            "weight": weight,
+            "is_positive": is_pos,
+            "satisfied": bool(satisfied),
+            "justification": justification,
+        })
+
+    rc = (pos_earned / pos_total) if pos_total else 1.0
+    rb = (neg_hit / neg_total) if neg_total else 0.0
+    passed = (rc >= 0.999999) and (rb <= 0.000001)
+    rubric_score = rc * (1.0 - rb)
+
+    return {
+        "rubric_score": round(rubric_score, 4),
+        "rc": round(rc, 4),
+        "rb": round(rb, 4),
+        "completion_rate": round(rc, 4),
+        "misbehaving_rate": round(rb, 4),
+        "passed": passed,
+        "per_criterion": per_criterion,
+        "format": "mcp-stump",
+    }
+
+
+def evaluate_rubric(
+    rubric: dict | list,
+    trajectory: dict,
+    score: dict | None = None,
+    *,
+    final_message: str | None = None,
+    llm_grader: Callable[[str, str], tuple[bool, str]] | None = None,
+) -> dict:
+    if isinstance(rubric, list):
+        grader = llm_grader or _default_llm_grader
+        return _evaluate_mcp_stump_rubric(rubric, trajectory, final_message, grader)
+    return _evaluate_dict_rubric(rubric, trajectory, score)
+
+
+def load_rubric(path: Path) -> dict | list | None:
     if not path.exists():
         return None
     try:

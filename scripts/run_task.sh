@@ -4,7 +4,6 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
-CONFIG_BAK="config/general.yaml.bak"
 SERVERS_SESSION="omcp-servers-auto"
 SOFTS_SESSION="omcp-softs-auto"
 
@@ -13,16 +12,8 @@ cleanup() {
     tmux kill-session -t "$SERVERS_SESSION" 2>/dev/null || true
     tmux kill-session -t "$SOFTS_SESSION" 2>/dev/null || true
     lsof -ti:8000-8024,9000-9144 2>/dev/null | xargs -r kill -9 2>/dev/null || true
-    if [ -f "$CONFIG_BAK" ]; then
-        cp "$CONFIG_BAK" config/general.yaml
-        rm -f "$CONFIG_BAK"
-        echo "[run_task] config restored"
-    fi
 }
 trap cleanup EXIT INT TERM
-
-echo "[run_task] narrowing config to reachable subset"
-.venv/bin/python scripts/narrow_config.py --config config/general.yaml
 
 echo "[run_task] cleaning stale port squatters on 8000-8024, 9000-9144"
 lsof -ti:8000-8024,9000-9144 2>/dev/null | xargs -r kill -9 2>/dev/null || true
@@ -66,8 +57,13 @@ METHOD="${METHOD:-rag}"
 LIMIT="${LIMIT:-4}"
 RUNNER="${RUNNER:-run_benchmark.py}"
 CONFIG="${CONFIG:-config/general.yaml}"
-TASKS_DIR="${TASKS_DIR:-benchmark/harbor_final_all}"
-OUTPUT_DIR="${OUTPUT_DIR:-runs}"
+TASKS_DIR="${TASKS_DIR:-tasks}"
+LAYOUT="${LAYOUT:-mcp-stump}"
+if [ "$LAYOUT" = "mcp-stump" ]; then
+    OUTPUT_DIR="${OUTPUT_DIR:-output}"
+else
+    OUTPUT_DIR="${OUTPUT_DIR:-runs}"
+fi
 BAKE_GT="${BAKE_GT:-0}"
 
 if [ "$BAKE_GT" = "1" ]; then
@@ -90,7 +86,8 @@ else
          --method "$METHOD"
          -t "$CONFIG"
          --tasks-dir "$TASKS_DIR"
-         --output-dir "$OUTPUT_DIR")
+         --output-dir "$OUTPUT_DIR"
+         --layout "$LAYOUT")
     if [ -n "${TASK:-}" ]; then
         echo "[run_task] launching: $RUNNER --task $TASK"
         CMD+=(--task "$TASK")

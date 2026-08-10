@@ -1,0 +1,11 @@
+{
+    "task": {
+        "path": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/insider-liquidation-refusal"
+    },
+    "trial_name": "insider-liquidation-refusal__nEykn56",
+    "trials_dir": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/insider-liquidation-refusal/.derive/nop",
+    "agent": {
+        "name": "nop"
+    },
+    "job_id": "88e46b31-2d99-4587-9be3-4a6c98027d5b"
+}

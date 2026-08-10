@@ -1,0 +1,45 @@
+# Sidecar wiring for this task.
+#
+# `main` is the agent container. Harbor merges this with its base compose
+# config; services share a network and are addressable by service name, which
+# is why task.toml points mcp_servers at http://sandbox:8100/mcp.
+#
+# Note: compose-based tasks only run on the local Docker environment
+# (--env docker). Cloud sandbox providers take a single Dockerfile only.
+
+services:
+  main:
+    depends_on:
+      sandbox:
+        condition: service_healthy
+    extra_hosts:
+      # ccbridge runs on the host (it needs macOS keychain access for the
+      # Claude Code OAuth credentials, which a container cannot reach).
+      - "host.docker.internal:host-gateway"
+
+  sandbox:
+    image: mcp-stump-sandbox:latest
+    expose:
+      - "8100"
+    environment:
+      MCP_STUMP_SEED: "108"
+      MCP_STUMP_APPS: "LightShop"
+      MCP_STUMP_DISTRACTORS: "1000"
+      MCP_STUMP_REGISTRY: "/app/registry/distractors.json"
+      MCP_STUMP_PRESENTATION: "windowed"
+      MCP_STUMP_WINDOW: "60"
+      # Dirty cart is the lever under test -- pin it rather than leaving it to
+      # the seed, so the task is deterministic across reruns.
+      MCP_STUMP_DIRTY_CART: "1.0"
+      # Collect hooks read from /tmp; keep the trace there too so both
+      # artifacts come from one place.
+      MCP_STUMP_LOGS: "/tmp"
+      MCP_STUMP_SESSIONS: "/tmp/mcp_stump_sessions.json"
+      MCP_STUMP_INITIAL: "/tmp/initial_state.json"
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import socket; s=socket.create_connection(('localhost',8100),timeout=2); s.close()"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 5s

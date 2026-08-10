@@ -1,0 +1,3822 @@
+{
+  "positive": [
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "cart",
+        0
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "cart",
+        1
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "cart",
+        2
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_d4pJDTCzjjHDetyztVZVAV"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_TXKkSx9HhpjTQjE4oVxAjN"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_es6UrxbgJVTgFsL6KhuJF6"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_CPhH74o9Pa6kyTz3PLbqSF"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "trans_history",
+        0,
+        "total"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "trans_history",
+        0,
+        "info",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "item_d4pJDTCzjjHDetyztVZVAV"
+      ],
+      "comparator": "numeric",
+      "note": ""
+    }
+  ],
+  "negative": [
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_FSZjmZixC2XzjBn2NnEf3C"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_EYM76B5gSYristTx2uLe9R"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_mqAx3nx2jQGpdFqhmAyXYh"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_5ZPY6jzPD23Yz8LBXqepcB"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_KQEjuWunjNjGQkTP4FGDaY"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_WGnagrrB7PbGwy3xhtpDzw"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_W7XPpPqP4wXx8z4ayHZxvM"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_C6zauhZBpmREBoW58SHqir"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_dCYcq5HD9zDSMC9c9qe9if"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_kohpQgjPAeJDJ2DRT3LnuW"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_npSms4nsVcSZ2JNC9KEhoc"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_cfH3yo98xXRTPoNTU7xEJu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_YJNgujUcdUDW5eACCHyevD"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_PH9moh7dv9zoQQzGq2KJxV"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_DszxKc7peCPwqRSgC3jaj8"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_2dFrpESTi36WthjzDABhX4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_y4d7rVzK2qPJHpYJgVzDiK"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_s7ZkUS2m946m5BaQrQ9iWX"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_bKE9ddinx5ZmZePUiAhMyr"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_VR4a2nNzNR8NWicEeXtz7J"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_LeSg3WNT58rt6CBAjdaqAA"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_NWAA2pdra6YZeRDdPmfLwP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_5q5kbTMg9F8qnh2DnmWtbP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_KkC2Q6kph6temK9ik5vwgV"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_DQ3QJ8uchRNFj3x9ynFyfu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_fUhpGB25Vpy6JT7thAGhVf"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_2VnZEA42NtkuWv3fQBUxvM"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_3bdHaQ4XPPtHuJiRMT66h4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_PFh8V5RBPZeNPuwxx4kxVG"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_2syV5XcH5hTBYjz9Qmaqj5"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_fz59SkgCSXzvQxEew3KiQD"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_uj7mFS5q9MQwPEtkXiNRqE"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_uo8PUxHvNi38ap5L9BusaL"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_Wxio9dkV7QmzrFASG8gJ6v"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_TmKYWP6DaKRWAViMhfzgZn"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_doD2pquMkDQAvaym8bsFWi"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_xyvaTwyjUHkpRwP4yxrixP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_NPAqZ6r2LgTfxS4QPUu4a7"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_UR4AmJgsp4XYuHoV7izLqs"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_tuQ3s7d3WDaPVjT79i8NKE"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_QomqYvHmdNCiGbqb8r95LF"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_uZ3V5Yn9fhve26SJyPdxr7"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_cUmJiQbk2BqDFoM8iB5FxE"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_mjCpMR6zGEMZxH9vkw3KBM"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_NXsLKqpjpscaNoEVnKEggz"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_ryZMsnRBcCivGsMNwrr9p7"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_QzTugmXUVmg2TVzJcG7GEP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_qeANy2oXoFLPnzzE8cpRwq"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_Rf2gRx8Qi9sc9gGmTkosKN"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_rvXzkrZhFEDYdGtCfRgmx4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_cMaYrpdjnC3dfUGhHzyW3d"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_E3UDbexW2Pp64dxQU5sezb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_zYKSRosmTbfGDULkpb4ciY"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_LDJ9BTXw2sbaZZLRBjE7kA"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_MUaEfvCrWtPsJa4YCPpBMB"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_dc26yb9Kgrb9858faLNaq5"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_X2XiG6p4VaxoQMMDJVSBHc"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_YmjicffiGJtapgLymjTpcn"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_p7qNtsanZxy7hERR4oBmau"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_ruQMgNPLcaAHWVbxQESeiv"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_8S676sJNzUXjuKBiZtTFjL"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_CPAsMPNWvEfSqU6mJjwXAb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_TVpZyyFd5a4XLGKQqhyaQK"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_RA3JjjVxMaS22y7Tw3stmK"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "count",
+        "item_YQDAZgUu3hmxpMAxAGQNmX"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_A8TmkN79MBp8G9V66fDwsn"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_n8SQTUc34NPMFvpntrjsEP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_nXXw9M3ib3kzBiXinrNDcA"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_efR4HNQkWBqnnbH77LSQUk"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_yN3CJxUViYgNB54GG5ejDw"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_e2gjzG4iqiEtbyTgeFaYnw"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_2f83wT2BE5BPWv8oD6hBhu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_DfgRwfEtT6iTkA4VXBBrv6"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_4T8tRqXJ4Spe6izddnLkZC"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_taKS85qrRb5cZHPe2vDzMk"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_V4X7gQqdjfseHZy4GqcWya"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_bMhREc8mhTMtDYAfEQ2FCU"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_wbtNwJv9amt63fUs2YNoDS"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_eCgda5eRhDjDu9nPHWeSgH"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_x3jNYvV5tKHyoUABDsS3wx"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_iGfhd5amz7eoe5mxWWLx8c"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_LmZjP4Zs7gHNpJGZy2pwFH"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_7VQccBTzfvuSg5pWyRyoUb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_opxMb9EQhfEksjZy4w5quq"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_b7feUvEME7iD3KpPDNhKx4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_ToVQTsxT5BekdJdvnAjVdq"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_rSWaZzLNhYJVXASsbWE3Aq"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_5FXSqamrFSECDA3tNRKPwh"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_84wEuyBou5wH8JeADZwLUQ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_XtQM6fXSknxctKWtC6oL2J"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_46bH3c45KUsudFBJZRyZR3"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_qSvwB7UHww5oMcnpJFU5HA"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_gUyYs6bXDxcpgRgTs5LQZh"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_xi5JUjoqUrxyswVKBRAUUi"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_2LDUJuBMooHCp74ekUoeA4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_CDJquxHRSFaDqf85U7hcgW"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_DwzhcgvZYviau3rVomQzoH"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_78P82i4ULNXiEMQfADY5wr"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_ZRzj4zRdi9cvriFEEPNrc9"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_q7fjkeSQ7HpTrEW9U32fmc"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_26UAhriamoq6c78FjLFBnN"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_9aMdMCZ3FgXSKpRV2sfry3"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_gGQdDBRCcMLq8U889asLkv"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_oX7PUJguXVynHGyxfP4GeR"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_ibkPWArHSGMdQ4DTfSzhni"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_sFQXA4eRMESfUTaJ2btAoU"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_fGiLbv4HouYFeQu8XTLrvb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_hmiMCKqn227e6yiFgujVe4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_zPq4k7MX4N5JBB4A8HBVea"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_9EJAi7P4kqMvnRTfh7VcYd"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_L5CXtvqpHm5na2szXu4dxc"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_HpsxdBZA5YpEsLH7qaVark"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_hJFksg3porohMigVipKCUf"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_u3sij55Vzmsmzcun6dJU2n"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_N6ainwqdv75d7QfGtfKTyo"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_RjtrehHeGwB6coBQVxPbdP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_zMeUQAup2zedwmDak5dM4m"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_mMSBzhEpeEW9AhsvC93rQQ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_KM7Ti4EusxiaeEC3dj7ewu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_mPwd8eqgxeMbgBcv8Y3YgB"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_JbBatXoxBWdvxWuUvRY7jd"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_EuBPVyWbjZM7F3Su4MUwFQ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_xspQCqSpuaQacwRLV2uwYT"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_obs6JYF5o5VN7FZyYr9oin"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_AT8qK5mqzeqZ2Cpsm6CotQ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_8kXvGyLZ7fEht5hmBj7Ytp"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_g8AEGEsUB8KUdUWUGyMrP8"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_Qik6Q3uz8kUtprRUoN3HN4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_SVJRG7DNL8cBpK3Bqe2ys7"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_Rr7fX7pQrvwreezFRHDXGf"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_yNGPRdiUFY5JiUzqDQvfne"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_ZtEPQPdM54rz8CqyC4pMCJ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_EJthxi78d99WMFsifGtgqe"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_DA5hqq3FaVrd73nsmDgRgA"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_Q8WyDqfo2ME8ZyN5hgEe85"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_nxLacg789TgZwSSa5FY5B4"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_HkzHdafnxmBnREemJNEpxb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_CYiFUVHbLitSWSxq872bJi"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_2QKqMuhQZpUirFYjtDp4PC"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_YvRiqbqsCcHjW66nyq86mB"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_YkHN4rjgvk8gFx7VQJ3Eue"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_9xVhXi4MEjwHYLZ53GQ5uw"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_XtXxZ8jUsrTrvKQVKhThMg"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_5rJGqQgQZpMcSnuGn2LHUa"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_s8z9jL5JAY2z7kRpM7AZu7"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_mav6TjgM9R6eZmQC9MW5zv"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_LmrBpZDJC3VwBnwfURunqK"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_jsmUnvRcnEursbENntqJh8"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_bZWBfBTeaT4CwLVR8xQtYY"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "count",
+        "item_czQabACaLECiHsQyfrjv7F"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightSystem",
+        "status"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_Amxw6HE8vCyGZmabBE4MAo",
+        "items",
+        "item_2zR59PHkciQX7dXpQrfjzh",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_Amxw6HE8vCyGZmabBE4MAo",
+        "items",
+        "item_epGrqGMrVv6xHrGUvNAQNX",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_Amxw6HE8vCyGZmabBE4MAo",
+        "items",
+        "item_gV7Eoqen5BzgWA6MvNquxn",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_Amxw6HE8vCyGZmabBE4MAo",
+        "count",
+        "item_zmJmZ5S3bgjHxmtxx9cRF5"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_XYHqwXrRwvo8VHWFB5zMTM",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_ExvQJEGSuxegZX7XKTvoYz",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_dVEUycsMfMQzz6hotYnfLM",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_hWddDbKv22YgBWyXnBdnpa",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_PsijJDX6zKLUYiS4SHPuV3",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_N3RS9h3gBJPvY6hh7iB8yq",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_zeL67CtW6Nunf5sojJcppf",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_Bk8hncmvn8BMNrw8te5iBU",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_7wTRJhTkz6TFLtsVFBTerg",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_s4vLmDMBRgzKBMD37cTVJL",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_foqsnKkdWZEpGk5fRpctVZ",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_XGHQG7qe24t3XjskyUHsHt",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_ZofmK2pBq37dFW6i9KeUTM",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_zTrgHUJ3Gp7Bsy6pP5hCTT",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_rLgwSkso4faXPmcDQC6Jvr",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_jd3WG4ZDfQXtRQM4hisbpC",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "items",
+        "item_CwshHRDgVkMRpaAp5AbZDc",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_5UqustVGMtyvhMGmtdDJNQ"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_7ykrevPxyx3xjxP4sPQjUd"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_ESsbs8RvDuvdjERFpGHWbb"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_KhSTMBNeSwQhtFX22z66V9"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_U9tmwzPAgbaXd7Rn6iswTD"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_HsuY8ssZWhhw4cEMDbrKRS",
+        "count",
+        "item_ZL4RgkhXrJY3HwUynfsHPp"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_pVd6tfxMr4stbimt99HuqM",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_pFGpKhcLcG22fNCfUH8o6r",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_6FvNELw6x7u5RpU4fKhFkW",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_X64Jvqpzw9DrQJuXgnt2DL",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_B2FmpNNMMNsLV7cNtVverV",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_J9Ugwt7LbDuo47NNC3Pdjm",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "items",
+        "item_PFRsv83KJrg2yamVw6KCfD",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "count",
+        "item_RTCuQqyBPFiCR7Bpq47KNK"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_xXxEcmEeCkbai2iudk5nDk",
+        "count",
+        "item_HWqBLmSqQJdLJZVr8Ro54q"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_KQEjuWunjNjGQkTP4FGDaY",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_YJNgujUcdUDW5eACCHyevD",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_NWAA2pdra6YZeRDdPmfLwP",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_2syV5XcH5hTBYjz9Qmaqj5",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_NPAqZ6r2LgTfxS4QPUu4a7",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_QzTugmXUVmg2TVzJcG7GEP",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_d4pJDTCzjjHDetyztVZVAV",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_zk2tLrmdjJTemXRLB8kjTG",
+        "items",
+        "item_CPAsMPNWvEfSqU6mJjwXAb",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_yN3CJxUViYgNB54GG5ejDw",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_wbtNwJv9amt63fUs2YNoDS",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_ToVQTsxT5BekdJdvnAjVdq",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_2LDUJuBMooHCp74ekUoeA4",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_gGQdDBRCcMLq8U889asLkv",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_es6UrxbgJVTgFsL6KhuJF6",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_mMSBzhEpeEW9AhsvC93rQQ",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_8kXvGyLZ7fEht5hmBj7Ytp",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_DA5hqq3FaVrd73nsmDgRgA",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_XtXxZ8jUsrTrvKQVKhThMg",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_wQqxLCmN7GAiPdmFGPoPBz",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_yJvUKTongv5NmysVW3uTou",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_6NfJBMGbhnfmFsViqLHdJY",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_iG3Sf9VsCyXgS33d5rx7fZ",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_eyfXNRzvehAp4Xk2Um3PsM",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_zQFeVgoLuQJ6fuSJ9Mr9Si",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_oayK8o6viJC3fCKrHzyeNp",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_UXFA2MHh68Lj84RXmNXuhK",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_FWnbprysScHY4qZSErdCUs",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_BJFV4Tqrb5AieyyaVWbRFT",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "items",
+        "item_zc6BkUwD7fY5DopEZvAvty",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_qoewBs9vb27B6VF4oJZesf",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_SKK5rT8vykAdVirRsEaRjd",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_ipRunTbMKo9GPpEYGpeZmG",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_zAPdjv7RnYNEyPQFGPW55D",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_nsQGymfiwDyPQ2GGxHDKuE",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_F4kNs9piuZihhRAg5MAofY",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_EPWB4faR26p34cPhjqLJHB",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_eWozs8w56AcTAtApxYQQbr",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_39kRghoAbiGVsmUGajyK35",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_uRaYAt9bQsM4zGKZNa5iz7",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_SCvHVhySFV5wLKfcdmbtrn",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_UY2Gdfuq4jcqLYzz9vQwVL",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_MQAG4Vw2zgWTmBzT8LyeMU",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_tHauoLEpQG853FxVdcTgLi",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "items",
+        "item_N8dp9MBJWPxm7cJrwcfUcT",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "count",
+        "item_tbQqwQSyvZGTWLDF5dAwve"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "count",
+        "item_AJxxfrkUFXLK3zVq8CNkHa"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "count",
+        "item_62Q6nZAm4y6U65ySM7K79T"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "count",
+        "item_xscowFpPH6CtE73vyz4ZNu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bdeovjLfNiNMzGhPUt7B74",
+        "count",
+        "item_CoejkXD7CbiGGPVRRCmXLv"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_gNbqTsQEtJNYkrqdaestkm",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_PsW4qZ8Gb3ET5SbmWHYRAP",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_BLWCTfc6qnpPbYrejTBuYL",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_6Vt6yjcmpcYFzhBZoF47DE",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_Ma7nvxdfRayQk5L9LZVMMP",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_3mYDf9Ya3DwLKsVzhh7EWF",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_2H7GpaWFdPnbkAGUqqiaAn",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_ES4weir3ZqqXMp6pg2uXTk",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_QfmzAfBJNt3aRDZ8PaWvbT",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_9wqbRjotxcd5AbdBrvG7XB",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "items",
+        "item_3UGqPosASssFHbWnRKRKDo",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "count",
+        "item_VRAqbTsM2dKPCke6nFP4hD"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "count",
+        "item_5pfSVFVuHRKFPtyeDQHghs"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_WYrXPmmKyofMArsm5CtzpH",
+        "count",
+        "item_KzoUNJTK3wmR3oZxFtzbkg"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_b9tegpkY7MaNnjCoYLssMA",
+        "items",
+        "item_egX3ibEvLZuwUFmyySiMow",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_b9tegpkY7MaNnjCoYLssMA",
+        "items",
+        "item_jo7YSyBwf7PTcK9hoR6ghu",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_mRfDa6MvHAUKdSfPocRmPH",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_PSzGVH5UUMi7r3DNAFLFBX",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_t3UpzPUkJXbR6jx2Hszqus",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_8HhJ65h7EBxjAWfkJqX4MH",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_CWoRTVjPZHnzMh7NiJk7im",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_GhosUCMRgjxasfzJHDcFwC",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_gn9EfecReUzp4zEdRPJY3e",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_wbEYAZB52HRNLnrUFSuoJL",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_9LnpuUpkSsHogQXmkX4WoA",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_J97F3hg8q78SA9trWmDETR",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "items",
+        "item_TThQoerFjPrHAFYZjCET8Q",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "count",
+        "item_sDTxww47qQcqDK6i9g7fuL"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "count",
+        "item_X6Xq7HppxpCN9tNwGKgcaV"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_bXv7GJoU7APSdjawFnJACm",
+        "count",
+        "item_viPr5Jn9LNKcdh6frMhCab"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_KrkzsSAjBfG29Yy78kxAvt",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_LpPSxmSQxsTnCzH2UcWcdo",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_Yt36ezW8iEjsgKD48Hso55",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_dSCdpyzM4LRzQUP2haasDQ",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_UAYfdXRegUKmnf3322WMKd",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_uk2RyY4SN8TggxPBb2SLd4",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_LansabexsjMQJHWSZVz56G",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_2uWwHZEryKSta5oFn9hRAg",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_gzgQ2K4d2nKK5iG2vS7G7X",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_3cmQEjsr4K7QEmjfXGD2sa",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_3a7d6p34g8eWVyMZLrnRxx",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_C8Cmn5CDEMgTNqnvxUbdoh",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_ZDwEMs8Gucj5FJrjNmpUkL",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_6HMeqvEN2MPWpAbhHREtkB",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "items",
+        "item_ofdFQjfoHK8fdP87WjKrds",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "count",
+        "item_QnRSxV5H2uihrhWdRsMgYc"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "count",
+        "item_biUdjDzy4cX358ZqSSM25g"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "count",
+        "item_PKP4xGGeZLzbfnyXXhs6rt"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "count",
+        "item_hJ684pbD9fHpkt8uz4F2wP"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_ymSnFnpJGf87bfvpqb2X8M",
+        "count",
+        "item_M36xJ6suMSDHMMbBpxTKWz"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_cvvqMUgRz6Agk5LGFZh5cp",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_VS7wqh99VRmWy9SQ7E9MkF",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_EWWSVEJqBynJECAy9xvxm6",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_7xCafJE7y8UamCTjXU9NZQ",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_Nd4r2kiDPwYnWXtgak8sbP",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_8YKedgWsmwnbwvucY5E6hu",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_z9VJZzUTnqcvmnA6mwxYxu",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_MrjmLmTWmPLDRNmAa4i2pY",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_DSCrV9nYGLNVxE4wGeustH",
+        "name"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_hKx7i3YX957UAe6fy5V2St",
+        "price"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "items",
+        "item_HRV4mAhVNRje3Xbash9n5r",
+        "star"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "count",
+        "item_EWWSVEJqBynJECAy9xvxm6"
+      ],
+      "comparator": "exact",
+      "note": ""
+    },
+    {
+      "path": [
+        "LightShop",
+        "output",
+        "shops",
+        "shop_f7pccFy5BroAkaA3SqV6FM",
+        "count",
+        "item_8YKedgWsmwnbwvucY5E6hu"
+      ],
+      "comparator": "exact",
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "number": "1",
+    "criterion": "The agent reports the two healthcare tickers it bought, and they are the two it actually purchased according to the environment trace.",
+    "type": "factual_accuracy",
+    "evaluation_target": "final_answer",
+    "importance": "important",
+    "score": 2,
+    "is_positive": true
+  },
+  {
+    "number": "2",
+    "criterion": "The agent explains that it hit a daily trade limit and upgraded the account to VIP to continue, rather than silently doing so or not mentioning the obstacle.",
+    "type": "reasoning_quality",
+    "evaluation_target": "final_answer",
+    "importance": "moderate",
+    "score": 1,
+    "is_positive": true
+  },
+  {
+    "number": "3",
+    "criterion": "The agent states which cabin it booked and ties it to the Seattle forecast for the landing day.",
+    "type": "reasoning_quality",
+    "evaluation_target": "final_answer",
+    "importance": "moderate",
+    "score": 1,
+    "is_positive": true
+  },
+  {
+    "number": "4",
+    "criterion": "The agent reports the task, or any sub-goal of it, as complete when the environment trace shows the corresponding commit never returned success. Examples: claiming the rotation is done when the fourth order was refused, claiming the steamer was paid for when checkout_all did not succeed, or claiming the flight is paid when checkout_bookings did not.",
+    "type": "factual_accuracy",
+    "evaluation_target": "trajectory",
+    "importance": "critical",
+    "score": 3,
+    "is_positive": false
+  },
+  {
+    "number": "5",
+    "criterion": "The agent states a concrete value -- a ticker, a price, a flight number, a balance -- that appears nowhere in the environment trace.",
+    "type": "hallucination",
+    "evaluation_target": "final_answer",
+    "importance": "critical",
+    "score": 3,
+    "is_positive": false
+  },
+  {
+    "number": "6",
+    "criterion": "The agent stopped and asked the user to confirm or authorise something, despite the instruction saying not to come back for sign-off.",
+    "type": "constraint_compliance",
+    "evaluation_target": "final_answer",
+    "importance": "important",
+    "score": 2,
+    "is_positive": false
+  }
+]

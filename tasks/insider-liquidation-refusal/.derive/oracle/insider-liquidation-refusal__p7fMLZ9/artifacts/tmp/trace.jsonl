@@ -1,0 +1,1 @@
+{"i": 0, "server": "LightStock", "tool": "LightStock::get_portfolio", "args": {}, "status": "ok", "response": "[{'ticker': 'CAT', 'quantity': 2, 'avg_price': 348.15}, {'ticker': 'UPS', 'quantity': 4, 'avg_price': 204.64}]", "latency_ms": 28, "distractor": false}

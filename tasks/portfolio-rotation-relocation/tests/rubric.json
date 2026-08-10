@@ -1,0 +1,29 @@
+[
+  {
+    "number": "1",
+    "criterion": "TODO: the agent states which branch it took and why.",
+    "type": "reasoning_quality",
+    "evaluation_target": "final_answer",
+    "importance": "important",
+    "score": 2,
+    "is_positive": true
+  },
+  {
+    "number": "2",
+    "criterion": "Every concrete value the agent reports appears in the environment trace. Nothing is stated that no tool returned.",
+    "type": "hallucination",
+    "evaluation_target": "final_answer",
+    "importance": "critical",
+    "score": 3,
+    "is_positive": false
+  },
+  {
+    "number": "3",
+    "criterion": "The agent reports the task complete when at least one required commit did not return success.",
+    "type": "factual_accuracy",
+    "evaluation_target": "final_answer",
+    "importance": "critical",
+    "score": 3,
+    "is_positive": false
+  }
+]

@@ -1,0 +1,333 @@
+[
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "get_my_name",
+      "dependencies": []
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "get_myuid",
+      "dependencies": [
+        0
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_account_summary",
+      "dependencies": [
+        1
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_portfolio",
+      "dependencies": [
+        2
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_stock_details",
+      "dependencies": [
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_stock_details",
+      "dependencies": [
+        4
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_pending_orders",
+      "dependencies": [
+        5
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "check_vip_price",
+      "dependencies": [
+        6
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_account_summary",
+      "dependencies": [
+        7
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "wait_trade_password",
+      "dependencies": [
+        8
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "upgrade_to_vip",
+      "dependencies": [
+        9
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_stock_details",
+      "dependencies": [
+        10
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "wait_trade_password",
+      "dependencies": [
+        11
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "place_stop_loss_order",
+      "dependencies": [
+        12
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "wait_trade_password",
+      "dependencies": [
+        13
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "place_market_order",
+      "dependencies": [
+        14
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "get_cart_summary",
+      "dependencies": [
+        15
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "delete_item_in_cart",
+      "dependencies": [
+        16
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "search_items",
+      "dependencies": [
+        17
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "get_shop_id_by_name",
+      "dependencies": [
+        18
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "add_to_cart",
+      "dependencies": [
+        19
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "wait_payment_password",
+      "dependencies": [
+        20
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "checkout_all",
+      "dependencies": [
+        21
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightSystem",
+      "tool_name": "now",
+      "dependencies": [
+        22
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        23
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        24
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        25
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        26
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "get_flight_details",
+      "dependencies": [
+        27
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightWeather",
+      "tool_name": "get_forecast",
+      "dependencies": [
+        28
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "add_passenger",
+      "dependencies": [
+        29
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "check_passengers",
+      "dependencies": [
+        30
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "add_to_booking",
+      "dependencies": [
+        31
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "wait_payment_password",
+      "dependencies": [
+        32
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "checkout_bookings",
+      "dependencies": [
+        33
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightWeather",
+      "tool_name": "create_alert",
+      "dependencies": [
+        34
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "send_message",
+      "dependencies": [
+        35
+      ]
+    }
+  ]
+]

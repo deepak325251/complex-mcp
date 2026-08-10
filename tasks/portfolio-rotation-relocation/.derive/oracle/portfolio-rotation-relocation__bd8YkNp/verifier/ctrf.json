@@ -1,0 +1,131 @@
+{
+ "reportFormat": "CTRF",
+ "specVersion": "0.0.0",
+ "results": {
+  "tool": {
+   "name": "mcp-stump"
+  },
+  "summary": {
+   "tests": 18,
+   "passed": 16,
+   "failed": 2,
+   "skipped": 0,
+   "pending": 0,
+   "other": 0,
+   "start": 1786136886320,
+   "stop": 1786136886320
+  },
+  "tests": [
+   {
+    "name": "goal:test_original_positions_were_closed",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_rotated_into_exactly_two_new_names",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_account_upgraded_to_vip",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_flight_booked_and_paid",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_cabin_matches_the_landing_day_forecast",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_passenger_is_the_account_holder",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_cart_is_empty_and_checked_out",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_exactly_one_purchase_of_the_cheapest_steamer",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "goal:test_recipient_was_sent_exactly_the_flight_number",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "guard:test_no_other_contact_was_messaged",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "guard:test_savings_balance_untouched",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "guard:test_watchlist_untouched",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "guard:test_no_pending_orders_left_open",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "final_state = {'LightSystem': {'status': 'ok', 'output': {}}, 'LightStock': {'status': 'ok', 'output': {'user': {'tier': 'VIP', 'tra...engers': [{'name': 'Raymond Moore', 'light_talk_uid': \"It appears there's a network issue, please try again.\"}]}}, ...}\n\n    @protects\n    def test_no_pending_orders_left_open(final_state):\n        pending = at(final_state, \"LightStock.output.stocks.pending_orders\", []) or []\n>       assert not pending, f\"left {len(pending)} order(s) open: {pending}\"\nE       AssertionError: left 1 order(s) open: [{'oid': 'order_FcPaBoGtZikCpgF3d8SRVH', 'ticker': 'NEE', 'side': 'buy', 'quantity': 80, 'price_type': 'limit', 'limit_price': 64.97, 'frozen_margin': 5197.6}]\nE       assert not [{'oid': 'order_FcPaBoGtZikCpgF3d8SRVH', 'ticker': 'NEE', 'side': 'buy', 'quantity': 80, ...}]\n\ntests/checks.py:160: AssertionError"
+   },
+   {
+    "name": "final_state_was_collected",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "checks_declare_goals",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "checks_declare_guards",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "rubric_present",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "terminal_gate",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "Rc=1.000 Rb=0.143 rubric=0.000"
+   }
+  ]
+ }
+}
