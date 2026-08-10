@@ -1,25 +1,77 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Iterable
+from typing import Any, Iterable, Sequence
 
-from benchmark.failure_taxonomy import FailureClass, FailureVerdict
+from benchmark.failure_taxonomy import (
+    FailureClass,
+    FailureVerdict,
+    LEVER_TO_EXPECTED_MODES,
+    MODE_TO_CATEGORY,
+)
+
+
+GATE_SIGNATURES: dict[str, str] = {
+    "please enter the trading password": "wait_trade_password",
+    "please enter the payment password": "wait_payment_password",
+    "this operation need privilege": "ask_for_privilege",
+    "vip only": "upgrade_to_vip",
+    "has not been logged into yet": "login",
+    "not logged in": "login",
+}
+
+
+TRANSIENT_SIGNATURES: tuple[str, ...] = (
+    "network issue",
+    "internel error",
+    "internal error",
+    "please try again",
+    "timed out",
+    "timeout",
+    "connection reset",
+)
+
+
+READ_PREFIXES: tuple[str, ...] = (
+    "get_", "list_", "check_", "search_", "fuzzy_search_", "read_", "fetch_",
+    "browse_", "view_", "show_",
+)
+
+
+UTILITY_TOOLS: frozenset[str] = frozenset({
+    "acc_network", "change_my_ip", "list_ip_choices",
+    "wait_trade_password", "wait_payment_password", "ask_for_privilege",
+    "upgrade_to_vip", "now", "health", "login", "logout",
+})
+
+
+CLEANUP_HINTS: frozenset[str] = frozenset({
+    "delete", "remove", "clear", "unlike", "unstar", "mark_as_read",
+    "unblock", "cancel", "unfollow", "unsubscribe", "empty", "purge",
+})
+
+
+def _base(name: str | None) -> str:
+    """Strip 'Server::' prefix from qualified tool names to compare bare names."""
+    if not name:
+        return ""
+    if "::" in name:
+        return name.rsplit("::", 1)[-1]
+    return name
 
 
 def _lower(text: str | None) -> str:
     return (text or "").lower()
 
 
-def _tool_names_from_trajectory(trajectory: dict[str, Any] | list[dict]) -> list[str]:
-    steps = trajectory.get("steps") if isinstance(trajectory, dict) else trajectory
-    if not steps:
-        return []
-    names: list[str] = []
-    for step in steps:
-        name = step.get("tool")
-        if isinstance(name, str) and name:
-            names.append(name)
-    return names
+def _resp_body(step: dict) -> str:
+    resp = step.get("response")
+    if isinstance(resp, dict):
+        try:
+            return json.dumps(resp).lower()
+        except (TypeError, ValueError):
+            return str(resp).lower()
+    return str(resp or "").lower()
 
 
 def _has_error_status(step: dict) -> bool:
@@ -28,6 +80,88 @@ def _has_error_status(step: dict) -> bool:
         return False
     status = str(resp.get("status", "")).lower()
     return status in {"error", "failed", "internel error", "internal error"}
+
+
+def _is_read(name: str | None) -> bool:
+    base = _base(name)
+    return any(base.startswith(p) for p in READ_PREFIXES)
+
+
+def _is_utility(name: str | None) -> bool:
+    return _base(name) in UTILITY_TOOLS
+
+
+def _steps(trajectory: dict[str, Any] | list[dict] | None) -> list[dict]:
+    if not trajectory:
+        return []
+    if isinstance(trajectory, dict):
+        return trajectory.get("steps") or []
+    return list(trajectory)
+
+
+def _tool_names(trajectory: dict[str, Any] | list[dict] | None) -> list[str]:
+    return [_base(s.get("tool")) for s in _steps(trajectory) if s.get("tool")]
+
+
+def _first_write_index(steps: Sequence[dict]) -> int | None:
+    for i, s in enumerate(steps):
+        name = s.get("tool")
+        if not name:
+            continue
+        if _is_read(name) or _is_utility(name):
+            continue
+        return i
+    return None
+
+
+def _crux_aligned(mode: FailureClass, levers: Iterable[str]) -> bool | None:
+    levers = list(levers or [])
+    if not levers:
+        return None
+    for lever in levers:
+        expected = LEVER_TO_EXPECTED_MODES.get(lever, set())
+        if mode.value in expected:
+            return True
+    return False
+
+
+def _detect_gate_prerequisite(
+    steps: Sequence[dict],
+) -> tuple[str, dict] | None:
+    for i, step in enumerate(steps):
+        body = _resp_body(step)
+        for signature, opener in GATE_SIGNATURES.items():
+            if signature not in body:
+                continue
+            tail = steps[i + 1:]
+            if any(_base(t.get("tool")) == opener for t in tail):
+                continue
+            return (
+                opener,
+                {"step": i, "gate": signature, "tool": _base(step.get("tool"))},
+            )
+    return None
+
+
+def _detect_transient_defeatism(
+    steps: Sequence[dict],
+) -> dict | None:
+    for i in range(len(steps) - 1, -1, -1):
+        step = steps[i]
+        body = _resp_body(step)
+        if not any(sig in body for sig in TRANSIENT_SIGNATURES):
+            continue
+        this_tool = _base(step.get("tool"))
+        tail = steps[i + 1:]
+        retried = any(_base(t.get("tool")) == this_tool for t in tail)
+        recovered = any(_base(t.get("tool")) in {"acc_network", "change_my_ip"} for t in tail)
+        progressed = any(
+            not _has_error_status(t) and not _is_read(t.get("tool")) and not _is_utility(t.get("tool"))
+            for t in tail
+        )
+        if not retried and not recovered and not progressed and len(tail) <= 2:
+            return {"step": i, "tool": this_tool, "body": body[:160]}
+    return None
 
 
 def classify(
@@ -45,25 +179,33 @@ def classify(
     task_context = task_context or {}
 
     if score.get("passed") is True:
-        return FailureVerdict(FailureClass.UNKNOWN,
-                              "task passed; no failure to classify",
-                              {"passed": True})
+        return FailureVerdict(
+            FailureClass.UNKNOWN,
+            "task passed; no failure to classify",
+            {"passed": True},
+        )
 
-    tool_cnt: dict[str, dict[str, int]] = tool_summary.get("tool_cnt") or {}
     ep_valid = int(tool_summary.get("valid_tool_calls") or 0)
     ep_invalid = int(tool_summary.get("invalid_tool_calls") or 0)
     ep_error = int(tool_summary.get("error_tool_calls") or 0)
 
-    tool_names_called = _tool_names_from_trajectory(trajectory)
+    steps = _steps(trajectory)
+    tool_names_called = _tool_names(trajectory)
     expected_tools = task_context.get("expected_tools") or []
     stump_levers = task_context.get("stump_levers") or []
 
-    recall = score.get("recall") or 0
-    total = score.get("total") or 0
-    misbehave = score.get("misbehave") or 0
+    recall = int(score.get("recall") or 0)
+    total = int(score.get("total") or 0)
+    misbehave = int(score.get("misbehave") or 0)
+
+    def _verdict(fc: FailureClass, reason: str, evidence: dict) -> FailureVerdict:
+        aligned = _crux_aligned(fc, stump_levers)
+        if aligned is not None:
+            evidence = {**evidence, "crux_aligned": aligned, "stump_levers": list(stump_levers)}
+        return FailureVerdict(fc, reason, evidence)
 
     if max_turns_hit:
-        return FailureVerdict(
+        return _verdict(
             FailureClass.MAX_TURNS_EXCEEDED,
             "agent ran out of turns without producing [END]",
             {"max_turns_hit": True, "valid_calls": ep_valid},
@@ -71,73 +213,96 @@ def classify(
 
     if ep_valid == 0 and ep_invalid == 0 and ep_error == 0:
         if final_message and len(final_message.strip()) > 40:
-            return FailureVerdict(
+            return _verdict(
                 FailureClass.REFUSED,
                 "no tool calls attempted; agent produced text-only response (length > 40 chars)",
                 {"final_msg_len": len(final_message.strip())},
             )
-        return FailureVerdict(
+        return _verdict(
             FailureClass.NO_TOOL_CALLS,
             "no tool calls attempted and no substantive output",
             {"final_msg_len": len(final_message.strip()) if final_message else 0},
         )
 
     if ep_valid == 0 and ep_invalid > 0:
-        return FailureVerdict(
+        return _verdict(
             FailureClass.FORMAT_ERROR,
             f"all {ep_invalid} tool attempts were unparseable or unknown",
             {"invalid_calls": ep_invalid},
         )
 
+    gate = _detect_gate_prerequisite(steps)
+    if gate is not None:
+        opener, ev = gate
+        return _verdict(
+            FailureClass.MISSING_PREREQ,
+            f"gate rejected at step {ev['step']} on {ev['tool']}; never called '{opener}' to open it",
+            {**ev, "opener": opener},
+        )
+
     if expected_tools:
-        expected_set = set(expected_tools)
+        expected_set = {_base(t) for t in expected_tools}
         called_set = set(tool_names_called)
-        wrong_tools = called_set - expected_set - {"login", "logout"}
+        wrong_tools = called_set - expected_set - {"login", "logout"} - UTILITY_TOOLS
         if wrong_tools and not (called_set & expected_set):
-            return FailureVerdict(
-                FailureClass.WRONG_TOOL,
+            distraction = "distractor_saturation" in (stump_levers or [])
+            fc = FailureClass.DISTRACTION_DERAILED if distraction else FailureClass.WRONG_TOOL
+            return _verdict(
+                fc,
                 f"none of {len(called_set)} unique called tools match expected set",
                 {"called": sorted(called_set), "expected": sorted(expected_set)},
             )
 
-    prereq_pairs = [
-        ("wait_payment_password", "checkout_all"),
-    ]
-    for prereq, action in prereq_pairs:
-        if action in expected_tools and action in tool_names_called and prereq not in tool_names_called:
-            return FailureVerdict(
-                FailureClass.MISSING_PREREQ,
-                f"called {action} without required prerequisite {prereq}",
-                {"prereq": prereq, "action": action},
-            )
+    defeat = _detect_transient_defeatism(steps)
+    if defeat is not None:
+        return _verdict(
+            FailureClass.ERR_RECOVERY,
+            f"hit recoverable error on {defeat['tool']} at step {defeat['step']} and stopped without retrying or invoking a recovery tool",
+            defeat,
+        )
 
-    if "dirty_state" in stump_levers and total > 0 and recall < total and misbehave == 0:
-        cleanup_hints = {"delete", "remove", "clear", "unlike", "unstar", "mark_as_read", "unblock", "cancel"}
-        touched_cleanup = any(any(h in name.lower() for h in cleanup_hints) for name in tool_names_called)
-        if not touched_cleanup:
-            return FailureVerdict(
-                FailureClass.DIRTY_STATE_IGNORED,
-                "task is a dirty_state task but agent called no cleanup-style tools",
-                {"called": tool_names_called},
-            )
-
-    steps = trajectory.get("steps") if isinstance(trajectory, dict) else trajectory
-    error_steps = [s for s in (steps or []) if _has_error_status(s)]
+    error_steps = [s for s in steps if _has_error_status(s)]
     if len(error_steps) >= 3 and (recall == 0 or (total and recall / total < 0.5)):
-        return FailureVerdict(
+        return _verdict(
             FailureClass.TOOL_ERROR_UNRECOVERED,
             f"agent hit {len(error_steps)} tool errors and did not recover",
             {"error_steps": len(error_steps)},
         )
 
+    if misbehave > 0 and total > 0 and recall >= max(1, total // 2):
+        return _verdict(
+            FailureClass.OVER_ACTION,
+            f"reached partial goal (recall {recall}/{total}) but damaged {misbehave} protected state field(s)",
+            {"recall": recall, "total": total, "misbehave": misbehave},
+        )
+
+    if "dirty_state" in stump_levers and total > 0 and recall < total and misbehave == 0:
+        touched_cleanup = any(
+            any(h in name.lower() for h in CLEANUP_HINTS) for name in tool_names_called
+        )
+        if not touched_cleanup:
+            return _verdict(
+                FailureClass.DIRTY_STATE_IGNORED,
+                "dirty_state lever active but agent called no cleanup-style tools",
+                {"called": tool_names_called},
+            )
+
+    first_write = _first_write_index(steps)
+    if first_write is not None and first_write == 0 and total > 0 and misbehave > 0:
+        return _verdict(
+            FailureClass.CLEAN_SLATE_BIAS,
+            f"agent's first action was a write ({_base(steps[0].get('tool'))}) with no prior state read",
+            {"first_tool": _base(steps[0].get("tool")), "misbehave": misbehave},
+        )
+
     if ep_valid >= 2 and total > 0 and 0 < recall < total:
-        return FailureVerdict(
+        return _verdict(
             FailureClass.PARTIAL_COMPLETION,
             f"partial state changes: recall {recall}/{total}",
             {"recall": recall, "total": total, "valid_calls": ep_valid},
         )
 
-    return FailureVerdict(
+    return _verdict(
         FailureClass.UNKNOWN,
         "no rule matched; inspect trajectory manually",
         {
@@ -146,6 +311,7 @@ def classify(
             "error_calls": ep_error,
             "recall": recall,
             "total": total,
+            "misbehave": misbehave,
         },
     )
 
