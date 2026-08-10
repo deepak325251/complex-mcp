@@ -29,10 +29,10 @@ echo "[run_task] launching all 140 sandbox apps in tmux:$SOFTS_SESSION"
 tmux new-session -d -s "$SOFTS_SESSION" \
     "cd $REPO_ROOT && source .venv/bin/activate && zsh start_softwares.sh 2>&1 | tee /tmp/omcp-softs.log"
 
-REQUIRED_PORTS=(8000 8001 8002 8003 8004 8005 8006 8007 8013 8014 8015 8016 8017 8018 8019 8020 8022 8023 8024 9000 9001 9002 9003 9004 9005 9006)
-echo "[run_task] waiting up to 180s for ${#REQUIRED_PORTS[@]} required ports..."
+REQUIRED_PORTS=({8000..8007} {8013..8024} {9000..9008} {9014..9144})
+echo "[run_task] waiting up to 240s for ${#REQUIRED_PORTS[@]} required ports..."
 ready=0
-for i in $(seq 1 180); do
+for i in $(seq 1 240); do
     ready=1
     for p in "${REQUIRED_PORTS[@]}"; do
         python3 -c "import socket; socket.create_connection(('localhost', $p), 1).close()" 2>/dev/null || { ready=0; break; }
