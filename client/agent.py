@@ -368,8 +368,12 @@ class ClaudeCodeBackend(ChatBackend):
             "--output-format", "json",
             "--dangerously-skip-permissions",
         ]
+
+        # Inline system prompt via stdin: `--system-prompt <huge>` hits OS ARG_MAX (silent exit-1 with 500+ tools).
         if system_prompt:
-            cmd += ["--system-prompt", system_prompt]
+            stdin_input = f"{system_prompt}\n\n{prompt}"
+        else:
+            stdin_input = prompt
 
         proc = await asyncio.create_subprocess_exec(
             *cmd,
@@ -377,7 +381,7 @@ class ClaudeCodeBackend(ChatBackend):
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
-        stdout_b, stderr_b = await proc.communicate(prompt.encode("utf-8"))
+        stdout_b, stderr_b = await proc.communicate(stdin_input.encode("utf-8"))
         if proc.returncode != 0:
             raise RuntimeError(
                 f"`claude` exited {proc.returncode}: {stderr_b.decode('utf-8', errors='replace')[:1000]}"
