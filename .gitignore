@@ -227,3 +227,9 @@ check-client.py
 draw/
 # Harbor task zip (kept as local convenience only)
 benchmark/harbor_final_all.zip
+
+/output_pseudo
+
+/output_pseudo2
+
+/client/pseudo_schemas

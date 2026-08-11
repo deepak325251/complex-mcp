@@ -131,7 +131,9 @@ def judge_trajectory_graph(trajectory: dict, gold_plan: list, *,
 
     passed = plan_ok and (rubric_score is None or rubric_score >= 0.5)
     return {
-        "reward": 1.0 if passed else 0.0,
+        # Continuous reward = graph tool-DAG F1 (partial credit). `passed`
+        # stays the binary exact-match+rubric gate used for accuracy/pass@k.
+        "reward": round(r.f1, 6),
         "passed": bool(passed),
         "graph_f1": round(r.f1, 6),
         "graph_precision": round(r.precision, 6),

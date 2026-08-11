@@ -282,13 +282,7 @@ def _evaluate_mcp_stump_rubric(
         "rubric_score": round(rubric_score, 4),
         "rc": round(rc, 4),
         "rb": round(rb, 4),
-<<<<<<< HEAD
-        "completion_rate": round(rc, 4),
-        "misbehaving_rate": round(rb, 4),
         "rubric_passed": rubric_passed,
-=======
-        "passed": passed,
->>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
         "per_criterion": per_criterion,
         "format": "mcp-stump",
     }

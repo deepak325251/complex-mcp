@@ -272,17 +272,6 @@ def _write_ctrf_json(run_dir: Path, task_name: str, model: str, run_no: int,
                 "duration": 0,
                 "message": c.get("reason", ""),
             })
-<<<<<<< HEAD
-    pytest_checks = score.get("pytest_checks")
-    if pytest_checks and "outcomes" in pytest_checks:
-        for c in pytest_checks["outcomes"]:
-            tests.append({
-                "name": f"{task_name}#pytest.{c.get('name')}",
-                "status": "passed" if c.get("passed") else "failed",
-                "duration": 0,
-                "message": c.get("message", ""),
-            })
-=======
     for tname, ok in (score.get("passed_tests") or {}).items():
         tests.append({
             "name": f"{task_name}#pytest.{tname}",
@@ -317,7 +306,6 @@ def _write_ctrf_json(run_dir: Path, task_name: str, model: str, run_no: int,
             "status": "failed", "duration": 0,
             "message": f"protected path changed: {o.get('old')!r} -> {o.get('new')!r}",
         })
->>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
     summary_passed = sum(1 for t in tests if t["status"] == "passed")
     ctrf = {
         "results": {
@@ -463,12 +451,9 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         # surface rides alongside as `rubric_rb`, NOT under the same name.
         "completion_rate": completion_rate,
         "misbehaving_rate": misbehaving_rate,
-<<<<<<< HEAD
         "test_weights_percentage": test_weights_percentage,
         "rubric_weights_percentage": rubric_weights_percentage,
-=======
         "rubric_rb": rubric_result.get("rb") if rubric_result else None,
->>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
         "tokens": record.get("tokens", {}),
         "tool_summary": tool_summary,
     }, indent=2, ensure_ascii=False))

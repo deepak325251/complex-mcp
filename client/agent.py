@@ -52,6 +52,16 @@ class Toolbox:
         self.servers = {}
         self.rag: RAGEngine | None = rag_cls() if rag_cls else None
         self.method = method
+        # ETOM pseudo-execution: no world, no server. When on, call() returns a
+        # schema-shaped pseudo output instead of POSTing to the live app, and
+        # login/logout are short-circuited (see AgentClient). Grading is then the
+        # tool DAG alone (benchmark/graph_judge).
+        from client.pseudo_exec import is_enabled as _pseudo_enabled, PSEUDO_CACHE
+        self.pseudo = _pseudo_enabled()
+        self._pseudo_cache = PSEUDO_CACHE
+        if self.pseudo:
+            logger.info("[ETOM] pseudo-execution ON -- tools return schema-shaped "
+                        "outputs; no world / no server is contacted.")
 
         if self.method == "rag" or self.method == "fetch":
             assert self.rag
@@ -100,8 +110,13 @@ class Toolbox:
                     "output": e.__str__()
                 }
         tool = self.tools[key_name]
+        if self.pseudo:
+            # ETOM: no world, no session, no server -- return a schema-shaped
+            # success so the agent proceeds through its plan structurally.
+            from client.pseudo_exec import pseudo_output
+            return pseudo_output(tool, arguments, self._pseudo_cache)
         tool_name = tool["tool_name"]
-        server = tool["server"]        
+        server = tool["server"]
         url = server["url"]
         need_session = server["need_session"]
 
@@ -433,7 +448,13 @@ class ClaudeCodeBackend(ChatBackend):
             self.claude_bin,
             "-p",
             "--model", self.model,
-            "--output-format", "json",
+            # stream-json surfaces the detail `json` collapses: per-message
+            # `usage` with the prompt-cache breakdown, and `thinking` content
+            # (streamed as thinking_delta events). --verbose + partial messages
+            # are required to receive those events with -p.
+            "--output-format", "stream-json",
+            "--verbose",
+            "--include-partial-messages",
             "--dangerously-skip-permissions",
         ]
 
@@ -471,32 +492,71 @@ class ClaudeCodeBackend(ChatBackend):
                 except OSError:
                     pass
 
-        try:
-            data = json.loads(stdout_b.decode("utf-8"))
-        except json.JSONDecodeError as e:
-            raise RuntimeError(f"claude stdout not JSON: {e}. First 500 bytes: {stdout_b[:500]!r}")
+        # stream-json emits one JSON object per line. Accumulate the thinking
+        # (streamed as thinking_delta), the final text + authoritative usage
+        # (the terminal `result` event, whose usage carries the cache breakdown),
+        # and the model's cost.
+        content = ""
+        usage_data: Dict[str, Any] = {}
+        last_assistant_usage: Dict[str, Any] = {}
+        cost_usd = 0.0
+        reasoning_parts: list[str] = []
+        reasoning_tokens = 0
+        _saw_result = False
+        for _line in stdout_b.decode("utf-8", errors="replace").splitlines():
+            _line = _line.strip()
+            if not _line:
+                continue
+            try:
+                ev = json.loads(_line)
+            except json.JSONDecodeError:
+                continue
+            etype = ev.get("type")
+            if etype == "stream_event":
+                delta = (ev.get("event") or {}).get("delta") or {}
+                if delta.get("type") == "thinking_delta":
+                    # NOTE: the claude-code CLI redacts thinking *text* (the
+                    # `thinking` field is empty); only `estimated_tokens` is
+                    # exposed. So we record that reasoning happened + its size,
+                    # and keep any text if a future CLI ever surfaces it.
+                    if delta.get("thinking"):
+                        reasoning_parts.append(delta["thinking"])
+                    reasoning_tokens += delta.get("estimated_tokens", 0) or 0
+            elif etype == "assistant":
+                _amsg = ev.get("message") or {}
+                if _amsg.get("usage"):
+                    last_assistant_usage = _amsg["usage"]
+                for blk in _amsg.get("content") or []:
+                    if isinstance(blk, dict) and blk.get("type") == "thinking" and blk.get("thinking"):
+                        reasoning_parts.append(blk["thinking"])
+            elif etype == "result":
+                _saw_result = True
+                content = ev.get("result") or content
+                usage_data = ev.get("usage") or usage_data
+                cost_usd = ev.get("total_cost_usd", cost_usd) or cost_usd
+        if not _saw_result:
+            raise RuntimeError(
+                f"claude stream-json had no result event. First 500 bytes: {stdout_b[:500]!r}")
+        # result.usage is authoritative (has the final output count), but can come
+        # back empty on some fast paths -- fall back to the last assistant turn's
+        # usage for the input/cache breakdown so cache accounting survives.
+        if not (usage_data.get("input_tokens") or usage_data.get("cache_read_input_tokens")
+                or usage_data.get("cache_creation_input_tokens")):
+            for _k in ("input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"):
+                if last_assistant_usage.get(_k):
+                    usage_data[_k] = last_assistant_usage[_k]
+            usage_data.setdefault("output_tokens", last_assistant_usage.get("output_tokens", 0))
 
-        content = data.get("result") or data.get("content") or ""
-        usage_data = data.get("usage") or {}
         # The claude CLI splits input across uncached + cached buckets; with
-        # prompt caching on, `input_tokens` is only the small uncached remainder
-        # (hence the old "constant 2"). Keep the breakdown AND the summed total so
-        # cache read/creation are recorded, not collapsed away.
+        # prompt caching on, `input_tokens` is only the small uncached remainder.
+        # Keep the breakdown AND the summed total so cache read/creation are
+        # recorded, not collapsed away.
         uncached_input = usage_data.get("input_tokens", 0) or 0
         cache_read = usage_data.get("cache_read_input_tokens", 0) or 0
         cache_creation = usage_data.get("cache_creation_input_tokens", 0) or 0
         input_tokens = uncached_input + cache_read + cache_creation
         output_tokens = usage_data.get("output_tokens", 0) or 0
-        cost_usd = data.get("total_cost_usd", 0.0) or 0.0
-        # Extended thinking, when the CLI surfaces it (a `thinking`/`reasoning`
-        # field, e.g. under stream-json), is preserved as reasoning. Plain json
-        # mode usually omits it, so this is best-effort and defaults to "".
-        reasoning = ""
-        for _k in ("thinking", "reasoning", "reasoning_content"):
-            _v = data.get(_k)
-            if isinstance(_v, str) and _v.strip():
-                reasoning = _v
-                break
+        reasoning = "".join(reasoning_parts)
 
         stops = extra_body.get("stop") or []
         if isinstance(stops, str):
@@ -523,6 +583,9 @@ class ClaudeCodeBackend(ChatBackend):
                 cache_creation_tokens=cache_creation,
                 output_tokens=output_tokens,
                 cost_usd=cost_usd,
+                # Extended-thinking size (text is redacted by the CLI, so this
+                # count is the only reasoning signal available).
+                reasoning_tokens=reasoning_tokens,
             ),
             choices=[
                 argparse.Namespace(
@@ -614,6 +677,16 @@ class AgentClient:
         self.system_prompt = system_prompt
     
     async def __login(self, env: Dict[str, Any], session_id_dict: Dict[str, Any], results: Dict[str, Any]):
+        if getattr(self.toolbox, "pseudo", False):
+            # ETOM: no server to log into. Hand every app a fake session so the
+            # need_session gate in Toolbox.call is satisfied, then bail.
+            if len(env["apps"]) > 0:
+                system_app = "LightSystem"
+                for app in [system_app] + [a for a in env["apps"] if a != system_app]:
+                    session_id_dict[app] = f"pseudo-{app}"
+                    results["old_apps"][app] = {}
+                env["apps"] = [system_app] + [a for a in env["apps"] if a != system_app]
+            return
         if len(env["apps"]) > 0:
             system_app = "LightSystem"
             login_info = await self.toolbox.call_with_server(
@@ -662,6 +735,12 @@ class AgentClient:
             env["apps"] = [system_app] + env["apps"]
         
     async def __logout(self, env: Dict[str, Any], session_id_dict: Dict[str, Any], results: Dict[str, Any]):
+        if getattr(self.toolbox, "pseudo", False):
+            # ETOM: no server, no world snapshot to read back. Record empty
+            # per-app state so downstream writers stay happy.
+            for app in env["apps"]:
+                results["apps"][app] = {}
+            return
         for app in env["apps"]:
             if app in self.toolbox.servers:
                 server = self.toolbox.servers[app]
@@ -757,7 +836,7 @@ class AgentClient:
             # tiktoken counters above are estimates; these are the model's own.
             usage_acc = {"input_tokens": 0, "output_tokens": 0,
                          "cache_read_tokens": 0, "cache_creation_tokens": 0,
-                         "cost_usd": 0.0}
+                         "reasoning_tokens": 0, "cost_usd": 0.0}
 
             def _accumulate_usage(u):
                 usage_acc["input_tokens"] += getattr(u, "uncached_input_tokens",
@@ -766,6 +845,7 @@ class AgentClient:
                                                       getattr(u, "completion_tokens", 0)) or 0
                 usage_acc["cache_read_tokens"] += getattr(u, "cache_read_tokens", 0) or 0
                 usage_acc["cache_creation_tokens"] += getattr(u, "cache_creation_tokens", 0) or 0
+                usage_acc["reasoning_tokens"] += getattr(u, "reasoning_tokens", 0) or 0
                 usage_acc["cost_usd"] += getattr(u, "cost_usd", 0.0) or 0.0
 
             for idx in range(max_turns):
@@ -950,6 +1030,7 @@ class AgentClient:
                 "output_tokens": usage_acc["output_tokens"],
                 "cache_read_tokens": usage_acc["cache_read_tokens"],
                 "cache_creation_tokens": usage_acc["cache_creation_tokens"],
+                "reasoning_tokens": usage_acc["reasoning_tokens"],
                 "cost_usd": round(usage_acc["cost_usd"], 6),
             }
 

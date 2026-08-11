@@ -2,12 +2,8 @@ from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
 from benchmark.rubric_pytest_judge import make_openai_rubric_judge
 from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
-<<<<<<< HEAD
-from benchmark.pytest_api import load_checks_from_file, run_checks
-=======
 from benchmark.classify_failure import classify as _classify_failure, parse_expected_tools as _parse_expected_tools
 from benchmark.passk import estimate as _passk_estimate
->>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
 from scripts.task_writer import write_task_dir, write_mcp_stump_run, write_trials_aggregate, parse_trajectory as _parse_traj_for_layout, parse_trajectory
 from dotenv import load_dotenv
 from argparse import ArgumentParser
@@ -505,83 +501,6 @@ def main(args):
                 print("[judge] SKIP: no solution/trajectory.json (graph gold) and no "
                       "tests/test_outputs.py (pytest) -- add one to grade this task.")
 
-<<<<<<< HEAD
-            checks_report = None
-            task_dir_str = task_info.get("task_dir")
-            if task_dir_str:
-                checks_path = Path(task_dir_str) / "tests" / "checks.py"
-                if checks_path.exists():
-                    try:
-                        checks_module = load_checks_from_file(checks_path)
-                        trace_steps = parse_trajectory(result.get("output", "")).get("steps", [])
-                        trace_for_checks = [
-                            {"tool": s.get("tool"), "arguments": s.get("arguments", {})}
-                            for s in trace_steps if s.get("tool")
-                        ]
-                        checks_report = run_checks(
-                            checks_module,
-                            initial_state=old_env,
-                            final_state=new_env,
-                            trace=trace_for_checks,
-                        )
-                        score["pytest_checks"] = checks_report.as_dict()
-                        print(
-                            f"[checks] {checks_path.parent.name}: "
-                            f"Rc={checks_report.completion_rate:.2f} "
-                            f"Rb={checks_report.misbehaving_rate:.2f} "
-                            f"passed={checks_report.passed}"
-                        )
-                    except Exception as exc:
-                        score["pytest_checks_error"] = f"{type(exc).__name__}: {exc}"
-                        print(f"[checks] SKIP {checks_path.name}: {exc}")
-
-            record = {
-                "index": i + 1,
-                "name": episode_name,
-                "query": query,
-                "seed": seed,
-                "apps": apps,
-                "level": level,
-                "tool_cnt": tool_cnt,
-                "tokens": tokens,
-                "valid_tool_calls": ep_valid,
-                "invalid_tool_calls": ep_invalid,
-                "error_tool_calls": ep_error,
-                "output": result.get("output", ""),
-                "expected_tool_calls": task_info.get("expected_tool_calls"),
-            }
-            task_context = {
-                "expected_tools": list(gt_tool_cnt.keys()) if gt_tool_cnt else None,
-                "stump_levers": task_info.get("stump_levers") or [],
-                "capability_level": task_info.get("capability_level"),
-                "apps": apps,
-            }
-            record["old_env"] = old_env
-            record["new_env"] = new_env
-            if layout == "mcp-stump":
-                task_dir, final_score = write_mcp_stump_run(
-                    run_dir, record, model=model, score=score,
-                    task_context=task_context,
-                    rubric_result=rubric_result,
-                    task_dir_source=task_info.get("task_dir"),
-                )
-=======
-            # World-consistency gate: if the kit was authored against a different
-            # world than the agent actually ran in (e.g. a seed=114514 kit graded
-            # against a seedless seed=42 run), the score is meaningless. Mark the
-            # run INVALID (world_mismatch) rather than emitting a false reward.
-            if grading_dir:
-                from benchmark.pytest_judge import check_world_anchors
-                _wc = check_world_anchors(_traj, grading_dir)
-                if _wc["applicable"] and not _wc["consistent"]:
-                    print(f"[world] MISMATCH: kit world={_wc.get('world')} but run is "
-                          f"missing anchors {_wc['missing'][:5]} -> INVALID (not scored)")
-                    judge_result = dict(judge_result)
-                    judge_result["world_mismatch"] = True
-                    judge_result["world_missing_anchors"] = _wc["missing"]
-                    passed = 0
-                    gradeable = False
-
             ep_valid = ep_invalid = ep_error = 0
             for tool_cnt_info in tool_cnt.values():
                 ep_valid += tool_cnt_info.get("ok", 0)
@@ -704,7 +623,6 @@ def main(args):
                 }
                 record["old_env"] = old_env
                 record["new_env"] = new_env
->>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
                 traj_for_pair = _parse_traj_for_layout(record.get("output", ""))
                 if layout == "mcp-stump":
                     # Every attempt writes its own run_N under trials_<task>/.
