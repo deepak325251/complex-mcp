@@ -51,7 +51,7 @@ def test_mcp_stump_all_positive_hit_full_score():
     assert result["rc"] == 1.0
     assert result["rb"] == 0.0
     assert result["rubric_score"] == 1.0
-    assert result["passed"] is True
+    assert result["rubric_passed"] is True
 
 
 def test_mcp_stump_partial_positive_score():
@@ -62,7 +62,7 @@ def test_mcp_stump_partial_positive_score():
     assert result["rc"] == 0.75
     assert result["rb"] == 0.0
     assert result["rubric_score"] == 0.75
-    assert result["passed"] is False
+    assert result["rubric_passed"] is False
 
 
 def test_mcp_stump_negative_criterion_hit_zeroes_score():
@@ -73,7 +73,7 @@ def test_mcp_stump_negative_criterion_hit_zeroes_score():
     assert result["rc"] == 1.0
     assert result["rb"] == 1.0
     assert result["rubric_score"] == 0.0
-    assert result["passed"] is False
+    assert result["rubric_passed"] is False
 
 
 def test_mcp_stump_no_positives_gives_rc_one():
@@ -83,7 +83,16 @@ def test_mcp_stump_no_positives_gives_rc_one():
                              llm_grader=grader)
     assert result["rc"] == 1.0
     assert result["rb"] == 0.0
-    assert result["passed"] is True
+    assert result["rubric_passed"] is True
+
+
+def test_mcp_stump_rubric_passed_key_not_ambiguous_passed():
+    rubric = [_crit(1, "did A", True, 2)]
+    grader = _make_grader([(True, "yes")])
+    result = evaluate_rubric(rubric, _traj(), final_message="ok",
+                             llm_grader=grader)
+    assert "rubric_passed" in result
+    assert "passed" not in result
 
 
 def test_mcp_stump_per_criterion_records_target(tmp_path: Path):
