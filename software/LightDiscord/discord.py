@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,84 +31,11 @@ class DiscordSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "discord.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.me: Dict[str, Any] = info.get("me", {})
-
-        self.guilds: List[Dict[str, Any]] = [
-            {
-                "id": g["id"],
-                "name": g["name"],
-                "owner_id": g["owner_id"],
-                "approximate_member_count": _to_int(g["member_count"]),
-                "description": (str(g.get("description", "")) or None),
-                "icon": (str(g.get("icon", "")) or None),
-                "region": g["region"],
-            }
-            for g in info.get("guilds", [])
-        ]
-
-        self.channels: List[Dict[str, Any]] = [
-            {
-                "id": c["id"],
-                "guild_id": c["guild_id"],
-                "name": c["name"],
-                "type": _to_int(c["type"]),
-                "position": _to_int(c["position"]),
-                "topic": (str(c.get("topic", "")) or None),
-                "nsfw": _to_bool(c["nsfw"]),
-            }
-            for c in info.get("channels", [])
-        ]
-
-        self.messages: List[Dict[str, Any]] = [
-            {
-                "id": m["id"],
-                "channel_id": m["channel_id"],
-                "author": {"id": m["author_id"], "username": m["author_username"]},
-                "content": m["content"],
-                "timestamp": m["timestamp"],
-                "pinned": _to_bool(m["pinned"]),
-                "edited_timestamp": None,
-            }
-            for m in info.get("messages", [])
-        ]
-
-        self.members: List[Dict[str, Any]] = [
-            {
-                "guild_id": r["guild_id"],
-                "user": {
-                    "id": r["user_id"],
-                    "username": r["username"],
-                    "global_name": (str(r.get("global_name", "")) or None),
-                    "bot": _to_bool(r["bot"]),
-                },
-                "nick": (str(r.get("nick", "")) or None),
-                "joined_at": r["joined_at"],
-                "roles": [x for x in str(r.get("roles", "") or "").split(";") if x],
-            }
-            for r in info.get("members", [])
-        ]
-
-        self.roles: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "guild_id": r["guild_id"],
-                "name": r["name"],
-                "color": _to_int(r["color"]),
-                "position": _to_int(r["position"]),
-                "hoist": _to_bool(r["hoist"]),
-                "mentionable": _to_bool(r["mentionable"]),
-                "permissions": r["permissions"],
-            }
-            for r in info.get("roles", [])
-        ]
 
     def get_session_dict(self):
         return {"messages": self.messages}

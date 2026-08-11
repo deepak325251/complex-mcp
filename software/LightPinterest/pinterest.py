@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,96 +39,11 @@ class PinterestSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "pinterest.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.boards: List[Dict[str, Any]] = [
-            {
-                **b,
-                "board_id": b["board_id"],
-                "pin_count": _strict_int(b.get("pin_count")),
-                "follower_count": _strict_int(b.get("follower_count")),
-                "collaborator_count": _strict_int(b.get("collaborator_count")),
-            }
-            for b in info.get("boards", [])
-        ]
-        self.board_sections: List[Dict[str, Any]] = [
-            {
-                **s,
-                "section_id": s["section_id"],
-                "board_id": s["board_id"],
-                "pin_count": _strict_int(s.get("pin_count")),
-            }
-            for s in info.get("board_sections", [])
-        ]
-        self.pins: List[Dict[str, Any]] = [
-            {
-                **p,
-                "pin_id": p["pin_id"],
-                "board_id": p["board_id"],
-                "board_section_id": _opt_str(p.get("board_section_id", "")),
-                "link": _opt_str(p.get("link", "")),
-                "alt_text": _opt_str(p.get("alt_text", "")),
-                "is_promoted": _to_bool(p.get("is_promoted", False)),
-                "pin_metrics_impressions": _strict_int(p.get("pin_metrics_impressions")),
-                "pin_metrics_saves": _strict_int(p.get("pin_metrics_saves")),
-                "pin_metrics_clicks": _strict_int(p.get("pin_metrics_clicks")),
-            }
-            for p in info.get("pins", [])
-        ]
-        self.pin_analytics: List[Dict[str, Any]] = [
-            {
-                "pin_id": r["pin_id"],
-                "date": r["date"],
-                "impressions": _strict_int(r.get("impressions")),
-                "saves": _strict_int(r.get("saves")),
-                "pin_clicks": _strict_int(r.get("pin_clicks")),
-                "outbound_clicks": _strict_int(r.get("outbound_clicks")),
-            }
-            for r in info.get("pin_analytics", [])
-        ]
-        self.user_analytics: List[Dict[str, Any]] = [
-            {
-                "date": r["date"],
-                "impressions": _strict_int(r.get("impressions")),
-                "saves": _strict_int(r.get("saves")),
-                "pin_clicks": _strict_int(r.get("pin_clicks")),
-                "outbound_clicks": _strict_int(r.get("outbound_clicks")),
-                "profile_visits": _strict_int(r.get("profile_visits")),
-                "follows": _strict_int(r.get("follows")),
-            }
-            for r in info.get("user_analytics", [])
-        ]
-        self.ad_accounts: List[Dict[str, Any]] = [
-            {**a, "ad_account_id": a["ad_account_id"]} for a in info.get("ad_accounts", [])
-        ]
-        self.campaigns: List[Dict[str, Any]] = [
-            {
-                **c,
-                "campaign_id": c["campaign_id"],
-                "ad_account_id": c["ad_account_id"],
-                "daily_spend_cap_micro": _strict_int(c.get("daily_spend_cap_micro")),
-                "lifetime_spend_cap_micro": _strict_int(c.get("lifetime_spend_cap_micro")),
-                "end_time": _opt_str(c.get("end_time", "")),
-            }
-            for c in info.get("campaigns", [])
-        ]
-        self.user_account_raw = info.get("user_account", [])
-
-        self._next_board_id = max(
-            (self._extract_numeric_id(b["board_id"], "board_") for b in self.boards), default=0
-        ) + 1
-        self._next_section_id = max(
-            (self._extract_numeric_id(s["section_id"], "section_") for s in self.board_sections), default=0
-        ) + 1
-        self._next_pin_id = max(
-            (self._extract_numeric_id(p["pin_id"], "pin_") for p in self.pins), default=0
-        ) + 1
 
     def get_session_dict(self):
         return {"boards": self.boards, "pins": self.pins, "board_sections": self.board_sections}

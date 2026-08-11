@@ -88,6 +88,14 @@ else
          --tasks-dir "$TASKS_DIR"
          --output-dir "$OUTPUT_DIR"
          --layout "$LAYOUT")
+    if [ "${NATIVE:-0}" = "1" ]; then
+        CMD+=(--native-tools)
+        echo "[run_task] NATIVE=1 -> using native function-calling (OpenAIBackend / proxy)"
+    fi
+    if [ -n "${TOPK:-}" ]; then
+        CMD+=(--topk "$TOPK")
+        echo "[run_task] TOPK=$TOPK"
+    fi
     if [ -n "${TASK:-}" ]; then
         echo "[run_task] launching: $RUNNER --task $TASK"
         CMD+=(--task "$TASK")

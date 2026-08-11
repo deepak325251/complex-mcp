@@ -5,6 +5,6 @@ from segment import SegmentSession
 
 
 class LightSegmentSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.segment_session = SegmentSession(seed=seed, os_cfg=os_cfg)
+        self.segment_session = SegmentSession(os_cfg=os_cfg, seed=seed)

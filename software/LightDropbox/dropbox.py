@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -33,48 +34,11 @@ class DropboxSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "dropbox.yaml") as f:
-            info = yaml.safe_load(f)
-
-        acct = (info.get("account") or [{}])[0]
-        self.account: Dict[str, Any] = self._coerce_account(acct)
-
-        self.files: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "name": r["name"],
-                "path_lower": r["path_lower"],
-                "path_display": r["path_display"],
-                "is_folder": _to_bool(r.get("is_folder", False)),
-                "size": _to_int(r.get("size", 0)),
-                "client_modified": r["client_modified"],
-                "rev": r["rev"],
-            }
-            for r in info.get("files", [])
-        ]
-
-        self.shared_links: List[Dict[str, Any]] = [
-            {
-                "id": s["id"],
-                "url": s["url"],
-                "name": s["name"],
-                "path_lower": s["path_lower"],
-                "visibility": s["visibility"],
-                "file_id": s["file_id"],
-            }
-            for s in info.get("shared_links", [])
-        ]
-
-        # Extracted text for the download endpoint. Keyed by file basename.
-        # PDF text is only present when the extractor (pypdf) was available at
-        # corpus-build time; missing PDF text yields a pdf_extraction_unavailable
-        # failure, mirroring the source service when pypdf is absent.
-        self.file_blobs: Dict[str, str] = dict(info.get("file_blobs", {}))
 
     def get_session_dict(self):
         return {"files": self.files}

@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -28,59 +29,11 @@ class DoordashSession:
 
     SERVICE_FEE_PCT = 10.0  # percent of subtotal
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "doordash.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.stores: List[Dict[str, Any]] = [
-            {
-                **s,
-                "rating": float(s["rating"]),
-                "review_count": int(s["review_count"]),
-                "delivery_fee": float(s["delivery_fee"]),
-                "eta_minutes": int(s["eta_minutes"]),
-                "latitude": float(s["latitude"]),
-                "longitude": float(s["longitude"]),
-                "is_open": _to_bool(s["is_open"]),
-            }
-            for s in info.get("stores", [])
-        ]
-        self.menu_items: List[Dict[str, Any]] = [
-            {
-                **i,
-                "price": float(i["price"]),
-                "calories": int(i["calories"]),
-                "popular": _to_bool(i["popular"]),
-                "available": _to_bool(i["available"]),
-            }
-            for i in info.get("menu_items", [])
-        ]
-        self.orders: List[Dict[str, Any]] = [
-            {
-                **o,
-                "subtotal": float(o["subtotal"]),
-                "delivery_fee": float(o["delivery_fee"]),
-                "service_fee": float(o["service_fee"]),
-                "tip": float(o["tip"]),
-                "total": float(o["total"]),
-            }
-            for o in info.get("orders", [])
-        ]
-        self.order_items: List[Dict[str, Any]] = [
-            {
-                **r,
-                "quantity": int(r["quantity"]),
-                "unit_price": float(r["unit_price"]),
-                "line_total": float(r["line_total"]),
-            }
-            for r in info.get("order_items", [])
-        ]
-
-        self.carts: Dict[str, Any] = {}
 
     def get_session_dict(self):
         return {"orders": self.orders}

@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -59,65 +60,11 @@ class IntercomSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "intercom.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.contacts: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "role": r["role"],
-                "name": r["name"],
-                "email": _opt_str(r.get("email"), default="") or None,
-                "phone": _opt_str(r.get("phone"), default="") or None,
-                "company_id": _opt_str(r.get("company_id"), default="") or None,
-                "created_at": r["created_at"],
-                "last_seen_at": _opt_str(r.get("last_seen_at"), default="") or None,
-            }
-            for r in info.get("contacts", [])
-        ]
-        self.companies: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "company_id": r["company_id"],
-                "name": r["name"],
-                "plan": r["plan"],
-                "monthly_spend": _opt_float(r.get("monthly_spend"), default=0.0),
-                "user_count": _opt_int(r.get("user_count"), default=0),
-                "industry": r["industry"],
-                "created_at": r["created_at"],
-            }
-            for r in info.get("companies", [])
-        ]
-        self.conversations: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "contact_id": r["contact_id"],
-                "state": r["state"],
-                "title": r["title"],
-                "created_at": r["created_at"],
-                "updated_at": r["updated_at"],
-                "assignee_id": _opt_str(r.get("assignee_id"), default="") or None,
-                "open": _strict_bool(r["open"]),
-            }
-            for r in info.get("conversations", [])
-        ]
-        self.parts: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "conversation_id": r["conversation_id"],
-                "part_type": r["part_type"],
-                "author_type": r["author_type"],
-                "author_id": r["author_id"],
-                "body": _opt_str(r.get("body"), default="") or None,
-                "created_at": r["created_at"],
-            }
-            for r in info.get("conversation_parts", [])
-        ]
 
     def get_session_dict(self):
         return {"conversations": self.conversations, "parts": self.parts}

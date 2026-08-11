@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -33,65 +34,11 @@ class GitlabSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "gitlab.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.current_user: Dict[str, Any] = info.get("current_user", {})
-
-        self.projects: List[Dict[str, Any]] = [
-            {
-                **p,
-                "id": _to_int(p.get("id")),
-                "star_count": _to_int(p.get("star_count")),
-                "forks_count": _to_int(p.get("forks_count")),
-                "open_issues_count": _to_int(p.get("open_issues_count")),
-            }
-            for p in info.get("projects", [])
-        ]
-        self.issues: List[Dict[str, Any]] = [
-            {
-                **i,
-                "id": _to_int(i.get("id")),
-                "iid": _to_int(i.get("iid")),
-                "project_id": _to_int(i.get("project_id")),
-                "labels": [l for l in str(i.get("labels", "") or "").split(";") if l],
-                "closed_at": (i.get("closed_at") or None),
-            }
-            for i in info.get("issues", [])
-        ]
-        self.merge_requests: List[Dict[str, Any]] = [
-            {
-                **m,
-                "id": _to_int(m.get("id")),
-                "iid": _to_int(m.get("iid")),
-                "project_id": _to_int(m.get("project_id")),
-                "draft": _to_bool(m.get("draft", False)),
-                "merged_at": (m.get("merged_at") or None),
-            }
-            for m in info.get("merge_requests", [])
-        ]
-        self.pipelines: List[Dict[str, Any]] = [
-            {
-                **p,
-                "id": _to_int(p.get("id")),
-                "project_id": _to_int(p.get("project_id")),
-                "duration": _to_int(p.get("duration")),
-            }
-            for p in info.get("pipelines", [])
-        ]
-        self.users: List[Dict[str, Any]] = [
-            {
-                **u,
-                "id": _to_int(u.get("id")),
-                "is_admin": _to_bool(u.get("is_admin", False)),
-            }
-            for u in info.get("users", [])
-        ]
 
     def get_session_dict(self):
         return {"issues": self.issues, "merge_requests": self.merge_requests}

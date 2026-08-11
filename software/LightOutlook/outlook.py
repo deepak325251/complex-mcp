@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -25,58 +26,11 @@ def _to_bool(v) -> bool:
 class OutlookSession:
     """Deterministic sandbox for the Outlook (Microsoft Graph) mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "outlook.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.messages: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "subject": r["subject"],
-                "from_name": r["from_name"],
-                "from_address": r["from_address"],
-                "to_name": r["to_name"],
-                "to_address": r["to_address"],
-                "bodyPreview": r["body_preview"],
-                "contentType": r["content_type"],
-                "isRead": _to_bool(r.get("is_read", False)),
-                "importance": r["importance"],
-                "receivedDateTime": r["received_date"],
-            }
-            for r in info.get("messages", [])
-        ]
-        self.events: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "subject": r["subject"],
-                "organizer_name": r["organizer_name"],
-                "organizer_address": r["organizer_address"],
-                "location": r["location"],
-                "start": r["start_date"],
-                "end": r["end_date"],
-                "isAllDay": _to_bool(r.get("is_all_day", False)),
-                "isOnlineMeeting": _to_bool(r.get("is_online", False)),
-                "attendees": [x.strip() for x in str(r.get("attendees") or "").split(";") if x.strip()],
-            }
-            for r in info.get("events", [])
-        ]
-        self.contacts: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "displayName": r["display_name"],
-                "givenName": r["given_name"],
-                "surname": r["surname"],
-                "email": r["email"],
-                "jobTitle": r["job_title"],
-                "companyName": r["company"],
-                "mobilePhone": r["mobile_phone"],
-            }
-            for r in info.get("contacts", [])
-        ]
 
     def get_session_dict(self):
         return {"messages": self.messages}

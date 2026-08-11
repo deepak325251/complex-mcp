@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -28,79 +29,11 @@ class PaypalSession:
     the in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "paypal.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.orders: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "intent": r["intent"],
-                "status": r["status"],
-                "purchase_units": [{
-                    "amount": self._money(r["amount_value"], r["currency_code"]),
-                    "payee": {"email_address": r["payee_email"]},
-                    "description": r["description"],
-                }],
-                "create_time": r["create_time"],
-            }
-            for r in info.get("orders", [])
-        ]
-        self.captures: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "order_id": r["order_id"],
-                "status": r["status"],
-                "amount": self._money(r["amount_value"], r["currency_code"]),
-                "final_capture": _to_bool(r.get("final_capture", False)),
-                "create_time": r["create_time"],
-            }
-            for r in info.get("captures", [])
-        ]
-        self.invoices: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "detail": {
-                    "invoice_number": r["invoice_number"],
-                    "currency_code": r["currency_code"],
-                    "note": r["note"],
-                },
-                "status": r["status"],
-                "primary_recipients": [{"billing_info": {"email_address": r["recipient_email"]}}],
-                "amount": self._money(r["amount_value"], r["currency_code"]),
-                "due_date": r["due_date"],
-            }
-            for r in info.get("invoices", [])
-        ]
-        self.payouts: List[Dict[str, Any]] = [
-            {
-                "batch_header": {
-                    "payout_batch_id": r["payout_batch_id"],
-                    "batch_status": r["status"],
-                    "sender_batch_header": {"sender_batch_id": r["sender_batch_id"]},
-                    "amount": self._money(r["amount_value"], r["currency_code"]),
-                },
-                "recipient_email": r["recipient_email"],
-                "create_time": r["create_time"],
-                "payout_batch_id": r["payout_batch_id"],
-            }
-            for r in info.get("payouts", [])
-        ]
-        self.refunds: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "capture_id": r["capture_id"],
-                "status": r["status"],
-                "amount": self._money(r["amount_value"], r["currency_code"]),
-                "note_to_payer": r["note_to_payer"],
-                "create_time": r["create_time"],
-            }
-            for r in info.get("refunds", [])
-        ]
 
     def get_session_dict(self):
         return {"orders": self.orders, "captures": self.captures,

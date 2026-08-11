@@ -5,6 +5,6 @@ from intercom import IntercomSession
 
 
 class LightIntercomSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.intercom_session = IntercomSession(seed=seed, os_cfg=os_cfg)
+        self.intercom_session = IntercomSession(os_cfg=os_cfg, seed=seed)

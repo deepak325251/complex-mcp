@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -41,71 +42,11 @@ class StripeSession:
     calls read and mutate the in-memory tables so repeated calls stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "stripe.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.customers: List[Dict[str, Any]] = [
-            {
-                **r,
-                "object": "customer",
-                "delinquent": _to_bool(r.get("delinquent")),
-                "balance": _opt_int(r.get("balance"), 0),
-                "created": _opt_int(r.get("created"), 0),
-            }
-            for r in info.get("customers", [])
-        ]
-        self.products: List[Dict[str, Any]] = [
-            {**r, "object": "product", "active": _to_bool(r.get("active")),
-             "created": _opt_int(r.get("created"), 0)}
-            for r in info.get("products", [])
-        ]
-        self.prices: List[Dict[str, Any]] = []
-        for r in info.get("prices", []):
-            recurring = {"interval": r["recurring_interval"]} if r["recurring_interval"] else None
-            self.prices.append({
-                **r,
-                "object": "price",
-                "unit_amount": _opt_int(r.get("unit_amount"), 0),
-                "active": _to_bool(r.get("active")),
-                "recurring": recurring,
-                "type": "recurring" if recurring else "one_time",
-            })
-        self.charges: List[Dict[str, Any]] = [
-            {**r, "object": "charge", "amount": _opt_int(r.get("amount"), 0),
-             "paid": _to_bool(r.get("paid")), "refunded": _to_bool(r.get("refunded")),
-             "amount_refunded": _opt_int(r.get("amount_refunded"), 0),
-             "created": _opt_int(r.get("created"), 0)}
-            for r in info.get("charges", [])
-        ]
-        self.invoices: List[Dict[str, Any]] = [
-            {
-                **r,
-                "object": "invoice",
-                "subscription": _opt_str(r.get("subscription"), "") or None,
-                "charge": _opt_str(r.get("charge"), "") or None,
-                "amount_due": _opt_int(r.get("amount_due"), 0),
-                "amount_paid": _opt_int(r.get("amount_paid"), 0),
-                "created": _opt_int(r.get("created"), 0),
-                "due_date": _opt_int(r.get("due_date"), None),
-            }
-            for r in info.get("invoices", [])
-        ]
-        self.subscriptions: List[Dict[str, Any]] = [
-            {**r, "object": "subscription", "quantity": _opt_int(r.get("quantity"), 0),
-             "current_period_start": _opt_int(r.get("current_period_start"), 0),
-             "current_period_end": _opt_int(r.get("current_period_end"), 0),
-             "cancel_at_period_end": _to_bool(r.get("cancel_at_period_end")),
-             "created": _opt_int(r.get("created"), 0)}
-            for r in info.get("subscriptions", [])
-        ]
-        self.balance: Dict[str, Any] = dict(info.get("balance", {}))
-        self.payment_intents: List[Dict[str, Any]] = []
-        self.refunds: List[Dict[str, Any]] = []
 
     def get_session_dict(self):
         return {"charges": self.charges}

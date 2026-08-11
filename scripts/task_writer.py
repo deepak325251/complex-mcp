@@ -11,6 +11,9 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from benchmark.classify_failure import classify, parse_expected_tools  # noqa: E402
+from benchmark.passk import estimate as _passk_estimate  # noqa: E402
+from benchmark.atif import from_complexmcp as _atif_from_complexmcp  # noqa: E402
+from benchmark.mcp_traj import from_complexmcp as _msg_traj_from_complexmcp  # noqa: E402
 
 
 _TOOL_RE = re.compile(r"<tool>\s*(\{.*?\})\s*</tool>", re.DOTALL)
@@ -223,6 +226,7 @@ def _write_detail_json(run_dir: Path, score: dict, rubric_result: dict | None,
         "misbehave": score.get("misbehave"),
         "passed": bool(score.get("passed")),
         "gradeable": bool(score.get("gradeable")),
+        "passed_tests": score.get("passed_tests"),
         "tool_summary": tool_summary,
     }
     if rubric_result:
@@ -268,6 +272,7 @@ def _write_ctrf_json(run_dir: Path, task_name: str, model: str, run_no: int,
                 "duration": 0,
                 "message": c.get("reason", ""),
             })
+<<<<<<< HEAD
     pytest_checks = score.get("pytest_checks")
     if pytest_checks and "outcomes" in pytest_checks:
         for c in pytest_checks["outcomes"]:
@@ -277,6 +282,42 @@ def _write_ctrf_json(run_dir: Path, task_name: str, model: str, run_no: int,
                 "duration": 0,
                 "message": c.get("message", ""),
             })
+=======
+    for tname, ok in (score.get("passed_tests") or {}).items():
+        tests.append({
+            "name": f"{task_name}#pytest.{tname}",
+            "status": "passed" if ok else "failed",
+            "duration": 0,
+        })
+    # State-diff per-key-path granularity (judge_spec allowlist). Each scored
+    # key-path gets its own CTRF row so a failing path is legible instead of
+    # hidden behind the single #reward aggregate. Positive paths => goal checks;
+    # negative paths => @protects checks.
+    def _dot(path) -> str:
+        return ".".join(str(p) for p in path)
+    for o in (score.get("passed_positive") or []):
+        tests.append({
+            "name": f"{task_name}#state.{_dot(o['path'])}",
+            "status": "passed", "duration": 0,
+        })
+    for o in (score.get("failed_positive") or []):
+        tests.append({
+            "name": f"{task_name}#state.{_dot(o['path'])}",
+            "status": "failed", "duration": 0,
+            "message": f"expected={o.get('expected')!r} got={o.get('new')!r}",
+        })
+    for o in (score.get("held_negative") or []):
+        tests.append({
+            "name": f"{task_name}#protect.{_dot(o['path'])}",
+            "status": "passed", "duration": 0,
+        })
+    for o in (score.get("damaged_negative") or []):
+        tests.append({
+            "name": f"{task_name}#protect.{_dot(o['path'])}",
+            "status": "failed", "duration": 0,
+            "message": f"protected path changed: {o.get('old')!r} -> {o.get('new')!r}",
+        })
+>>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
     summary_passed = sum(1 for t in tests if t["status"] == "passed")
     ctrf = {
         "results": {
@@ -312,9 +353,34 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
 
     _write_ground_truth(trials_dir, task_dir_source)
 
+    # Single trajectory of record: the ATIF-v1.7 delivery copy at
+    # agent/trajectory.json (the shape SFT/RL tooling reads). The native
+    # {steps, final_message} shape is still parsed in-memory below to build ATIF
+    # + trace.jsonl, but is no longer written to disk -- nothing read it back and
+    # it was a superset-duplicate of the ATIF file.
     traj = parse_trajectory(record.get("output", ""))
-    (run_dir / "trajectory.json").write_text(
-        json.dumps(traj, indent=2, ensure_ascii=False))
+    atif_doc = _atif_from_complexmcp(traj, agent="complexmcp", model=model,
+                                     usage=record.get("usage"))
+    atif_dir = run_dir / "agent"
+    atif_dir.mkdir(parents=True, exist_ok=True)
+    (atif_dir / "trajectory.json").write_text(
+        json.dumps(atif_doc, indent=2, ensure_ascii=False, default=str))
+
+    # Message-based golden trajectory (session_id/meta_info/typed content
+    # blocks/turn_index) for cross-task analytics. Emitted alongside ATIF -- the
+    # two are different downstream contracts, not duplicates of one shape.
+    msg_traj_doc = _msg_traj_from_complexmcp(
+        traj,
+        task_id=record.get("name", ""),
+        query=record.get("query", ""),
+        taxonomy_l1=str(record.get("level", "") or ""),
+        taxonomy_l2=str(record.get("taxonomy_l2", "") or ""),
+        model=model,
+        tokens=record.get("tokens"),
+        usage=record.get("usage"),
+    )
+    (atif_dir / "trajectory.messages.json").write_text(
+        json.dumps(msg_traj_doc, indent=2, ensure_ascii=False, default=str))
 
     (run_dir / "agent.log").write_text(record.get("output", ""))
 
@@ -323,7 +389,12 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     (run_dir / "final_state.json").write_text(
         json.dumps(record.get("new_env") or {}, indent=2, ensure_ascii=False, default=str))
 
-    (run_dir / "trace.jsonl").write_text("")
+    # One JSON object per tool call (name/arguments/response), the JSONL trace
+    # stream factual rubric + authored checks read. Was previously written empty,
+    # which silently read as "no tool activity" to every trace-based criterion.
+    (run_dir / "trace.jsonl").write_text(
+        "\n".join(json.dumps(s, ensure_ascii=False, default=str)
+                  for s in traj.get("steps", [])))
 
     if score is None:
         score = {
@@ -388,10 +459,16 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         "attempt": run_no,
         "passed": passed,
         "reward": reward_val,
+        # State-diff surface (recall/misbehave over scored key-paths). The rubric
+        # surface rides alongside as `rubric_rb`, NOT under the same name.
         "completion_rate": completion_rate,
         "misbehaving_rate": misbehaving_rate,
+<<<<<<< HEAD
         "test_weights_percentage": test_weights_percentage,
         "rubric_weights_percentage": rubric_weights_percentage,
+=======
+        "rubric_rb": rubric_result.get("rb") if rubric_result else None,
+>>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
         "tokens": record.get("tokens", {}),
         "tool_summary": tool_summary,
     }, indent=2, ensure_ascii=False))
@@ -405,14 +482,37 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
 
 def write_trials_aggregate(output_root: Path, task_name: str, model: str,
                            run_records: list[dict], *,
-                           instruction: str | None = None) -> Path:
+                           instruction: str | None = None,
+                           at: list[int] | None = None,
+                           controls: dict | None = None) -> Path:
     slug = _mcp_stump_slug(task_name)
     trials_dir = output_root / f"trials_{slug}"
     trials_dir.mkdir(parents=True, exist_ok=True)
 
     n = len(run_records)
     c = sum(1 for r in run_records if r.get("passed"))
-    pass_at_1 = (c / n) if n else 0.0
+    ks = at or [1]
+    # Unbiased pass@k, stability pass^k, and the Wilson CI95 on p_hat=c/n. See
+    # benchmark/passk.py for why both estimators are reported.
+    est = _passk_estimate(n, c, ks)
+
+    # Which declared lever each failure maps to, and whether it aligned -- the
+    # "fails legibly" check. A histogram of failure classes over the attempts.
+    from collections import Counter
+    fc_hist = Counter(
+        r.get("failure_class") for r in run_records
+        if not r.get("passed") and r.get("failure_class"))
+
+    metrics = {
+        "n": n,
+        "c": c,
+        "pass@1": est["p_hat"],   # kept for back-compat with existing readers
+        "p_hat": est["p_hat"],
+        "ci95": est["ci95"],
+        "pass@k": est["pass@k"],
+        "pass^k": est["pass^k"],
+        "failure_breakdown": dict(fc_hist.most_common()),
+    }
 
     from datetime import datetime, timezone
     summary = {
@@ -421,18 +521,30 @@ def write_trials_aggregate(output_root: Path, task_name: str, model: str,
         "agent": "claude-code",
         "seed": run_records[0].get("seed") if run_records else None,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "metrics": {"n": n, "c": c, "pass@1": pass_at_1},
+        "metrics": metrics,
         "attempts": [
             {
-                "attempt": i + 1,
+                # Physical run_N slot (matches report.json/ctrf); i+1 only as a
+                # fallback when the run wasn't recorded with one.
+                "attempt": r.get("attempt") or (i + 1),
                 "passed": bool(r.get("passed")),
                 "reward": r.get("reward"),
                 "completion_rate": r.get("completion_rate"),
                 "misbehaving_rate": r.get("misbehaving_rate"),
+                "failure_class": r.get("failure_class"),
             }
             for i, r in enumerate(run_records)
         ],
     }
+    if controls is not None:
+        # {oracle_reward, nop_reward}. A task is admissible only if the oracle
+        # scores 1.0 and nop scores 0.0; otherwise a 0/k is an author bug, not
+        # difficulty, and reporting a tier would poison the corpus.
+        summary["controls"] = controls
+        summary["admissible"] = (
+            controls.get("oracle_reward") == 1.0
+            and (controls.get("nop_reward") or 0.0) == 0.0
+        )
     (trials_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False))
 
@@ -441,7 +553,7 @@ def write_trials_aggregate(output_root: Path, task_name: str, model: str,
         pairs_lines.append(json.dumps({
             "task": task_name,
             "seed": r.get("seed"),
-            "attempt": i + 1,
+            "attempt": r.get("attempt") or (i + 1),
             "instruction": instruction or r.get("query", ""),
             "response": r.get("final_message", ""),
         }, ensure_ascii=False))
@@ -450,7 +562,7 @@ def write_trials_aggregate(output_root: Path, task_name: str, model: str,
 
     failures = [
         {
-            "attempt": i + 1,
+            "attempt": r.get("attempt") or (i + 1),
             "failure_class": r.get("failure_class"),
             "reason": r.get("reason"),
         }

@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -41,64 +42,11 @@ class DatadogSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "datadog.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.monitors: List[Dict[str, Any]] = [
-            {
-                **m,
-                "id": _to_int(m["id"]),
-                "priority": _to_int(m["priority"]),
-                "tags": _split_tags(m["tags"]),
-            }
-            for m in info.get("monitors", [])
-        ]
-        self.dashboards: List[Dict[str, Any]] = [
-            {
-                **d,
-                "widget_count": _to_int(d["widget_count"]),
-                "is_read_only": _to_bool(d["is_read_only"]),
-            }
-            for d in info.get("dashboards", [])
-        ]
-        self.events: List[Dict[str, Any]] = [
-            {
-                **e,
-                "id": _to_int(e["id"]),
-                "tags": _split_tags(e["tags"]),
-                "date_happened": _to_int(e["date_happened"]),
-            }
-            for e in info.get("events", [])
-        ]
-        self.hosts: List[Dict[str, Any]] = [
-            {
-                **h,
-                "up": _to_bool(h["up"]),
-                "apps": _split_tags(h["apps"]),
-                "cpu_pct": _to_float(h["cpu_pct"]),
-                "mem_pct": _to_float(h["mem_pct"]),
-                "last_reported": _to_int(h["last_reported"]),
-            }
-            for h in info.get("hosts", [])
-        ]
-        self.metrics: List[Dict[str, Any]] = []
-        for r in info.get("metrics", []):
-            tags = r.get("tags") or []
-            if isinstance(tags, str):
-                tags = _split_tags(tags)
-            tag_string = ",".join(sorted(tags))
-            self.metrics.append({
-                **r,
-                "tags": tags,
-                "_pk": f"{r['metric']}|{tag_string}",
-                "base_value": _to_float(r["base_value"]),
-                "amplitude": _to_float(r["amplitude"]),
-            })
 
     def get_session_dict(self):
         return {"monitors": self.monitors}

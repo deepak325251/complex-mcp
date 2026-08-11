@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -37,46 +38,11 @@ class VimeoSession:
     # The user whose token is in use (the "me" of /me).
     _ME = "12000001"
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "vimeo.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.users: List[Dict[str, Any]] = [
-            {
-                "id": u["id"],
-                "name": u["name"],
-                "link": u["link"],
-                "location": u["location"],
-                "bio": u["bio"],
-                "account": u["account"],
-                "created_time": u["created_time"],
-                "websites": [x for x in _opt_csv_list(u.get("websites"), sep=";") if x],
-            }
-            for u in info.get("users", [])
-        ]
-        self.videos: List[Dict[str, Any]] = [
-            {
-                "id": v["id"],
-                "user_id": v["user_id"],
-                "name": v["name"],
-                "description": v["description"],
-                "duration": _strict_int(v["duration"]),
-                "width": _strict_int(v["width"]),
-                "height": _strict_int(v["height"]),
-                "privacy": v["privacy"],
-                "status": v["status"],
-                "plays": _strict_int(v["plays"]),
-                "likes": _strict_int(v["likes"]),
-                "created_time": v["created_time"],
-                "modified_time": v["modified_time"],
-                "link": v["link"],
-            }
-            for v in info.get("videos", [])
-        ]
 
     def get_session_dict(self):
         return {"users": self.users, "videos": self.videos}

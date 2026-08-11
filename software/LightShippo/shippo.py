@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -46,44 +47,11 @@ class ShippoSession:
         ("FedEx", "fedex_2day", "FedEx 2Day", 19.20, 2),
     ]
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "shippo.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.addresses: List[Dict[str, Any]] = [
-            {
-                **a,
-                "is_residential": _to_bool(a.get("is_residential", False)),
-                "validated": _to_bool(a.get("validated", False)),
-            }
-            for a in info.get("addresses", [])
-        ]
-        self.parcels: List[Dict[str, Any]] = [
-            {
-                **p,
-                "length": _to_float(p.get("length"), 0.0),
-                "width": _to_float(p.get("width"), 0.0),
-                "height": _to_float(p.get("height"), 0.0),
-                "weight": _to_float(p.get("weight"), 0.0),
-                "template": (str(p.get("template", "")) or None),
-            }
-            for p in info.get("parcels", [])
-        ]
-        self.shipments: List[Dict[str, Any]] = list(info.get("shipments", []))
-        self.rates: List[Dict[str, Any]] = [
-            {
-                **r,
-                "amount": _to_float(r.get("amount"), 0.0),
-                "estimated_days": _to_int(r.get("estimated_days"), 0),
-            }
-            for r in info.get("rates", [])
-        ]
-        self.transactions: List[Dict[str, Any]] = list(info.get("transactions", []))
-        self.tracking: List[Dict[str, Any]] = list(info.get("tracking", []))
 
     def get_session_dict(self):
         return {"shipments": self.shipments, "transactions": self.transactions}

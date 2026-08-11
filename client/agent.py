@@ -30,13 +30,13 @@ logger = logging.getLogger(__name__)
 
 @lru_cache(maxsize=32)
 def get_encoding(model: str):
+    # Non-OpenAI models (Claude, etc.) are never in tiktoken's registry, so
+    # cl100k_base is the expected approximation -- not a warnable condition.
+    if not str(model).startswith(("gpt-", "o1", "o3", "text-", "davinci", "curie")):
+        return tiktoken.get_encoding("cl100k_base")
     try:
         return tiktoken.encoding_for_model(model)
     except KeyError:
-        logger.warning(
-            "Unknown model '%s' for tiktoken; falling back to cl100k_base.",
-            model,
-        )
         return tiktoken.get_encoding("cl100k_base")
 
 
@@ -174,6 +174,59 @@ class Toolbox:
 
         return '\n'.join(map(lambda x: f"- {x}", tools_desc))
     
+    @staticmethod
+    def _json_schema_type(t: str) -> Dict[str, Any]:
+        """Map a desc.json argument type string to a JSON-schema fragment."""
+        t = (t or "").strip().lower()
+        if t.startswith("array") or t.startswith("list"):
+            return {"type": "array", "items": {"type": "string"}}
+        if t in ("int", "integer"):
+            return {"type": "integer"}
+        if t in ("float", "number", "double"):
+            return {"type": "number"}
+        if t in ("bool", "boolean"):
+            return {"type": "boolean"}
+        if t in ("object", "dict"):
+            return {"type": "object"}
+        return {"type": "string"}
+
+    def to_openai_schema(self, key_names: List[str]) -> List[Dict[str, Any]]:
+        """Build native OpenAI function-calling tool schemas for the given tools."""
+        schemas = []
+        for key_name in key_names:
+            if key_name not in self.tools:
+                continue
+            tool = self.tools[key_name]
+            props = {}
+            for arg_name, arg_spec in (tool.get("arguments") or {}).items():
+                spec = arg_spec if isinstance(arg_spec, dict) else {}
+                schema = self._json_schema_type(spec.get("type", "string"))
+                if spec.get("description"):
+                    schema["description"] = spec["description"]
+                props[arg_name] = schema
+            schemas.append({
+                "type": "function",
+                "function": {
+                    "name": key_name,
+                    "description": tool.get("description", "") or "",
+                    "parameters": {"type": "object", "properties": props},
+                },
+            })
+        return schemas
+
+    def get_native_system_prompt(self) -> str:
+        """System prompt for native function-calling mode (tools passed via the API,
+        not described in text). No <tool> protocol."""
+        return (
+            "You are an autonomous AI assistant with access to a set of tools (functions). "
+            "Use the provided tools by calling them directly through the function-calling interface "
+            "to accomplish the user's task. There is no human available to answer questions, so never "
+            "ask for clarification or confirmation and never wait for further input. Make reasonable "
+            "assumptions, resolve ambiguity yourself, and drive the task to completion using the tools. "
+            "When the task is finished (or you are certain it is unsolvable), reply with a short final "
+            "summary and output [END]."
+        )
+
     def get_system_prompt(self, discard_tools: bool = False):
         SYSTEM_PROMPT = (
             "You are an AI assistant with access to a set of tools (APIs). "
@@ -182,6 +235,10 @@ class Toolbox:
             "{\"name\": \"tool_name\", \"arguments\": {\"arg1\": value1, \"arg2\": value2, ...}}\n"
             f"{TOOL_STOP_SEQ}\n"
             "After you submit the tool call in this format, I will execute it and return the result to you. "
+            "You operate autonomously: there is no human available to answer questions, so never ask for "
+            "clarification or confirmation and never wait for further user input. Make reasonable assumptions, "
+            "resolve ambiguity yourself, and drive the task to completion using the tools. When the task is "
+            "finished (or you are certain it is unsolvable), output [END].\n"
             "Below is the list of available tools and their descriptions:\n"
         )
         if discard_tools:
@@ -287,8 +344,15 @@ class Toolbox:
             tools_list.append(
                 self.__get_desc_of_one_tool(key_name)
             )
-        
+
         return tools_list
+
+    def retrieve_tool_keys(self, query: str, k: int | None = None) -> List[str]:
+        """Return the raw key_names of the top-k retrieved tools (for native mode)."""
+        assert self.rag, "RAG engine is required."
+        if k is None:
+            k = self.default_k
+        return [r["meta_data"]["key_name"] for r in self.rag.read(query=query, k=k)]
 
 
 class ChatBackend(ABC):
@@ -325,7 +389,11 @@ class OpenAIBackend(ChatBackend):
         }
         resp = await self.client.chat.completions.create(**payload)
 
-        assert resp.choices[0].message.content
+        _msg = resp.choices[0].message
+        # In native function-calling mode the model may return tool_calls with
+        # content=None; only require that *something* came back.
+        assert _msg.content is not None or getattr(_msg, "tool_calls", None), \
+            "Model returned neither content nor tool_calls"
 
         return resp
 
@@ -410,8 +478,25 @@ class ClaudeCodeBackend(ChatBackend):
 
         content = data.get("result") or data.get("content") or ""
         usage_data = data.get("usage") or {}
-        input_tokens = usage_data.get("input_tokens", 0)
-        output_tokens = usage_data.get("output_tokens", 0)
+        # The claude CLI splits input across uncached + cached buckets; with
+        # prompt caching on, `input_tokens` is only the small uncached remainder
+        # (hence the old "constant 2"). Keep the breakdown AND the summed total so
+        # cache read/creation are recorded, not collapsed away.
+        uncached_input = usage_data.get("input_tokens", 0) or 0
+        cache_read = usage_data.get("cache_read_input_tokens", 0) or 0
+        cache_creation = usage_data.get("cache_creation_input_tokens", 0) or 0
+        input_tokens = uncached_input + cache_read + cache_creation
+        output_tokens = usage_data.get("output_tokens", 0) or 0
+        cost_usd = data.get("total_cost_usd", 0.0) or 0.0
+        # Extended thinking, when the CLI surfaces it (a `thinking`/`reasoning`
+        # field, e.g. under stream-json), is preserved as reasoning. Plain json
+        # mode usually omits it, so this is best-effort and defaults to "".
+        reasoning = ""
+        for _k in ("thinking", "reasoning", "reasoning_content"):
+            _v = data.get(_k)
+            if isinstance(_v, str) and _v.strip():
+                reasoning = _v
+                break
 
         stops = extra_body.get("stop") or []
         if isinstance(stops, str):
@@ -431,10 +516,20 @@ class ClaudeCodeBackend(ChatBackend):
                 prompt_tokens=input_tokens,
                 completion_tokens=output_tokens,
                 total_tokens=input_tokens + output_tokens,
+                # Real breakdown (was collapsed/dropped before) so cache
+                # read/creation are recorded, not reported as 0.
+                uncached_input_tokens=uncached_input,
+                cache_read_tokens=cache_read,
+                cache_creation_tokens=cache_creation,
+                output_tokens=output_tokens,
+                cost_usd=cost_usd,
             ),
             choices=[
                 argparse.Namespace(
-                    message=argparse.Namespace(content=content),
+                    message=argparse.Namespace(
+                        content=content,
+                        reasoning_content=reasoning or None,
+                    ),
                     finish_reason=finish_reason,
                 )
             ],
@@ -524,9 +619,7 @@ class AgentClient:
             login_info = await self.toolbox.call_with_server(
                 server_name=system_app,
                 tool_name="login",
-                arguments={
-                    "seed": env["seed"]
-                }
+                arguments={}
             )
             login_info: Dict[str, Any] = json.loads(login_info)
             session_info = login_info.pop("session_info")
@@ -535,6 +628,12 @@ class AgentClient:
             session_id_dict[system_app] = login_info["session_id"]
             system_url = self.toolbox.servers[system_app]["url"]
             for app in env["apps"]:
+                # The system app is logged in above (with a different signature — no os_cfg).
+                # If a task's apps list also names it, skip it here so we never re-invoke its
+                # login with an os_cfg it doesn't accept (which returns a non-JSON error string
+                # and crashes the run). LightSystem is implicit; tasks should not list it.
+                if app == system_app:
+                    continue
                 if app in self.toolbox.servers:
                     server = self.toolbox.servers[app]
                     assert server["need_session"]
@@ -542,7 +641,6 @@ class AgentClient:
                         server_name=app,
                         tool_name="login",
                         arguments={
-                            "seed": env["seed"],
                             "os_cfg": {
                                 "session_id": session_id_dict[system_app],
                                 "url": system_url
@@ -587,10 +685,10 @@ class AgentClient:
         verbose: bool = False,
         stop_tag: str = None,
         env: Dict[str, Any] = {
-            "apps": [],
-            "seed": 42
+            "apps": []
         },
-        provide_tools: List[str] | None = None
+        provide_tools: List[str] | None = None,
+        native: bool = False
     ) -> str:
         assert (provide_tools is None) ^ (self.toolbox.method == "provide")
 
@@ -614,7 +712,20 @@ class AgentClient:
             )
 
             system_prompt = self.system_prompt
-            if self.toolbox:
+            if self.toolbox and native:
+                # Native function-calling: pass tool schemas via the API instead of
+                # describing them in text / using the <tool> protocol.
+                system_prompt = self.toolbox.get_native_system_prompt()
+                if self.toolbox.method == "rag":
+                    key_names = self.toolbox.retrieve_tool_keys(query=query)
+                elif self.toolbox.method == "provide":
+                    key_names = list(provide_tools or [])
+                else:
+                    key_names = list(self.toolbox.tools.keys())
+                extra_body["tools"] = self.toolbox.to_openai_schema(key_names)
+                extra_body["tool_choice"] = "auto"
+                print(f"Tool number: {len(self.toolbox.tools)} (native schemas: {len(extra_body['tools'])})")
+            elif self.toolbox:
                 extra_body["stop"] = TOOL_STOP_SEQ
                 if self.toolbox.method == "rag":
                     system_prompt = system_prompt.replace(
@@ -637,18 +748,125 @@ class AgentClient:
                 "content": query
             })
 
-            system_token_num = 0
+            prompt_token_num = 0
             llm_token_num = 0
             tool_token_num = 0
             token_model = getattr(self.llm, "model", "gpt-4o")
 
+            # Real API usage (incl. prompt-cache) accumulated across turns. The
+            # tiktoken counters above are estimates; these are the model's own.
+            usage_acc = {"input_tokens": 0, "output_tokens": 0,
+                         "cache_read_tokens": 0, "cache_creation_tokens": 0,
+                         "cost_usd": 0.0}
+
+            def _accumulate_usage(u):
+                usage_acc["input_tokens"] += getattr(u, "uncached_input_tokens",
+                                                     getattr(u, "prompt_tokens", 0)) or 0
+                usage_acc["output_tokens"] += getattr(u, "output_tokens",
+                                                      getattr(u, "completion_tokens", 0)) or 0
+                usage_acc["cache_read_tokens"] += getattr(u, "cache_read_tokens", 0) or 0
+                usage_acc["cache_creation_tokens"] += getattr(u, "cache_creation_tokens", 0) or 0
+                usage_acc["cost_usd"] += getattr(u, "cost_usd", 0.0) or 0.0
+
             for idx in range(max_turns):
+                if native:
+                    resp = await self.llm.chat(messages, extra_body=extra_body)
+                    m = resp.choices[0].message
+                    usage = resp.usage
+                    # Every turn re-sends the growing history, so total prompt
+                    # cost is the sum of per-turn input, not just turn 0.
+                    prompt_token_num += usage.prompt_tokens
+                    _accumulate_usage(usage)
+
+                    # Preserve the model's reasoning (extended thinking) when the
+                    # backend surfaces it, so it lands as the step's reasoning.
+                    reasoning_text = getattr(m, "reasoning_content", None)
+                    if reasoning_text:
+                        output.append(reasoning_text)
+
+                    text = m.content or ""
+                    tool_calls = getattr(m, "tool_calls", None) or []
+
+                    if text:
+                        llm_token_num += count_tokens(text, token_model)
+                        if verbose:
+                            print(text)
+                        output.append(text)
+
+                    assistant_msg = {"role": "assistant", "content": m.content}
+                    if tool_calls:
+                        assistant_msg["tool_calls"] = [
+                            {
+                                "id": tc.id,
+                                "type": "function",
+                                "function": {
+                                    "name": tc.function.name,
+                                    "arguments": tc.function.arguments or "{}",
+                                },
+                            }
+                            for tc in tool_calls
+                        ]
+                    messages.append(assistant_msg)
+
+                    if not tool_calls:
+                        cnt_without_tc += 1
+                        if stop_tag and text.strip().endswith(stop_tag):
+                            break
+                        if cnt_without_tc >= 2:
+                            break
+                        continue
+
+                    cnt_without_tc = 0
+                    for tc in tool_calls:
+                        tool_name = tc.function.name
+                        try:
+                            arguments = json.loads(tc.function.arguments or "{}")
+                        except Exception:
+                            arguments = {}
+
+                        # Re-emit in <tool> text form so downstream trajectory parsing works.
+                        tool_text = (
+                            f"{TOOL_START_SEQ} "
+                            f"{json.dumps({'name': tool_name, 'arguments': arguments}, ensure_ascii=False)} "
+                            f"{TOOL_STOP_SEQ}"
+                        )
+                        output.append(tool_text)
+                        llm_token_num += count_tokens(tool_text, token_model)
+
+                        tool_resp = await self.toolbox.call(
+                            tool_name, arguments, session_id_dict=session_id_dict
+                        )
+                        try:
+                            tool_resp_obj = json.loads(tool_resp) if isinstance(tool_resp, str) else tool_resp
+                            status = tool_resp_obj["status"]
+                        except Exception:
+                            status = "ok"
+                        results["tool_cnt"][tool_name][status] += 1
+
+                        format_tool_resp = f"<response>\n{tool_resp}\n</response>"
+                        tool_token_num += count_tokens(format_tool_resp, token_model)
+                        if verbose:
+                            print(format_tool_resp)
+                        output.append(format_tool_resp)
+                        messages.append({
+                            "role": "tool",
+                            "tool_call_id": tc.id,
+                            "content": tool_resp if isinstance(tool_resp, str)
+                                       else json.dumps(tool_resp, ensure_ascii=False),
+                        })
+                    continue
+
                 resp = await self.llm.chat(messages)
                 msg: str = resp.choices[0].message.content
                 usage = resp.usage
 
-                if idx == 0:
-                    system_token_num += usage.prompt_tokens
+                # Accumulate every turn (see native branch above).
+                prompt_token_num += usage.prompt_tokens
+                _accumulate_usage(usage)
+
+                _reasoning = getattr(resp.choices[0].message, "reasoning_content", None)
+                if _reasoning:
+                    output.append(_reasoning)
 
                 if self.toolbox and resp.choices[0].finish_reason == "stop" and \
                     TOOL_START_SEQ in msg and TOOL_STOP_SEQ not in msg:
@@ -721,11 +939,20 @@ class AgentClient:
                     if cnt_without_tc >= 5:
                         break # quit
             results["tokens"] = {
-                "prompt": system_token_num,
+                "prompt": prompt_token_num,
                 "llm": llm_token_num,
                 "tool": tool_token_num
             }
-            
+            # Real API usage incl. prompt-cache read/creation and cost — the
+            # cache/thinking accounting the trajectory previously reported as 0.
+            results["usage"] = {
+                "input_tokens": usage_acc["input_tokens"],
+                "output_tokens": usage_acc["output_tokens"],
+                "cache_read_tokens": usage_acc["cache_read_tokens"],
+                "cache_creation_tokens": usage_acc["cache_creation_tokens"],
+                "cost_usd": round(usage_acc["cost_usd"], 6),
+            }
+
             results["tool_cnt"] = {key: dict(val) for key, val in results["tool_cnt"].items()}
             results["output"] = '\n'.join(output)
         finally:

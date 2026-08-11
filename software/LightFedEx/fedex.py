@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,44 +31,11 @@ class FedexSession:
     init; subsequent calls read and mutate the in-memory tables.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "fedex.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.rates: List[Dict[str, Any]] = [
-            {
-                "service_type": r["service_type"],
-                "service_name": r["service_name"],
-                "origin_zip": r["origin_zip"],
-                "dest_zip": r["dest_zip"],
-                "weight_lb": _to_float(r.get("weight_lb")) if r.get("weight_lb") not in (None, "") else None,
-                "currency": r["currency"],
-                "net_charge": _to_float(r.get("net_charge")) if r.get("net_charge") not in (None, "") else None,
-                "transit_days": int(str(r["transit_days"]).strip()),
-                "delivery_day": r["delivery_day"],
-            }
-            for r in info.get("rates", [])
-        ]
-        self.shipments: List[Dict[str, Any]] = [
-            {
-                "tracking_number": r["tracking_number"],
-                "service_type": r["service_type"],
-                "service_name": r["service_name"],
-                "ship_date": r["ship_date"],
-                "origin_zip": r["origin_zip"],
-                "dest_zip": r["dest_zip"],
-                "weight_lb": _to_float(r.get("weight_lb")) if r.get("weight_lb") not in (None, "") else None,
-                "currency": r["currency"],
-                "net_charge": _to_float(r.get("net_charge")) if r.get("net_charge") not in (None, "") else None,
-                "label_url": r["label_url"],
-            }
-            for r in info.get("shipments", [])
-        ]
-        self.tracking: List[Dict[str, Any]] = list(info.get("tracking", []))
 
     def get_session_dict(self):
         return {"shipments": self.shipments, "tracking": self.tracking}

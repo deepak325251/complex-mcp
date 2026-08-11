@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -32,31 +33,11 @@ class AirtableSession:
     table (number -> float/int, checkbox -> bool); everything else stays a string.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "airtable.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.bases: List[Dict[str, Any]] = list(info.get("bases", []))
-        self.tables: List[Dict[str, Any]] = list(info.get("tables", []))
-        fields_rows: List[Dict[str, Any]] = list(info.get("fields", []))
-
-        self._field_types: Dict[str, Dict[str, str]] = {}
-        self._field_meta: Dict[str, List[Dict[str, Any]]] = {}
-        for r in fields_rows:
-            self._field_types.setdefault(r["tableId"], {})[r["name"]] = r["type"]
-            self._field_meta.setdefault(r["tableId"], []).append({
-                "id": r["id"], "name": r["name"], "type": r["type"],
-            })
-
-        # one record list per table id (recXXX), coerced from the flat corpus rows
-        self.records: Dict[str, List[Dict[str, Any]]] = {}
-        for t in self.tables:
-            key = t["records_csv"].replace(".json", "")
-            self.records[t["id"]] = self._coerce_records(t["id"], info.get(key, []))
 
     def get_session_dict(self):
         return {"records": self.records}

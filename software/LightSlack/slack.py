@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -34,43 +35,11 @@ class SlackSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "slack.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.users: List[Dict[str, Any]] = [
-            {
-                **u,
-                "is_admin": _to_bool(u.get("is_admin", False)),
-                "is_bot": _to_bool(u.get("is_bot", False)),
-            }
-            for u in info.get("users", [])
-        ]
-        self.channels: List[Dict[str, Any]] = [
-            {
-                **c,
-                "is_private": _to_bool(c.get("is_private", False)),
-                "is_archived": _to_bool(c.get("is_archived", False)),
-                "created": _to_int(c.get("created", 0)),
-                "num_members": _to_int(c.get("num_members", 0)),
-            }
-            for c in info.get("channels", [])
-        ]
-        self.messages: List[Dict[str, Any]] = [
-            {
-                **m,
-                "thread_ts": (str(m.get("thread_ts") or "") or None),
-                "reply_count": _to_int(m.get("reply_count", 0)),
-                "reactions": self._parse_reactions(str(m.get("reactions") or "")),
-            }
-            for m in info.get("messages", [])
-        ]
-        self.channel_members: List[Dict[str, Any]] = list(info.get("channel_members", []))
-        self.team: Dict[str, Any] = info.get("team", {})
 
     def get_session_dict(self):
         return {"messages": self.messages, "channels": self.channels}

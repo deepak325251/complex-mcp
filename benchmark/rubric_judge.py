@@ -274,13 +274,21 @@ def _evaluate_mcp_stump_rubric(
     rubric_passed = (rc >= 0.999999) and (rb <= 0.000001)
     rubric_score = rc * (1.0 - rb)
 
+    # Expose only rc/rb here. The `completion_rate`/`misbehaving_rate` names are
+    # owned by the state-diff judge (recall/misbehave over scored key-paths);
+    # emitting rb under `misbehaving_rate` too made the same name mean two things
+    # across report.json vs rubric.json (a ~44x divergence for one run).
     return {
         "rubric_score": round(rubric_score, 4),
         "rc": round(rc, 4),
         "rb": round(rb, 4),
+<<<<<<< HEAD
         "completion_rate": round(rc, 4),
         "misbehaving_rate": round(rb, 4),
         "rubric_passed": rubric_passed,
+=======
+        "passed": passed,
+>>>>>>> 6f21c5f (Remove unused trace and package modules from mcp_stump tests)
         "per_criterion": per_criterion,
         "format": "mcp-stump",
     }

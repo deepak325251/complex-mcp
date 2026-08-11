@@ -1,5 +1,10 @@
 #!/bin/zsh
 
+# Apps now import `software.utils.*` (seedless world.pkl fixtures). `fastmcp run`
+# only puts the app's own dir on sys.path, so make the repo root importable or
+# LightSystem (and others) die with "No module named 'software'".
+export PYTHONPATH="$(cd "$(dirname "$0")" && pwd):${PYTHONPATH}"
+
 # Signal handler function
 cleanup() {
     echo -e "\nReceived interrupt signal, shutting down all child processes..."

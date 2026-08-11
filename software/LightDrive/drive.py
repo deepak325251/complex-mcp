@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 
 
 TARGET_KINDS = ("file", "folder")
@@ -88,19 +89,11 @@ class ShareLink:
 
 
 class DriveSession:
-    def __init__(self, seed: int, os_cfg: Optional[Dict[str, str]] = None):
-        self.rng = random.Random(seed)
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"],
-        ) if os_cfg else DummyOSConnector()
-        self._today = datetime(2026, 1, 5)
-        self.folders: Dict[str, Folder] = {}
-        self.files: Dict[str, File] = {}
-        self.versions: Dict[str, Version] = {}
-        self.share_links: Dict[str, ShareLink] = {}
-        self._file_order: List[str] = []
-        self._seed_all()
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

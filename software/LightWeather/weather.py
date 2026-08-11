@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path("software") / "LightWeather" / "corpus"
@@ -21,39 +22,11 @@ class WeatherSession:
     the same session are consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        # load corpus
-        with open(CORPUS_PATH / "weather.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.conditions = {c["id"]: c for c in info.get("conditions", [])}
-        self.advisories = {a["id"]: a for a in info.get("advisories", [])}
-        self.cities = {c["name"]: c for c in info.get("cities", [])}
-        self.stations = {s["id"]: s for s in info.get("stations", [])}
-        self.climate_samples = {c["city"]: c for c in info.get("climate_samples", [])}
-
-        # session state (deterministically generated now)
-        self.base_time = self.os.now()
-        self.alerts: Dict[str, Dict[str, Any]] = {}
-        self.preferences: Dict[str, Any] = {}
-
-        # Pre-generate consistent weather data per city/station
-        self._current_weather: Dict[str, Dict[str, Any]] = {}
-        self._daily_forecasts: Dict[str, List[Dict[str, Any]]] = {}
-        self._hourly_forecasts: Dict[str, List[Dict[str, Any]]] = {}
-        self._precip_probs: Dict[str, List[Dict[str, Any]]] = {}
-        self._uv: Dict[str, Dict[str, Any]] = {}
-        self._aqi: Dict[str, Dict[str, Any]] = {}
-        self._sun_times: Dict[str, Dict[str, Any]] = {}
-        self._station_obs: Dict[str, Dict[str, Any]] = {}
-        self._historical: Dict[str, List[Dict[str, Any]]] = {}
-        self._wind = {}
-
-        self._generate_state()
     
     def get_session_dict(self):
         return {

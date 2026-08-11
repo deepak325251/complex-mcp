@@ -5,6 +5,6 @@ from nasa import NasaSession
 
 
 class LightNASASession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.nasa_session = NasaSession(seed=seed, os_cfg=os_cfg)
+        self.nasa_session = NasaSession(os_cfg=os_cfg, seed=seed)

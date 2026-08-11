@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -40,68 +41,11 @@ class RedditSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "reddit.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.subreddits: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "display_name": r["name"],
-                "title": r["title"],
-                "public_description": r["public_description"],
-                "subscribers": _to_int(r.get("subscribers")),
-                "created_utc": _to_float(r.get("created_utc")),
-                "over18": _to_bool(r.get("over18")),
-            }
-            for r in info.get("subreddits", [])
-        ]
-        self.posts: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "subreddit": r["subreddit"],
-                "title": r["title"],
-                "author": r["author"],
-                "url": (r.get("url") or None),
-                "selftext": r["selftext"],
-                "score": _to_int(r.get("score")),
-                "ups": _to_int(r.get("score")),
-                "num_comments": _to_int(r.get("num_comments")),
-                "created_utc": _to_float(r.get("created_utc")),
-                "is_self": _to_bool(r.get("is_self")),
-                "_likes": None,
-            }
-            for r in info.get("posts", [])
-        ]
-        self.comments: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "post_id": r["post_id"],
-                "parent_id": r["parent_id"],
-                "author": r["author"],
-                "body": r["body"],
-                "score": _to_int(r.get("score")),
-                "ups": _to_int(r.get("score")),
-                "created_utc": _to_float(r.get("created_utc")),
-            }
-            for r in info.get("comments", [])
-        ]
-        self.users: List[Dict[str, Any]] = [
-            {
-                "name": r["name"],
-                "id": r["id"],
-                "link_karma": _to_int(r.get("link_karma")),
-                "comment_karma": _to_int(r.get("comment_karma")),
-                "created_utc": _to_float(r.get("created_utc")),
-                "is_gold": _to_bool(r.get("is_gold")),
-                "is_mod": _to_bool(r.get("is_mod")),
-            }
-            for r in info.get("users", [])
-        ]
 
     def get_session_dict(self):
         return {"posts": self.posts, "comments": self.comments}

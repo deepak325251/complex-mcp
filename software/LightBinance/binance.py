@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -45,57 +46,11 @@ class BinanceSession:
     account balances. Numeric fields are rendered as Binance-style 8-decimal strings.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "binance.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.prices: List[Dict[str, Any]] = [
-            {
-                "symbol": r["symbol"],
-                "price": _opt_float(r.get("price")),
-                "priceChange": _opt_float(r.get("priceChange")),
-                "priceChangePercent": _opt_float(r.get("priceChangePercent")),
-                "highPrice": _opt_float(r.get("highPrice")),
-                "lowPrice": _opt_float(r.get("lowPrice")),
-                "volume": _opt_float(r.get("volume")),
-            }
-            for r in info.get("prices", [])
-        ]
-        self.klines: List[Dict[str, Any]] = [
-            {
-                "symbol": r["symbol"],
-                "interval": r["interval"],
-                "open_time": _to_int(r.get("open_time")),
-                "open": _opt_float(r.get("open")),
-                "high": _opt_float(r.get("high")),
-                "low": _opt_float(r.get("low")),
-                "close": _opt_float(r.get("close")),
-                "volume": _opt_float(r.get("volume")),
-                "close_time": _to_int(r.get("close_time")),
-            }
-            for r in info.get("klines", [])
-        ]
-        self.balances: List[Dict[str, Any]] = [
-            {
-                "asset": r["asset"],
-                "free": _opt_float(r.get("free")),
-                "locked": _opt_float(r.get("locked")),
-            }
-            for r in info.get("balances", [])
-        ]
-        self.depth: List[Dict[str, Any]] = [
-            {
-                "symbol": r["symbol"],
-                "side": r["side"],
-                "price": _opt_float(r.get("price")),
-                "qty": _opt_float(r.get("qty")),
-            }
-            for r in info.get("depth", [])
-        ]
 
     def get_session_dict(self):
         return {"prices": self.prices}

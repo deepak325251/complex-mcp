@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -41,38 +42,11 @@ class CalendlySession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "calendly.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.event_types: List[Dict[str, Any]] = [
-            {
-                **e,
-                "duration": int(e.get("duration", 0)),
-                "active": _to_bool(e.get("active", False)),
-            }
-            for e in info.get("event_types", [])
-        ]
-        self.scheduled_events: List[Dict[str, Any]] = [
-            {
-                **ev,
-                "canceled_reason": (str(ev.get("canceled_reason", "") or "") or None),
-            }
-            for ev in info.get("scheduled_events", [])
-        ]
-        self.invitees: List[Dict[str, Any]] = [
-            {
-                **inv,
-                "questions_and_answers": _parse_qa(inv.get("questions_and_answers")),
-            }
-            for inv in info.get("invitees", [])
-        ]
-        self.availability: List[Dict[str, Any]] = list(info.get("availability", []))
-        self.user: Dict[str, Any] = info.get("user", {})
 
     def get_session_dict(self):
         return {"scheduled_events": self.scheduled_events, "invitees": self.invitees}

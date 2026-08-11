@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -39,73 +40,11 @@ class TmdbSession:
     State is loaded from the corpus at init.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "tmdb.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.genres: List[Dict[str, Any]] = [
-            {"id": _to_int(r["id"]), "name": r["name"]} for r in info.get("genres", [])
-        ]
-        self.movies: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r["id"]),
-                "title": r["title"],
-                "original_title": r["title"],
-                "overview": r["overview"],
-                "release_date": r["release_date"],
-                "vote_average": _to_float(r["vote_average"]),
-                "vote_count": _to_int(r["vote_count"]),
-                "genre_ids": _genre_ids(r["genre_ids"]),
-                "popularity": _to_float(r["popularity"]),
-                "original_language": r["original_language"],
-                "media_type": "movie",
-                "adult": False,
-            }
-            for r in info.get("movies", [])
-        ]
-        self.people: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r["id"]),
-                "name": r["name"],
-                "known_for_department": r["known_for_department"],
-                "gender": _to_int(r["gender"]),
-                "popularity": _to_float(r["popularity"]),
-            }
-            for r in info.get("people", [])
-        ]
-        self.credits: List[Dict[str, Any]] = [
-            {
-                "movie_id": _to_int(r["movie_id"]),
-                "person_id": _to_int(r["person_id"]),
-                "credit_type": r["credit_type"],
-                "character": r["character"],
-                "job": r["job"],
-                "order": _to_int(r["order"]),
-            }
-            for r in info.get("credits", [])
-        ]
-        self.tv: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r["id"]),
-                "name": r["name"],
-                "original_name": r["name"],
-                "overview": r["overview"],
-                "first_air_date": r["first_air_date"],
-                "vote_average": _to_float(r["vote_average"]),
-                "vote_count": _to_int(r["vote_count"]),
-                "genre_ids": _genre_ids(r["genre_ids"]),
-                "popularity": _to_float(r["popularity"]),
-                "number_of_seasons": _to_int(r["number_of_seasons"]),
-                "number_of_episodes": _to_int(r["number_of_episodes"]),
-                "media_type": "tv",
-            }
-            for r in info.get("tv", [])
-        ]
-        self._people_by_id = {p["id"]: p for p in self.people}
 
     def get_session_dict(self):
         return {"movies": self.movies, "tv": self.tv}

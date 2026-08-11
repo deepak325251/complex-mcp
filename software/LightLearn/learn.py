@@ -9,6 +9,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 
 
 COURSE_LEVELS = ("beginner", "intermediate", "advanced")
@@ -100,19 +101,11 @@ class QuizAttempt:
 
 
 class LearnSession:
-    def __init__(self, seed: int, os_cfg: Optional[Dict[str, str]] = None):
-        self.rng = random.Random(seed)
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"],
-        ) if os_cfg else DummyOSConnector()
-        self._today = datetime(2026, 1, 5)
-        self.courses: Dict[str, Course] = {}
-        self.lessons: Dict[str, Lesson] = {}
-        self.enrollments: Dict[str, Enrollment] = {}
-        self.quizzes: Dict[str, Quiz] = {}
-        self.attempts: Dict[str, QuizAttempt] = {}
-        self._seed_all()
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

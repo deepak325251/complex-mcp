@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -45,29 +46,11 @@ class GoogleClassroomSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "google_classroom.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.courses: List[Dict[str, Any]] = self._coerce_courses(info.get("courses", []))
-        self.coursework: List[Dict[str, Any]] = self._coerce_coursework(info.get("coursework", []))
-        self.topics: List[Dict[str, Any]] = self._coerce_topics(info.get("topics", []))
-        self.students: List[Dict[str, Any]] = self._coerce_students(info.get("students", []))
-        self.teachers: List[Dict[str, Any]] = self._coerce_teachers(info.get("teachers", []))
-        self.submissions: List[Dict[str, Any]] = self._coerce_submissions(info.get("submissions", []))
-        self.announcements: List[Dict[str, Any]] = self._coerce_announcements(info.get("announcements", []))
-        self.materials: List[Dict[str, Any]] = self._coerce_materials(info.get("materials", []))
-
-        self._next_course_id = 5
-        self._next_cw_id = 400
-        self._next_topic_id = 400
-        self._next_sub_id = 100
-        self._next_ann_id = 20
-        self._next_mat_id = 10
 
     def get_session_dict(self):
         return {

@@ -31,7 +31,7 @@ stump_levers = [
   "transient_failure",
   "referential_ambiguity",
   ]
-seed = 777
+# seedless: world is a static world.pkl fixture (no seed)
 knobs = { distractors = 800, presentation = "list_all", noise_rate = 0.30, registry = "etom+bench+atlas+mark" }
 dimensions = { long_horizon = true, objective = true, multimodal = false, cross_server = true, asset_complexity = "medium" }
 

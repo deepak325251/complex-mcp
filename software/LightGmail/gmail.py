@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,40 +31,11 @@ class GmailSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "gmail.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.labels: List[Dict[str, Any]] = [
-            {
-                **l,
-                "messagesTotal": _to_int(l["messages_total"]),
-                "messagesUnread": _to_int(l["messages_unread"]),
-                "threadsTotal": _to_int(l["threads_total"]),
-                "threadsUnread": _to_int(l["threads_unread"]),
-            }
-            for l in info.get("labels", [])
-        ]
-        self.messages: List[Dict[str, Any]] = [
-            {
-                **m,
-                "body": m["body"].replace("\\n", "\n"),
-                "internal_date": _to_int(m["internal_date"]),
-                "size_estimate": _to_int(m["size_estimate"]),
-                "labels": [x for x in str(m.get("labels", "")).split(",") if x],
-                "is_unread": _to_bool(m["is_unread"]),
-                "is_starred": _to_bool(m["is_starred"]),
-            }
-            for m in info.get("messages", [])
-        ]
-        self.drafts: List[Dict[str, Any]] = [
-            {**d, "body": d["body"].replace("\\n", "\n")} for d in info.get("drafts", [])
-        ]
-        self.profile: Dict[str, Any] = dict(info.get("profile", {}))
 
     def get_session_dict(self):
         return {"messages": self.messages, "drafts": self.drafts, "labels": self.labels}

@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -26,54 +27,11 @@ class WebflowSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "webflow.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.sites: List[Dict[str, Any]] = [
-            {
-                "id": s["id"],
-                "workspace_id": s["workspace_id"],
-                "display_name": s["display_name"],
-                "short_name": s["short_name"],
-                "preview_url": s["preview_url"],
-                "time_zone": s["time_zone"],
-                "created_on": s["created_on"],
-                "last_published": s["last_published"],
-                "custom_domains": [d for d in str(s.get("custom_domains") or "").split(";") if d],
-            }
-            for s in info.get("sites", [])
-        ]
-        self.collections: List[Dict[str, Any]] = [
-            {
-                "id": c["id"],
-                "site_id": c["site_id"],
-                "display_name": c["display_name"],
-                "singular_name": c["singular_name"],
-                "slug": c["slug"],
-                "created_on": c["created_on"],
-                "last_updated": c["last_updated"],
-            }
-            for c in info.get("collections", [])
-        ]
-        self.items: List[Dict[str, Any]] = [
-            {
-                "id": i["id"],
-                "collection_id": i["collection_id"],
-                "name": i["name"],
-                "slug": i["slug"],
-                "is_draft": _to_bool(i.get("is_draft", False)),
-                "is_archived": _to_bool(i.get("is_archived", False)),
-                "summary": i["summary"],
-                "created_on": i["created_on"],
-                "last_updated": i["last_updated"],
-            }
-            for i in info.get("items", [])
-        ]
 
     def get_session_dict(self):
         return {"items": self.items}

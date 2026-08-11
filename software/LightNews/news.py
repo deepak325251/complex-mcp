@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 
 @dataclass
 class NewsItem:
@@ -23,21 +24,11 @@ class NewsItem:
 CORPUS_PATH = Path("software") / "LightNews" / "corpus"
 
 class NewsSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str] = None):
-        self.rng = random.Random(seed)
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"]
-        ) if os_cfg else DummyOSConnector()
-        self.sections = [
-            "Town Updates",
-            "School & Kids",
-            "Events & Happenings",
-            "Local Business",
-            "Public Safety",
-            "Sports"
-        ]
-        self._news, self._news_dict = self._initialize_news()
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {}

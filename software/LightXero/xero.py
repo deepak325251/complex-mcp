@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,62 +39,11 @@ def _opt_float(v, default=None):
 class XeroSession:
     """Deterministic sandbox for the Xero Accounting API mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "xero.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.contacts: List[Dict[str, Any]] = [
-            {
-                "ContactID": r["contact_id"],
-                "Name": r["name"],
-                "FirstName": r["first_name"],
-                "LastName": r["last_name"],
-                "EmailAddress": r["email"],
-                "IsCustomer": _to_bool(r.get("is_customer")),
-                "IsSupplier": _to_bool(r.get("is_supplier")),
-                "ContactStatus": r["status"],
-                "AccountNumber": r["account_number"],
-            }
-            for r in info.get("contacts", [])
-        ]
-        self.accounts: List[Dict[str, Any]] = [
-            {
-                "AccountID": r["account_id"],
-                "Code": r["code"],
-                "Name": r["name"],
-                "Type": r["type"],
-                "TaxType": r["tax_type"],
-                "Status": r["status"],
-                "Description": r["description"],
-                "EnablePaymentsToAccount": _to_bool(r.get("enable_payments_to_account")),
-            }
-            for r in info.get("accounts", [])
-        ]
-        self.invoices: List[Dict[str, Any]] = [
-            {
-                "InvoiceID": r["invoice_id"],
-                "InvoiceNumber": r["invoice_number"],
-                "Type": r["type"],
-                "contact_id": r["contact_id"],
-                "contact_name": r["contact_name"],
-                "Date": r["date"],
-                "DueDate": r["due_date"],
-                "Status": r["status"],
-                "LineAmountTypes": r["line_amount_types"],
-                "SubTotal": _opt_float(r.get("sub_total")),
-                "TotalTax": _opt_float(r.get("total_tax")),
-                "Total": _opt_float(r.get("total")),
-                "AmountDue": _opt_float(r.get("amount_due")),
-                "AmountPaid": _opt_float(r.get("amount_paid")),
-                "CurrencyCode": r["currency_code"],
-                "Reference": r["reference"],
-            }
-            for r in info.get("invoices", [])
-        ]
 
     def get_session_dict(self):
         return {"invoices": self.invoices}

@@ -22,8 +22,8 @@ def get_session(session_id: str):
 
 
 @mcp.tool
-async def login(seed: int, os_cfg: Dict[str, str]):
-	session = LightGithubSession(seed=seed, os_cfg=os_cfg)
+async def login(os_cfg: Dict[str, str], seed: int | None = None):
+	session = LightGithubSession(os_cfg=os_cfg, seed=seed)
 	session_dict[session.session_id] = session
 	logger.info(f"A new user logged in! [{session.session_id}]")
 	return {
@@ -31,7 +31,7 @@ async def login(seed: int, os_cfg: Dict[str, str]):
 		"session_id": session.session_id,
 		"session_info": {
 			"status": "ok",
-			"output": {}
+			"output": session.github_session.get_session_dict()
         }
     }
 
@@ -45,7 +45,7 @@ async def logout(session_id: str | None = None):
 	logger.info(f"A user logged out! [{session_id}]")
 	return {
 		"status": "ok",
-		"output": {}
+		"output": session.github_session.get_session_dict()
 	}
 
 

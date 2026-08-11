@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -39,51 +40,11 @@ _PRICE_LEVEL = {"$": 1, "$$": 2, "$$$": 3, "$$$$": 4}
 class YelpSession:
     """Deterministic sandbox for the Yelp Fusion API mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "yelp.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.businesses: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "alias": r["id"],
-                "name": r["name"],
-                "rating": _to_float(r.get("rating")),
-                "price": r["price"],
-                "review_count": _to_int(r.get("review_count")),
-                "is_closed": _to_bool(r.get("is_closed")),
-                "phone": r["phone"],
-                "image_url": r["image_url"],
-                "categories": [{"alias": r["category"], "title": r["category_title"]}],
-                "coordinates": {"latitude": _to_float(r.get("latitude")), "longitude": _to_float(r.get("longitude"))},
-                "location": {
-                    "address1": r["address"],
-                    "city": r["city"],
-                    "state": r["state"],
-                    "display_address": [r["address"], f"{r['city']}, {r['state']}"],
-                },
-            }
-            for r in info.get("businesses", [])
-        ]
-        self.reviews: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "business_id": r["business_id"],
-                "rating": _to_int(r.get("rating")),
-                "text": r["text"],
-                "time_created": r["time_created"],
-                "user": {"name": r["user_name"]},
-            }
-            for r in info.get("reviews", [])
-        ]
-        self.categories: List[Dict[str, Any]] = [
-            {"alias": r["alias"], "title": r["title"], "parent_aliases": [r["parent"]]}
-            for r in info.get("categories", [])
-        ]
 
     def get_session_dict(self):
         return {"businesses": self.businesses}

@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -36,57 +37,11 @@ class StravaSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "strava.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.athlete: Dict[str, Any] = dict(info.get("athlete", {}))
-        self.activities: List[Dict[str, Any]] = [
-            {
-                "id": _strict_int(r["id"]),
-                "name": r["name"],
-                "type": r["type"],
-                "sport_type": r["type"],
-                "distance": _strict_float(r["distance"]),
-                "moving_time": _strict_int(r["moving_time"]),
-                "elapsed_time": _strict_int(r["elapsed_time"]),
-                "total_elevation_gain": _strict_float(r["total_elevation_gain"]),
-                "average_speed": _strict_float(r["average_speed"]),
-                "start_date": r["start_date"],
-                "kudos_count": _strict_int(r["kudos_count"]),
-                "segment_id": _opt_int(r.get("segment_id")),
-            }
-            for r in info.get("activities", [])
-        ]
-        self.segments: List[Dict[str, Any]] = [
-            {
-                "id": _strict_int(r["id"]),
-                "name": r["name"],
-                "activity_type": r["activity_type"],
-                "distance": _strict_float(r["distance"]),
-                "average_grade": _strict_float(r["average_grade"]),
-                "maximum_grade": _strict_float(r["maximum_grade"]),
-                "elevation_high": _strict_float(r["elevation_high"]),
-                "elevation_low": _strict_float(r["elevation_low"]),
-                "climb_category": _strict_int(r["climb_category"]),
-                "city": r["city"],
-                "state": r["state"],
-            }
-            for r in info.get("segments", [])
-        ]
-        self.kudoers: List[Dict[str, Any]] = [
-            {
-                "activity_id": _strict_int(r["activity_id"]),
-                "athlete_id": _strict_int(r["athlete_id"]),
-                "firstname": r["firstname"],
-                "lastname": r["lastname"],
-            }
-            for r in info.get("kudoers", [])
-        ]
 
     def get_session_dict(self):
         return {"activities": self.activities}

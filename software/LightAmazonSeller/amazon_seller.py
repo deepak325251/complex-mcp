@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -54,26 +55,11 @@ class AmazonSellerSession:
     """Deterministic sandbox for the Amazon Selling Partner API mock, ported from
     the FastAPI service. Mutations persist within the session."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "amazon_seller.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.catalog: List[Dict[str, Any]] = self._coerce_catalog_items(info.get("catalog_items", []))
-        self.orders: List[Dict[str, Any]] = self._coerce_orders(info.get("orders", []))
-        self.order_items: List[Dict[str, Any]] = self._coerce_order_items(info.get("order_items", []))
-        self.inventory: List[Dict[str, Any]] = self._coerce_inventory(info.get("inventory", []))
-        self.returns: List[Dict[str, Any]] = self._coerce_returns(info.get("returns", []))
-        self.reports: List[Dict[str, Any]] = self._coerce_reports(info.get("reports", []))
-        self.pricing: List[Dict[str, Any]] = self._coerce_pricing(info.get("pricing", []))
-        self.seller: Dict[str, Any] = dict(info.get("seller_account", {}))
-        self.buying_notes: Dict[str, Any] = dict(info.get("buying_notes_fw26", {}))
-
-        self._next_report_id = 11
-        self._next_return_id = 6
 
     def get_session_dict(self):
         return {"orders": self.orders, "catalog": self.catalog, "inventory": self.inventory}

@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -37,50 +38,11 @@ def _opt_str(v):
 class ZillowSession:
     """Deterministic sandbox for the Zillow API mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "zillow.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.properties: List[Dict[str, Any]] = [{
-            **r,
-            "zpid": _to_int(r.get("zpid")),
-            "latitude": _to_float(r.get("latitude")),
-            "longitude": _to_float(r.get("longitude")),
-            "bedrooms": _to_int(r.get("bedrooms")),
-            "bathrooms": _to_float(r.get("bathrooms")),
-            "living_area_sqft": _to_int(r.get("living_area_sqft")),
-            "lot_size_sqft": _to_int(r.get("lot_size_sqft")),
-            "year_built": _to_int(r.get("year_built")),
-            "list_price": _to_int(r.get("list_price")),
-            "zestimate": _to_int(r.get("zestimate")),
-            "rent_zestimate": _to_int(r.get("rent_zestimate")),
-            "days_on_zillow": _to_int(r.get("days_on_zillow")),
-        } for r in info.get("properties", [])]
-        self.price_history: List[Dict[str, Any]] = [{
-            **r,
-            "zpid": _to_int(r.get("zpid")),
-            "price": _to_float(r.get("price")),
-            "price_per_sqft": _to_float(r.get("price_per_sqft")),
-        } for r in info.get("price_history", [])]
-        self.agents: List[Dict[str, Any]] = [{
-            **r,
-            "active_listings": _to_int(r.get("active_listings")),
-            "sold_last_12mo": _to_int(r.get("sold_last_12mo")),
-            "rating": _to_float(r.get("rating")),
-            "reviews": _to_int(r.get("reviews")),
-        } for r in info.get("agents", [])]
-        self.saved_searches: List[Dict[str, Any]] = [{
-            **r,
-            "min_price": _to_int(r.get("min_price")),
-            "max_price": _to_int(r.get("max_price")),
-            "min_beds": _to_int(r.get("min_beds")),
-            "min_baths": _to_float(r.get("min_baths")),
-            "city": _opt_str(r.get("city")),
-        } for r in info.get("saved_searches", [])]
 
     def get_session_dict(self):
         return {"saved_searches": self.saved_searches}

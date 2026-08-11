@@ -5,6 +5,6 @@ from google_maps import GoogleMapsSession
 
 
 class LightGoogleMapsSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.google_maps_session = GoogleMapsSession(seed=seed, os_cfg=os_cfg)
+        self.google_maps_session = GoogleMapsSession(os_cfg=os_cfg, seed=seed)

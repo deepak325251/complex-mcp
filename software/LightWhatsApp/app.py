@@ -22,8 +22,8 @@ def get_session(session_id: str):
 
 
 @mcp.tool
-async def login(seed: int, os_cfg: Dict[str, str]):
-	session = LightWhatsAppSession(seed=seed, os_cfg=os_cfg)
+async def login(os_cfg: Dict[str, str], seed: int | None = None):
+	session = LightWhatsAppSession(os_cfg=os_cfg, seed=seed)
 	session_dict[session.session_id] = session
 	logger.info(f"A new user logged in! [{session.session_id}]")
 	return {

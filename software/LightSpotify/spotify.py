@@ -11,6 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -36,59 +37,11 @@ class SpotifySession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "spotify.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.artists: List[Dict[str, Any]] = [
-            {
-                **a,
-                "genres": [g.strip() for g in str(a.get("genres") or "").split(",") if g.strip()],
-                "followers": _to_int(a.get("followers", 0)),
-                "popularity": _to_int(a.get("popularity", 0)),
-            }
-            for a in info.get("artists", [])
-        ]
-        self.albums: List[Dict[str, Any]] = [
-            {**a, "total_tracks": _to_int(a.get("total_tracks", 0))}
-            for a in info.get("albums", [])
-        ]
-        self.tracks: List[Dict[str, Any]] = [
-            {
-                **t,
-                "duration_ms": _to_int(t.get("duration_ms", 0)),
-                "popularity": _to_int(t.get("popularity", 0)),
-                "explicit": _to_bool(t.get("explicit", False)),
-                "track_number": _to_int(t.get("track_number", 0)),
-            }
-            for t in info.get("tracks", [])
-        ]
-        self.playlists: List[Dict[str, Any]] = [
-            {
-                **p,
-                "public": _to_bool(p.get("public", False)),
-                "collaborative": _to_bool(p.get("collaborative", False)),
-            }
-            for p in info.get("playlists", [])
-        ]
-        self.playlist_tracks: List[Dict[str, Any]] = [
-            {**pt, "position": _to_int(pt.get("position", 0))}
-            for pt in info.get("playlist_tracks", [])
-        ]
-        self.user: Dict[str, Any] = info.get("user", {})
-
-        self._playback_state = {
-            "is_playing": False,
-            "device": {"id": "device-web-001", "name": "Web Player", "type": "Computer", "volume_percent": 65},
-            "shuffle_state": False,
-            "repeat_state": "off",
-            "progress_ms": 0,
-            "item": None,
-        }
 
     def get_session_dict(self):
         return {"playlists": self.playlists, "playlist_tracks": self.playlist_tracks}

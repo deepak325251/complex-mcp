@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -29,20 +30,11 @@ class ServicenowSession:
     # state numeric codes used by the incident table
     INCIDENT_STATES = {"1": "New", "2": "In Progress", "3": "On Hold", "6": "Resolved", "7": "Closed"}
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "servicenow.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.incidents: List[Dict[str, Any]] = list(info.get("incident", []))
-        self.changes: List[Dict[str, Any]] = list(info.get("change_request", []))
-        self.problems: List[Dict[str, Any]] = list(info.get("problem", []))
-        self.users: List[Dict[str, Any]] = [
-            {**u, "active": _to_bool(u.get("active", False))} for u in info.get("sys_user", [])
-        ]
 
     def get_session_dict(self):
         return {"incidents": self.incidents}

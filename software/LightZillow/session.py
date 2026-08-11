@@ -5,6 +5,6 @@ from zillow import ZillowSession
 
 
 class LightZillowSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.zillow_session = ZillowSession(seed=seed, os_cfg=os_cfg)
+        self.zillow_session = ZillowSession(os_cfg=os_cfg, seed=seed)

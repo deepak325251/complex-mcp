@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,42 +31,11 @@ class CloudflareSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "cloudflare.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.zones: List[Dict[str, Any]] = [
-            {
-                **z,
-                "paused": _to_bool(z.get("paused", False)),
-                "development_mode": _to_int(z.get("development_mode", 0)),
-            }
-            for z in info.get("zones", [])
-        ]
-        self.dns: List[Dict[str, Any]] = [
-            {
-                **r,
-                "ttl": _to_int(r.get("ttl", 1)),
-                "proxied": _to_bool(r.get("proxied", False)),
-                "priority": _to_int(r.get("priority", 0)),
-            }
-            for r in info.get("dns", [])
-        ]
-        self.firewall: List[Dict[str, Any]] = [
-            {
-                **r,
-                "paused": _to_bool(r.get("paused", False)),
-                "priority": _to_int(r.get("priority", 0)),
-            }
-            for r in info.get("firewall", [])
-        ]
-        self.page_rules: List[Dict[str, Any]] = [
-            {**r, "priority": _to_int(r.get("priority", 0))} for r in info.get("page_rules", [])
-        ]
 
     def get_session_dict(self):
         return {"dns": self.dns}

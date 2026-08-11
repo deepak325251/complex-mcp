@@ -5,6 +5,6 @@ from instagram import InstagramSession
 
 
 class LightInstagramSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.instagram_session = InstagramSession(seed=seed, os_cfg=os_cfg)
+        self.instagram_session = InstagramSession(os_cfg=os_cfg, seed=seed)

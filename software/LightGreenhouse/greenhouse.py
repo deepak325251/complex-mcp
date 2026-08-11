@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -41,27 +42,11 @@ class GreenhouseSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "greenhouse.yaml") as f:
-            info = yaml.safe_load(f)
-
-        # candidates + applications: no coercion beyond copy
-        self.candidates: List[Dict[str, Any]] = [dict(r) for r in info.get("candidates", [])]
-        self.applications: List[Dict[str, Any]] = [dict(r) for r in info.get("applications", [])]
-        # jobs: closed_at empty-string coerces to None
-        self.jobs: List[Dict[str, Any]] = [
-            {**dict(r), "closed_at": _opt_str_or_none(r.get("closed_at", "")) if str(r.get("closed_at", "")) != "" else None}
-            for r in info.get("jobs", [])
-        ]
-        # scorecards: rating coerced string -> int (default 0)
-        self.scorecards: List[Dict[str, Any]] = [
-            {**dict(r), "rating": _opt_int(r.get("rating"), default=0)}
-            for r in info.get("scorecards", [])
-        ]
 
     def get_session_dict(self):
         return {

@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,47 +39,11 @@ class SegmentSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "segment.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.events: List[Dict[str, Any]] = [
-            {
-                "messageId": e["messageId"],
-                "type": e["type"],
-                "userId": (e.get("userId") or "") or None,
-                "event": (e.get("event") or "") or None,
-                "timestamp": e["timestamp"],
-                "properties": _parse_props(e.get("properties")),
-            }
-            for e in info.get("events", [])
-        ]
-        self.sources: List[Dict[str, Any]] = [
-            {
-                "id": s["id"],
-                "name": s["name"],
-                "slug": s["slug"],
-                "enabled": _to_bool(s.get("enabled", False)),
-                "type": s["type"],
-                "createdAt": s["created_at"],
-            }
-            for s in info.get("sources", [])
-        ]
-        self.destinations: List[Dict[str, Any]] = [
-            {
-                "id": d["id"],
-                "name": d["name"],
-                "slug": d["slug"],
-                "enabled": _to_bool(d.get("enabled", False)),
-                "sourceId": d["source_id"],
-                "createdAt": d["created_at"],
-            }
-            for d in info.get("destinations", [])
-        ]
 
     def get_session_dict(self):
         return {"events": self.events}

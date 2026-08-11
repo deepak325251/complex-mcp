@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -57,147 +58,11 @@ class EtsySession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "etsy.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.shop: Dict[str, Any] = dict(info.get("shop", {}))
-
-        self.listings: List[Dict[str, Any]] = [
-            {
-                **l,
-                "listing_id": int(l["listing_id"]),
-                "shop_id": int(l["shop_id"]),
-                "price": float(l["price"]),
-                "quantity": int(l["quantity"]),
-                "taxonomy_id": int(l["taxonomy_id"]),
-                "tags": [t.strip() for t in _csv_list(l.get("tags"))],
-                "materials": [m.strip() for m in _csv_list(l.get("materials"))],
-                "shop_section_id": _opt_int(l.get("shop_section_id")),
-                "processing_min": _opt_int(l.get("processing_min")),
-                "processing_max": _opt_int(l.get("processing_max")),
-                "item_weight": _opt_float(l.get("item_weight")),
-                "item_length": _opt_float(l.get("item_length")),
-                "item_width": _opt_float(l.get("item_width")),
-                "item_height": _opt_float(l.get("item_height")),
-                "views": int(l["views"]),
-                "num_favorers": int(l["num_favorers"]),
-                "shipping_profile_id": _opt_int(l.get("shipping_profile_id")),
-                "return_policy_id": _opt_int(l.get("return_policy_id")),
-                "is_supply": _to_bool(l["is_supply"]),
-                "is_customizable": _to_bool(l["is_customizable"]),
-                "is_personalizable": _to_bool(l["is_personalizable"]),
-            }
-            for l in info.get("listings", [])
-        ]
-
-        self.listing_images: List[Dict[str, Any]] = [
-            {
-                **i,
-                "listing_image_id": int(i["listing_image_id"]),
-                "listing_id": int(i["listing_id"]),
-                "shop_id": int(i["shop_id"]),
-                "rank": int(i["rank"]),
-            }
-            for i in info.get("listing_images", [])
-        ]
-
-        self.receipts: List[Dict[str, Any]] = [
-            {
-                **r,
-                "receipt_id": int(r["receipt_id"]),
-                "shop_id": int(r["shop_id"]),
-                "buyer_user_id": int(r["buyer_user_id"]),
-                "grandtotal": float(r["grandtotal"]),
-                "subtotal": float(r["subtotal"]),
-                "total_shipping_cost": float(r["total_shipping_cost"]),
-                "total_tax_cost": float(r["total_tax_cost"]),
-                "discount_amt": float(r["discount_amt"]),
-                "is_gift": _to_bool(r["is_gift"]),
-                "gift_message": _opt_str_or_none(r.get("gift_message", "")) or None,
-                "shipped_timestamp": _opt_str_or_none(r.get("shipped_timestamp", "")) or None,
-                "estimated_delivery": _opt_str_or_none(r.get("estimated_delivery", "")) or None,
-                "shipping_carrier": _opt_str_or_none(r.get("shipping_carrier", "")) or None,
-                "tracking_code": _opt_str_or_none(r.get("tracking_code", "")) or None,
-            }
-            for r in info.get("receipts", [])
-        ]
-
-        self.transactions: List[Dict[str, Any]] = [
-            {
-                **t,
-                "transaction_id": int(t["transaction_id"]),
-                "receipt_id": int(t["receipt_id"]),
-                "listing_id": int(t["listing_id"]),
-                "shop_id": int(t["shop_id"]),
-                "buyer_user_id": int(t["buyer_user_id"]),
-                "quantity": int(t["quantity"]),
-                "price": float(t["price"]),
-                "shipping_cost": float(t["shipping_cost"]),
-                "is_digital": _to_bool(t["is_digital"]),
-            }
-            for t in info.get("transactions", [])
-        ]
-
-        self.reviews: List[Dict[str, Any]] = [
-            {
-                **r,
-                "review_id": int(r["review_id"]),
-                "shop_id": int(r["shop_id"]),
-                "listing_id": int(r["listing_id"]),
-                "buyer_user_id": int(r["buyer_user_id"]),
-                "rating": int(r["rating"]),
-                "image_url": _opt_str_or_none(r.get("image_url", "")) or None,
-            }
-            for r in info.get("reviews", [])
-        ]
-
-        self.shop_sections: List[Dict[str, Any]] = [
-            {
-                **s,
-                "shop_section_id": int(s["shop_section_id"]),
-                "shop_id": int(s["shop_id"]),
-                "rank": int(s["rank"]),
-                "active_listing_count": int(s["active_listing_count"]),
-            }
-            for s in info.get("shop_sections", [])
-        ]
-
-        self.shipping_profiles: List[Dict[str, Any]] = [
-            {
-                **p,
-                "shipping_profile_id": int(p["shipping_profile_id"]),
-                "shop_id": int(p["shop_id"]),
-                "processing_min": int(p["processing_min"]),
-                "processing_max": int(p["processing_max"]),
-                "min_delivery_days": int(p["min_delivery_days"]),
-                "max_delivery_days": int(p["max_delivery_days"]),
-                "cost": float(p["cost"]),
-                "secondary_cost": float(p["secondary_cost"]),
-            }
-            for p in info.get("shipping_profiles", [])
-        ]
-
-        self.return_policies: List[Dict[str, Any]] = [
-            {
-                **p,
-                "return_policy_id": int(p["return_policy_id"]),
-                "shop_id": int(p["shop_id"]),
-                "accepts_returns": _to_bool(p["accepts_returns"]),
-                "accepts_exchanges": _to_bool(p["accepts_exchanges"]),
-                "return_deadline": int(p["return_deadline"]),
-            }
-            for p in info.get("return_policies", [])
-        ]
-
-        self._next_listing_id = max((l["listing_id"] for l in self.listings), default=0) + 1
-        self._next_receipt_id = max((r["receipt_id"] for r in self.receipts), default=0) + 1
-        self._next_image_id = max((i["listing_image_id"] for i in self.listing_images), default=0) + 1
-        self._next_review_id = max((r["review_id"] for r in self.reviews), default=0) + 1
 
     def get_session_dict(self):
         return {"listings": self.listings, "receipts": self.receipts}

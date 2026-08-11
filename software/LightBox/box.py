@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -77,61 +78,11 @@ class BoxSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "box.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.users: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "name": r["name"],
-                "login": r["login"],
-                "role": r["role"],
-                "status": r["status"],
-                "language": r["language"],
-                "timezone": r["timezone"],
-                "space_amount": _to_int(r.get("space_amount", 0)),
-                "space_used": _to_int(r.get("space_used", 0)),
-                "max_upload_size": _to_int(r.get("max_upload_size", 0)),
-                "job_title": r["job_title"],
-                "phone": r["phone"],
-                "created_at": r["created_at"],
-            }
-            for r in info.get("users", [])
-        ]
-        self.folders: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "name": r["name"],
-                "parent_id": r["parent_id"],
-                "owner_id": r["owner_id"],
-                "description": r["description"],
-                "created_at": r["created_at"],
-                "modified_at": r["modified_at"],
-                "item_count": _to_int(r.get("item_count", 0)),
-            }
-            for r in info.get("folders", [])
-        ]
-        self.files: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "name": r["name"],
-                "parent_id": r["parent_id"],
-                "owner_id": r["owner_id"],
-                "description": r["description"],
-                "size": _to_int(r.get("size", 0)),
-                "extension": r["extension"],
-                "sha1": r["sha1"],
-                "created_at": r["created_at"],
-                "modified_at": r["modified_at"],
-            }
-            for r in info.get("files", [])
-        ]
-        self.file_blobs: Dict[str, str] = dict(info.get("file_blobs", {}))
 
     def get_session_dict(self):
         return {"files": self.files}

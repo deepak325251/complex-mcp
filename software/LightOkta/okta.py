@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -18,26 +19,11 @@ CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
 class OktaSession:
     """Deterministic sandbox for the Okta Management API mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "okta.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.users: List[Dict[str, Any]] = [
-            {
-                **u,
-                "activated": (str(u.get("activated") or "") or None),
-                "last_login": (str(u.get("last_login") or "") or None),
-            }
-            for u in info.get("users", [])
-        ]
-        self.groups: List[Dict[str, Any]] = list(info.get("groups", []))
-        self.memberships: List[Dict[str, Any]] = list(info.get("group_memberships", []))
-        self.apps: List[Dict[str, Any]] = list(info.get("apps", []))
-        self.app_assignments: List[Dict[str, Any]] = list(info.get("app_assignments", []))
 
     def get_session_dict(self):
         return {"users": self.users}

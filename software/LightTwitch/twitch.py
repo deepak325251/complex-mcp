@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,52 +39,11 @@ class TwitchSession:
     tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "twitch.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.users: List[Dict[str, Any]] = [
-            {**u, "view_count": _to_int(u["view_count"])} for u in info.get("users", [])
-        ]
-        self.games: List[Dict[str, Any]] = [
-            {
-                "id": g["id"],
-                "name": g["name"],
-                "box_art_url": g["box_art_url"],
-                "rank": _to_int(g["rank"]),
-                "viewer_count": _to_int(g["viewer_count"]),
-            }
-            for g in info.get("games", [])
-        ]
-        self.channels: List[Dict[str, Any]] = [
-            {
-                **c,
-                "tags": _split_tags(c["tags"]),
-                "follower_count": _to_int(c["follower_count"]),
-            }
-            for c in info.get("channels", [])
-        ]
-        self.streams: List[Dict[str, Any]] = [
-            {
-                **s,
-                "viewer_count": _to_int(s["viewer_count"]),
-                "is_live": _to_bool(s["is_live"]),
-                "started_at": (str(s.get("started_at") or "") or None),
-            }
-            for s in info.get("streams", [])
-        ]
-        self.clips: List[Dict[str, Any]] = [
-            {
-                **c,
-                "view_count": _to_int(c["view_count"]),
-                "duration": _to_float(c["duration"]),
-            }
-            for c in info.get("clips", [])
-        ]
 
     def get_session_dict(self):
         return {"users": self.users, "streams": self.streams}

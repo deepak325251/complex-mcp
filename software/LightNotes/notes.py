@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 
 
 DEFAULT_NOTEBOOKS = [
@@ -50,18 +51,11 @@ class Note:
 
 
 class NotesSession:
-    def __init__(self, seed: int, os_cfg: Optional[Dict[str, str]] = None):
-        self.rng = random.Random(seed)
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"],
-        ) if os_cfg else DummyOSConnector()
-        self.notebooks: Dict[str, Notebook] = {
-            n["nbid"]: Notebook(**n) for n in DEFAULT_NOTEBOOKS
-        }
-        self.notes: Dict[str, Note] = {}
-        self._today = datetime(2026, 1, 5)
-        self._seed_notes()
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

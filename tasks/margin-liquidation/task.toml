@@ -32,7 +32,7 @@ stump_levers = [
   "cross_server",
   "long_chain",
 ]
-seed = 114514
+# seedless: world is a static world.pkl fixture (no seed)
 knobs = { distractors = 1200, presentation = "list_all", noise_rate = 0.35, registry = "etom+bench+atlas+mark" }
 
 difficulty_explanation = """

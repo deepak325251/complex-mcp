@@ -16,8 +16,8 @@ def get_session(session_id: str):
     return s, None
 
 @mcp.tool
-async def login(seed: int, os_cfg: Dict[str, str]):
-    s = LightAuctionSession(seed=seed, os_cfg=os_cfg)
+async def login(os_cfg: Dict[str, str], seed: int | None = None):
+    s = LightAuctionSession(os_cfg=os_cfg, seed=seed)
     session_dict[s.session_id] = s
     return {"status": "ok", "session_id": s.session_id, "session_info": {"status": "ok", "output": s.auction_session.get_session_dict()}}
 

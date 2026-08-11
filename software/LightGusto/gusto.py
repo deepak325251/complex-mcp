@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -44,51 +45,11 @@ class GustoSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "gusto.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.company: Dict[str, Any] = dict(info.get("company", {}))
-
-        self.employees: List[Dict[str, Any]] = [
-            {
-                **e,
-                "rate": _opt_float(e.get("rate"), default=0.0),
-                "terminated": _to_bool(e.get("terminated", False)),
-            }
-            for e in info.get("employees", [])
-        ]
-
-        self.compensations: List[Dict[str, Any]] = [
-            {
-                **c,
-                "rate": _opt_float(c.get("rate"), default=0.0),
-            }
-            for c in info.get("compensations", [])
-        ]
-
-        self.payrolls: List[Dict[str, Any]] = [
-            {
-                **p,
-                "processed": _to_bool(p.get("processed", False)),
-                "gross_pay": _opt_float(p.get("gross_pay"), default=0.0),
-                "net_pay": _opt_float(p.get("net_pay"), default=0.0),
-                "employee_count": _opt_int(p.get("employee_count"), default=0),
-            }
-            for p in info.get("payrolls", [])
-        ]
-
-        self.contractors: List[Dict[str, Any]] = [
-            {
-                **c,
-                "hourly_rate": _opt_float(c.get("hourly_rate"), default=0.0),
-            }
-            for c in info.get("contractors", [])
-        ]
 
     def get_session_dict(self):
         return {"payrolls": self.payrolls}

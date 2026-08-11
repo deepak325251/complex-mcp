@@ -5,6 +5,6 @@ from contentful import ContentfulSession
 
 
 class LightContentfulSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.contentful_session = ContentfulSession(seed=seed, os_cfg=os_cfg)
+        self.contentful_session = ContentfulSession(os_cfg=os_cfg, seed=seed)

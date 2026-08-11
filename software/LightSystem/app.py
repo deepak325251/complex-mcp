@@ -22,7 +22,7 @@ def get_session(session_id: str):
     return session, None
 
 @mcp.tool
-async def login(seed: int):
+async def login(seed: int | None = None):
     session = LightSystemSession(seed=seed)
     session_dict[session.session_id] = session
     logger.info(f"A new user logged in! [{session.session_id}]")

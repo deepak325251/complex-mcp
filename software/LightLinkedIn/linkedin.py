@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -29,28 +30,11 @@ class LinkedinSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "linkedin.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.profile: Dict[str, Any] = dict(info.get("profile", {}))
-        self.connections: List[Dict[str, Any]] = list(info.get("connections", []))
-        self.posts: List[Dict[str, Any]] = [self._coerce_post(p) for p in info.get("posts", [])]
-        self.organizations: List[Dict[str, Any]] = [
-            {**o, "followerCount": _to_int(o.get("followerCount"))} for o in info.get("organizations", [])
-        ]
-        self.jobs: List[Dict[str, Any]] = [
-            {
-                **j,
-                "applicants": _to_int(j.get("applicants")),
-                "keywords": [k for k in str(j.get("keywords", "")).split(" ") if k],
-            }
-            for j in info.get("jobs", [])
-        ]
 
     def get_session_dict(self):
         return {"posts": self.posts}

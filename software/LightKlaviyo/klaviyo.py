@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,57 +31,11 @@ class KlaviyoSession:
     mutate the in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "klaviyo.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.profiles: List[Dict[str, Any]] = [
-            {
-                "id": p["id"],
-                "email": p["email"],
-                "phone_number": p["phone_number"],
-                "first_name": p["first_name"],
-                "last_name": p["last_name"],
-                "organization": p["organization"],
-                "title": p["title"],
-                "city": p["city"],
-                "region": p["region"],
-                "country": p["country"],
-                "created": p["created"],
-                "updated": p["updated"],
-            }
-            for p in info.get("profiles", [])
-        ]
-        self.lists: List[Dict[str, Any]] = [
-            {
-                "id": l["id"],
-                "name": l["name"],
-                "profile_count": _to_int(l.get("profile_count", 0)),
-                "created": l["created"],
-                "updated": l["updated"],
-            }
-            for l in info.get("lists", [])
-        ]
-        self.campaigns: List[Dict[str, Any]] = [
-            {
-                "id": c["id"],
-                "name": c["name"],
-                "status": c["status"],
-                "channel": c["channel"],
-                "subject": c["subject"],
-                "from_email": c["from_email"],
-                "from_label": c["from_label"],
-                "list_id": c["list_id"],
-                "send_time": (c.get("send_time") or None),
-                "created": c["created"],
-                "updated": c["updated"],
-            }
-            for c in info.get("campaigns", [])
-        ]
 
     def get_session_dict(self):
         return {"profiles": self.profiles}

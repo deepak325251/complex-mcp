@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -40,27 +41,11 @@ class TicketmasterSession:
     from the corpus at init.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "ticketmaster.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.classifications: List[Dict[str, Any]] = [dict(c) for c in info.get("classifications", [])]
-        self.venues: List[Dict[str, Any]] = [
-            {**v, "latitude": _to_float(v.get("latitude"), 0.0), "longitude": _to_float(v.get("longitude"), 0.0)}
-            for v in info.get("venues", [])
-        ]
-        self.attractions: List[Dict[str, Any]] = [
-            {**a, "upcoming_events": _to_int(a.get("upcoming_events"), 0)}
-            for a in info.get("attractions", [])
-        ]
-        self.events: List[Dict[str, Any]] = [
-            {**e, "price_min": _to_float(e.get("price_min"), 0.0), "price_max": _to_float(e.get("price_max"), 0.0)}
-            for e in info.get("events", [])
-        ]
 
     def get_session_dict(self):
         return {"events": self.events, "venues": self.venues}

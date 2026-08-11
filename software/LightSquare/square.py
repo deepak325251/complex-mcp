@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -33,74 +34,11 @@ class SquareSession:
     from the corpus at init; subsequent calls read and mutate the in-memory tables.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "square.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.customers: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "given_name": r["given_name"],
-                "family_name": r["family_name"],
-                "email_address": (str(r.get("email_address") or "") or None),
-                "phone_number": (str(r.get("phone_number") or "") or None),
-                "company_name": (str(r.get("company_name") or "") or None),
-                "created_at": r["created_at"],
-            }
-            for r in info.get("customers", [])
-        ]
-        self.catalog: List[Dict[str, Any]] = [
-            {
-                "type": r["type"],
-                "id": r["id"],
-                "item_data": {
-                    "name": r["name"],
-                    "description": r["description"],
-                    "category": r["category"],
-                    "variations": [{
-                        "type": "ITEM_VARIATION",
-                        "id": r["variation_id"],
-                        "item_variation_data": {
-                            "name": r["variation_name"],
-                            "price_money": _money(r["price_amount"], r["currency"]),
-                        },
-                    }],
-                },
-            }
-            for r in info.get("catalog_items", [])
-        ]
-        self.inventory: List[Dict[str, Any]] = [
-            {
-                "catalog_object_id": r["catalog_object_id"],
-                "location_id": r["location_id"],
-                "quantity": str(_to_int(r.get("quantity", 0))),
-                "state": r["state"],
-            }
-            for r in info.get("inventory", [])
-        ]
-        self.payments: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "order_id": (str(r.get("order_id") or "") or None),
-                "customer_id": (str(r.get("customer_id") or "") or None),
-                "amount_money": _money(r["amount"], r["currency"]),
-                "status": r["status"],
-                "source_type": r["source_type"],
-                "location_id": r["location_id"],
-                "receipt_number": r["receipt_number"],
-                "created_at": r["created_at"],
-            }
-            for r in info.get("payments", [])
-        ]
-        self.orders: List[Dict[str, Any]] = [
-            self._coerce_order(r) for r in info.get("orders", [])
-        ]
-        self.merchant: Dict[str, Any] = info.get("merchant", {})
-        self.refunds: List[Dict[str, Any]] = []
 
     def get_session_dict(self):
         return {"payments": self.payments, "orders": self.orders, "refunds": self.refunds}

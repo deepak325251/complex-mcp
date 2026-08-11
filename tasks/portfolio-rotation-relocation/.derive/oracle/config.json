@@ -1,9 +1,0 @@
-{
-    "job_name": "oracle",
-    "jobs_dir": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/portfolio-rotation-relocation/.derive",
-    "tasks": [
-        {
-            "path": "/Users/macbookpro/Desktop/mcp/mcp-stump/tasks/portfolio-rotation-relocation"
-        }
-    ]
-}

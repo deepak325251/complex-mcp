@@ -30,7 +30,7 @@ tags = ["stateful", "e-commerce", "verify-before-act"]
 
 capability_level = "L2"
 stump_levers = ["dirty_state", "hidden_prerequisite"]
-seed = 108
+# seedless: world is a static world.pkl fixture (no seed)
 knobs = { distractors = 1000, presentation = "windowed", window = 60, registry = "etom+bench+atlas+mark" }
 
 difficulty_explanation = """

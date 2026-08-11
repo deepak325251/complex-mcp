@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -36,51 +37,11 @@ class PlaidSession:
     reads, and each response carries a request_id derived from self.rng.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "plaid.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.accounts: List[Dict[str, Any]] = [
-            {
-                "account_id": a["account_id"],
-                "name": a["name"],
-                "official_name": (str(a.get("official_name", "")) or None),
-                "mask": a["mask"],
-                "type": a["type"],
-                "subtype": a["subtype"],
-                "balances": {
-                    "available": _to_float(a.get("available")),
-                    "current": _to_float(a.get("current")),
-                    "limit": _to_float(a.get("limit")),
-                    "iso_currency_code": a["iso_currency_code"],
-                    "unofficial_currency_code": None,
-                },
-            }
-            for a in info.get("accounts", [])
-        ]
-
-        self.transactions: List[Dict[str, Any]] = [
-            {
-                "transaction_id": t["transaction_id"],
-                "account_id": t["account_id"],
-                "amount": _to_float(t.get("amount")),
-                "iso_currency_code": t["iso_currency_code"],
-                "date": t["date"],
-                "name": t["name"],
-                "merchant_name": (str(t.get("merchant_name", "")) or None),
-                "category": [c for c in str(t.get("category", "")).split(";") if c],
-                "pending": _to_bool(t.get("pending", False)),
-                "payment_channel": t["payment_channel"],
-            }
-            for t in info.get("transactions", [])
-        ]
-
-        self.item: Dict[str, Any] = dict(info.get("item", {}))
-        self.identity: Dict[str, Any] = dict(info.get("identity", {}))
 
     def get_session_dict(self):
         return {"accounts": self.accounts, "transactions": self.transactions}

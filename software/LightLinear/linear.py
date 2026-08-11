@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -54,151 +55,11 @@ class LinearSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "linear.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.workspace: Dict[str, Any] = info.get("workspace", {})
-
-        self.teams: List[Dict[str, Any]] = [
-            {
-                **t,
-                "id": str(t.get("id", "")),
-                "name": str(t.get("name", "")),
-                "key": str(t.get("key", "")),
-                "description": str(t.get("description", "")),
-                "color": str(t.get("color", "")),
-                "createdAt": str(t.get("createdAt", "")),
-                "updatedAt": str(t.get("updatedAt", "")),
-            }
-            for t in info.get("teams", [])
-        ]
-
-        self.users: List[Dict[str, Any]] = [
-            {
-                **u,
-                "id": str(u.get("id", "")),
-                "name": str(u.get("name", "")),
-                "displayName": str(u.get("displayName", "")),
-                "email": str(u.get("email", "")),
-                "avatarUrl": str(u.get("avatarUrl", "")),
-                "active": _to_bool(u.get("active", False)),
-                "admin": _to_bool(u.get("admin", False)),
-                "teamId": str(u.get("teamId", "")),
-                "createdAt": str(u.get("createdAt", "")),
-                "updatedAt": str(u.get("updatedAt", "")),
-            }
-            for u in info.get("users", [])
-        ]
-
-        self.workflow_states: List[Dict[str, Any]] = [
-            {
-                **s,
-                "id": str(s.get("id", "")),
-                "name": str(s.get("name", "")),
-                "type": str(s.get("type", "")),
-                "color": str(s.get("color", "")),
-                "position": int(s.get("position", 0)),
-                "teamId": str(s.get("teamId", "")),
-                "description": str(s.get("description", "")),
-            }
-            for s in info.get("workflow_states", [])
-        ]
-
-        self.labels: List[Dict[str, Any]] = [
-            {
-                **l,
-                "id": str(l.get("id", "")),
-                "name": str(l.get("name", "")),
-                "color": str(l.get("color", "")),
-                "description": str(l.get("description", "")),
-                "teamId": _opt_str(l.get("teamId", "")),
-                "createdAt": str(l.get("createdAt", "")),
-                "updatedAt": str(l.get("updatedAt", "")),
-            }
-            for l in info.get("labels", [])
-        ]
-
-        self.projects: List[Dict[str, Any]] = [
-            {
-                **p,
-                "id": str(p.get("id", "")),
-                "name": str(p.get("name", "")),
-                "description": str(p.get("description", "")),
-                "state": str(p.get("state", "")),
-                "leadId": _opt_str(p.get("leadId", "")),
-                "teamIds": _csv_list(p.get("teamIds")),
-                "startDate": _opt_str(p.get("startDate", "")),
-                "targetDate": _opt_str(p.get("targetDate", "")),
-                "createdAt": str(p.get("createdAt", "")),
-                "updatedAt": str(p.get("updatedAt", "")),
-            }
-            for p in info.get("projects", [])
-        ]
-
-        self.cycles: List[Dict[str, Any]] = [
-            {
-                **c,
-                "id": str(c.get("id", "")),
-                "name": str(c.get("name", "")),
-                "number": int(c.get("number", 0)),
-                "teamId": str(c.get("teamId", "")),
-                "startsAt": str(c.get("startsAt", "")),
-                "endsAt": str(c.get("endsAt", "")),
-                "completedAt": _opt_str(c.get("completedAt", "")),
-                "createdAt": str(c.get("createdAt", "")),
-                "updatedAt": str(c.get("updatedAt", "")),
-            }
-            for c in info.get("cycles", [])
-        ]
-
-        self.issues: List[Dict[str, Any]] = [
-            {
-                **i,
-                "id": str(i.get("id", "")),
-                "identifier": str(i.get("identifier", "")),
-                "number": int(i.get("number", 0)),
-                "title": str(i.get("title", "")),
-                "description": str(i.get("description", "")),
-                "priority": int(i.get("priority", 0)),
-                "estimate": _opt_int(i.get("estimate")),
-                "stateId": str(i.get("stateId", "")),
-                "assigneeId": _opt_str(i.get("assigneeId", "")),
-                "teamId": str(i.get("teamId", "")),
-                "projectId": _opt_str(i.get("projectId", "")),
-                "cycleId": _opt_str(i.get("cycleId", "")),
-                "labelIds": _csv_list(i.get("labelIds")),
-                "dueDate": _opt_str(i.get("dueDate", "")),
-                "sortOrder": _opt_float(i.get("sortOrder", 0.0)),
-                "branchName": _opt_str(i.get("branchName", "")),
-                "createdAt": str(i.get("createdAt", "")),
-                "updatedAt": str(i.get("updatedAt", "")),
-                "startedAt": _opt_str(i.get("startedAt", "")),
-                "completedAt": _opt_str(i.get("completedAt", "")),
-                "canceledAt": _opt_str(i.get("canceledAt", "")),
-            }
-            for i in info.get("issues", [])
-        ]
-
-        self.comments: List[Dict[str, Any]] = [
-            {
-                **c,
-                "id": str(c.get("id", "")),
-                "body": str(c.get("body", "")),
-                "issueId": str(c.get("issueId", "")),
-                "userId": str(c.get("userId", "")),
-                "createdAt": str(c.get("createdAt", "")),
-                "updatedAt": str(c.get("updatedAt", "")),
-            }
-            for c in info.get("comments", [])
-        ]
-
-        self._next_issue_number = max((i["number"] for i in self.issues), default=0) + 1
-        self._next_comment_id = len(self.comments) + 1
 
     def get_session_dict(self):
         return {"issues": self.issues, "comments": self.comments}

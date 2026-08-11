@@ -5,6 +5,6 @@ from stock import StockSession
 
 
 class LightStockSession:
-    def __init__(self, seed: int, os_cfg: Dict[str, str]):
+    def __init__(self, os_cfg: Dict[str, str], seed=None):
         self.session_id = f"session_{uuid()}"
-        self.stock_session = StockSession(seed=seed, os_cfg=os_cfg)
+        self.stock_session = StockSession(os_cfg=os_cfg, seed=seed)

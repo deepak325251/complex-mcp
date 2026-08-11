@@ -9,6 +9,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 
 
 SEED_PODCASTS = [
@@ -92,26 +93,11 @@ class Download:
 
 
 class PodcastSession:
-    def __init__(self, seed: int, os_cfg: Optional[Dict[str, str]] = None):
-        self.rng = random.Random(seed)
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"],
-        ) if os_cfg else DummyOSConnector()
-        self._today = datetime(2026, 1, 5)
-        self.podcasts: Dict[str, Podcast] = {}
-        self.episodes: Dict[str, Episode] = {}
-        self.queue: Dict[str, QueueItem] = {}
-        self.progress: Dict[str, Progress] = {}
-        self.downloads: Dict[str, Download] = {}
-        self.subscribed: set = set()
-        self._podcast_index: List[str] = []
-        self._episode_index: List[str] = []
-        self._seed_podcasts()
-        self._seed_episodes()
-        self._seed_queue()
-        self._seed_progress()
-        self._seed_downloads()
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

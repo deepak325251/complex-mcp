@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -42,111 +43,11 @@ class InstagramSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "instagram.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.media: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "user_id": r["user_id"],
-                "caption": _opt_str(r.get("caption"), default="") or None,
-                "media_type": r["media_type"],
-                "media_url": r["media_url"],
-                "permalink": r["permalink"],
-                "thumbnail_url": _opt_str(r.get("thumbnail_url"), default="") or None,
-                "timestamp": r["timestamp"],
-                "like_count": _strict_int(r["like_count"]),
-                "comments_count": _strict_int(r["comments_count"]),
-                "is_comment_enabled": _to_bool(r["is_comment_enabled"]),
-            }
-            for r in info.get("media", [])
-        ]
-        self.comments: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "media_id": r["media_id"],
-                "user_id": r["user_id"],
-                "username": r["username"],
-                "text": r["text"],
-                "timestamp": r["timestamp"],
-                "like_count": _strict_int(r["like_count"]),
-                "hidden": _to_bool(r["hidden"]),
-                "parent_id": _opt_str(r.get("parent_id"), default="") or None,
-            }
-            for r in info.get("comments", [])
-        ]
-        self.stories: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "user_id": r["user_id"],
-                "media_type": r["media_type"],
-                "media_url": r["media_url"],
-                "timestamp": r["timestamp"],
-                "expiring_at": r["expiring_at"],
-                "caption": _opt_str(r.get("caption"), default="") or None,
-                "link": _opt_str(r.get("link"), default="") or None,
-                "poll_question": _opt_str(r.get("poll_question"), default="") or None,
-                "poll_options": (_opt_csv_list(r.get("poll_options"), sep="|") or None),
-            }
-            for r in info.get("stories", [])
-        ]
-        self.media_insights: List[Dict[str, Any]] = [
-            {
-                "media_id": r["media_id"],
-                "impressions": _strict_int(r["impressions"]),
-                "reach": _strict_int(r["reach"]),
-                "engagement": _strict_int(r["engagement"]),
-                "saves": _strict_int(r["saves"]),
-                "shares": _strict_int(r["shares"]),
-                "profile_visits": _strict_int(r["profile_visits"]),
-                "follows": _strict_int(r["follows"]),
-            }
-            for r in info.get("media_insights", [])
-        ]
-        self.carousel_children: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "media_id": r["media_id"],
-                "media_type": r["media_type"],
-                "media_url": r["media_url"],
-                "timestamp": r["timestamp"],
-            }
-            for r in info.get("carousel_children", [])
-        ]
-        self.hashtags: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "name": r["name"],
-                "media_count": _strict_int(r["media_count"]),
-            }
-            for r in info.get("hashtags", [])
-        ]
-        self.mentions: List[Dict[str, Any]] = [
-            {
-                "id": r["id"],
-                "media_id": r["media_id"],
-                "mentioned_by_user_id": r["mentioned_by_user_id"],
-                "mentioned_by_username": r["mentioned_by_username"],
-                "media_url": r["media_url"],
-                "timestamp": r["timestamp"],
-                "caption": _opt_str(r.get("caption"), default="") or None,
-            }
-            for r in info.get("mentions", [])
-        ]
-        self.users: List[Dict[str, Any]] = list(info.get("user", []))
-
-        # In-memory content-publishing containers (mock).
-        self.media_containers: List[Dict[str, Any]] = []
-
-        # Auto-incrementing ids matching the source id shapes.
-        self._next_comment_id = 17800001051
-        self._next_media_id = 17900001029
-        self._next_container_id = 17920001001
 
     def get_session_dict(self):
         return {

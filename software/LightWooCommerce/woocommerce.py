@@ -10,6 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
+from software.utils.world_snapshot import restore_into
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -44,69 +45,11 @@ def _opt_csv_list(v, sep=";"):
 class WoocommerceSession:
     """Deterministic sandbox for the WooCommerce mock, ported from the FastAPI service."""
 
-    def __init__(self, seed: int, os_cfg: Dict[str, str] | None = None):
-        self.rng = random.Random(seed)
+    def __init__(self, os_cfg, seed=None):
+        # Seedless: world loaded verbatim from a frozen snapshot next to
+        # this module; `seed` is accepted for client compat and ignored.
+        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
         self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
-        self.time_machine = TimeMachine(rng=self.rng)
-
-        with open(CORPUS_PATH / "woocommerce.yaml") as f:
-            info = yaml.safe_load(f)
-
-        self.products: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r.get("id")),
-                "name": r["name"],
-                "slug": r["slug"],
-                "sku": r["sku"],
-                "type": r["type"],
-                "status": r["status"],
-                "price": _opt_float(r.get("price")),
-                "regular_price": _opt_float(r.get("regular_price")),
-                "sale_price": _opt_float(r.get("sale_price")),
-                "on_sale": _to_bool(r.get("on_sale")),
-                "stock_quantity": _to_int(r.get("stock_quantity")),
-                "stock_status": r["stock_status"],
-                "manage_stock": _to_bool(r.get("manage_stock")),
-                "categories": _opt_csv_list(r.get("categories"), sep=";"),
-                "description": r["description"],
-                "date_created": r["date_created"],
-            }
-            for r in info.get("products", [])
-        ]
-        self.customers: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r.get("id")),
-                "first_name": r["first_name"],
-                "last_name": r["last_name"],
-                "email": r["email"],
-                "username": r["username"],
-                "role": r["role"],
-                "billing_city": r["billing_city"],
-                "billing_country": r["billing_country"],
-                "is_paying_customer": _to_bool(r.get("is_paying_customer")),
-                "date_created": r["date_created"],
-            }
-            for r in info.get("customers", [])
-        ]
-        self.orders: List[Dict[str, Any]] = [
-            {
-                "id": _to_int(r.get("id")),
-                "number": r["number"],
-                "customer_id": _to_int(r.get("customer_id")),
-                "status": r["status"],
-                "currency": r["currency"],
-                "total": _opt_float(r.get("total")),
-                "subtotal": _opt_float(r.get("subtotal")),
-                "total_tax": _opt_float(r.get("total_tax")),
-                "payment_method": r["payment_method"],
-                "payment_method_title": r["payment_method_title"],
-                "billing_first_name": r["billing_first_name"],
-                "billing_last_name": r["billing_last_name"],
-                "billing_email": r["billing_email"],
-                "date_created": r["date_created"],
-            }
-            for r in info.get("orders", [])
-        ]
 
     def get_session_dict(self):
         return {"orders": self.orders}
