@@ -2,11 +2,13 @@ import os
 from abc import ABC, abstractmethod
 from openai import AsyncClient
 from fastmcp import Client as MCPClient
-from typing import List, Dict, Any, Literal
+from typing import List, Dict, Any, Literal, Optional, Tuple
 from tenacity import retry, stop_after_attempt, wait_exponential, before_sleep_log
 from collections import defaultdict
 from functools import lru_cache
 import asyncio
+import glob
+import httpx
 import json
 import logging
 import colorlog
@@ -376,14 +378,23 @@ class ChatBackend(ABC):
         raise NotImplemented
 
 class OpenAIBackend(ChatBackend):
+    # Request extended thinking on the proxy path. claude-code-api maps the
+    # OpenAI-standard `reasoning_effort` onto the CLI's thinking budget; without
+    # it the native backend never asks the model to think. Off by "none"/""/0.
+    # (The proxy does not surface thinking text/token counts back through the
+    # OpenAI-compat response, so this enables thinking but can't measure it.)
+    _DISABLED_EFFORT = {"", "none", "off", "0", "false", "no"}
+
     def __init__(self, model: str):
         super().__init__()
         self.model = model
+        effort = os.environ.get("NATIVE_REASONING_EFFORT", "medium").strip().lower()
+        self.reasoning_effort = None if effort in self._DISABLED_EFFORT else effort
         self.client = AsyncClient(
             api_key=os.environ["OPENAI_API_KEY"],
             base_url=os.environ["OPENAI_BASE_URL"]
         )
-    
+
     @retry(
         stop=stop_after_attempt(1000),
         wait=wait_exponential(multiplier=1, min=2, max=10),
@@ -402,6 +413,9 @@ class OpenAIBackend(ChatBackend):
             "max_completion_tokens": max_tokens,
             **extra_body
         }
+        # Caller-supplied reasoning_effort (via extra_body) wins over the default.
+        if self.reasoning_effort and "reasoning_effort" not in payload:
+            payload["reasoning_effort"] = self.reasoning_effort
         resp = await self.client.chat.completions.create(**payload)
 
         _msg = resp.choices[0].message
@@ -502,6 +516,7 @@ class ClaudeCodeBackend(ChatBackend):
         cost_usd = 0.0
         reasoning_parts: list[str] = []
         reasoning_tokens = 0
+        session_id = None
         _saw_result = False
         for _line in stdout_b.decode("utf-8", errors="replace").splitlines():
             _line = _line.strip()
@@ -511,6 +526,11 @@ class ClaudeCodeBackend(ChatBackend):
                 ev = json.loads(_line)
             except json.JSONDecodeError:
                 continue
+            # The CLI stamps every event with the session_id (init/assistant/
+            # result). Capture it so we can read back the persisted session log,
+            # which keeps the un-redacted thinking that the -p stream drops.
+            if ev.get("session_id"):
+                session_id = ev["session_id"]
             etype = ev.get("type")
             if etype == "stream_event":
                 delta = (ev.get("event") or {}).get("delta") or {}
@@ -547,6 +567,22 @@ class ClaudeCodeBackend(ChatBackend):
                     usage_data[_k] = last_assistant_usage[_k]
             usage_data.setdefault("output_tokens", last_assistant_usage.get("output_tokens", 0))
 
+        # The -p stream redacts the thinking *text* (only estimated_tokens),
+        # but the CLI persists a full session log with the un-redacted thinking
+        # blocks (signatures included) and an authoritative usage/cache
+        # breakdown. This is exactly the source mcp-stump reads. Harvest it to
+        # backfill reasoning text and any cache buckets the stream left empty.
+        harvested = self._harvest_session_reasoning(session_id)
+        if harvested["reasoning"] and not reasoning_parts:
+            reasoning_parts.append(harvested["reasoning"])
+        _hu = harvested["usage"]
+        if _hu and not (usage_data.get("cache_read_input_tokens")
+                        or usage_data.get("cache_creation_input_tokens")):
+            for _k in ("input_tokens", "cache_read_input_tokens",
+                       "cache_creation_input_tokens", "output_tokens"):
+                if _hu.get(_k) and not usage_data.get(_k):
+                    usage_data[_k] = _hu[_k]
+
         # The claude CLI splits input across uncached + cached buckets; with
         # prompt caching on, `input_tokens` is only the small uncached remainder.
         # Keep the breakdown AND the summed total so cache read/creation are
@@ -557,6 +593,7 @@ class ClaudeCodeBackend(ChatBackend):
         input_tokens = uncached_input + cache_read + cache_creation
         output_tokens = usage_data.get("output_tokens", 0) or 0
         reasoning = "".join(reasoning_parts)
+        reasoning_signatures = harvested["signatures"]
 
         stops = extra_body.get("stop") or []
         if isinstance(stops, str):
@@ -592,12 +629,211 @@ class ClaudeCodeBackend(ChatBackend):
                     message=argparse.Namespace(
                         content=content,
                         reasoning_content=reasoning or None,
+                        # Anthropic signatures for the thinking blocks (proof the
+                        # reasoning is model-generated, not injected). Empty when
+                        # the session log was unavailable.
+                        reasoning_signatures=reasoning_signatures,
                     ),
                     finish_reason=finish_reason,
                 )
             ],
         )
         return resp
+
+    @staticmethod
+    def _harvest_session_reasoning(session_id: str | None) -> Dict[str, Any]:
+        """Read the CLI's persisted session log for the real (un-redacted)
+        thinking blocks + Anthropic signatures and the authoritative cache
+        usage. The `claude -p` stream redacts thinking text; the on-disk
+        session `.jsonl` under ``~/.claude/projects/`` does not. This mirrors
+        how mcp-stump recovers ``reasoning_content`` — it reads these same
+        native logs. Best-effort: never raises, returns empties on any miss."""
+        empty = {"reasoning": "", "signatures": [], "usage": {}}
+        if not session_id:
+            return empty
+        base = os.path.join(os.path.expanduser("~"), ".claude", "projects")
+        matches = glob.glob(
+            os.path.join(base, "**", f"{session_id}.jsonl"), recursive=True)
+        if not matches:
+            return empty
+        reasoning_parts: list[str] = []
+        signatures: list[str] = []
+        usage: Dict[str, Any] = {}
+        try:
+            with open(matches[0], "r", encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        rec = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    msg = rec.get("message")
+                    if not isinstance(msg, dict):
+                        continue
+                    for blk in msg.get("content") or []:
+                        if not (isinstance(blk, dict) and blk.get("type") == "thinking"):
+                            continue
+                        # Under Max/Pro subscription auth the CLI redacts the
+                        # thinking *text* (empty string) but keeps the signature.
+                        # Collect the signature regardless so proof-of-thinking
+                        # survives even when the plaintext does not.
+                        if blk.get("thinking"):
+                            reasoning_parts.append(blk["thinking"])
+                        if blk.get("signature"):
+                            signatures.append(blk["signature"])
+                    u = msg.get("usage")
+                    if isinstance(u, dict) and (
+                            u.get("input_tokens") or u.get("cache_read_input_tokens")
+                            or u.get("cache_creation_input_tokens")):
+                        usage = u  # keep the last non-empty usage of the turn
+        except OSError:
+            return empty
+        return {
+            "reasoning": "\n\n".join(reasoning_parts),
+            "signatures": signatures,
+            "usage": usage,
+        }
+
+
+class AnthropicBridgeBackend(ChatBackend):
+    """Calls the Anthropic Messages API directly (through ccbridge) instead of
+    shelling out to `claude -p`.
+
+    Why this exists: the `claude` CLI headless path redacts extended-thinking
+    *text* and, when pointed at a custom endpoint with ANTHROPIC_API_KEY set,
+    trips a claude.ai-connectors conflict and exits non-zero. The raw
+    /v1/messages API has neither problem -- it returns full thinking blocks
+    (text + signature) and the prompt-cache usage breakdown inline. ccbridge
+    (vendor/ccbridge) fronts it with a Claude Code OAuth subscription, so a
+    Max/Pro plan can be spent without an API key. This is the mcp-stump parity
+    path (cf. mcp-stump scripts/build_efs.py, which also hits {BRIDGE}/v1/messages).
+
+    Wiring (env): ANTHROPIC_BASE_URL (bridge URL), ANTHROPIC_API_KEY (the bridge
+    secret; forwarded as x-api-key), MAX_THINKING_TOKENS (enables thinking).
+    """
+
+    def __init__(self, model: str):
+        self.model = model
+        self.base_url = (os.environ.get("ANTHROPIC_BASE_URL")
+                         or os.environ.get("ANTHROPIC_API_BASE")
+                         or "http://127.0.0.1:8765").rstrip("/")
+        self.api_key = os.environ.get("ANTHROPIC_API_KEY", "ccbridge-stub")
+        _budget = os.environ.get("MAX_THINKING_TOKENS", "").strip()
+        self.thinking_budget = int(_budget) if _budget.isdigit() and int(_budget) > 0 else 0
+        self.anthropic_version = os.environ.get("ANTHROPIC_VERSION", "2023-06-01")
+
+    @staticmethod
+    def _to_anthropic(messages: List[Dict[str, Any]]) -> Tuple[Optional[str], List[Dict[str, str]]]:
+        """Fold the agent's message list into Anthropic shape: a single system
+        string plus alternating user/assistant turns. The agent speaks the
+        <tool> TEXT protocol, so `tool`-role messages are just observations fed
+        back as user text; merge consecutive same-role turns to satisfy the
+        API's strict alternation rule."""
+        system_parts = [str(m.get("content", "")) for m in messages
+                        if m.get("role") == "system" and m.get("content")]
+        system = "\n\n".join(system_parts) if system_parts else None
+        out: List[Dict[str, str]] = []
+        for m in messages:
+            role = m.get("role")
+            if role == "system":
+                continue
+            arole = "assistant" if role == "assistant" else "user"  # tool -> user
+            content = str(m.get("content", ""))
+            if out and out[-1]["role"] == arole:
+                out[-1]["content"] += "\n\n" + content
+            else:
+                out.append({"role": arole, "content": content})
+        if out and out[0]["role"] != "user":
+            out.insert(0, {"role": "user", "content": "Continue."})
+        if not out:
+            out = [{"role": "user", "content": system or ""}]
+        return system, out
+
+    @retry(stop=stop_after_attempt(4),
+           wait=wait_exponential(multiplier=1, min=2, max=30),
+           reraise=True)
+    async def chat(self, messages, max_tokens: int = 10000, extra_body=None):
+        system, msgs = self._to_anthropic(messages)
+        body: Dict[str, Any] = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "messages": msgs,
+        }
+        if system:
+            # Cache the (large) system prompt so multi-turn runs get cache_read.
+            body["system"] = [{"type": "text", "text": system,
+                               "cache_control": {"type": "ephemeral"}}]
+        if self.thinking_budget:
+            # Anthropic requires max_tokens > budget_tokens; leave headroom.
+            budget = min(self.thinking_budget, max(1024, max_tokens - 512))
+            body["thinking"] = {"type": "enabled", "budget_tokens": budget}
+        if extra_body:
+            body.update(extra_body)
+
+        headers = {
+            "x-api-key": self.api_key,
+            "anthropic-version": self.anthropic_version,
+            "content-type": "application/json",
+        }
+        async with httpx.AsyncClient(timeout=httpx.Timeout(600.0)) as client:
+            r = await client.post(f"{self.base_url}/v1/messages",
+                                  headers=headers, json=body)
+        if r.status_code != 200:
+            raise RuntimeError(f"bridge /v1/messages {r.status_code}: {r.text[:500]}")
+        data = r.json()
+
+        text_parts: list[str] = []
+        reasoning_parts: list[str] = []
+        signatures: list[str] = []
+        for blk in data.get("content", []) or []:
+            btype = blk.get("type")
+            if btype == "text":
+                text_parts.append(blk.get("text", ""))
+            elif btype == "thinking":
+                if blk.get("thinking"):
+                    reasoning_parts.append(blk["thinking"])
+                if blk.get("signature"):
+                    signatures.append(blk["signature"])
+        content = "".join(text_parts)
+        reasoning = "\n\n".join(reasoning_parts)
+
+        u = data.get("usage", {}) or {}
+        uncached_input = u.get("input_tokens", 0) or 0
+        cache_read = u.get("cache_read_input_tokens", 0) or 0
+        cache_creation = u.get("cache_creation_input_tokens", 0) or 0
+        output_tokens = u.get("output_tokens", 0) or 0
+        input_tokens = uncached_input + cache_read + cache_creation
+        # Anthropic reports thinking tokens under output_tokens_details.thinking_tokens;
+        # surface it as reasoning_tokens so the usage accumulator records it.
+        reasoning_tokens = (u.get("output_tokens_details", {}) or {}).get("thinking_tokens", 0) or 0
+
+        stop = data.get("stop_reason")
+        finish_reason = "length" if stop == "max_tokens" else "stop"
+
+        return argparse.Namespace(
+            usage=argparse.Namespace(
+                prompt_tokens=input_tokens,
+                completion_tokens=output_tokens,
+                total_tokens=input_tokens + output_tokens,
+                uncached_input_tokens=uncached_input,
+                cache_read_tokens=cache_read,
+                cache_creation_tokens=cache_creation,
+                reasoning_tokens=reasoning_tokens,
+                cost_usd=0.0,
+            ),
+            choices=[
+                argparse.Namespace(
+                    message=argparse.Namespace(
+                        content=content,
+                        reasoning_content=reasoning or None,
+                        reasoning_signatures=signatures,
+                    ),
+                    finish_reason=finish_reason,
+                )
+            ],
+        )
 
 
 class HumanAnnotator(ChatBackend):
@@ -773,6 +1009,12 @@ class AgentClient:
 
         messages = []
         output = []
+        # Per-turn Anthropic thinking signatures (cryptographic proof the
+        # reasoning is model-generated). Collected in emission order; the layout
+        # writer attaches them to agent steps by order. Parallel to `output`
+        # because signatures are structured data that can't ride the text stream
+        # `parse_trajectory` reconstructs.
+        turn_signatures: list[list[str]] = []
         extra_body = {}
         session_id_dict = {}
         results = {}
@@ -838,15 +1080,42 @@ class AgentClient:
                          "cache_read_tokens": 0, "cache_creation_tokens": 0,
                          "reasoning_tokens": 0, "cost_usd": 0.0}
 
+            def _usage_val(u, *names):
+                """First present, non-None value across candidate names on a
+                usage object or dict. A dotted name ("a.b") descends into a
+                nested details object/dict; returns 0 if nothing matches."""
+                for name in names:
+                    cur = u
+                    for part in name.split("."):
+                        if cur is None:
+                            break
+                        cur = cur.get(part) if isinstance(cur, dict) else getattr(cur, part, None)
+                    if cur is not None:
+                        return cur
+                return 0
+
             def _accumulate_usage(u):
-                usage_acc["input_tokens"] += getattr(u, "uncached_input_tokens",
-                                                     getattr(u, "prompt_tokens", 0)) or 0
-                usage_acc["output_tokens"] += getattr(u, "output_tokens",
-                                                      getattr(u, "completion_tokens", 0)) or 0
-                usage_acc["cache_read_tokens"] += getattr(u, "cache_read_tokens", 0) or 0
-                usage_acc["cache_creation_tokens"] += getattr(u, "cache_creation_tokens", 0) or 0
-                usage_acc["reasoning_tokens"] += getattr(u, "reasoning_tokens", 0) or 0
-                usage_acc["cost_usd"] += getattr(u, "cost_usd", 0.0) or 0.0
+                # Two usage shapes reach here. ClaudeCodeBackend emits a flat
+                # namespace (uncached_input_tokens / cache_*_tokens /
+                # reasoning_tokens). The native OpenAI-compat proxy emits a
+                # CompletionUsage where the prompt-cache breakdown is nested
+                # under prompt_tokens_details.{cache_read,cache_creation}_input_tokens
+                # (Anthropic names, with prompt_tokens already the uncached
+                # remainder) and reasoning under completion_tokens_details. Read
+                # both so caching/thinking are recorded on either backend.
+                usage_acc["input_tokens"] += _usage_val(u, "uncached_input_tokens", "prompt_tokens") or 0
+                usage_acc["output_tokens"] += _usage_val(u, "output_tokens", "completion_tokens") or 0
+                usage_acc["cache_read_tokens"] += _usage_val(
+                    u, "cache_read_tokens",
+                    "prompt_tokens_details.cache_read_input_tokens",
+                    "prompt_tokens_details.cached_tokens") or 0
+                usage_acc["cache_creation_tokens"] += _usage_val(
+                    u, "cache_creation_tokens",
+                    "prompt_tokens_details.cache_creation_input_tokens") or 0
+                usage_acc["reasoning_tokens"] += _usage_val(
+                    u, "reasoning_tokens",
+                    "completion_tokens_details.reasoning_tokens") or 0
+                usage_acc["cost_usd"] += _usage_val(u, "cost_usd") or 0.0
 
             for idx in range(max_turns):
                 if native:
@@ -863,6 +1132,7 @@ class AgentClient:
                     reasoning_text = getattr(m, "reasoning_content", None)
                     if reasoning_text:
                         output.append(reasoning_text)
+                    turn_signatures.append(list(getattr(m, "reasoning_signatures", None) or []))
 
                     text = m.content or ""
                     tool_calls = getattr(m, "tool_calls", None) or []
@@ -947,6 +1217,8 @@ class AgentClient:
                 _reasoning = getattr(resp.choices[0].message, "reasoning_content", None)
                 if _reasoning:
                     output.append(_reasoning)
+                turn_signatures.append(
+                    list(getattr(resp.choices[0].message, "reasoning_signatures", None) or []))
 
                 if self.toolbox and resp.choices[0].finish_reason == "stop" and \
                     TOOL_START_SEQ in msg and TOOL_STOP_SEQ not in msg:
@@ -1036,6 +1308,9 @@ class AgentClient:
 
             results["tool_cnt"] = {key: dict(val) for key, val in results["tool_cnt"].items()}
             results["output"] = '\n'.join(output)
+            # Per-turn thinking signatures (only non-empty turns kept, in order)
+            # for the layout writer to attach to agent steps.
+            results["reasoning_signatures"] = [s for s in turn_signatures if s]
         finally:
             await self.__logout(
                 env=env,

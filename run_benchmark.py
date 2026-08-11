@@ -315,8 +315,16 @@ def main(args):
         # so force OpenAIBackend even for claude* models.
         llm = OpenAIBackend(model=model)
     elif model.startswith("claude") or model in ("sonnet", "opus", "haiku"):
-        from client.agent import ClaudeCodeBackend
-        llm = ClaudeCodeBackend(model=model)
+        # If a ccbridge (or any Anthropic endpoint) is wired via ANTHROPIC_BASE_URL,
+        # call /v1/messages directly -- this returns full extended-thinking (text +
+        # signature) and the cache breakdown inline, unlike `claude -p` which
+        # redacts thinking and trips a connectors conflict against a custom endpoint.
+        if os.environ.get("ANTHROPIC_BASE_URL") or os.environ.get("ANTHROPIC_API_BASE"):
+            from client.agent import AnthropicBridgeBackend
+            llm = AnthropicBridgeBackend(model=model)
+        else:
+            from client.agent import ClaudeCodeBackend
+            llm = ClaudeCodeBackend(model=model)
     else:
         llm = OpenAIBackend(model=model)
     if toolbox and native_tools:
@@ -613,6 +621,7 @@ def main(args):
                     "error_tool_calls": ep_error,
                     "output": result.get("output", ""),
                     "expected_tool_calls": task_info.get("expected_tool_calls"),
+                    "reasoning_signatures": result.get("reasoning_signatures") or [],
                 }
                 # Context for the failure classifier (commit 9990708).
                 task_context = {

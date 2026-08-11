@@ -349,6 +349,15 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     traj = parse_trajectory(record.get("output", ""))
     atif_doc = _atif_from_complexmcp(traj, agent="complexmcp", model=model,
                                      usage=record.get("usage"))
+    # Attach per-turn Anthropic thinking signatures (proof the reasoning is
+    # model-generated) to agent steps, in emission order. Best-effort: only the
+    # steps we have signatures for get the field; a length mismatch never raises.
+    _sigs = record.get("reasoning_signatures") or []
+    if _sigs:
+        _agent_steps = [s for s in atif_doc.get("steps", []) if s.get("source") == "agent"]
+        for _step, _sig in zip(_agent_steps, _sigs):
+            if _sig:
+                _step["reasoning_signatures"] = _sig
     atif_dir = run_dir / "agent"
     atif_dir.mkdir(parents=True, exist_ok=True)
     (atif_dir / "trajectory.json").write_text(

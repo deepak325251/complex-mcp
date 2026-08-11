@@ -381,7 +381,12 @@ def apply_billing_attribution(body: dict[str, Any], raw_body: bytes) -> dict[str
 
     relocated = "\n\n".join(t for t in (_system_block_text(b) for b in rest) if t)
     if relocated:
-        _prepend_to_first_user_message(body, relocated)
+        # Preserve prompt caching: the relocated bulk is large and stable across
+        # turns, so mark it cacheable (disable with WCB_CC_CACHE_RELOCATED=0).
+        cache = None
+        if os.environ.get("WCB_CC_CACHE_RELOCATED", "1").strip().lower() not in ("0", "false", "no"):
+            cache = {"type": "ephemeral"}
+        _prepend_to_first_user_message(body, relocated, cache_control=cache)
 
     body["system"] = [
         {"type": "text", "text": _billing_header_text(raw_body)},
@@ -390,11 +395,24 @@ def apply_billing_attribution(body: dict[str, Any], raw_body: bytes) -> dict[str
     return body
 
 
-def _prepend_to_first_user_message(body: dict[str, Any], text: str) -> None:
+def _prepend_to_first_user_message(
+    body: dict[str, Any], text: str,
+    cache_control: dict[str, Any] | None = None,
+) -> None:
     messages = body.get("messages")
     if not isinstance(messages, list):
         messages = []
         body["messages"] = messages
+
+    # When billing-attribution relocates the harness's bulk system prompt into
+    # the first user turn, it would otherwise land as plain string text -- which
+    # cannot carry cache_control, so prompt caching is silently lost. Emit it as
+    # a text block with cache_control so the (large, stable) prefix stays cached
+    # across turns. Anthropic ignores cache_control on sub-minimum blocks, so a
+    # short relocated prompt is harmless.
+    block = {"type": "text", "text": text}
+    if cache_control:
+        block["cache_control"] = cache_control
 
     idx = next(
         (i for i, m in enumerate(messages)
@@ -402,14 +420,17 @@ def _prepend_to_first_user_message(body: dict[str, Any], text: str) -> None:
         None,
     )
     if idx is None:
-        messages.insert(0, {"role": "user", "content": text})
+        messages.insert(0, {"role": "user", "content": [block] if cache_control else text})
         return
 
     content = messages[idx].get("content")
-    if isinstance(content, str):
+    if isinstance(content, list):
+        messages[idx]["content"] = [block, *content]
+    elif cache_control:
+        messages[idx]["content"] = [block, {"type": "text", "text": content}] \
+            if isinstance(content, str) else [block]
+    elif isinstance(content, str):
         messages[idx]["content"] = f"{text}\n\n{content}"
-    elif isinstance(content, list):
-        messages[idx]["content"] = [{"type": "text", "text": text}, *content]
     else:
         messages[idx]["content"] = text
 
