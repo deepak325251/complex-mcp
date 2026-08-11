@@ -61,10 +61,13 @@ def test_write_mcp_stump_run_creates_all_files(tmp_path: Path):
     assert run_dir.parent.name == "claude-opus-4-8"
     assert run_dir.parent.parent.name == "trajectories"
     assert run_dir.parent.parent.parent.name == "trials_insider-liquidation-refusal"
-    for f in ["trajectory.json", "agent.log", "initial_state.json",
+    for f in ["agent/trajectory.json", "agent.log", "initial_state.json",
               "final_state.json", "trace.jsonl", "reward.json", "reward.txt",
               "diagnosis.json", "report.json"]:
         assert (run_dir / f).exists(), f"missing {f}"
+    # Native trajectory.json is intentionally not written -- ATIF is the single
+    # trajectory of record (agent/trajectory.json).
+    assert not (run_dir / "trajectory.json").exists()
     reward_txt = (run_dir / "reward.txt").read_text().strip()
     assert float(reward_txt) == 1.0
     report = json.loads((run_dir / "report.json").read_text())
@@ -116,6 +119,36 @@ def test_write_mcp_stump_run_emits_rubric_detail_ctrf(tmp_path: Path):
     assert ctrf["results"]["extra"]["task"] == rec["name"]
 
 
+def test_ctrf_expands_state_diff_per_key_paths(tmp_path: Path):
+    # A state-diff-only task (no rubric) must still get one CTRF row per scored
+    # key-path, not just the single #reward aggregate.
+    rec = _record()
+    score = {
+        "gradeable": True, "reward": 0.0, "recall": 1, "total": 2,
+        "misbehave": 1, "passed": False,
+        "passed_positive": [{"path": ["LightShop", "output", "orders", 0], "weight": 1.0}],
+        "failed_positive": [{"path": ["LightShop", "output", "balance"], "kind": "positive",
+                             "ok": False, "weight": 1.0, "old": 100, "new": 100, "expected": 40}],
+        "held_negative": [{"path": ["LightShop", "output", "watch_list"], "kind": "negative",
+                           "ok": True, "weight": 1.0}],
+        "damaged_negative": [{"path": ["LightShop", "output", "wishlist"], "kind": "negative",
+                              "ok": False, "weight": 1.0, "old": ["a"], "new": []}],
+    }
+    run_dir, _ = write_mcp_stump_run(tmp_path, rec, model="claude-opus-4-8",
+                                     score=score, rubric_result=None)
+    ctrf = json.loads((run_dir / "ctrf.json").read_text())
+    names = [t["name"] for t in ctrf["results"]["tests"]]
+    # 1 #reward + 2 #state (1 pass, 1 fail) + 2 #protect (1 pass, 1 fail)
+    assert len(names) == 5
+    assert f"{rec['name']}#reward" in names
+    assert f"{rec['name']}#state.LightShop.output.balance" in names
+    assert f"{rec['name']}#protect.LightShop.output.wishlist" in names
+    fail = next(t for t in ctrf["results"]["tests"]
+                if t["name"].endswith("#state.LightShop.output.balance"))
+    assert fail["status"] == "failed"
+    assert "40" in fail["message"]  # expected value surfaced
+
+
 def test_write_mcp_stump_run_copies_ground_truth(tmp_path: Path):
     # Literal list (not task_writer._GT_FILES) so a typo in the source tuple
     # is caught rather than mirrored on both sides.
@@ -141,6 +174,34 @@ def test_write_mcp_stump_run_copies_ground_truth(tmp_path: Path):
         gt = gt_dir / name
         assert gt.exists(), f"{name} was not copied"
         assert json.loads(gt.read_text()) == {"k": name}
+
+
+def test_attempt_number_tracks_physical_run_slot(tmp_path: Path):
+    # A re-run lands in run_2; report.json must say attempt 2, not 1.
+    rec = _record()
+    score = {"gradeable": True, "reward": 1.0, "recall": 1, "total": 1,
+             "misbehave": 0, "passed": True}
+    r1, _ = write_mcp_stump_run(tmp_path, rec, model="claude-opus-4-8", score=score)
+    r2, _ = write_mcp_stump_run(tmp_path, rec, model="claude-opus-4-8", score=score)
+    assert r1.name == "run_1" and r2.name == "run_2"
+    assert json.loads((r2 / "report.json").read_text())["attempt"] == 2
+    assert json.loads((r2 / "ctrf.json").read_text())["results"]["extra"]["attempt"] == 2
+
+
+def test_trials_aggregate_uses_recorded_run_slot(tmp_path: Path):
+    # A single fresh run that physically landed in run_2 (re-run). Its recorded
+    # attempt must win over the list index (which would wrongly say 1) -- this is
+    # the summary.json(=1) vs report.json(=2) off-by-one the reviewer flagged.
+    runs = [{"attempt": 2, "seed": 1, "passed": True, "reward": 1.0,
+             "completion_rate": 1.0, "misbehaving_rate": 0.0,
+             "query": "q", "final_message": "ok"}]
+    trials_dir = write_trials_aggregate(tmp_path, "mcp-stump/foo",
+                                        "claude-opus-4-8", runs)
+    summary = json.loads((trials_dir / "summary.json").read_text())
+    assert summary["attempts"][0]["attempt"] == 2
+    pairs = [json.loads(l) for l in
+             (trials_dir / "pairs.jsonl").read_text().splitlines() if l]
+    assert pairs[0]["attempt"] == 2
 
 
 def test_write_trials_aggregate_writes_summary_pairs_failures(tmp_path: Path):

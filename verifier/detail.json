@@ -1,0 +1,5153 @@
+{
+  "judge": {
+    "passed": false,
+    "total": 9,
+    "recall": 3,
+    "misbehave": 300,
+    "completion_rate": 0.333333,
+    "misbehaving_rate": 33.333333,
+    "weighted_score": -33.0,
+    "failed_positive": [
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_d4pJDTCzjjHDetyztVZVAV"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": 21,
+        "new": "<absent>",
+        "expected": 20
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_TXKkSx9HhpjTQjE4oVxAjN"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": 12,
+        "new": "<absent>",
+        "expected": 13
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_es6UrxbgJVTgFsL6KhuJF6"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": 85,
+        "new": "<absent>",
+        "expected": 86
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_CPhH74o9Pa6kyTz3PLbqSF"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": 88,
+        "new": "<absent>",
+        "expected": 89
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "trans_history",
+          0,
+          "total"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": "<absent>",
+        "new": "<absent>",
+        "expected": 1.08
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "trans_history",
+          0,
+          "info",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "item_d4pJDTCzjjHDetyztVZVAV"
+        ],
+        "kind": "positive",
+        "ok": false,
+        "weight": 1.0,
+        "old": "<absent>",
+        "new": "<absent>",
+        "expected": 1
+      }
+    ],
+    "damaged_negative": [
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_FSZjmZixC2XzjBn2NnEf3C"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 61,
+        "new": "<absent>",
+        "expected": 61
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_EYM76B5gSYristTx2uLe9R"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 71,
+        "new": "<absent>",
+        "expected": 71
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_mqAx3nx2jQGpdFqhmAyXYh"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 22,
+        "new": "<absent>",
+        "expected": 22
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_5ZPY6jzPD23Yz8LBXqepcB"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 27,
+        "new": "<absent>",
+        "expected": 27
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_KQEjuWunjNjGQkTP4FGDaY"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 37,
+        "new": "<absent>",
+        "expected": 37
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_WGnagrrB7PbGwy3xhtpDzw"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 95,
+        "new": "<absent>",
+        "expected": 95
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_W7XPpPqP4wXx8z4ayHZxvM"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 15,
+        "new": "<absent>",
+        "expected": 15
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_C6zauhZBpmREBoW58SHqir"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 91,
+        "new": "<absent>",
+        "expected": 91
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_dCYcq5HD9zDSMC9c9qe9if"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 54,
+        "new": "<absent>",
+        "expected": 54
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_kohpQgjPAeJDJ2DRT3LnuW"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 48,
+        "new": "<absent>",
+        "expected": 48
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_npSms4nsVcSZ2JNC9KEhoc"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1,
+        "new": "<absent>",
+        "expected": 1
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_cfH3yo98xXRTPoNTU7xEJu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1,
+        "new": "<absent>",
+        "expected": 1
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_YJNgujUcdUDW5eACCHyevD"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 64,
+        "new": "<absent>",
+        "expected": 64
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_PH9moh7dv9zoQQzGq2KJxV"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 37,
+        "new": "<absent>",
+        "expected": 37
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_DszxKc7peCPwqRSgC3jaj8"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 35,
+        "new": "<absent>",
+        "expected": 35
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_2dFrpESTi36WthjzDABhX4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 55,
+        "new": "<absent>",
+        "expected": 55
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_y4d7rVzK2qPJHpYJgVzDiK"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2,
+        "new": "<absent>",
+        "expected": 2
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_s7ZkUS2m946m5BaQrQ9iWX"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 21,
+        "new": "<absent>",
+        "expected": 21
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_bKE9ddinx5ZmZePUiAhMyr"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 43,
+        "new": "<absent>",
+        "expected": 43
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_VR4a2nNzNR8NWicEeXtz7J"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 3,
+        "new": "<absent>",
+        "expected": 3
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_LeSg3WNT58rt6CBAjdaqAA"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 89,
+        "new": "<absent>",
+        "expected": 89
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_NWAA2pdra6YZeRDdPmfLwP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 80,
+        "new": "<absent>",
+        "expected": 80
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_5q5kbTMg9F8qnh2DnmWtbP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 28,
+        "new": "<absent>",
+        "expected": 28
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_KkC2Q6kph6temK9ik5vwgV"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 26,
+        "new": "<absent>",
+        "expected": 26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_DQ3QJ8uchRNFj3x9ynFyfu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 11,
+        "new": "<absent>",
+        "expected": 11
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_fUhpGB25Vpy6JT7thAGhVf"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 65,
+        "new": "<absent>",
+        "expected": 65
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_2VnZEA42NtkuWv3fQBUxvM"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 80,
+        "new": "<absent>",
+        "expected": 80
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_3bdHaQ4XPPtHuJiRMT66h4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 4,
+        "new": "<absent>",
+        "expected": 4
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_PFh8V5RBPZeNPuwxx4kxVG"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 41,
+        "new": "<absent>",
+        "expected": 41
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_2syV5XcH5hTBYjz9Qmaqj5"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 24,
+        "new": "<absent>",
+        "expected": 24
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_fz59SkgCSXzvQxEew3KiQD"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 88,
+        "new": "<absent>",
+        "expected": 88
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_uj7mFS5q9MQwPEtkXiNRqE"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 93,
+        "new": "<absent>",
+        "expected": 93
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_uo8PUxHvNi38ap5L9BusaL"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 20,
+        "new": "<absent>",
+        "expected": 20
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_Wxio9dkV7QmzrFASG8gJ6v"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 28,
+        "new": "<absent>",
+        "expected": 28
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_TmKYWP6DaKRWAViMhfzgZn"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 62,
+        "new": "<absent>",
+        "expected": 62
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_doD2pquMkDQAvaym8bsFWi"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 74,
+        "new": "<absent>",
+        "expected": 74
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_xyvaTwyjUHkpRwP4yxrixP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 38,
+        "new": "<absent>",
+        "expected": 38
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_NPAqZ6r2LgTfxS4QPUu4a7"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 90,
+        "new": "<absent>",
+        "expected": 90
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_UR4AmJgsp4XYuHoV7izLqs"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 66,
+        "new": "<absent>",
+        "expected": 66
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_tuQ3s7d3WDaPVjT79i8NKE"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 65,
+        "new": "<absent>",
+        "expected": 65
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_QomqYvHmdNCiGbqb8r95LF"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 69,
+        "new": "<absent>",
+        "expected": 69
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_uZ3V5Yn9fhve26SJyPdxr7"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 39,
+        "new": "<absent>",
+        "expected": 39
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_cUmJiQbk2BqDFoM8iB5FxE"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 75,
+        "new": "<absent>",
+        "expected": 75
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_mjCpMR6zGEMZxH9vkw3KBM"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 80,
+        "new": "<absent>",
+        "expected": 80
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_NXsLKqpjpscaNoEVnKEggz"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 86,
+        "new": "<absent>",
+        "expected": 86
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_ryZMsnRBcCivGsMNwrr9p7"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 51,
+        "new": "<absent>",
+        "expected": 51
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_QzTugmXUVmg2TVzJcG7GEP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 23,
+        "new": "<absent>",
+        "expected": 23
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_qeANy2oXoFLPnzzE8cpRwq"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 17,
+        "new": "<absent>",
+        "expected": 17
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_Rf2gRx8Qi9sc9gGmTkosKN"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 50,
+        "new": "<absent>",
+        "expected": 50
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_rvXzkrZhFEDYdGtCfRgmx4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 39,
+        "new": "<absent>",
+        "expected": 39
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_cMaYrpdjnC3dfUGhHzyW3d"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 7,
+        "new": "<absent>",
+        "expected": 7
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_E3UDbexW2Pp64dxQU5sezb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 51,
+        "new": "<absent>",
+        "expected": 51
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_zYKSRosmTbfGDULkpb4ciY"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 84,
+        "new": "<absent>",
+        "expected": 84
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_LDJ9BTXw2sbaZZLRBjE7kA"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 19,
+        "new": "<absent>",
+        "expected": 19
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_MUaEfvCrWtPsJa4YCPpBMB"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 93,
+        "new": "<absent>",
+        "expected": 93
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_dc26yb9Kgrb9858faLNaq5"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 90,
+        "new": "<absent>",
+        "expected": 90
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_X2XiG6p4VaxoQMMDJVSBHc"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 43,
+        "new": "<absent>",
+        "expected": 43
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_YmjicffiGJtapgLymjTpcn"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 50,
+        "new": "<absent>",
+        "expected": 50
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_p7qNtsanZxy7hERR4oBmau"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 95,
+        "new": "<absent>",
+        "expected": 95
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_ruQMgNPLcaAHWVbxQESeiv"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 42,
+        "new": "<absent>",
+        "expected": 42
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_8S676sJNzUXjuKBiZtTFjL"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 8,
+        "new": "<absent>",
+        "expected": 8
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_CPAsMPNWvEfSqU6mJjwXAb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 96,
+        "new": "<absent>",
+        "expected": 96
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_TVpZyyFd5a4XLGKQqhyaQK"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 0,
+        "new": "<absent>",
+        "expected": 0
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_RA3JjjVxMaS22y7Tw3stmK"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 7,
+        "new": "<absent>",
+        "expected": 7
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "count",
+          "item_YQDAZgUu3hmxpMAxAGQNmX"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 38,
+        "new": "<absent>",
+        "expected": 38
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_A8TmkN79MBp8G9V66fDwsn"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 41,
+        "new": "<absent>",
+        "expected": 41
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_n8SQTUc34NPMFvpntrjsEP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 98,
+        "new": "<absent>",
+        "expected": 98
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_nXXw9M3ib3kzBiXinrNDcA"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 77,
+        "new": "<absent>",
+        "expected": 77
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_efR4HNQkWBqnnbH77LSQUk"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 46,
+        "new": "<absent>",
+        "expected": 46
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_yN3CJxUViYgNB54GG5ejDw"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 63,
+        "new": "<absent>",
+        "expected": 63
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_e2gjzG4iqiEtbyTgeFaYnw"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 36,
+        "new": "<absent>",
+        "expected": 36
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_2f83wT2BE5BPWv8oD6hBhu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 48,
+        "new": "<absent>",
+        "expected": 48
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_DfgRwfEtT6iTkA4VXBBrv6"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 12,
+        "new": "<absent>",
+        "expected": 12
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_4T8tRqXJ4Spe6izddnLkZC"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 68,
+        "new": "<absent>",
+        "expected": 68
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_taKS85qrRb5cZHPe2vDzMk"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 43,
+        "new": "<absent>",
+        "expected": 43
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_V4X7gQqdjfseHZy4GqcWya"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 46,
+        "new": "<absent>",
+        "expected": 46
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_bMhREc8mhTMtDYAfEQ2FCU"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 41,
+        "new": "<absent>",
+        "expected": 41
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_wbtNwJv9amt63fUs2YNoDS"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 30,
+        "new": "<absent>",
+        "expected": 30
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_eCgda5eRhDjDu9nPHWeSgH"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 73,
+        "new": "<absent>",
+        "expected": 73
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_x3jNYvV5tKHyoUABDsS3wx"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 59,
+        "new": "<absent>",
+        "expected": 59
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_iGfhd5amz7eoe5mxWWLx8c"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 26,
+        "new": "<absent>",
+        "expected": 26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_LmZjP4Zs7gHNpJGZy2pwFH"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 55,
+        "new": "<absent>",
+        "expected": 55
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_7VQccBTzfvuSg5pWyRyoUb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 89,
+        "new": "<absent>",
+        "expected": 89
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_opxMb9EQhfEksjZy4w5quq"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 79,
+        "new": "<absent>",
+        "expected": 79
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_b7feUvEME7iD3KpPDNhKx4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 46,
+        "new": "<absent>",
+        "expected": 46
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_ToVQTsxT5BekdJdvnAjVdq"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 52,
+        "new": "<absent>",
+        "expected": 52
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_rSWaZzLNhYJVXASsbWE3Aq"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 52,
+        "new": "<absent>",
+        "expected": 52
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_5FXSqamrFSECDA3tNRKPwh"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 0,
+        "new": "<absent>",
+        "expected": 0
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_84wEuyBou5wH8JeADZwLUQ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 91,
+        "new": "<absent>",
+        "expected": 91
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_XtQM6fXSknxctKWtC6oL2J"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16,
+        "new": "<absent>",
+        "expected": 16
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_46bH3c45KUsudFBJZRyZR3"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 74,
+        "new": "<absent>",
+        "expected": 74
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_qSvwB7UHww5oMcnpJFU5HA"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 98,
+        "new": "<absent>",
+        "expected": 98
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_gUyYs6bXDxcpgRgTs5LQZh"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16,
+        "new": "<absent>",
+        "expected": 16
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_xi5JUjoqUrxyswVKBRAUUi"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 48,
+        "new": "<absent>",
+        "expected": 48
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_2LDUJuBMooHCp74ekUoeA4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 96,
+        "new": "<absent>",
+        "expected": 96
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_CDJquxHRSFaDqf85U7hcgW"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 59,
+        "new": "<absent>",
+        "expected": 59
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_DwzhcgvZYviau3rVomQzoH"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 40,
+        "new": "<absent>",
+        "expected": 40
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_78P82i4ULNXiEMQfADY5wr"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 58,
+        "new": "<absent>",
+        "expected": 58
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_ZRzj4zRdi9cvriFEEPNrc9"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 61,
+        "new": "<absent>",
+        "expected": 61
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_q7fjkeSQ7HpTrEW9U32fmc"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 30,
+        "new": "<absent>",
+        "expected": 30
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_26UAhriamoq6c78FjLFBnN"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 75,
+        "new": "<absent>",
+        "expected": 75
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_9aMdMCZ3FgXSKpRV2sfry3"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 30,
+        "new": "<absent>",
+        "expected": 30
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_gGQdDBRCcMLq8U889asLkv"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 28,
+        "new": "<absent>",
+        "expected": 28
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_oX7PUJguXVynHGyxfP4GeR"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 48,
+        "new": "<absent>",
+        "expected": 48
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_ibkPWArHSGMdQ4DTfSzhni"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 9,
+        "new": "<absent>",
+        "expected": 9
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_sFQXA4eRMESfUTaJ2btAoU"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 92,
+        "new": "<absent>",
+        "expected": 92
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_fGiLbv4HouYFeQu8XTLrvb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 63,
+        "new": "<absent>",
+        "expected": 63
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_hmiMCKqn227e6yiFgujVe4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 10,
+        "new": "<absent>",
+        "expected": 10
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_zPq4k7MX4N5JBB4A8HBVea"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 8,
+        "new": "<absent>",
+        "expected": 8
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_9EJAi7P4kqMvnRTfh7VcYd"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 94,
+        "new": "<absent>",
+        "expected": 94
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_L5CXtvqpHm5na2szXu4dxc"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 60,
+        "new": "<absent>",
+        "expected": 60
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_HpsxdBZA5YpEsLH7qaVark"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 68,
+        "new": "<absent>",
+        "expected": 68
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_hJFksg3porohMigVipKCUf"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 77,
+        "new": "<absent>",
+        "expected": 77
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_u3sij55Vzmsmzcun6dJU2n"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 50,
+        "new": "<absent>",
+        "expected": 50
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_N6ainwqdv75d7QfGtfKTyo"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 82,
+        "new": "<absent>",
+        "expected": 82
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_RjtrehHeGwB6coBQVxPbdP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 88,
+        "new": "<absent>",
+        "expected": 88
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_zMeUQAup2zedwmDak5dM4m"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 13,
+        "new": "<absent>",
+        "expected": 13
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_mMSBzhEpeEW9AhsvC93rQQ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 73,
+        "new": "<absent>",
+        "expected": 73
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_KM7Ti4EusxiaeEC3dj7ewu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 79,
+        "new": "<absent>",
+        "expected": 79
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_mPwd8eqgxeMbgBcv8Y3YgB"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16,
+        "new": "<absent>",
+        "expected": 16
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_JbBatXoxBWdvxWuUvRY7jd"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 45,
+        "new": "<absent>",
+        "expected": 45
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_EuBPVyWbjZM7F3Su4MUwFQ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 73,
+        "new": "<absent>",
+        "expected": 73
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_xspQCqSpuaQacwRLV2uwYT"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 30,
+        "new": "<absent>",
+        "expected": 30
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_obs6JYF5o5VN7FZyYr9oin"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 72,
+        "new": "<absent>",
+        "expected": 72
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_AT8qK5mqzeqZ2Cpsm6CotQ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 75,
+        "new": "<absent>",
+        "expected": 75
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_8kXvGyLZ7fEht5hmBj7Ytp"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 40,
+        "new": "<absent>",
+        "expected": 40
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_g8AEGEsUB8KUdUWUGyMrP8"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 70,
+        "new": "<absent>",
+        "expected": 70
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_Qik6Q3uz8kUtprRUoN3HN4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 65,
+        "new": "<absent>",
+        "expected": 65
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_SVJRG7DNL8cBpK3Bqe2ys7"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 61,
+        "new": "<absent>",
+        "expected": 61
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_Rr7fX7pQrvwreezFRHDXGf"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 76,
+        "new": "<absent>",
+        "expected": 76
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_yNGPRdiUFY5JiUzqDQvfne"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 70,
+        "new": "<absent>",
+        "expected": 70
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_ZtEPQPdM54rz8CqyC4pMCJ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 15,
+        "new": "<absent>",
+        "expected": 15
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_EJthxi78d99WMFsifGtgqe"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 57,
+        "new": "<absent>",
+        "expected": 57
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_DA5hqq3FaVrd73nsmDgRgA"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 69,
+        "new": "<absent>",
+        "expected": 69
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_Q8WyDqfo2ME8ZyN5hgEe85"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 15,
+        "new": "<absent>",
+        "expected": 15
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_nxLacg789TgZwSSa5FY5B4"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 94,
+        "new": "<absent>",
+        "expected": 94
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_HkzHdafnxmBnREemJNEpxb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 84,
+        "new": "<absent>",
+        "expected": 84
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_CYiFUVHbLitSWSxq872bJi"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 29,
+        "new": "<absent>",
+        "expected": 29
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_2QKqMuhQZpUirFYjtDp4PC"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 50,
+        "new": "<absent>",
+        "expected": 50
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_YvRiqbqsCcHjW66nyq86mB"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16,
+        "new": "<absent>",
+        "expected": 16
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_YkHN4rjgvk8gFx7VQJ3Eue"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 90,
+        "new": "<absent>",
+        "expected": 90
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_9xVhXi4MEjwHYLZ53GQ5uw"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 24,
+        "new": "<absent>",
+        "expected": 24
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_XtXxZ8jUsrTrvKQVKhThMg"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 53,
+        "new": "<absent>",
+        "expected": 53
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_5rJGqQgQZpMcSnuGn2LHUa"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 48,
+        "new": "<absent>",
+        "expected": 48
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_s8z9jL5JAY2z7kRpM7AZu7"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 92,
+        "new": "<absent>",
+        "expected": 92
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_mav6TjgM9R6eZmQC9MW5zv"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 28,
+        "new": "<absent>",
+        "expected": 28
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_LmrBpZDJC3VwBnwfURunqK"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 81,
+        "new": "<absent>",
+        "expected": 81
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_jsmUnvRcnEursbENntqJh8"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 40,
+        "new": "<absent>",
+        "expected": 40
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_bZWBfBTeaT4CwLVR8xQtYY"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 26,
+        "new": "<absent>",
+        "expected": 26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "count",
+          "item_czQabACaLECiHsQyfrjv7F"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 79,
+        "new": "<absent>",
+        "expected": 79
+      },
+      {
+        "path": [
+          "LightSystem",
+          "status"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "ok",
+        "new": "<absent>",
+        "expected": "ok"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_Amxw6HE8vCyGZmabBE4MAo",
+          "items",
+          "item_2zR59PHkciQX7dXpQrfjzh",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 84.37,
+        "new": "<absent>",
+        "expected": 84.37
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_Amxw6HE8vCyGZmabBE4MAo",
+          "items",
+          "item_epGrqGMrVv6xHrGUvNAQNX",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_Amxw6HE8vCyGZmabBE4MAo",
+          "items",
+          "item_gV7Eoqen5BzgWA6MvNquxn",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Good American Dress",
+        "new": "<absent>",
+        "expected": "Good American Dress"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_Amxw6HE8vCyGZmabBE4MAo",
+          "count",
+          "item_zmJmZ5S3bgjHxmtxx9cRF5"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 47,
+        "new": "<absent>",
+        "expected": 47
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_XYHqwXrRwvo8VHWFB5zMTM",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 25.51,
+        "new": "<absent>",
+        "expected": 25.51
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_ExvQJEGSuxegZX7XKTvoYz",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_dVEUycsMfMQzz6hotYnfLM",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Cleveland Frontline Elevado Putter",
+        "new": "<absent>",
+        "expected": "Cleveland Frontline Elevado Putter"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_hWddDbKv22YgBWyXnBdnpa",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 107.78,
+        "new": "<absent>",
+        "expected": 107.78
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_PsijJDX6zKLUYiS4SHPuV3",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_N3RS9h3gBJPvY6hh7iB8yq",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Burnhard Portable Butane Stove",
+        "new": "<absent>",
+        "expected": "Burnhard Portable Butane Stove"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_zeL67CtW6Nunf5sojJcppf",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 52.05,
+        "new": "<absent>",
+        "expected": 52.05
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_Bk8hncmvn8BMNrw8te5iBU",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_7wTRJhTkz6TFLtsVFBTerg",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "MSR Guardian Purifier Field Kit",
+        "new": "<absent>",
+        "expected": "MSR Guardian Purifier Field Kit"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_s4vLmDMBRgzKBMD37cTVJL",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 27.63,
+        "new": "<absent>",
+        "expected": 27.63
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_foqsnKkdWZEpGk5fRpctVZ",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_XGHQG7qe24t3XjskyUHsHt",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "MSR Quick 2 System Cookset",
+        "new": "<absent>",
+        "expected": "MSR Quick 2 System Cookset"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_ZofmK2pBq37dFW6i9KeUTM",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 111.26,
+        "new": "<absent>",
+        "expected": 111.26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_zTrgHUJ3Gp7Bsy6pP5hCTT",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_rLgwSkso4faXPmcDQC6Jvr",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Titleist Vokey SM9 Wedge",
+        "new": "<absent>",
+        "expected": "Titleist Vokey SM9 Wedge"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_jd3WG4ZDfQXtRQM4hisbpC",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16.85,
+        "new": "<absent>",
+        "expected": 16.85
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "items",
+          "item_CwshHRDgVkMRpaAp5AbZDc",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_5UqustVGMtyvhMGmtdDJNQ"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 11,
+        "new": "<absent>",
+        "expected": 11
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_7ykrevPxyx3xjxP4sPQjUd"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 23,
+        "new": "<absent>",
+        "expected": 23
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_ESsbs8RvDuvdjERFpGHWbb"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 56,
+        "new": "<absent>",
+        "expected": 56
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_KhSTMBNeSwQhtFX22z66V9"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 59,
+        "new": "<absent>",
+        "expected": 59
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_U9tmwzPAgbaXd7Rn6iswTD"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 7,
+        "new": "<absent>",
+        "expected": 7
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_HsuY8ssZWhhw4cEMDbrKRS",
+          "count",
+          "item_ZL4RgkhXrJY3HwUynfsHPp"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 82,
+        "new": "<absent>",
+        "expected": 82
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_pVd6tfxMr4stbimt99HuqM",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "The Silent Patient by Alex Michaelides",
+        "new": "<absent>",
+        "expected": "The Silent Patient by Alex Michaelides"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_pFGpKhcLcG22fNCfUH8o6r",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 9.05,
+        "new": "<absent>",
+        "expected": 9.05
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_6FvNELw6x7u5RpU4fKhFkW",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_X64Jvqpzw9DrQJuXgnt2DL",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Around the World in Eighty Days by Jules Verne",
+        "new": "<absent>",
+        "expected": "Around the World in Eighty Days by Jules Verne"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_B2FmpNNMMNsLV7cNtVverV",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 9.25,
+        "new": "<absent>",
+        "expected": 9.25
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_J9Ugwt7LbDuo47NNC3Pdjm",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "items",
+          "item_PFRsv83KJrg2yamVw6KCfD",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Shuggie Bain by Douglas Stuart",
+        "new": "<absent>",
+        "expected": "Shuggie Bain by Douglas Stuart"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "count",
+          "item_RTCuQqyBPFiCR7Bpq47KNK"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 54,
+        "new": "<absent>",
+        "expected": 54
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_xXxEcmEeCkbai2iudk5nDk",
+          "count",
+          "item_HWqBLmSqQJdLJZVr8Ro54q"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 90,
+        "new": "<absent>",
+        "expected": 90
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_KQEjuWunjNjGQkTP4FGDaY",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 0.97,
+        "new": "<absent>",
+        "expected": 0.97
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_YJNgujUcdUDW5eACCHyevD",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_NWAA2pdra6YZeRDdPmfLwP",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "mushrooms (500g)",
+        "new": "<absent>",
+        "expected": "mushrooms (500g)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_2syV5XcH5hTBYjz9Qmaqj5",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2.12,
+        "new": "<absent>",
+        "expected": 2.12
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_NPAqZ6r2LgTfxS4QPUu4a7",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_QzTugmXUVmg2TVzJcG7GEP",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "morel mushrooms (100g)",
+        "new": "<absent>",
+        "expected": "morel mushrooms (100g)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_d4pJDTCzjjHDetyztVZVAV",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.08,
+        "new": "<absent>",
+        "expected": 1.08
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_zk2tLrmdjJTemXRLB8kjTG",
+          "items",
+          "item_CPAsMPNWvEfSqU6mJjwXAb",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_yN3CJxUViYgNB54GG5ejDw",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Cascade Mountain Tech Cork Grip Trekking Poles",
+        "new": "<absent>",
+        "expected": "Cascade Mountain Tech Cork Grip Trekking Poles"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_wbtNwJv9amt63fUs2YNoDS",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 41.89,
+        "new": "<absent>",
+        "expected": 41.89
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_ToVQTsxT5BekdJdvnAjVdq",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_2LDUJuBMooHCp74ekUoeA4",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Kelty Redwing 44 Backpack",
+        "new": "<absent>",
+        "expected": "Kelty Redwing 44 Backpack"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_gGQdDBRCcMLq8U889asLkv",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 39.26,
+        "new": "<absent>",
+        "expected": 39.26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_es6UrxbgJVTgFsL6KhuJF6",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_mMSBzhEpeEW9AhsvC93rQQ",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Deuter Aircontact Lite 65+10 Backpack",
+        "new": "<absent>",
+        "expected": "Deuter Aircontact Lite 65+10 Backpack"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_8kXvGyLZ7fEht5hmBj7Ytp",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 60.45,
+        "new": "<absent>",
+        "expected": 60.45
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_DA5hqq3FaVrd73nsmDgRgA",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_XtXxZ8jUsrTrvKQVKhThMg",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Rawlings 2023 Official MLB Baseball",
+        "new": "<absent>",
+        "expected": "Rawlings 2023 Official MLB Baseball"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_wQqxLCmN7GAiPdmFGPoPBz",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 111.59,
+        "new": "<absent>",
+        "expected": 111.59
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_yJvUKTongv5NmysVW3uTou",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_6NfJBMGbhnfmFsViqLHdJY",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "MSR Quick Solo System Cookset",
+        "new": "<absent>",
+        "expected": "MSR Quick Solo System Cookset"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_iG3Sf9VsCyXgS33d5rx7fZ",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 3.06,
+        "new": "<absent>",
+        "expected": 3.06
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_eyfXNRzvehAp4Xk2Um3PsM",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_zQFeVgoLuQJ6fuSJ9Mr9Si",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "La Sportiva Bushido II Trail Running Shoes",
+        "new": "<absent>",
+        "expected": "La Sportiva Bushido II Trail Running Shoes"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_oayK8o6viJC3fCKrHzyeNp",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 37.76,
+        "new": "<absent>",
+        "expected": 37.76
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_UXFA2MHh68Lj84RXmNXuhK",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_FWnbprysScHY4qZSErdCUs",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Wilson Evolution Indoor/Outdoor Basketball",
+        "new": "<absent>",
+        "expected": "Wilson Evolution Indoor/Outdoor Basketball"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_BJFV4Tqrb5AieyyaVWbRFT",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 134.04,
+        "new": "<absent>",
+        "expected": 134.04
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "items",
+          "item_zc6BkUwD7fY5DopEZvAvty",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_qoewBs9vb27B6VF4oJZesf",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Sportify Outlet",
+        "new": "<absent>",
+        "expected": "Sportify Outlet"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_SKK5rT8vykAdVirRsEaRjd",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 112.43,
+        "new": "<absent>",
+        "expected": 112.43
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_ipRunTbMKo9GPpEYGpeZmG",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_zAPdjv7RnYNEyPQFGPW55D",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Heil PR 40 Dynamic Mic",
+        "new": "<absent>",
+        "expected": "Heil PR 40 Dynamic Mic"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_nsQGymfiwDyPQ2GGxHDKuE",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2323.66,
+        "new": "<absent>",
+        "expected": 2323.66
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_F4kNs9piuZihhRAg5MAofY",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_EPWB4faR26p34cPhjqLJHB",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "LG C3 65\" OLED TV",
+        "new": "<absent>",
+        "expected": "LG C3 65\" OLED TV"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_eWozs8w56AcTAtApxYQQbr",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 759.96,
+        "new": "<absent>",
+        "expected": 759.96
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_39kRghoAbiGVsmUGajyK35",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_uRaYAt9bQsM4zGKZNa5iz7",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Ring Video Doorbell Pro 2",
+        "new": "<absent>",
+        "expected": "Ring Video Doorbell Pro 2"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_SCvHVhySFV5wLKfcdmbtrn",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 870.94,
+        "new": "<absent>",
+        "expected": 870.94
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_UY2Gdfuq4jcqLYzz9vQwVL",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_MQAG4Vw2zgWTmBzT8LyeMU",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Samsung Galaxy S24 Ultra (512GB)",
+        "new": "<absent>",
+        "expected": "Samsung Galaxy S24 Ultra (512GB)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_tHauoLEpQG853FxVdcTgLi",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 3012.91,
+        "new": "<absent>",
+        "expected": 3012.91
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "items",
+          "item_N8dp9MBJWPxm7cJrwcfUcT",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "count",
+          "item_tbQqwQSyvZGTWLDF5dAwve"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 42,
+        "new": "<absent>",
+        "expected": 42
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "count",
+          "item_AJxxfrkUFXLK3zVq8CNkHa"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 70,
+        "new": "<absent>",
+        "expected": 70
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "count",
+          "item_62Q6nZAm4y6U65ySM7K79T"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 28,
+        "new": "<absent>",
+        "expected": 28
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "count",
+          "item_xscowFpPH6CtE73vyz4ZNu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 50,
+        "new": "<absent>",
+        "expected": 50
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bdeovjLfNiNMzGhPUt7B74",
+          "count",
+          "item_CoejkXD7CbiGGPVRRCmXLv"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 95,
+        "new": "<absent>",
+        "expected": 95
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_gNbqTsQEtJNYkrqdaestkm",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_PsW4qZ8Gb3ET5SbmWHYRAP",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Bottega Veneta Cassette Bag",
+        "new": "<absent>",
+        "expected": "Bottega Veneta Cassette Bag"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_BLWCTfc6qnpPbYrejTBuYL",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 3283.72,
+        "new": "<absent>",
+        "expected": 3283.72
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_6Vt6yjcmpcYFzhBZoF47DE",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_Ma7nvxdfRayQk5L9LZVMMP",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Fear of God Essentials Sweatpants",
+        "new": "<absent>",
+        "expected": "Fear of God Essentials Sweatpants"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_3mYDf9Ya3DwLKsVzhh7EWF",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 140.62,
+        "new": "<absent>",
+        "expected": 140.62
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_2H7GpaWFdPnbkAGUqqiaAn",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_ES4weir3ZqqXMp6pg2uXTk",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Dolce & Gabbana Leopard Tee",
+        "new": "<absent>",
+        "expected": "Dolce & Gabbana Leopard Tee"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_QfmzAfBJNt3aRDZ8PaWvbT",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 56.74,
+        "new": "<absent>",
+        "expected": 56.74
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_9wqbRjotxcd5AbdBrvG7XB",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "items",
+          "item_3UGqPosASssFHbWnRKRKDo",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Black Diamond Trekking Tee",
+        "new": "<absent>",
+        "expected": "Black Diamond Trekking Tee"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "count",
+          "item_VRAqbTsM2dKPCke6nFP4hD"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 90,
+        "new": "<absent>",
+        "expected": 90
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "count",
+          "item_5pfSVFVuHRKFPtyeDQHghs"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 12,
+        "new": "<absent>",
+        "expected": 12
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_WYrXPmmKyofMArsm5CtzpH",
+          "count",
+          "item_KzoUNJTK3wmR3oZxFtzbkg"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 10,
+        "new": "<absent>",
+        "expected": 10
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_b9tegpkY7MaNnjCoYLssMA",
+          "items",
+          "item_egX3ibEvLZuwUFmyySiMow",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Kingdom of Ash by Sarah J. Maas",
+        "new": "<absent>",
+        "expected": "Kingdom of Ash by Sarah J. Maas"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_b9tegpkY7MaNnjCoYLssMA",
+          "items",
+          "item_jo7YSyBwf7PTcK9hoR6ghu",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 23.85,
+        "new": "<absent>",
+        "expected": 23.85
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_mRfDa6MvHAUKdSfPocRmPH",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.7,
+        "new": "<absent>",
+        "expected": 1.7
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_PSzGVH5UUMi7r3DNAFLFBX",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_t3UpzPUkJXbR6jx2Hszqus",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "lima beans (500g)",
+        "new": "<absent>",
+        "expected": "lima beans (500g)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_8HhJ65h7EBxjAWfkJqX4MH",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.61,
+        "new": "<absent>",
+        "expected": 1.61
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_CWoRTVjPZHnzMh7NiJk7im",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_GhosUCMRgjxasfzJHDcFwC",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "cauliflower (1 head)",
+        "new": "<absent>",
+        "expected": "cauliflower (1 head)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_gn9EfecReUzp4zEdRPJY3e",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.56,
+        "new": "<absent>",
+        "expected": 1.56
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_wbEYAZB52HRNLnrUFSuoJL",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_9LnpuUpkSsHogQXmkX4WoA",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "shallot (250g)",
+        "new": "<absent>",
+        "expected": "shallot (250g)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_J97F3hg8q78SA9trWmDETR",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2.43,
+        "new": "<absent>",
+        "expected": 2.43
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "items",
+          "item_TThQoerFjPrHAFYZjCET8Q",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "count",
+          "item_sDTxww47qQcqDK6i9g7fuL"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 63,
+        "new": "<absent>",
+        "expected": 63
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "count",
+          "item_X6Xq7HppxpCN9tNwGKgcaV"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 0,
+        "new": "<absent>",
+        "expected": 0
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_bXv7GJoU7APSdjawFnJACm",
+          "count",
+          "item_viPr5Jn9LNKcdh6frMhCab"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 19,
+        "new": "<absent>",
+        "expected": 19
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_KrkzsSAjBfG29Yy78kxAvt",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Dead Souls by Samuel Taylor Coleridge",
+        "new": "<absent>",
+        "expected": "Dead Souls by Samuel Taylor Coleridge"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_LpPSxmSQxsTnCzH2UcWcdo",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 14.87,
+        "new": "<absent>",
+        "expected": 14.87
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_Yt36ezW8iEjsgKD48Hso55",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_dSCdpyzM4LRzQUP2haasDQ",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Empire of Storms by Sarah J. Maas",
+        "new": "<absent>",
+        "expected": "Empire of Storms by Sarah J. Maas"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_UAYfdXRegUKmnf3322WMKd",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 12.88,
+        "new": "<absent>",
+        "expected": 12.88
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_uk2RyY4SN8TggxPBb2SLd4",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_LansabexsjMQJHWSZVz56G",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "First Kill by V.E. Schwab",
+        "new": "<absent>",
+        "expected": "First Kill by V.E. Schwab"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_2uWwHZEryKSta5oFn9hRAg",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 15.41,
+        "new": "<absent>",
+        "expected": 15.41
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_gzgQ2K4d2nKK5iG2vS7G7X",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_3cmQEjsr4K7QEmjfXGD2sa",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "The Hobbit by J.R.R. Tolkien",
+        "new": "<absent>",
+        "expected": "The Hobbit by J.R.R. Tolkien"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_3a7d6p34g8eWVyMZLrnRxx",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 13.51,
+        "new": "<absent>",
+        "expected": 13.51
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_C8Cmn5CDEMgTNqnvxUbdoh",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_ZDwEMs8Gucj5FJrjNmpUkL",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "Lectures on Mystical Theology by Immanuel Kant",
+        "new": "<absent>",
+        "expected": "Lectures on Mystical Theology by Immanuel Kant"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_6HMeqvEN2MPWpAbhHREtkB",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 35.33,
+        "new": "<absent>",
+        "expected": 35.33
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "items",
+          "item_ofdFQjfoHK8fdP87WjKrds",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "count",
+          "item_QnRSxV5H2uihrhWdRsMgYc"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 16,
+        "new": "<absent>",
+        "expected": 16
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "count",
+          "item_biUdjDzy4cX358ZqSSM25g"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 58,
+        "new": "<absent>",
+        "expected": 58
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "count",
+          "item_PKP4xGGeZLzbfnyXXhs6rt"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 40,
+        "new": "<absent>",
+        "expected": 40
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "count",
+          "item_hJ684pbD9fHpkt8uz4F2wP"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 47,
+        "new": "<absent>",
+        "expected": 47
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_ymSnFnpJGf87bfvpqb2X8M",
+          "count",
+          "item_M36xJ6suMSDHMMbBpxTKWz"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 62,
+        "new": "<absent>",
+        "expected": 62
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_cvvqMUgRz6Agk5LGFZh5cp",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.34,
+        "new": "<absent>",
+        "expected": 1.34
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_VS7wqh99VRmWy9SQ7E9MkF",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_EWWSVEJqBynJECAy9xvxm6",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "apple (1kg)",
+        "new": "<absent>",
+        "expected": "apple (1kg)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_7xCafJE7y8UamCTjXU9NZQ",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2.26,
+        "new": "<absent>",
+        "expected": 2.26
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_Nd4r2kiDPwYnWXtgak8sbP",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_8YKedgWsmwnbwvucY5E6hu",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "plantain (1kg)",
+        "new": "<absent>",
+        "expected": "plantain (1kg)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_z9VJZzUTnqcvmnA6mwxYxu",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 1.4,
+        "new": "<absent>",
+        "expected": 1.4
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_MrjmLmTWmPLDRNmAa4i2pY",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_DSCrV9nYGLNVxE4wGeustH",
+          "name"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": "elderberry (250g)",
+        "new": "<absent>",
+        "expected": "elderberry (250g)"
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_hKx7i3YX957UAe6fy5V2St",
+          "price"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 5.01,
+        "new": "<absent>",
+        "expected": 5.01
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "items",
+          "item_HRV4mAhVNRje3Xbash9n5r",
+          "star"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": false,
+        "new": "<absent>",
+        "expected": false
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "count",
+          "item_EWWSVEJqBynJECAy9xvxm6"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 96,
+        "new": "<absent>",
+        "expected": 96
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "shops",
+          "shop_f7pccFy5BroAkaA3SqV6FM",
+          "count",
+          "item_8YKedgWsmwnbwvucY5E6hu"
+        ],
+        "kind": "negative",
+        "ok": false,
+        "weight": 1.0,
+        "old": 2,
+        "new": "<absent>",
+        "expected": 2
+      }
+    ],
+    "passed_positive": [
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "cart",
+          0
+        ],
+        "weight": 1.0
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "cart",
+          1
+        ],
+        "weight": 1.0
+      },
+      {
+        "path": [
+          "LightShop",
+          "output",
+          "cart",
+          2
+        ],
+        "weight": 1.0
+      }
+    ],
+    "weights": {
+      "positive_total": 9.0,
+      "positive_earned": 3.0,
+      "negative_penalty": 300.0
+    }
+  },
+  "graph": {
+    "graph_f1": 0.0,
+    "graph_precision": 0.0,
+    "graph_recall": 0.0,
+    "graph_exact_match": false,
+    "tp": 0,
+    "fp": 0,
+    "fn": 9,
+    "total_predictions": 0,
+    "total_gt_nodes": 9,
+    "matched_nodes": [],
+    "missing_nodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "misplaced": []
+  },
+  "efs_coverage": {
+    "nodes": 9,
+    "resolved": 2,
+    "unresolved": [
+      "LightShop::get_cart_summary",
+      "LightShop::delete_item_in_cart",
+      "LightShop::delete_item_in_cart",
+      "LightShop::delete_item_in_cart",
+      "LightShop::add_to_cart",
+      "LightShop::wait_payment_password",
+      "LightShop::checkout_all"
+    ],
+    "fully_covered": false,
+    "detail": [
+      {
+        "step": 0,
+        "tool": "LightShop::get_cart_summary",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 1,
+        "tool": "LightShop::delete_item_in_cart",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 2,
+        "tool": "LightShop::delete_item_in_cart",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 3,
+        "tool": "LightShop::delete_item_in_cart",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 4,
+        "tool": "LightShop::search_items",
+        "resolved": true,
+        "alternatives": 2
+      },
+      {
+        "step": 5,
+        "tool": "LightShop::get_shop_id_by_name",
+        "resolved": true,
+        "alternatives": 2
+      },
+      {
+        "step": 6,
+        "tool": "LightShop::add_to_cart",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 7,
+        "tool": "LightShop::wait_payment_password",
+        "resolved": false,
+        "alternatives": 1
+      },
+      {
+        "step": 8,
+        "tool": "LightShop::checkout_all",
+        "resolved": false,
+        "alternatives": 1
+      }
+    ]
+  }
+}

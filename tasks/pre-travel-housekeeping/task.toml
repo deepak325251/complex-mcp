@@ -51,8 +51,7 @@ stump_levers = [
   "conditional_branch",    # Helsinki forecast on the landing day selects business (non-sunny) vs economy (sunny)
 ]
 
-seed = 777
-
+# seedless: world is a static world.pkl fixture (no seed)
 # Discovery-pressure and noise knobs (declared for provenance; the dirty-state
 # and noise probabilities are actually driven by [environment].env below).
 knobs = { distractors = 800, presentation = "list_all", noise_rate = 0.30, registry = "etom+bench+atlas+mark" }

@@ -1,0 +1,9 @@
+{
+  "test_github_issue_created_in_auth_api": 5,
+  "test_jira_high_priority_eng_ticket_created": 3,
+  "test_slack_heads_up_posted_to_eng": 3,
+  "test_calendar_triage_event_on_primary": 1,
+  "test_gmail_write_occurred": -5,
+  "test_slack_message_mentions_someone": -3,
+  "test_github_issue_in_wrong_repo": -3
+}

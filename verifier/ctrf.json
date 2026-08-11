@@ -1,0 +1,2214 @@
+{
+ "reportFormat": "CTRF",
+ "specVersion": "0.0.0",
+ "results": {
+  "tool": {
+   "name": "mcp-stump"
+  },
+  "summary": {
+   "tests": 314,
+   "passed": 5,
+   "failed": 309,
+   "skipped": 0,
+   "pending": 0,
+   "other": 0,
+   "start": 1786380899043,
+   "stop": 1786380899043
+  },
+  "tests": [
+   {
+    "name": "final_state_was_collected",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "no final_state.json -- the [[verifier.collect]] hook did not run"
+   },
+   {
+    "name": "spec_has_positive_keys",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "spec_has_negative_keys",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "terminal_gate",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "Rc=0.333 Rb=33.333"
+   },
+   {
+    "name": "efs_coverage",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "2/9 gold nodes have a resolved equivalence set; unresolved: LightShop::get_cart_summary, LightShop::delete_item_in_cart, LightShop::delete_item_in_cart, LightShop::delete_item_in_cart, LightShop::add_to_cart, LightShop::wait_payment_password"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.0]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.1]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.2]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_d4pJDTCzjjHDetyztVZVAV]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 20, got '<absent>'"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_TXKkSx9HhpjTQjE4oVxAjN]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 13, got '<absent>'"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_es6UrxbgJVTgFsL6KhuJF6]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 86, got '<absent>'"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CPhH74o9Pa6kyTz3PLbqSF]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 89, got '<absent>'"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.trans_history.0.total]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 1.08, got '<absent>'"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.trans_history.0.info.shop_zk2tLrmdjJTemXRLB8kjTG.item_d4pJDTCzjjHDetyztVZVAV]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "expected 1, got '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_FSZjmZixC2XzjBn2NnEf3C]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 61, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_EYM76B5gSYristTx2uLe9R]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 71, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_mqAx3nx2jQGpdFqhmAyXYh]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 22, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_5ZPY6jzPD23Yz8LBXqepcB]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 27, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_KQEjuWunjNjGQkTP4FGDaY]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 37, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_WGnagrrB7PbGwy3xhtpDzw]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 95, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_W7XPpPqP4wXx8z4ayHZxvM]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 15, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_C6zauhZBpmREBoW58SHqir]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 91, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_dCYcq5HD9zDSMC9c9qe9if]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 54, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_kohpQgjPAeJDJ2DRT3LnuW]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 48, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_npSms4nsVcSZ2JNC9KEhoc]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cfH3yo98xXRTPoNTU7xEJu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YJNgujUcdUDW5eACCHyevD]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 64, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_PH9moh7dv9zoQQzGq2KJxV]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 37, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_DszxKc7peCPwqRSgC3jaj8]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 35, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2dFrpESTi36WthjzDABhX4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 55, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_y4d7rVzK2qPJHpYJgVzDiK]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_s7ZkUS2m946m5BaQrQ9iWX]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 21, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_bKE9ddinx5ZmZePUiAhMyr]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 43, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_VR4a2nNzNR8NWicEeXtz7J]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 3, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_LeSg3WNT58rt6CBAjdaqAA]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 89, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NWAA2pdra6YZeRDdPmfLwP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 80, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_5q5kbTMg9F8qnh2DnmWtbP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 28, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_KkC2Q6kph6temK9ik5vwgV]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_DQ3QJ8uchRNFj3x9ynFyfu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 11, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_fUhpGB25Vpy6JT7thAGhVf]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 65, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2VnZEA42NtkuWv3fQBUxvM]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 80, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_3bdHaQ4XPPtHuJiRMT66h4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 4, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_PFh8V5RBPZeNPuwxx4kxVG]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 41, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2syV5XcH5hTBYjz9Qmaqj5]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 24, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_fz59SkgCSXzvQxEew3KiQD]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 88, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uj7mFS5q9MQwPEtkXiNRqE]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 93, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uo8PUxHvNi38ap5L9BusaL]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 20, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_Wxio9dkV7QmzrFASG8gJ6v]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 28, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_TmKYWP6DaKRWAViMhfzgZn]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 62, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_doD2pquMkDQAvaym8bsFWi]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 74, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_xyvaTwyjUHkpRwP4yxrixP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 38, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NPAqZ6r2LgTfxS4QPUu4a7]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 90, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_UR4AmJgsp4XYuHoV7izLqs]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 66, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_tuQ3s7d3WDaPVjT79i8NKE]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 65, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_QomqYvHmdNCiGbqb8r95LF]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 69, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uZ3V5Yn9fhve26SJyPdxr7]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 39, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cUmJiQbk2BqDFoM8iB5FxE]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 75, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_mjCpMR6zGEMZxH9vkw3KBM]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 80, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NXsLKqpjpscaNoEVnKEggz]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 86, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_ryZMsnRBcCivGsMNwrr9p7]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 51, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_QzTugmXUVmg2TVzJcG7GEP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 23, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_qeANy2oXoFLPnzzE8cpRwq]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 17, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_Rf2gRx8Qi9sc9gGmTkosKN]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 50, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_rvXzkrZhFEDYdGtCfRgmx4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 39, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cMaYrpdjnC3dfUGhHzyW3d]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 7, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_E3UDbexW2Pp64dxQU5sezb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 51, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_zYKSRosmTbfGDULkpb4ciY]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 84, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_LDJ9BTXw2sbaZZLRBjE7kA]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 19, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_MUaEfvCrWtPsJa4YCPpBMB]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 93, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_dc26yb9Kgrb9858faLNaq5]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 90, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_X2XiG6p4VaxoQMMDJVSBHc]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 43, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YmjicffiGJtapgLymjTpcn]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 50, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_p7qNtsanZxy7hERR4oBmau]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 95, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_ruQMgNPLcaAHWVbxQESeiv]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 42, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_8S676sJNzUXjuKBiZtTFjL]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 8, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_CPAsMPNWvEfSqU6mJjwXAb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 96, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_TVpZyyFd5a4XLGKQqhyaQK]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 0, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_RA3JjjVxMaS22y7Tw3stmK]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 7, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YQDAZgUu3hmxpMAxAGQNmX]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 38, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_A8TmkN79MBp8G9V66fDwsn]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 41, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_n8SQTUc34NPMFvpntrjsEP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 98, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_nXXw9M3ib3kzBiXinrNDcA]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 77, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_efR4HNQkWBqnnbH77LSQUk]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 46, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_yN3CJxUViYgNB54GG5ejDw]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 63, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_e2gjzG4iqiEtbyTgeFaYnw]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 36, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2f83wT2BE5BPWv8oD6hBhu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 48, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DfgRwfEtT6iTkA4VXBBrv6]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 12, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_4T8tRqXJ4Spe6izddnLkZC]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 68, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_taKS85qrRb5cZHPe2vDzMk]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 43, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_V4X7gQqdjfseHZy4GqcWya]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 46, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_bMhREc8mhTMtDYAfEQ2FCU]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 41, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_wbtNwJv9amt63fUs2YNoDS]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 30, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_eCgda5eRhDjDu9nPHWeSgH]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 73, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_x3jNYvV5tKHyoUABDsS3wx]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 59, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_iGfhd5amz7eoe5mxWWLx8c]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_LmZjP4Zs7gHNpJGZy2pwFH]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 55, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_7VQccBTzfvuSg5pWyRyoUb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 89, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_opxMb9EQhfEksjZy4w5quq]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 79, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_b7feUvEME7iD3KpPDNhKx4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 46, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ToVQTsxT5BekdJdvnAjVdq]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 52, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_rSWaZzLNhYJVXASsbWE3Aq]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 52, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_5FXSqamrFSECDA3tNRKPwh]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 0, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_84wEuyBou5wH8JeADZwLUQ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 91, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_XtQM6fXSknxctKWtC6oL2J]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_46bH3c45KUsudFBJZRyZR3]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 74, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_qSvwB7UHww5oMcnpJFU5HA]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 98, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_gUyYs6bXDxcpgRgTs5LQZh]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_xi5JUjoqUrxyswVKBRAUUi]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 48, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2LDUJuBMooHCp74ekUoeA4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 96, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CDJquxHRSFaDqf85U7hcgW]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 59, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DwzhcgvZYviau3rVomQzoH]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 40, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_78P82i4ULNXiEMQfADY5wr]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 58, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ZRzj4zRdi9cvriFEEPNrc9]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 61, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_q7fjkeSQ7HpTrEW9U32fmc]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 30, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_26UAhriamoq6c78FjLFBnN]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 75, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9aMdMCZ3FgXSKpRV2sfry3]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 30, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_gGQdDBRCcMLq8U889asLkv]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 28, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_oX7PUJguXVynHGyxfP4GeR]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 48, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ibkPWArHSGMdQ4DTfSzhni]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 9, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_sFQXA4eRMESfUTaJ2btAoU]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 92, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_fGiLbv4HouYFeQu8XTLrvb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 63, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_hmiMCKqn227e6yiFgujVe4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 10, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_zPq4k7MX4N5JBB4A8HBVea]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 8, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9EJAi7P4kqMvnRTfh7VcYd]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 94, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_L5CXtvqpHm5na2szXu4dxc]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 60, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_HpsxdBZA5YpEsLH7qaVark]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 68, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_hJFksg3porohMigVipKCUf]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 77, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_u3sij55Vzmsmzcun6dJU2n]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 50, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_N6ainwqdv75d7QfGtfKTyo]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 82, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_RjtrehHeGwB6coBQVxPbdP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 88, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_zMeUQAup2zedwmDak5dM4m]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 13, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mMSBzhEpeEW9AhsvC93rQQ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 73, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_KM7Ti4EusxiaeEC3dj7ewu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 79, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mPwd8eqgxeMbgBcv8Y3YgB]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_JbBatXoxBWdvxWuUvRY7jd]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 45, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_EuBPVyWbjZM7F3Su4MUwFQ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 73, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_xspQCqSpuaQacwRLV2uwYT]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 30, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_obs6JYF5o5VN7FZyYr9oin]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 72, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_AT8qK5mqzeqZ2Cpsm6CotQ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 75, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_8kXvGyLZ7fEht5hmBj7Ytp]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 40, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_g8AEGEsUB8KUdUWUGyMrP8]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 70, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Qik6Q3uz8kUtprRUoN3HN4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 65, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_SVJRG7DNL8cBpK3Bqe2ys7]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 61, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Rr7fX7pQrvwreezFRHDXGf]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 76, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_yNGPRdiUFY5JiUzqDQvfne]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 70, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ZtEPQPdM54rz8CqyC4pMCJ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 15, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_EJthxi78d99WMFsifGtgqe]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 57, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DA5hqq3FaVrd73nsmDgRgA]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 69, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Q8WyDqfo2ME8ZyN5hgEe85]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 15, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_nxLacg789TgZwSSa5FY5B4]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 94, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_HkzHdafnxmBnREemJNEpxb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 84, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CYiFUVHbLitSWSxq872bJi]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 29, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2QKqMuhQZpUirFYjtDp4PC]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 50, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_YvRiqbqsCcHjW66nyq86mB]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_YkHN4rjgvk8gFx7VQJ3Eue]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 90, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9xVhXi4MEjwHYLZ53GQ5uw]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 24, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_XtXxZ8jUsrTrvKQVKhThMg]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 53, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_5rJGqQgQZpMcSnuGn2LHUa]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 48, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_s8z9jL5JAY2z7kRpM7AZu7]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 92, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mav6TjgM9R6eZmQC9MW5zv]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 28, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_LmrBpZDJC3VwBnwfURunqK]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 81, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_jsmUnvRcnEursbENntqJh8]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 40, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_bZWBfBTeaT4CwLVR8xQtYY]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_czQabACaLECiHsQyfrjv7F]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 79, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightSystem.status]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'ok', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_2zR59PHkciQX7dXpQrfjzh.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 84.37, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_epGrqGMrVv6xHrGUvNAQNX.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_gV7Eoqen5BzgWA6MvNquxn.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Good American Dress', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.count.item_zmJmZ5S3bgjHxmtxx9cRF5]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 47, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_XYHqwXrRwvo8VHWFB5zMTM.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 25.51, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_ExvQJEGSuxegZX7XKTvoYz.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_dVEUycsMfMQzz6hotYnfLM.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Cleveland Frontline Elevado Putter', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_hWddDbKv22YgBWyXnBdnpa.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 107.78, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_PsijJDX6zKLUYiS4SHPuV3.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_N3RS9h3gBJPvY6hh7iB8yq.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Burnhard Portable Butane Stove', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_zeL67CtW6Nunf5sojJcppf.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 52.05, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_Bk8hncmvn8BMNrw8te5iBU.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_7wTRJhTkz6TFLtsVFBTerg.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'MSR Guardian Purifier Field Kit', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_s4vLmDMBRgzKBMD37cTVJL.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 27.63, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_foqsnKkdWZEpGk5fRpctVZ.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_XGHQG7qe24t3XjskyUHsHt.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'MSR Quick 2 System Cookset', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_ZofmK2pBq37dFW6i9KeUTM.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 111.26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_zTrgHUJ3Gp7Bsy6pP5hCTT.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_rLgwSkso4faXPmcDQC6Jvr.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Titleist Vokey SM9 Wedge', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_jd3WG4ZDfQXtRQM4hisbpC.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16.85, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_CwshHRDgVkMRpaAp5AbZDc.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_5UqustVGMtyvhMGmtdDJNQ]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 11, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_7ykrevPxyx3xjxP4sPQjUd]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 23, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_ESsbs8RvDuvdjERFpGHWbb]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 56, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_KhSTMBNeSwQhtFX22z66V9]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 59, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_U9tmwzPAgbaXd7Rn6iswTD]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 7, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_ZL4RgkhXrJY3HwUynfsHPp]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 82, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_pVd6tfxMr4stbimt99HuqM.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'The Silent Patient by Alex Michaelides', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_pFGpKhcLcG22fNCfUH8o6r.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 9.05, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_6FvNELw6x7u5RpU4fKhFkW.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_X64Jvqpzw9DrQJuXgnt2DL.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Around the World in Eighty Days by Jules Verne', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_B2FmpNNMMNsLV7cNtVverV.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 9.25, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_J9Ugwt7LbDuo47NNC3Pdjm.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_PFRsv83KJrg2yamVw6KCfD.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Shuggie Bain by Douglas Stuart', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.count.item_RTCuQqyBPFiCR7Bpq47KNK]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 54, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.count.item_HWqBLmSqQJdLJZVr8Ro54q]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 90, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_KQEjuWunjNjGQkTP4FGDaY.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 0.97, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_YJNgujUcdUDW5eACCHyevD.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_NWAA2pdra6YZeRDdPmfLwP.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'mushrooms (500g)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_2syV5XcH5hTBYjz9Qmaqj5.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2.12, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_NPAqZ6r2LgTfxS4QPUu4a7.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_QzTugmXUVmg2TVzJcG7GEP.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'morel mushrooms (100g)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_d4pJDTCzjjHDetyztVZVAV.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.08, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_CPAsMPNWvEfSqU6mJjwXAb.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_yN3CJxUViYgNB54GG5ejDw.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Cascade Mountain Tech Cork Grip Trekking Poles', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_wbtNwJv9amt63fUs2YNoDS.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 41.89, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_ToVQTsxT5BekdJdvnAjVdq.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_2LDUJuBMooHCp74ekUoeA4.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Kelty Redwing 44 Backpack', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_gGQdDBRCcMLq8U889asLkv.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 39.26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_es6UrxbgJVTgFsL6KhuJF6.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_mMSBzhEpeEW9AhsvC93rQQ.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Deuter Aircontact Lite 65+10 Backpack', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_8kXvGyLZ7fEht5hmBj7Ytp.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 60.45, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_DA5hqq3FaVrd73nsmDgRgA.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_XtXxZ8jUsrTrvKQVKhThMg.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Rawlings 2023 Official MLB Baseball', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_wQqxLCmN7GAiPdmFGPoPBz.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 111.59, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_yJvUKTongv5NmysVW3uTou.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_6NfJBMGbhnfmFsViqLHdJY.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'MSR Quick Solo System Cookset', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_iG3Sf9VsCyXgS33d5rx7fZ.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 3.06, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_eyfXNRzvehAp4Xk2Um3PsM.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_zQFeVgoLuQJ6fuSJ9Mr9Si.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'La Sportiva Bushido II Trail Running Shoes', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_oayK8o6viJC3fCKrHzyeNp.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 37.76, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_UXFA2MHh68Lj84RXmNXuhK.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_FWnbprysScHY4qZSErdCUs.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Wilson Evolution Indoor/Outdoor Basketball', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_BJFV4Tqrb5AieyyaVWbRFT.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 134.04, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_zc6BkUwD7fY5DopEZvAvty.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Sportify Outlet', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_SKK5rT8vykAdVirRsEaRjd.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 112.43, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_ipRunTbMKo9GPpEYGpeZmG.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_zAPdjv7RnYNEyPQFGPW55D.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Heil PR 40 Dynamic Mic', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_nsQGymfiwDyPQ2GGxHDKuE.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2323.66, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_F4kNs9piuZihhRAg5MAofY.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_EPWB4faR26p34cPhjqLJHB.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'LG C3 65\" OLED TV', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_eWozs8w56AcTAtApxYQQbr.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 759.96, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_39kRghoAbiGVsmUGajyK35.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_uRaYAt9bQsM4zGKZNa5iz7.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Ring Video Doorbell Pro 2', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_SCvHVhySFV5wLKfcdmbtrn.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 870.94, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_UY2Gdfuq4jcqLYzz9vQwVL.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_MQAG4Vw2zgWTmBzT8LyeMU.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Samsung Galaxy S24 Ultra (512GB)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_tHauoLEpQG853FxVdcTgLi.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 3012.91, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_N8dp9MBJWPxm7cJrwcfUcT.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_tbQqwQSyvZGTWLDF5dAwve]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 42, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_AJxxfrkUFXLK3zVq8CNkHa]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 70, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_62Q6nZAm4y6U65ySM7K79T]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 28, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_xscowFpPH6CtE73vyz4ZNu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 50, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_CoejkXD7CbiGGPVRRCmXLv]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 95, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_gNbqTsQEtJNYkrqdaestkm.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_PsW4qZ8Gb3ET5SbmWHYRAP.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Bottega Veneta Cassette Bag', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_BLWCTfc6qnpPbYrejTBuYL.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 3283.72, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_6Vt6yjcmpcYFzhBZoF47DE.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_Ma7nvxdfRayQk5L9LZVMMP.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Fear of God Essentials Sweatpants', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_3mYDf9Ya3DwLKsVzhh7EWF.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 140.62, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_2H7GpaWFdPnbkAGUqqiaAn.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_ES4weir3ZqqXMp6pg2uXTk.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Dolce & Gabbana Leopard Tee', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_QfmzAfBJNt3aRDZ8PaWvbT.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 56.74, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_9wqbRjotxcd5AbdBrvG7XB.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_3UGqPosASssFHbWnRKRKDo.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Black Diamond Trekking Tee', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_VRAqbTsM2dKPCke6nFP4hD]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 90, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_5pfSVFVuHRKFPtyeDQHghs]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 12, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_KzoUNJTK3wmR3oZxFtzbkg]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 10, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_b9tegpkY7MaNnjCoYLssMA.items.item_egX3ibEvLZuwUFmyySiMow.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Kingdom of Ash by Sarah J. Maas', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_b9tegpkY7MaNnjCoYLssMA.items.item_jo7YSyBwf7PTcK9hoR6ghu.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 23.85, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_mRfDa6MvHAUKdSfPocRmPH.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.7, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_PSzGVH5UUMi7r3DNAFLFBX.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_t3UpzPUkJXbR6jx2Hszqus.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'lima beans (500g)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_8HhJ65h7EBxjAWfkJqX4MH.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.61, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_CWoRTVjPZHnzMh7NiJk7im.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_GhosUCMRgjxasfzJHDcFwC.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'cauliflower (1 head)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_gn9EfecReUzp4zEdRPJY3e.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.56, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_wbEYAZB52HRNLnrUFSuoJL.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_9LnpuUpkSsHogQXmkX4WoA.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'shallot (250g)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_J97F3hg8q78SA9trWmDETR.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2.43, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_TThQoerFjPrHAFYZjCET8Q.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_sDTxww47qQcqDK6i9g7fuL]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 63, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_X6Xq7HppxpCN9tNwGKgcaV]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 0, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_viPr5Jn9LNKcdh6frMhCab]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 19, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_KrkzsSAjBfG29Yy78kxAvt.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Dead Souls by Samuel Taylor Coleridge', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_LpPSxmSQxsTnCzH2UcWcdo.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 14.87, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_Yt36ezW8iEjsgKD48Hso55.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_dSCdpyzM4LRzQUP2haasDQ.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Empire of Storms by Sarah J. Maas', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_UAYfdXRegUKmnf3322WMKd.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 12.88, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_uk2RyY4SN8TggxPBb2SLd4.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_LansabexsjMQJHWSZVz56G.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'First Kill by V.E. Schwab', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_2uWwHZEryKSta5oFn9hRAg.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 15.41, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_gzgQ2K4d2nKK5iG2vS7G7X.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_3cmQEjsr4K7QEmjfXGD2sa.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'The Hobbit by J.R.R. Tolkien', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_3a7d6p34g8eWVyMZLrnRxx.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 13.51, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_C8Cmn5CDEMgTNqnvxUbdoh.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_ZDwEMs8Gucj5FJrjNmpUkL.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'Lectures on Mystical Theology by Immanuel Kant', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_6HMeqvEN2MPWpAbhHREtkB.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 35.33, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_ofdFQjfoHK8fdP87WjKrds.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_QnRSxV5H2uihrhWdRsMgYc]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 16, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_biUdjDzy4cX358ZqSSM25g]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 58, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_PKP4xGGeZLzbfnyXXhs6rt]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 40, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_hJ684pbD9fHpkt8uz4F2wP]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 47, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_M36xJ6suMSDHMMbBpxTKWz]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 62, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_cvvqMUgRz6Agk5LGFZh5cp.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.34, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_VS7wqh99VRmWy9SQ7E9MkF.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_EWWSVEJqBynJECAy9xvxm6.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'apple (1kg)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_7xCafJE7y8UamCTjXU9NZQ.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2.26, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_Nd4r2kiDPwYnWXtgak8sbP.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_8YKedgWsmwnbwvucY5E6hu.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'plantain (1kg)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_z9VJZzUTnqcvmnA6mwxYxu.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 1.4, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_MrjmLmTWmPLDRNmAa4i2pY.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_DSCrV9nYGLNVxE4wGeustH.name]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 'elderberry (250g)', now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_hKx7i3YX957UAe6fy5V2St.price]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 5.01, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_HRV4mAhVNRje3Xbash9n5r.star]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was False, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.count.item_EWWSVEJqBynJECAy9xvxm6]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 96, now '<absent>'"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.count.item_8YKedgWsmwnbwvucY5E6hu]",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py",
+    "message": "collateral damage: was 2, now '<absent>'"
+   }
+  ]
+ }
+}
