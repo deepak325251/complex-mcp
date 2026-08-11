@@ -1,0 +1,288 @@
+[
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "get_my_name",
+      "dependencies": []
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "get_myuid",
+      "dependencies": [
+        0
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_portfolio",
+      "dependencies": [
+        1
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_pending_orders",
+      "dependencies": [
+        2
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "wait_trade_password",
+      "dependencies": [
+        3
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "place_market_order",
+      "dependencies": [
+        4
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "wait_trade_password",
+      "dependencies": [
+        5
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "place_market_order",
+      "dependencies": [
+        6
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightStock",
+      "tool_name": "get_portfolio",
+      "dependencies": [
+        7
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightSystem",
+      "tool_name": "now",
+      "dependencies": [
+        8
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        9
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        10
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "search_flights",
+      "dependencies": [
+        11
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightWeather",
+      "tool_name": "get_forecast",
+      "dependencies": [
+        12
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "get_flight_details",
+      "dependencies": [
+        13
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "check_bookings",
+      "dependencies": [
+        14
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "check_passengers",
+      "dependencies": [
+        15
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "add_passenger",
+      "dependencies": [
+        16
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "add_to_booking",
+      "dependencies": [
+        17
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "wait_payment_password",
+      "dependencies": [
+        18
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightFlight",
+      "tool_name": "checkout_bookings",
+      "dependencies": [
+        19
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "get_cart_summary",
+      "dependencies": [
+        20
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "delete_item_in_cart",
+      "dependencies": [
+        21
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "fuzzy_search_items",
+      "dependencies": [
+        22
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "get_shop_id_by_name",
+      "dependencies": [
+        23
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "add_to_cart",
+      "dependencies": [
+        24
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "wait_payment_password",
+      "dependencies": [
+        25
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightShop",
+      "tool_name": "checkout_all",
+      "dependencies": [
+        26
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "get_uid_from_name",
+      "dependencies": [
+        27
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "send_message",
+      "dependencies": [
+        28
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "acc_network",
+      "dependencies": [
+        29
+      ]
+    }
+  ],
+  [
+    {
+      "server_name": "LightTalk",
+      "tool_name": "send_message",
+      "dependencies": [
+        30
+      ]
+    }
+  ]
+]

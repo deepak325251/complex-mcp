@@ -1,0 +1,38 @@
+{
+  "reward": 1.0,
+  "recall": 9,
+  "total": 9,
+  "misbehave": 0,
+  "passed": true,
+  "gradeable": true,
+  "passed_tests": null,
+  "tool_summary": {
+    "tool_cnt": {
+      "search_items": {
+        "ok": 1
+      },
+      "get_shop_id_by_name": {
+        "ok": 1
+      },
+      "add_to_cart": {
+        "ok": 1
+      },
+      "get_cart_summary": {
+        "ok": 2
+      },
+      "delete_item_in_cart": {
+        "ok": 3
+      },
+      "checkout_all": {
+        "failed": 1,
+        "ok": 1
+      },
+      "wait_payment_password": {
+        "ok": 1
+      }
+    },
+    "valid_tool_calls": 10,
+    "invalid_tool_calls": 1,
+    "error_tool_calls": 0
+  }
+}

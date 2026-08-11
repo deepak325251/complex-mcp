@@ -1,0 +1,29 @@
+{
+  "results": {
+    "tool": {
+      "name": "complexmcp-benchmark"
+    },
+    "summary": {
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "pending": 0,
+      "skipped": 0,
+      "other": 0,
+      "start": 0,
+      "stop": 1786383990
+    },
+    "tests": [
+      {
+        "name": "mcp-stump/portfolio-liquidation-vip-trip#reward",
+        "status": "failed",
+        "duration": 0
+      }
+    ],
+    "extra": {
+      "task": "mcp-stump/portfolio-liquidation-vip-trip",
+      "model": "claude-opus-4-8",
+      "attempt": 1
+    }
+  }
+}

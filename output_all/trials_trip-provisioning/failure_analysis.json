@@ -1,0 +1,7 @@
+[
+  {
+    "attempt": 1,
+    "failure_class": "partial_completion",
+    "reason": "partial state changes: recall 14/37"
+  }
+]

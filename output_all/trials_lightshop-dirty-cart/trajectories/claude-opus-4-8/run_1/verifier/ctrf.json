@@ -1,0 +1,1906 @@
+{
+ "reportFormat": "CTRF",
+ "specVersion": "0.0.0",
+ "results": {
+  "tool": {
+   "name": "mcp-stump"
+  },
+  "summary": {
+   "tests": 314,
+   "passed": 313,
+   "failed": 1,
+   "skipped": 0,
+   "pending": 0,
+   "other": 0,
+   "start": 1786383649059,
+   "stop": 1786383649059
+  },
+  "tests": [
+   {
+    "name": "final_state_was_collected",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "spec_has_positive_keys",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "spec_has_negative_keys",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "terminal_gate",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py"
+   },
+   {
+    "name": "efs_coverage",
+    "status": "failed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/entry.py",
+    "message": "2/9 gold nodes have a resolved equivalence set; unresolved: LightShop::get_cart_summary, LightShop::delete_item_in_cart, LightShop::delete_item_in_cart, LightShop::delete_item_in_cart, LightShop::add_to_cart, LightShop::wait_payment_password"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.0]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.1]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.cart.2]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_d4pJDTCzjjHDetyztVZVAV]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_TXKkSx9HhpjTQjE4oVxAjN]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_es6UrxbgJVTgFsL6KhuJF6]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CPhH74o9Pa6kyTz3PLbqSF]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.trans_history.0.total]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "required_state_reached[LightShop.output.trans_history.0.info.shop_zk2tLrmdjJTemXRLB8kjTG.item_d4pJDTCzjjHDetyztVZVAV]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_FSZjmZixC2XzjBn2NnEf3C]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_EYM76B5gSYristTx2uLe9R]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_mqAx3nx2jQGpdFqhmAyXYh]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_5ZPY6jzPD23Yz8LBXqepcB]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_KQEjuWunjNjGQkTP4FGDaY]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_WGnagrrB7PbGwy3xhtpDzw]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_W7XPpPqP4wXx8z4ayHZxvM]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_C6zauhZBpmREBoW58SHqir]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_dCYcq5HD9zDSMC9c9qe9if]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_kohpQgjPAeJDJ2DRT3LnuW]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_npSms4nsVcSZ2JNC9KEhoc]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cfH3yo98xXRTPoNTU7xEJu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YJNgujUcdUDW5eACCHyevD]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_PH9moh7dv9zoQQzGq2KJxV]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_DszxKc7peCPwqRSgC3jaj8]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2dFrpESTi36WthjzDABhX4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_y4d7rVzK2qPJHpYJgVzDiK]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_s7ZkUS2m946m5BaQrQ9iWX]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_bKE9ddinx5ZmZePUiAhMyr]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_VR4a2nNzNR8NWicEeXtz7J]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_LeSg3WNT58rt6CBAjdaqAA]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NWAA2pdra6YZeRDdPmfLwP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_5q5kbTMg9F8qnh2DnmWtbP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_KkC2Q6kph6temK9ik5vwgV]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_DQ3QJ8uchRNFj3x9ynFyfu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_fUhpGB25Vpy6JT7thAGhVf]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2VnZEA42NtkuWv3fQBUxvM]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_3bdHaQ4XPPtHuJiRMT66h4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_PFh8V5RBPZeNPuwxx4kxVG]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_2syV5XcH5hTBYjz9Qmaqj5]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_fz59SkgCSXzvQxEew3KiQD]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uj7mFS5q9MQwPEtkXiNRqE]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uo8PUxHvNi38ap5L9BusaL]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_Wxio9dkV7QmzrFASG8gJ6v]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_TmKYWP6DaKRWAViMhfzgZn]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_doD2pquMkDQAvaym8bsFWi]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_xyvaTwyjUHkpRwP4yxrixP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NPAqZ6r2LgTfxS4QPUu4a7]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_UR4AmJgsp4XYuHoV7izLqs]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_tuQ3s7d3WDaPVjT79i8NKE]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_QomqYvHmdNCiGbqb8r95LF]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_uZ3V5Yn9fhve26SJyPdxr7]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cUmJiQbk2BqDFoM8iB5FxE]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_mjCpMR6zGEMZxH9vkw3KBM]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_NXsLKqpjpscaNoEVnKEggz]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_ryZMsnRBcCivGsMNwrr9p7]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_QzTugmXUVmg2TVzJcG7GEP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_qeANy2oXoFLPnzzE8cpRwq]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_Rf2gRx8Qi9sc9gGmTkosKN]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_rvXzkrZhFEDYdGtCfRgmx4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_cMaYrpdjnC3dfUGhHzyW3d]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_E3UDbexW2Pp64dxQU5sezb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_zYKSRosmTbfGDULkpb4ciY]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_LDJ9BTXw2sbaZZLRBjE7kA]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_MUaEfvCrWtPsJa4YCPpBMB]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_dc26yb9Kgrb9858faLNaq5]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_X2XiG6p4VaxoQMMDJVSBHc]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YmjicffiGJtapgLymjTpcn]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_p7qNtsanZxy7hERR4oBmau]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_ruQMgNPLcaAHWVbxQESeiv]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_8S676sJNzUXjuKBiZtTFjL]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_CPAsMPNWvEfSqU6mJjwXAb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_TVpZyyFd5a4XLGKQqhyaQK]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_RA3JjjVxMaS22y7Tw3stmK]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.count.item_YQDAZgUu3hmxpMAxAGQNmX]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_A8TmkN79MBp8G9V66fDwsn]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_n8SQTUc34NPMFvpntrjsEP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_nXXw9M3ib3kzBiXinrNDcA]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_efR4HNQkWBqnnbH77LSQUk]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_yN3CJxUViYgNB54GG5ejDw]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_e2gjzG4iqiEtbyTgeFaYnw]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2f83wT2BE5BPWv8oD6hBhu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DfgRwfEtT6iTkA4VXBBrv6]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_4T8tRqXJ4Spe6izddnLkZC]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_taKS85qrRb5cZHPe2vDzMk]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_V4X7gQqdjfseHZy4GqcWya]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_bMhREc8mhTMtDYAfEQ2FCU]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_wbtNwJv9amt63fUs2YNoDS]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_eCgda5eRhDjDu9nPHWeSgH]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_x3jNYvV5tKHyoUABDsS3wx]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_iGfhd5amz7eoe5mxWWLx8c]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_LmZjP4Zs7gHNpJGZy2pwFH]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_7VQccBTzfvuSg5pWyRyoUb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_opxMb9EQhfEksjZy4w5quq]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_b7feUvEME7iD3KpPDNhKx4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ToVQTsxT5BekdJdvnAjVdq]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_rSWaZzLNhYJVXASsbWE3Aq]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_5FXSqamrFSECDA3tNRKPwh]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_84wEuyBou5wH8JeADZwLUQ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_XtQM6fXSknxctKWtC6oL2J]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_46bH3c45KUsudFBJZRyZR3]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_qSvwB7UHww5oMcnpJFU5HA]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_gUyYs6bXDxcpgRgTs5LQZh]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_xi5JUjoqUrxyswVKBRAUUi]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2LDUJuBMooHCp74ekUoeA4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CDJquxHRSFaDqf85U7hcgW]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DwzhcgvZYviau3rVomQzoH]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_78P82i4ULNXiEMQfADY5wr]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ZRzj4zRdi9cvriFEEPNrc9]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_q7fjkeSQ7HpTrEW9U32fmc]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_26UAhriamoq6c78FjLFBnN]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9aMdMCZ3FgXSKpRV2sfry3]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_gGQdDBRCcMLq8U889asLkv]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_oX7PUJguXVynHGyxfP4GeR]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ibkPWArHSGMdQ4DTfSzhni]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_sFQXA4eRMESfUTaJ2btAoU]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_fGiLbv4HouYFeQu8XTLrvb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_hmiMCKqn227e6yiFgujVe4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_zPq4k7MX4N5JBB4A8HBVea]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9EJAi7P4kqMvnRTfh7VcYd]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_L5CXtvqpHm5na2szXu4dxc]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_HpsxdBZA5YpEsLH7qaVark]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_hJFksg3porohMigVipKCUf]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_u3sij55Vzmsmzcun6dJU2n]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_N6ainwqdv75d7QfGtfKTyo]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_RjtrehHeGwB6coBQVxPbdP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_zMeUQAup2zedwmDak5dM4m]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mMSBzhEpeEW9AhsvC93rQQ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_KM7Ti4EusxiaeEC3dj7ewu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mPwd8eqgxeMbgBcv8Y3YgB]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_JbBatXoxBWdvxWuUvRY7jd]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_EuBPVyWbjZM7F3Su4MUwFQ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_xspQCqSpuaQacwRLV2uwYT]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_obs6JYF5o5VN7FZyYr9oin]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_AT8qK5mqzeqZ2Cpsm6CotQ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_8kXvGyLZ7fEht5hmBj7Ytp]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_g8AEGEsUB8KUdUWUGyMrP8]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Qik6Q3uz8kUtprRUoN3HN4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_SVJRG7DNL8cBpK3Bqe2ys7]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Rr7fX7pQrvwreezFRHDXGf]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_yNGPRdiUFY5JiUzqDQvfne]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_ZtEPQPdM54rz8CqyC4pMCJ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_EJthxi78d99WMFsifGtgqe]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_DA5hqq3FaVrd73nsmDgRgA]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_Q8WyDqfo2ME8ZyN5hgEe85]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_nxLacg789TgZwSSa5FY5B4]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_HkzHdafnxmBnREemJNEpxb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_CYiFUVHbLitSWSxq872bJi]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_2QKqMuhQZpUirFYjtDp4PC]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_YvRiqbqsCcHjW66nyq86mB]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_YkHN4rjgvk8gFx7VQJ3Eue]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_9xVhXi4MEjwHYLZ53GQ5uw]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_XtXxZ8jUsrTrvKQVKhThMg]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_5rJGqQgQZpMcSnuGn2LHUa]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_s8z9jL5JAY2z7kRpM7AZu7]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_mav6TjgM9R6eZmQC9MW5zv]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_LmrBpZDJC3VwBnwfURunqK]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_jsmUnvRcnEursbENntqJh8]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_bZWBfBTeaT4CwLVR8xQtYY]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.count.item_czQabACaLECiHsQyfrjv7F]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightSystem.status]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_2zR59PHkciQX7dXpQrfjzh.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_epGrqGMrVv6xHrGUvNAQNX.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.items.item_gV7Eoqen5BzgWA6MvNquxn.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_Amxw6HE8vCyGZmabBE4MAo.count.item_zmJmZ5S3bgjHxmtxx9cRF5]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_XYHqwXrRwvo8VHWFB5zMTM.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_ExvQJEGSuxegZX7XKTvoYz.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_dVEUycsMfMQzz6hotYnfLM.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_hWddDbKv22YgBWyXnBdnpa.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_PsijJDX6zKLUYiS4SHPuV3.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_N3RS9h3gBJPvY6hh7iB8yq.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_zeL67CtW6Nunf5sojJcppf.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_Bk8hncmvn8BMNrw8te5iBU.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_7wTRJhTkz6TFLtsVFBTerg.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_s4vLmDMBRgzKBMD37cTVJL.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_foqsnKkdWZEpGk5fRpctVZ.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_XGHQG7qe24t3XjskyUHsHt.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_ZofmK2pBq37dFW6i9KeUTM.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_zTrgHUJ3Gp7Bsy6pP5hCTT.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_rLgwSkso4faXPmcDQC6Jvr.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_jd3WG4ZDfQXtRQM4hisbpC.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.items.item_CwshHRDgVkMRpaAp5AbZDc.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_5UqustVGMtyvhMGmtdDJNQ]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_7ykrevPxyx3xjxP4sPQjUd]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_ESsbs8RvDuvdjERFpGHWbb]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_KhSTMBNeSwQhtFX22z66V9]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_U9tmwzPAgbaXd7Rn6iswTD]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_HsuY8ssZWhhw4cEMDbrKRS.count.item_ZL4RgkhXrJY3HwUynfsHPp]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_pVd6tfxMr4stbimt99HuqM.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_pFGpKhcLcG22fNCfUH8o6r.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_6FvNELw6x7u5RpU4fKhFkW.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_X64Jvqpzw9DrQJuXgnt2DL.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_B2FmpNNMMNsLV7cNtVverV.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_J9Ugwt7LbDuo47NNC3Pdjm.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.items.item_PFRsv83KJrg2yamVw6KCfD.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.count.item_RTCuQqyBPFiCR7Bpq47KNK]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_xXxEcmEeCkbai2iudk5nDk.count.item_HWqBLmSqQJdLJZVr8Ro54q]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_KQEjuWunjNjGQkTP4FGDaY.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_YJNgujUcdUDW5eACCHyevD.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_NWAA2pdra6YZeRDdPmfLwP.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_2syV5XcH5hTBYjz9Qmaqj5.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_NPAqZ6r2LgTfxS4QPUu4a7.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_QzTugmXUVmg2TVzJcG7GEP.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_d4pJDTCzjjHDetyztVZVAV.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_zk2tLrmdjJTemXRLB8kjTG.items.item_CPAsMPNWvEfSqU6mJjwXAb.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_yN3CJxUViYgNB54GG5ejDw.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_wbtNwJv9amt63fUs2YNoDS.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_ToVQTsxT5BekdJdvnAjVdq.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_2LDUJuBMooHCp74ekUoeA4.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_gGQdDBRCcMLq8U889asLkv.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_es6UrxbgJVTgFsL6KhuJF6.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_mMSBzhEpeEW9AhsvC93rQQ.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_8kXvGyLZ7fEht5hmBj7Ytp.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_DA5hqq3FaVrd73nsmDgRgA.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_XtXxZ8jUsrTrvKQVKhThMg.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_wQqxLCmN7GAiPdmFGPoPBz.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_yJvUKTongv5NmysVW3uTou.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_6NfJBMGbhnfmFsViqLHdJY.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_iG3Sf9VsCyXgS33d5rx7fZ.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_eyfXNRzvehAp4Xk2Um3PsM.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_zQFeVgoLuQJ6fuSJ9Mr9Si.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_oayK8o6viJC3fCKrHzyeNp.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_UXFA2MHh68Lj84RXmNXuhK.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_FWnbprysScHY4qZSErdCUs.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_BJFV4Tqrb5AieyyaVWbRFT.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.items.item_zc6BkUwD7fY5DopEZvAvty.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_qoewBs9vb27B6VF4oJZesf.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_SKK5rT8vykAdVirRsEaRjd.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_ipRunTbMKo9GPpEYGpeZmG.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_zAPdjv7RnYNEyPQFGPW55D.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_nsQGymfiwDyPQ2GGxHDKuE.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_F4kNs9piuZihhRAg5MAofY.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_EPWB4faR26p34cPhjqLJHB.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_eWozs8w56AcTAtApxYQQbr.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_39kRghoAbiGVsmUGajyK35.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_uRaYAt9bQsM4zGKZNa5iz7.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_SCvHVhySFV5wLKfcdmbtrn.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_UY2Gdfuq4jcqLYzz9vQwVL.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_MQAG4Vw2zgWTmBzT8LyeMU.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_tHauoLEpQG853FxVdcTgLi.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.items.item_N8dp9MBJWPxm7cJrwcfUcT.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_tbQqwQSyvZGTWLDF5dAwve]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_AJxxfrkUFXLK3zVq8CNkHa]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_62Q6nZAm4y6U65ySM7K79T]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_xscowFpPH6CtE73vyz4ZNu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bdeovjLfNiNMzGhPUt7B74.count.item_CoejkXD7CbiGGPVRRCmXLv]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_gNbqTsQEtJNYkrqdaestkm.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_PsW4qZ8Gb3ET5SbmWHYRAP.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_BLWCTfc6qnpPbYrejTBuYL.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_6Vt6yjcmpcYFzhBZoF47DE.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_Ma7nvxdfRayQk5L9LZVMMP.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_3mYDf9Ya3DwLKsVzhh7EWF.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_2H7GpaWFdPnbkAGUqqiaAn.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_ES4weir3ZqqXMp6pg2uXTk.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_QfmzAfBJNt3aRDZ8PaWvbT.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_9wqbRjotxcd5AbdBrvG7XB.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.items.item_3UGqPosASssFHbWnRKRKDo.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_VRAqbTsM2dKPCke6nFP4hD]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_5pfSVFVuHRKFPtyeDQHghs]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_WYrXPmmKyofMArsm5CtzpH.count.item_KzoUNJTK3wmR3oZxFtzbkg]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_b9tegpkY7MaNnjCoYLssMA.items.item_egX3ibEvLZuwUFmyySiMow.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_b9tegpkY7MaNnjCoYLssMA.items.item_jo7YSyBwf7PTcK9hoR6ghu.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_mRfDa6MvHAUKdSfPocRmPH.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_PSzGVH5UUMi7r3DNAFLFBX.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_t3UpzPUkJXbR6jx2Hszqus.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_8HhJ65h7EBxjAWfkJqX4MH.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_CWoRTVjPZHnzMh7NiJk7im.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_GhosUCMRgjxasfzJHDcFwC.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_gn9EfecReUzp4zEdRPJY3e.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_wbEYAZB52HRNLnrUFSuoJL.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_9LnpuUpkSsHogQXmkX4WoA.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_J97F3hg8q78SA9trWmDETR.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.items.item_TThQoerFjPrHAFYZjCET8Q.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_sDTxww47qQcqDK6i9g7fuL]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_X6Xq7HppxpCN9tNwGKgcaV]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_bXv7GJoU7APSdjawFnJACm.count.item_viPr5Jn9LNKcdh6frMhCab]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_KrkzsSAjBfG29Yy78kxAvt.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_LpPSxmSQxsTnCzH2UcWcdo.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_Yt36ezW8iEjsgKD48Hso55.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_dSCdpyzM4LRzQUP2haasDQ.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_UAYfdXRegUKmnf3322WMKd.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_uk2RyY4SN8TggxPBb2SLd4.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_LansabexsjMQJHWSZVz56G.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_2uWwHZEryKSta5oFn9hRAg.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_gzgQ2K4d2nKK5iG2vS7G7X.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_3cmQEjsr4K7QEmjfXGD2sa.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_3a7d6p34g8eWVyMZLrnRxx.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_C8Cmn5CDEMgTNqnvxUbdoh.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_ZDwEMs8Gucj5FJrjNmpUkL.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_6HMeqvEN2MPWpAbhHREtkB.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.items.item_ofdFQjfoHK8fdP87WjKrds.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_QnRSxV5H2uihrhWdRsMgYc]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_biUdjDzy4cX358ZqSSM25g]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_PKP4xGGeZLzbfnyXXhs6rt]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_hJ684pbD9fHpkt8uz4F2wP]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_ymSnFnpJGf87bfvpqb2X8M.count.item_M36xJ6suMSDHMMbBpxTKWz]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_cvvqMUgRz6Agk5LGFZh5cp.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_VS7wqh99VRmWy9SQ7E9MkF.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_EWWSVEJqBynJECAy9xvxm6.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_7xCafJE7y8UamCTjXU9NZQ.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_Nd4r2kiDPwYnWXtgak8sbP.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_8YKedgWsmwnbwvucY5E6hu.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_z9VJZzUTnqcvmnA6mwxYxu.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_MrjmLmTWmPLDRNmAa4i2pY.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_DSCrV9nYGLNVxE4wGeustH.name]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_hKx7i3YX957UAe6fy5V2St.price]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.items.item_HRV4mAhVNRje3Xbash9n5r.star]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.count.item_EWWSVEJqBynJECAy9xvxm6]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   },
+   {
+    "name": "untouched_state_unchanged[LightShop.output.shops.shop_f7pccFy5BroAkaA3SqV6FM.count.item_8YKedgWsmwnbwvucY5E6hu]",
+    "status": "passed",
+    "duration": 0,
+    "filePath": "mcp_stump/verify/judge.py"
+   }
+  ]
+ }
+}

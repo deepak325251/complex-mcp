@@ -1,0 +1,6 @@
+[
+  [{"server_name": "LightTalk", "tool_name": "get_uid_from_name", "dependencies": []}],
+  [{"server_name": "LightTalk", "tool_name": "delete_chat_history", "dependencies": [0]}],
+  [{"server_name": "LightTalk", "tool_name": "get_uid_from_name", "dependencies": []}],
+  [{"server_name": "LightTalk", "tool_name": "send_message", "dependencies": [2]}]
+]

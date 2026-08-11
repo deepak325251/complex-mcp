@@ -1,0 +1,543 @@
+{
+  "schema_version": "ATIF-v1.7",
+  "trajectory_id": "complexmcp",
+  "agent": {
+    "name": "complexmcp",
+    "version": "1.0.0",
+    "model_name": "claude-opus-4-8"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_1",
+          "function_name": "search_flights",
+          "arguments": {
+            "departure": "San Francisco",
+            "arrival": "Miami",
+            "date": "2026-04-01"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_1",
+            "content": "{\"status\": \"ok\", \"output\": [\"flight_fEjmsLXuUDSeE9hjAPTeYP\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 2,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_2",
+          "function_name": "get_forecast",
+          "arguments": {
+            "location": "Miami",
+            "days": 1
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_2",
+            "content": "{\"status\": \"ok\", \"output\": [{\"date\": \"2026-03-31\", \"condition\": {\"id\": \"rain\", \"name\": \"Rain\", \"description\": \"Precipitation in the form of rain. Intensity ranges from drizzle to heavy showers.\"}, \"temp_c\": 23.5, \"precip_mm\": 4.7}]}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 3,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_3",
+          "function_name": "check_passengers",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_3",
+            "content": "{\"status\": \"ok\", \"output\": []}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 4,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_4",
+          "function_name": "get_portfolio",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_4",
+            "content": "{\"status\": \"ok\", \"output\": \"You currently hold no positions.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 5,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_5",
+          "function_name": "get_cart_summary",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_5",
+            "content": "{\"status\": \"ok\", \"output\": [{\"caid\": \"cart_RjxMw8oo8NG2Wram7RoR63\", \"sid\": \"shop_LxWHCZ9LJvceNo6UBbrcKY\", \"tid\": \"item_pXjHpVsgmKarY9VRe7kzfR\", \"count\": 1}]}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 6,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_6",
+          "function_name": "get_flight_details",
+          "arguments": {
+            "fid": "flight_fEjmsLXuUDSeE9hjAPTeYP"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_6",
+            "content": "{\"status\": \"ok\", \"output\": {\"fid\": \"flight_fEjmsLXuUDSeE9hjAPTeYP\", \"departure\": \"San Francisco, San Francisco International Airport\", \"arrival\": \"Miami, Miami International Airport\", \"depature_time\": \"2026-04-01 03:57:50\", \"arrival_time\": \"2026-04-01 09:06:50\", \"duration\": \"309 min\", \"price\": {\"ecomony\": 2470, \"business\": 4940, \"first\": 11115.0}, \"seat_count\": {\"economy\": 47, \"business\": 19, \"first\": 6}}}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 7,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_7",
+          "function_name": "get_forecast",
+          "arguments": {
+            "location": "Miami",
+            "days": 3
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_7",
+            "content": "{\"status\": \"ok\", \"output\": [{\"date\": \"2026-03-31\", \"condition\": {\"id\": \"rain\", \"name\": \"Rain\", \"description\": \"Precipitation in the form of rain. Intensity ranges from drizzle to heavy showers.\"}, \"temp_c\": 23.5, \"precip_mm\": 4.7}, {\"date\": \"2026-04-01\", \"condition\": {\"id\": \"snow\", \"name\": \"Snow\", \"description\": \"Snowfall with varying accumulation rates depending on temperature and humidity.\"}, \"temp_c\": 19.4, \"precip_mm\": 9.8}, {\"date\": \"2026-04-02\", \"condition\": {\"id\": \"partly_cloudy\", \"name\": \"Partly Cloudy\", \"description\": \"Sun mixed with clouds. Mild temperatures and light breeze.\"}, \"temp_c\": 30.6, \"precip_mm\": 2.9}]}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 8,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_8",
+          "function_name": "delete_item_in_cart",
+          "arguments": {
+            "caid": "cart_RjxMw8oo8NG2Wram7RoR63"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_8",
+            "content": "{\"status\": \"ok\", \"output\": \"Removed item (ID: cart_RjxMw8oo8NG2Wram7RoR63) from your cart.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 9,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_9",
+          "function_name": "search_items",
+          "arguments": {
+            "item_name": "travel steamer"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_9",
+            "content": "{\"status\": \"ok\", \"output\": [{\"tid\": \"item_4KpVcHKAf2S5P7ATdo3kuV\", \"name\": \"Jiffy J-2 Travel Steamer\", \"price\": 36.27, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_z4VrmquDcPwmooMCSYWaud\", \"name\": \"Jiffy J-2 Travel Steamer\", \"price\": 41.07, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_hjw4wsnH9C9uAmfKMAWeQs\", \"name\": \"PurSteam PS-388 Travel Steamer\", \"price\": 9.29, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_GcogvgYMobnnvjWm3SPQ38\", \"name\": \"Jiffy J-4000 Travel Steamer\", \"price\": 108.01, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_hf5zN34q3aoshQN6XPmp8m\", \"name\": \"Jiffy J-2000 Travel Steamer\", \"price\": 30.64, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_yEEvAGchWeJUZamJCvCewW\", \"name\": \"Jiffy J-2 Travel Steamer\", \"price\": 38.29, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_RfuPacK39JPwfHEDJMYThn\", \"name\": \"PurSteam PS-910 Travel Steamer\", \"price\": 17.11, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_K3EtHg3Nh5acCFLsLbGiTQ\", \"name\": \"PurSteam PS-910 Travel Steamer\", \"price\": 29.22, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_mP6rsoeFYP4eAunszknJV3\", \"name\": \"Rowenta IS6520 Travel Steamer\", \"price\": 79.67, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_hzALNYaSTAHMBGkceoW9L6\", \"name\": \"Jiffy J-2 Travel Steamer\", \"price\": 29.01, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_H5f7YFmk53CZ45qWiGfBJ9\", \"name\": \"Conair Turbo ExtremeSteam Travel Steamer\", \"price\": 22.61, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_6jtFodnzbxMW5GEocgnby4\", \"name\": \"Rowenta DR8080 Travel Steamer\", \"price\": 20.49, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_vxzGg6iyrKuxJmc2nRwBLt\", \"name\": \"Jiffy J-4000 Travel Steamer\", \"price\": 109.83, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_UWUEwpKmGQDb4vYdmL77tj\", \"name\": \"PurSteam PS-388 Travel Steamer\", \"price\": 11.54, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_yufwrXTritadr3ZWu4gZve\", \"name\": \"PurSteam PS-910 Travel Steamer\", \"price\": 25.58, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_NgkQB9fGMmh7JNs5QRi92Z\", \"name\": \"Rowenta IS6520 Travel Steamer\", \"price\": 81.1, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_cLkRoaYtbaEshZgwc4JESC\", \"name\": \"Rowenta IS6520 Travel Steamer\", \"price\": 77.13, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_TdWzjZduCGat5hCcSsBBXp\", \"name\": \"Conair Turbo ExtremeSteam Travel Steamer\", \"price\": 25.72, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_fCn5L4LooHarEKNxmjKhuU\", \"name\": \"Rowenta IS6520 Travel Steamer\", \"price\": 68.73, \"shop\": \"Grater Grove\"}, {\"tid\": \"item_SorMzGrjdLaXEfSCLi7Spf\", \"name\": \"PurSteam PS-910 Travel Steamer\", \"price\": 22.94, \"shop\": \"Grater Grove\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 10,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_10",
+          "function_name": "get_my_name",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_10",
+            "content": "{\"status\": \"ok\", \"output\": \"Riley Medina\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 11,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_11",
+          "function_name": "get_shop_id_by_name",
+          "arguments": {
+            "shop_name": "Grater Grove"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_11",
+            "content": "{\"status\": \"ok\", \"output\": \"shop_LxWHCZ9LJvceNo6UBbrcKY\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 12,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_12",
+          "function_name": "get_uid_from_name",
+          "arguments": {
+            "name": "Arya Barnes"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_12",
+            "content": "{\"status\": \"ok\", \"output\": \"user_vjCfSD9oxibdfiUEMDzdkm\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 13,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_13",
+          "function_name": "add_passenger",
+          "arguments": {
+            "name": "Riley Medina",
+            "light_talk_uid": "empty"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_13",
+            "content": "{\"status\": \"ok\", \"output\": \"You have successfully added a new passenger : {'name': 'Riley Medina', 'light_talk_uid': 'empty'}, index = 0\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 14,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_14",
+          "function_name": "add_to_cart",
+          "arguments": {
+            "sid": "shop_LxWHCZ9LJvceNo6UBbrcKY",
+            "tid": "item_hjw4wsnH9C9uAmfKMAWeQs",
+            "cnt": 1
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_14",
+            "content": "{\"status\": \"ok\", \"output\": \"Added 1 \\u00d7 'PurSteam PS-388 Travel Steamer' (ID: item_hjw4wsnH9C9uAmfKMAWeQs) to your cart.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 15,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_15",
+          "function_name": "add_to_booking",
+          "arguments": {
+            "fid": "flight_fEjmsLXuUDSeE9hjAPTeYP",
+            "seat_class": "business",
+            "passenger_idx": 0
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_15",
+            "content": "{\"status\": \"ok\", \"output\": \"You have successfully added one booking into list\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 16,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_16",
+          "function_name": "LightFlight_wait_payment_password",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_16",
+            "content": "{\"status\": \"ok\", \"output\": \"The user has already entered the correct password\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 17,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_17",
+          "function_name": "wait_payment_password",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_17",
+            "content": "{\"status\": \"ok\", \"output\": \"The user has entered the correct payment password.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 18,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_18",
+          "function_name": "checkout_bookings",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_18",
+            "content": "{\"status\": \"ok\", \"output\": \"You have successfully checkout all bookings\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 19,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_19",
+          "function_name": "checkout_all",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_19",
+            "content": "{\"status\": \"ok\", \"output\": \"Checkout successful. Transaction ID: trans_yixKDHrtMo9CgRQbcvWNuT.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 20,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_20",
+          "function_name": "send_message",
+          "arguments": {
+            "uid": "user_vjCfSD9oxibdfiUEMDzdkm",
+            "content": "flight_fEjmsLXuUDSeE9hjAPTeYP"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_20",
+            "content": "{\"status\": \"internel error\", \"output\": \"It appears there's a network issue, please try again.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 21,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_21",
+          "function_name": "send_message",
+          "arguments": {
+            "uid": "user_vjCfSD9oxibdfiUEMDzdkm",
+            "content": "flight_fEjmsLXuUDSeE9hjAPTeYP"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_21",
+            "content": "{\"status\": \"internel error\", \"output\": \"It appears there's a network issue, please try again.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 22,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_22",
+          "function_name": "acc_network",
+          "arguments": {}
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_22",
+            "content": "{\"status\": \"ok\", \"output\": \"You have successfully accelerated the network for the LightTalk app.\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 23,
+      "source": "agent",
+      "reasoning_content": "",
+      "model_name": "claude-opus-4-8",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_23",
+          "function_name": "send_message",
+          "arguments": {
+            "uid": "user_vjCfSD9oxibdfiUEMDzdkm",
+            "content": "flight_fEjmsLXuUDSeE9hjAPTeYP"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_23",
+            "content": "{\"status\": \"ok\", \"output\": \"You have successfully sent one message to Arya Barnes (user_vjCfSD9oxibdfiUEMDzdkm)\"}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 24,
+      "source": "agent",
+      "message": "All done. Here's the summary:\n\n**Flight** — Booked San Francisco → Miami on 2026-04-01 (flight `flight_fEjmsLXuUDSeE9hjAPTeYP`, departs 03:57, arrives 09:06). The forecast for your landing day (April 1) showed **snow**, not clear, so I put you in **business class** and paid for the booking.\n\n**Trading account** — Nothing to do: your portfolio held no positions, so there was nothing to sell.\n\n**Shopping cart** — Removed the item you didn't recognize and added the cheapest travel steamer instead: **PurSteam PS-388 Travel Steamer at $9.29**. Checkout completed (transaction `trans_yixKDHrtMo9CgRQbcvWNuT`).\n\n**Message** — Sent the flight number to Arya Barnes (message body was just the flight identifier, nothing else). The first couple of sends hit a network error, so I ran the network accelerator and the retry went through successfully.\n\nOne heads-up: the only flight identifier the system exposes is the internal FID (`flight_fEjmsLXuUDSeE9hjAPTeYP`), so that's what Arya received — there's no separate short \"flight number\" available in the data.\n\n[END]",
+      "model_name": "claude-opus-4-8"
+    }
+  ],
+  "final_metrics": {
+    "total_steps": 24
+  }
+}

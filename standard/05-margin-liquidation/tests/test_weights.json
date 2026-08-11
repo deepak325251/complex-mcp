@@ -1,0 +1,16 @@
+{
+  "test_read_pending_orders": 1,
+  "test_read_portfolio": 1,
+  "test_cancelled_pending_order": 2,
+  "test_authorized_each_order": 2,
+  "test_liquidated_pypl": 1,
+  "test_liquidated_sbux": 1,
+  "test_liquidated_zm": 1,
+  "test_opened_aapl_short": 3,
+  "test_found_toy_story": 2,
+  "test_messaged_link_to_account_holder": 3,
+  "test_exactly_one_message": 2,
+  "test_guard_message_to_other_contact": -4,
+  "test_guard_placed_buy_order": -3,
+  "test_guard_messaged_non_link": -3
+}

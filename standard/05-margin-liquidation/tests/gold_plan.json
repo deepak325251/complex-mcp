@@ -1,0 +1,162 @@
+[
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "get_pending_orders",
+   "dependencies": []
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "cancel_order",
+   "dependencies": [
+    0
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "get_portfolio",
+   "dependencies": [
+    1
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "wait_trade_password",
+   "dependencies": [
+    2
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "place_market_order",
+   "dependencies": [
+    3
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "wait_trade_password",
+   "dependencies": [
+    4
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "place_market_order",
+   "dependencies": [
+    5
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "wait_trade_password",
+   "dependencies": [
+    6
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "place_market_order",
+   "dependencies": [
+    7
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "wait_trade_password",
+   "dependencies": [
+    8
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightStock",
+   "tool_name": "place_market_order",
+   "dependencies": [
+    9
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightSystem",
+   "tool_name": "now",
+   "dependencies": [
+    10
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightNews",
+   "tool_name": "search",
+   "dependencies": [
+    11
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightNews",
+   "tool_name": "get_news_url",
+   "dependencies": [
+    12
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightTalk",
+   "tool_name": "get_myuid",
+   "dependencies": [
+    13
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightTalk",
+   "tool_name": "acc_network",
+   "dependencies": [
+    14
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightTalk",
+   "tool_name": "get_myuid",
+   "dependencies": [
+    15
+   ]
+  }
+ ],
+ [
+  {
+   "server_name": "LightTalk",
+   "tool_name": "send_message",
+   "dependencies": [
+    16
+   ]
+  }
+ ]
+]

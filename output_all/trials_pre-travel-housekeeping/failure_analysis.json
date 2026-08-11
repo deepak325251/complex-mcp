@@ -1,0 +1,7 @@
+[
+  {
+    "attempt": 1,
+    "failure_class": "tool_error_unrecovered",
+    "reason": "agent hit 7 tool errors and did not recover"
+  }
+]

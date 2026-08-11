@@ -1,0 +1,36 @@
+{
+  "task": "mcp-stump/margin-liquidation",
+  "model": "claude-opus-4-8",
+  "agent": "claude-code",
+  "seed": null,
+  "generated_at": "2026-08-11T12:29:54.281886+00:00",
+  "metrics": {
+    "n": 1,
+    "c": 0,
+    "pass@1": 0.0,
+    "p_hat": 0.0,
+    "ci95": [
+      0.0,
+      0.793457
+    ],
+    "pass@k": {
+      "1": 0.0
+    },
+    "pass^k": {
+      "1": 0.0
+    },
+    "failure_breakdown": {
+      "unknown": 1
+    }
+  },
+  "attempts": [
+    {
+      "attempt": 2,
+      "passed": false,
+      "reward": null,
+      "completion_rate": 0.0,
+      "misbehaving_rate": 0.0,
+      "failure_class": "unknown"
+    }
+  ]
+}

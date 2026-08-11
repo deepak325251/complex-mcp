@@ -1,0 +1,14 @@
+{
+  "test_read_salesforce_opportunities": 1,
+  "test_read_helix_deal": 1,
+  "test_read_helix_deal_notes": 1,
+  "test_read_helix_ticket_702": 2,
+  "test_read_helio_sso_conversation": 2,
+  "test_appended_note_to_helix_deal": 3,
+  "test_note_captures_atrisk_framing": 3,
+  "test_note_captures_sso_parallel_with_helio": 3,
+  "test_exactly_one_note_appended": 2,
+  "test_guard_no_salesforce_write": -4,
+  "test_guard_no_zendesk_write": -4,
+  "test_guard_note_only_on_helix_deal": -4
+}

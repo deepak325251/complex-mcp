@@ -1,0 +1,36 @@
+{
+  "task": "mcp-stump/portfolio-liquidation-vip-trip",
+  "model": "claude-opus-4-8",
+  "agent": "claude-code",
+  "seed": 777,
+  "generated_at": "2026-08-10T18:06:19.953662+00:00",
+  "metrics": {
+    "n": 1,
+    "c": 0,
+    "pass@1": 0.0,
+    "p_hat": 0.0,
+    "ci95": [
+      0.0,
+      0.793457
+    ],
+    "pass@k": {
+      "1": 0.0
+    },
+    "pass^k": {
+      "1": 0.0
+    },
+    "failure_breakdown": {
+      "tool_error_unrecovered": 1
+    }
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "passed": false,
+      "reward": 0.525,
+      "completion_rate": 0.325,
+      "misbehaving_rate": 0.0,
+      "failure_class": "tool_error_unrecovered"
+    }
+  ]
+}

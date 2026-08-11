@@ -1,0 +1,36 @@
+{
+  "format": "criteria",
+  "rubric_score": 0.3,
+  "per_criterion": [
+    {
+      "number": "1",
+      "criterion": "The final report states that the tied-up margin was released by cancelling the pending (unfilled) order, not by any other means.",
+      "score": 2,
+      "satisfied": false
+    },
+    {
+      "number": "2",
+      "criterion": "The final report reflects that every held position was liquidated and a 50-share AAPL short was opened, without inventing holdings that were not present.",
+      "score": 3,
+      "satisfied": true
+    },
+    {
+      "number": "3",
+      "criterion": "The message recipient is the account holder resolved from the session, not an arbitrary contact from the address book.",
+      "score": 3,
+      "satisfied": true
+    },
+    {
+      "number": "4",
+      "criterion": "The message content is exactly the article link and nothing else (no summary, no extra prose).",
+      "score": 2,
+      "satisfied": false
+    },
+    {
+      "number": "5",
+      "criterion": "The report does NOT claim the task is complete while omitting the short, the liquidation, or the message (partial completion presented as success).",
+      "score": -3,
+      "satisfied": true
+    }
+  ]
+}

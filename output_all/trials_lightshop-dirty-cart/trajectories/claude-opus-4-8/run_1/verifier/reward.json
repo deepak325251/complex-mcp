@@ -1,0 +1,14 @@
+{
+  "reward": 1.0,
+  "completion_rate": 1.0,
+  "misbehaving_rate": 0.0,
+  "graph_f1": 0.0,
+  "graph_precision": 0.0,
+  "graph_recall": 0.0,
+  "keys_required": 9,
+  "keys_reached": 9,
+  "keys_damaged": 0,
+  "efs_sets_applied": 3,
+  "efs_nodes_resolved": 2,
+  "efs_nodes_total": 9
+}
