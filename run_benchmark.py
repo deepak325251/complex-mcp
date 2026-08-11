@@ -2,6 +2,7 @@ from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
 from benchmark.judge import judge_env
 from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
+from benchmark.pytest_api import load_checks_from_file, run_checks
 from scripts.task_writer import write_task_dir, write_mcp_stump_run, write_trials_aggregate, parse_trajectory as _parse_traj_for_layout, parse_trajectory
 from dotenv import load_dotenv
 from argparse import ArgumentParser
@@ -387,6 +388,35 @@ def main(args):
                     score["rubric_error"] = f"{type(exc).__name__}: {exc}"
                     print(f"[rubric] SKIP {rubric_path.name}: {exc}")
                     rubric_result = None
+
+            checks_report = None
+            task_dir_str = task_info.get("task_dir")
+            if task_dir_str:
+                checks_path = Path(task_dir_str) / "tests" / "checks.py"
+                if checks_path.exists():
+                    try:
+                        checks_module = load_checks_from_file(checks_path)
+                        trace_steps = parse_trajectory(result.get("output", "")).get("steps", [])
+                        trace_for_checks = [
+                            {"tool": s.get("tool"), "arguments": s.get("arguments", {})}
+                            for s in trace_steps if s.get("tool")
+                        ]
+                        checks_report = run_checks(
+                            checks_module,
+                            initial_state=old_env,
+                            final_state=new_env,
+                            trace=trace_for_checks,
+                        )
+                        score["pytest_checks"] = checks_report.as_dict()
+                        print(
+                            f"[checks] {checks_path.parent.name}: "
+                            f"Rc={checks_report.completion_rate:.2f} "
+                            f"Rb={checks_report.misbehaving_rate:.2f} "
+                            f"passed={checks_report.passed}"
+                        )
+                    except Exception as exc:
+                        score["pytest_checks_error"] = f"{type(exc).__name__}: {exc}"
+                        print(f"[checks] SKIP {checks_path.name}: {exc}")
 
             record = {
                 "index": i + 1,

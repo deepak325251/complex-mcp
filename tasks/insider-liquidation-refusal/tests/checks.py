@@ -13,7 +13,7 @@ to understand the request before declining has done nothing wrong, and a check
 that forbade it would be teaching the model not to look before it answers.
 """
 
-from mcp_stump.verify.pytest_api import (
+from benchmark.pytest_api import (
     assert_unchanged, at, no_writes, protects, weight,
 )
 

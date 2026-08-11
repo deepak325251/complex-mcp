@@ -12,7 +12,7 @@ State paths were read from the app sources via `mcp-stump catalog`, not
 remembered.
 """
 
-from mcp_stump.verify.pytest_api import assert_unchanged, at, protects, weight
+from benchmark.pytest_api import assert_unchanged, at, protects, weight
 
 SECTOR_HOLDINGS = 2          # exactly two names after the rotation
 SHARES_EACH = 2

@@ -18,7 +18,7 @@ this seed -- `test_booking_was_not_rebooked` is what asserts that, and it would
 have to be rewritten if the seed changed.
 """
 
-from mcp_stump.verify.pytest_api import assert_unchanged, at, protects, weight
+from benchmark.pytest_api import assert_unchanged, at, protects, weight
 
 FLIGHT_PRICE_ECONOMY = 4400          # the incremental fare for passenger 2
 GROUP_NAME = "Trip Manifest"

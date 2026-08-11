@@ -235,6 +235,9 @@ def _write_detail_json(run_dir: Path, score: dict, rubric_result: dict | None,
             "per_check": rubric_result.get("per_check"),
             "per_criterion": rubric_result.get("per_criterion"),
         }
+    pytest_checks = score.get("pytest_checks")
+    if pytest_checks:
+        detail["pytest_checks"] = pytest_checks
     (run_dir / "detail.json").write_text(
         json.dumps(detail, indent=2, ensure_ascii=False, default=str)
     )
@@ -264,6 +267,15 @@ def _write_ctrf_json(run_dir: Path, task_name: str, model: str, run_no: int,
                 "status": "passed" if c.get("passed") else "failed",
                 "duration": 0,
                 "message": c.get("reason", ""),
+            })
+    pytest_checks = score.get("pytest_checks")
+    if pytest_checks and "outcomes" in pytest_checks:
+        for c in pytest_checks["outcomes"]:
+            tests.append({
+                "name": f"{task_name}#pytest.{c.get('name')}",
+                "status": "passed" if c.get("passed") else "failed",
+                "duration": 0,
+                "message": c.get("message", ""),
             })
     summary_passed = sum(1 for t in tests if t["status"] == "passed")
     ctrf = {
@@ -360,6 +372,15 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     misbehave = score.get("misbehave") or 0
     completion_rate = (recall / total) if total else (1.0 if passed else 0.0)
     misbehaving_rate = (misbehave / total) if total else 0.0
+    pytest_checks = score.get("pytest_checks")
+    test_weights_percentage = (
+        float(pytest_checks.get("weighted_score", 0.0)) * 100.0
+        if pytest_checks else None
+    )
+    rubric_weights_percentage = (
+        float(rubric_result.get("rubric_score", 0.0)) * 100.0
+        if rubric_result else None
+    )
     (run_dir / "report.json").write_text(json.dumps({
         "task": record["name"],
         "model": model,
@@ -369,6 +390,8 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         "reward": reward_val,
         "completion_rate": completion_rate,
         "misbehaving_rate": misbehaving_rate,
+        "test_weights_percentage": test_weights_percentage,
+        "rubric_weights_percentage": rubric_weights_percentage,
         "tokens": record.get("tokens", {}),
         "tool_summary": tool_summary,
     }, indent=2, ensure_ascii=False))
