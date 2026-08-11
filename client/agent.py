@@ -7,7 +7,6 @@ from tenacity import retry, stop_after_attempt, wait_exponential, before_sleep_l
 from collections import defaultdict
 from functools import lru_cache
 import asyncio
-import glob
 import httpx
 import json
 import logging
@@ -516,7 +515,6 @@ class ClaudeCodeBackend(ChatBackend):
         cost_usd = 0.0
         reasoning_parts: list[str] = []
         reasoning_tokens = 0
-        session_id = None
         _saw_result = False
         for _line in stdout_b.decode("utf-8", errors="replace").splitlines():
             _line = _line.strip()
@@ -526,11 +524,6 @@ class ClaudeCodeBackend(ChatBackend):
                 ev = json.loads(_line)
             except json.JSONDecodeError:
                 continue
-            # The CLI stamps every event with the session_id (init/assistant/
-            # result). Capture it so we can read back the persisted session log,
-            # which keeps the un-redacted thinking that the -p stream drops.
-            if ev.get("session_id"):
-                session_id = ev["session_id"]
             etype = ev.get("type")
             if etype == "stream_event":
                 delta = (ev.get("event") or {}).get("delta") or {}
@@ -567,22 +560,6 @@ class ClaudeCodeBackend(ChatBackend):
                     usage_data[_k] = last_assistant_usage[_k]
             usage_data.setdefault("output_tokens", last_assistant_usage.get("output_tokens", 0))
 
-        # The -p stream redacts the thinking *text* (only estimated_tokens),
-        # but the CLI persists a full session log with the un-redacted thinking
-        # blocks (signatures included) and an authoritative usage/cache
-        # breakdown. This is exactly the source mcp-stump reads. Harvest it to
-        # backfill reasoning text and any cache buckets the stream left empty.
-        harvested = self._harvest_session_reasoning(session_id)
-        if harvested["reasoning"] and not reasoning_parts:
-            reasoning_parts.append(harvested["reasoning"])
-        _hu = harvested["usage"]
-        if _hu and not (usage_data.get("cache_read_input_tokens")
-                        or usage_data.get("cache_creation_input_tokens")):
-            for _k in ("input_tokens", "cache_read_input_tokens",
-                       "cache_creation_input_tokens", "output_tokens"):
-                if _hu.get(_k) and not usage_data.get(_k):
-                    usage_data[_k] = _hu[_k]
-
         # The claude CLI splits input across uncached + cached buckets; with
         # prompt caching on, `input_tokens` is only the small uncached remainder.
         # Keep the breakdown AND the summed total so cache read/creation are
@@ -593,7 +570,6 @@ class ClaudeCodeBackend(ChatBackend):
         input_tokens = uncached_input + cache_read + cache_creation
         output_tokens = usage_data.get("output_tokens", 0) or 0
         reasoning = "".join(reasoning_parts)
-        reasoning_signatures = harvested["signatures"]
 
         stops = extra_body.get("stop") or []
         if isinstance(stops, str):
@@ -629,72 +605,12 @@ class ClaudeCodeBackend(ChatBackend):
                     message=argparse.Namespace(
                         content=content,
                         reasoning_content=reasoning or None,
-                        # Anthropic signatures for the thinking blocks (proof the
-                        # reasoning is model-generated, not injected). Empty when
-                        # the session log was unavailable.
-                        reasoning_signatures=reasoning_signatures,
                     ),
                     finish_reason=finish_reason,
                 )
             ],
         )
         return resp
-
-    @staticmethod
-    def _harvest_session_reasoning(session_id: str | None) -> Dict[str, Any]:
-        """Read the CLI's persisted session log for the real (un-redacted)
-        thinking blocks + Anthropic signatures and the authoritative cache
-        usage. The `claude -p` stream redacts thinking text; the on-disk
-        session `.jsonl` under ``~/.claude/projects/`` does not. This mirrors
-        how mcp-stump recovers ``reasoning_content`` — it reads these same
-        native logs. Best-effort: never raises, returns empties on any miss."""
-        empty = {"reasoning": "", "signatures": [], "usage": {}}
-        if not session_id:
-            return empty
-        base = os.path.join(os.path.expanduser("~"), ".claude", "projects")
-        matches = glob.glob(
-            os.path.join(base, "**", f"{session_id}.jsonl"), recursive=True)
-        if not matches:
-            return empty
-        reasoning_parts: list[str] = []
-        signatures: list[str] = []
-        usage: Dict[str, Any] = {}
-        try:
-            with open(matches[0], "r", encoding="utf-8", errors="replace") as fh:
-                for line in fh:
-                    line = line.strip()
-                    if not line:
-                        continue
-                    try:
-                        rec = json.loads(line)
-                    except json.JSONDecodeError:
-                        continue
-                    msg = rec.get("message")
-                    if not isinstance(msg, dict):
-                        continue
-                    for blk in msg.get("content") or []:
-                        if not (isinstance(blk, dict) and blk.get("type") == "thinking"):
-                            continue
-                        # Under Max/Pro subscription auth the CLI redacts the
-                        # thinking *text* (empty string) but keeps the signature.
-                        # Collect the signature regardless so proof-of-thinking
-                        # survives even when the plaintext does not.
-                        if blk.get("thinking"):
-                            reasoning_parts.append(blk["thinking"])
-                        if blk.get("signature"):
-                            signatures.append(blk["signature"])
-                    u = msg.get("usage")
-                    if isinstance(u, dict) and (
-                            u.get("input_tokens") or u.get("cache_read_input_tokens")
-                            or u.get("cache_creation_input_tokens")):
-                        usage = u  # keep the last non-empty usage of the turn
-        except OSError:
-            return empty
-        return {
-            "reasoning": "\n\n".join(reasoning_parts),
-            "signatures": signatures,
-            "usage": usage,
-        }
 
 
 class AnthropicBridgeBackend(ChatBackend):
@@ -765,9 +681,11 @@ class AnthropicBridgeBackend(ChatBackend):
             # Cache the (large) system prompt so multi-turn runs get cache_read.
             body["system"] = [{"type": "text", "text": system,
                                "cache_control": {"type": "ephemeral"}}]
-        if self.thinking_budget:
-            # Anthropic requires max_tokens > budget_tokens; leave headroom.
-            budget = min(self.thinking_budget, max(1024, max_tokens - 512))
+        if self.thinking_budget and max_tokens > 1024:
+            # Anthropic requires budget_tokens >= 1024 AND max_tokens > budget_tokens.
+            # The `max_tokens > 1024` guard guarantees the clamp below stays valid
+            # (skip thinking entirely when there isn't room for it).
+            budget = max(1024, min(self.thinking_budget, max_tokens - 512))
             body["thinking"] = {"type": "enabled", "budget_tokens": budget}
         if extra_body:
             body.update(extra_body)

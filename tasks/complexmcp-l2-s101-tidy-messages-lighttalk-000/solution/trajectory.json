@@ -1,6 +1,0 @@
-[
-  {"tool": "get_uid_from_name", "args": {"name": "Harry Kelley"}},
-  {"tool": "delete_chat_history", "args": {"uid": "user_miY6i2uEEn5kEFHWtGs6N9"}},
-  {"tool": "get_uid_from_name", "args": {"name": "Valentina Wood"}},
-  {"tool": "send_message", "args": {"uid": "user_iCgCDEXoei9DF64EkGrTwz", "content": "Confirmed, I will be there Friday at 7pm."}}
-]

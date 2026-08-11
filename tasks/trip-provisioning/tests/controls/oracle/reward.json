@@ -1,9 +1,0 @@
-{
-  "reward": 1.0,
-  "passed": true,
-  "recall": 37,
-  "total": 37,
-  "misbehave": 0,
-  "completion_rate": 1.0,
-  "misbehaving_rate": 0.0
-}

@@ -9,7 +9,7 @@ artifacts = [
 ]
 
 [task]
-name = "mcp-stump/margin-liquidation"
+name = "margin-liquidation"
 version = "1.0.0"
 description = "Liquidate a brokerage account with tied-up margin, open a short, then locate a news item and message the link to the account holder across three services under injected network faults."
 keywords = ["mcp", "tool-calling", "stateful", "cross-server", "error-recovery"]

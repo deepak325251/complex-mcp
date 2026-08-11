@@ -9,7 +9,7 @@ artifacts = [
 ]
 
 [task]
-name = "mcp-stump/cross-system-renewal-audit"
+name = "cross-system-renewal-audit"
 version = "1.0.0"
 description = "Reconcile enterprise and mid-market opportunity records with support signals across the customer surface, appending a single at-risk note to the Helix deal."
 keywords = ["mcp", "tool-calling", "stateful", "cross-server", "conditional-branch", "referential-ambiguity", "long-chain"]
