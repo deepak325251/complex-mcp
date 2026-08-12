@@ -434,10 +434,17 @@ def main(args):
             from benchmark.pytest_judge import run_controls
             _ctrl = run_controls(_gd, task_dir=task_info.get("task_dir"))
             controls_by_task[episode_name] = _ctrl
-            _orc = _ctrl.get("oracle_reward")
-            print(f"[controls] nop={_ctrl['nop_reward']} (want 0.0)  "
-                  f"oracle={_orc if _orc is not None else 'n/a'} (want 1.0)  "
-                  f"-> admissible={_ctrl['admissible']}")
+            if _ctrl.get("mode") == "world-full":
+                _st = _ctrl.get("state", {})
+                print(f"[controls] mode=world-full  "
+                      f"oracle Rc={_st.get('oracle_Rc')} (want 1.0) Rb={_st.get('oracle_Rb')} (want 0)  "
+                      f"nop Rc={_st.get('nop_Rc')} (want <1.0)  keys={_st.get('keys_required')}  "
+                      f"-> admissible={_ctrl['admissible']}")
+            else:
+                _orc = _ctrl.get("oracle_reward")
+                print(f"[controls] mode=world-free  nop={_ctrl['nop_reward']} (want 0.0)  "
+                      f"oracle={_orc if _orc is not None else 'n/a'} (want 1.0)  "
+                      f"-> admissible={_ctrl['admissible']}")
             if not _ctrl["admissible"]:
                 print(f"[controls] INADMISSIBLE -> SKIP {episode_name} "
                       f"(not running the model)")
@@ -866,6 +873,18 @@ def main(args):
             "|---|---|---|---|---|---|---|---|",
         ]
         for ep in per_episode:
+            # Inadmissible/skipped episodes (see the admissibility gate) carry no
+            # judge/tool-call fields -- render a SKIP row instead of crashing the
+            # whole report on a missing key.
+            if ep.get("admissible") is False or "judge" not in ep:
+                fc = ep.get("failure_class") or "inadmissible"
+                report_lines.append(
+                    f"| {ep.get('index', '?')} | ⊘ SKIP "
+                    f"| - / - | - "
+                    f"| - | - "
+                    f"| `{fc}` | `{ep.get('dir', '')}` |"
+                )
+                continue
             j = ep["judge"]
             fc = ep.get("failure_class") or ""
             report_lines.append(

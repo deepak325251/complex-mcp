@@ -292,14 +292,60 @@ def check_world_anchors(trajectory: dict, grading_dir: str) -> dict:
     }
 
 
+def _state_controls(grading_dir) -> dict | None:
+    """World-FULL admissibility, computed statically from the baked env pair.
+
+    A task that ships tests/old_env.json (seeded initial world) + tests/gt_env.json
+    (world after the oracle's solution/trajectory.json is replayed, see gen_gt.py)
+    is graded on WORLD STATE, so it must be admitted on those terms -- independent
+    of any world-free trajectory pytest. Using the same state-diff the live grader
+    uses (weighted_judge.judge_env):
+
+      oracle : judge_env(old, gt, gt)  -> the agent reproduces the target world.
+               A non-trivial, satisfiable task has total > 0, Rc == 1.0, Rb == 0.
+      nop    : judge_env(old, old, gt) -> the agent changes nothing.
+               A real task is NOT solved by inaction: Rc < 1.0.
+
+    Returns None when the task is not world-full (no baked pair) so the caller
+    falls back to the world-free controls. No sandbox / model needed.
+    """
+    old_p = os.path.join(grading_dir, "old_env.json")
+    gt_p = os.path.join(grading_dir, "gt_env.json")
+    if not (os.path.exists(old_p) and os.path.exists(gt_p)):
+        return None
+    try:
+        old = json.load(open(old_p, encoding="utf-8"))
+        gt = json.load(open(gt_p, encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    from benchmark.weighted_judge import judge_env
+    orc = judge_env(old, gt, gt)     # agent reproduces the target world
+    nop = judge_env(old, old, gt)    # agent leaves the world untouched
+    total = orc.get("total", 0)
+    orc_rc = (orc["recall"] / total) if total else 1.0
+    nop_rc = (nop["recall"] / total) if total else 1.0
+    admissible = (total > 0 and orc_rc == 1.0 and orc["misbehave"] == 0 and nop_rc < 1.0)
+    return {
+        "keys_required": total,
+        "oracle_Rc": round(orc_rc, 4), "oracle_Rb": orc["misbehave"],
+        "nop_Rc": round(nop_rc, 4),
+        "admissible": bool(admissible),
+    }
+
+
 def run_controls(grading_dir, task_dir=None) -> dict:
-    """Admissibility controls, graded by the SAME (pytest) grader as a real run.
+    """Admissibility controls, graded on the channels the task actually declares.
+
+    World-FULL tasks (a baked tests/old_env.json + tests/gt_env.json pair) are
+    admitted on the STATE channel -- the seed-driven world is the ground truth, so
+    the state-diff oracle/nop is authoritative and a world-free trajectory pytest
+    (which a state-shaped test_outputs.py cannot satisfy) is advisory only, never a
+    veto. World-FREE tasks keep the original trajectory-pytest gate:
 
       nop     empty trajectory  -> reward MUST be 0.0  (tests are non-trivial)
       oracle  solution/trajectory.json -> reward SHOULD be 1.0 (tests satisfiable)
 
-    A task is admissible iff nop == 0.0 AND (oracle is unavailable OR oracle == 1.0).
-    Runs with no rubric (deterministic Channel A only) and needs no sandbox/model.
+    Deterministic; needs no sandbox/model.
     """
     nop = judge_trajectory_pytest({"steps": [], "final_message": ""}, grading_dir)
     out = {"nop_reward": nop["reward"], "nop_pytest": nop["pytest_score"]}
@@ -313,6 +359,18 @@ def run_controls(grading_dir, task_dir=None) -> dict:
     else:
         out["oracle_reward"] = None
 
-    out["admissible"] = (out["nop_reward"] == 0.0
-                         and out["oracle_reward"] in (None, 1.0))
+    world_free_ok = (out["nop_reward"] == 0.0
+                     and out["oracle_reward"] in (None, 1.0))
+
+    state = _state_controls(grading_dir)
+    if state is not None:
+        # World-full: the state channel decides. Record the world-free result for
+        # visibility but don't let it reject a valid world-graded task.
+        out["state"] = state
+        out["mode"] = "world-full"
+        out["world_free_ok"] = world_free_ok
+        out["admissible"] = state["admissible"]
+    else:
+        out["mode"] = "world-free"
+        out["admissible"] = world_free_ok
     return out

@@ -475,8 +475,21 @@ def main():
     new_env = _load(env("NEW_ENV", os.path.join(here, "new_env.json")))
     gt_env = _load(env("GT_ENV", os.path.join(here, "gt_env.json")))
     trajectory = _load(env("AGENT_TRAJECTORY")) or {"steps": []}
-    gold_plan = _load(env("GOLD_PLAN"))
     grading_dir = env("GRADING_DIR", here)
+    # The gold tool-DAG must go through load_gold so names are BARE and match the
+    # (bare) predicted names -- passing solution/trajectory.json raw would compare
+    # server-prefixed gold names against bare predictions and score graph_f1 = 0.
+    task_dir = env("TASK_DIR") or os.path.dirname(os.path.abspath(grading_dir.rstrip("/")))
+    from benchmark.graph_judge import load_gold, _bare
+    gold_plan = load_gold(task_dir)
+    if gold_plan is None:
+        raw = _load(env("GOLD_PLAN")) or _load(os.path.join(grading_dir, "gold_plan.json"))
+        if isinstance(raw, list) and raw and isinstance(raw[0], dict) and "tool" in raw[0]:
+            # solution-plan shape (a flat list of {tool, args}) -> gold-DAG shape.
+            gold_plan = [[{"server_name": "", "tool_name": _bare(s.get("tool")),
+                           "dependencies": []}] for s in raw if s.get("tool")]
+        else:
+            gold_plan = raw  # already in gold_plan.json shape, or None
     efs = _load(env("EFS")) or _load(os.path.join(grading_dir, "efs.json")) \
         or _load("registry/efs.json")
 

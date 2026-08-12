@@ -686,6 +686,14 @@ class AnthropicBridgeBackend(ChatBackend):
             out.insert(0, {"role": "user", "content": "Continue."})
         if not out:
             out = [{"role": "user", "content": system or ""}]
+        # The request must END on a user turn. The agent loop re-calls chat() after
+        # a tool-less assistant reply without appending an observation, so `out` can
+        # end on an assistant turn -- which reads as an assistant PREFILL. Anthropic
+        # models allow that, but some bridged models reject it ("conversation must
+        # end with a user message"). Append a minimal user turn so the request is
+        # always valid regardless of the model's prefill support.
+        if out[-1]["role"] != "user":
+            out.append({"role": "user", "content": "Continue."})
         return system, out
 
     @retry(stop=stop_after_attempt(4),
