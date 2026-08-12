@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 
 WALLET_KINDS = ("fiat", "crypto")
@@ -58,8 +58,23 @@ class WalletSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"],
+            ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            self.wallets: Dict[str, Wallet] = {
+                w["wid"]: Wallet(**w) for w in DEFAULT_WALLETS
+            }
+            self.transfers: Dict[str, Transfer] = {}
+            self._seed_transfers()
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

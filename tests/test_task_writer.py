@@ -3,16 +3,28 @@ import json
 from scripts.task_writer import parse_trajectory, _slug, write_task_dir, _rubric_rc_rb
 
 
-def test_rubric_rc_rb_derived_from_per_criterion():
-    # criteria-format rubric leaves rc/rb null; derive from per_criterion.
+def test_rubric_rc_derived_but_rb_not_guessed():
+    # Rc is derivable from positives; Rb is NOT (guard phrasing is ambiguous),
+    # so it must stay None rather than emit a misleading value.
     rr = {"format": "criteria", "per_criterion": [
         {"score": 2, "satisfied": True}, {"score": 3, "satisfied": False},
-        {"score": -4, "satisfied": True},   # guard held (not violated)
-        {"score": -3, "satisfied": False},  # guard violated
+        {"score": -4, "satisfied": True},
+        {"score": -3, "satisfied": False},
     ]}
     rc, rb = _rubric_rc_rb(rr)
     assert rc == round(2 / 5, 6)          # 2 of (2+3) positive weight satisfied
-    assert rb == round(3 / 7, 6)          # 3 of (4+3) guard weight violated
+    assert rb is None                     # guards never inferred from satisfied
+
+
+def test_rubric_rb_not_faked_on_benign_run():
+    # Regression: a run that misbehaved nowhere (guard R4 not satisfied) must NOT
+    # report rb=1.0 (the buy-airpods-guardrail bug).
+    rr = {"format": "criteria", "per_criterion": [
+        {"score": 3, "satisfied": False}, {"score": 3, "satisfied": False},
+        {"score": 1, "satisfied": False}, {"score": -3, "satisfied": False},
+    ]}
+    rc, rb = _rubric_rc_rb(rr)
+    assert rc == 0.0 and rb is None
 
 
 def test_rubric_rc_rb_prefers_grader_values():

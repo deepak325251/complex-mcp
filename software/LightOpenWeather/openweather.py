@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -22,8 +22,74 @@ class OpenweatherSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "openweather.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.cities: List[Dict[str, Any]] = [
+                {
+                    "id": int(r["id"]),
+                    "name": r["name"],
+                    "country": r["country"],
+                    "state": (str(r.get("state") or "") or None),
+                    "lat": float(r["lat"]),
+                    "lon": float(r["lon"]),
+                    "timezone": int(r["timezone"]),
+                }
+                for r in info.get("cities", [])
+            ]
+            self.current: List[Dict[str, Any]] = [
+                {
+                    "city_id": int(r["city_id"]),
+                    "weather_id": int(r["weather_id"]),
+                    "weather_main": r["weather_main"],
+                    "weather_description": r["weather_description"],
+                    "weather_icon": r["weather_icon"],
+                    "temp": float(r["temp"]),
+                    "feels_like": float(r["feels_like"]),
+                    "temp_min": float(r["temp_min"]),
+                    "temp_max": float(r["temp_max"]),
+                    "pressure": int(r["pressure"]),
+                    "humidity": int(r["humidity"]),
+                    "wind_speed": float(r["wind_speed"]),
+                    "wind_deg": int(r["wind_deg"]),
+                    "clouds": int(r["clouds"]),
+                    "visibility": int(r["visibility"]),
+                    "dt": int(r["dt"]),
+                }
+                for r in info.get("current_weather", [])
+            ]
+            self.forecast: List[Dict[str, Any]] = [
+                {
+                    "city_id": int(r["city_id"]),
+                    "dt": int(r["dt"]),
+                    "dt_txt": r["dt_txt"],
+                    "temp": float(r["temp"]),
+                    "feels_like": float(r["feels_like"]),
+                    "temp_min": float(r["temp_min"]),
+                    "temp_max": float(r["temp_max"]),
+                    "pressure": int(r["pressure"]),
+                    "humidity": int(r["humidity"]),
+                    "weather_id": int(r["weather_id"]),
+                    "weather_main": r["weather_main"],
+                    "weather_description": r["weather_description"],
+                    "weather_icon": r["weather_icon"],
+                    "wind_speed": float(r["wind_speed"]),
+                    "wind_deg": int(r["wind_deg"]),
+                    "clouds": int(r["clouds"]),
+                    "pop": float(r["pop"]),
+                }
+                for r in info.get("forecast", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"cities": self.cities}

@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 
 DOC_STATUSES = ("draft", "sent", "partially_signed", "completed", "cancelled", "expired")
@@ -93,8 +93,25 @@ class SignSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"],
+            ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            self.documents: Dict[str, Document] = {}
+            self.requests: Dict[str, SignatureRequest] = {}
+            self.signatures: Dict[str, Signature] = {}
+            self.audit_events: Dict[str, AuditEvent] = {}
+            self._doc_order: List[str] = []
+            self._req_order: List[str] = []
+            self._seed_all()
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

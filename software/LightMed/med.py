@@ -9,7 +9,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 
 RX_STATUSES = ("active", "expired", "cancelled", "filled")
@@ -90,8 +90,25 @@ class MedSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"],
+            ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            self.pharmacies: Dict[str, Pharmacy] = {
+                p["phid"]: Pharmacy(**p) for p in SEED_PHARMACIES
+            }
+            self.prescriptions: Dict[str, Prescription] = {}
+            self.refills: Dict[str, RefillRequest] = {}
+            self.audit_logs: Dict[str, AuditLog] = {}
+            self._seed_all()
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def uuid(self) -> str:
         alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

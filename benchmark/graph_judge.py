@@ -89,9 +89,18 @@ def judge_trajectory_graph(trajectory: dict, gold_plan: list, *,
                            threshold: float = 1.0,
                            final_message: str | None = None,
                            rubric_judge=None, rubric_path: str | None = None) -> dict:
-    steps = trajectory.get("steps", []) if isinstance(trajectory, dict) else []
+    # Accept both shapes: the live {"steps":[...]} dict AND the on-disk oracle
+    # format, which is a top-level list of {tool,args,...}. Reading only `steps`
+    # off a dict would silently score a raw-list trajectory as an empty plan.
+    if isinstance(trajectory, dict):
+        steps = trajectory.get("steps", [])
+    elif isinstance(trajectory, list):
+        steps = trajectory
+    else:
+        steps = []
     # Predicted plan: bare tool names, server-agnostic (world-independent).
-    predicted = [("", _bare(s.get("tool"))) for s in steps if s.get("tool")]
+    predicted = [("", _bare(s.get("tool"))) for s in steps
+                 if isinstance(s, dict) and s.get("tool")]
 
     namemap = _efs_name_map(efs)
     gold: list[list[dict]] = []

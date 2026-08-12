@@ -11,7 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -43,8 +43,87 @@ class MailchimpSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "mailchimp.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.lists: List[Dict[str, Any]] = [
+                {
+                    "id": r["id"],
+                    "name": r["name"],
+                    "company": r["company"],
+                    "from_name": r["from_name"],
+                    "from_email": r["from_email"],
+                    "subject": r["subject"],
+                    "member_count": _to_int(r.get("member_count", 0)),
+                    "unsubscribe_count": _to_int(r.get("unsubscribe_count", 0)),
+                    "date_created": r["date_created"],
+                }
+                for r in info.get("lists", [])
+            ]
+
+            self.members: List[Dict[str, Any]] = [
+                {
+                    "id": self._subscriber_hash(r["email_address"]),
+                    "list_id": r["list_id"],
+                    "email_address": r["email_address"],
+                    "full_name": r["full_name"],
+                    "status": r["status"],
+                    "timestamp_signup": r["timestamp_signup"],
+                    "member_rating": _to_int(r.get("member_rating", 0)),
+                    "_pk": f"{r['list_id']}@{self._subscriber_hash(r['email_address'])}",
+                }
+                for r in info.get("members", [])
+            ]
+
+            self.campaigns: List[Dict[str, Any]] = [
+                {
+                    "id": r["id"],
+                    "list_id": r["list_id"],
+                    "type": r["type"],
+                    "status": r["status"],
+                    "emails_sent": _to_int(r.get("emails_sent", 0)),
+                    "send_time": (r.get("send_time") or None),
+                    "create_time": r["create_time"],
+                    "recipients": {"list_id": r["list_id"]},
+                    "settings": {
+                        "subject_line": r["subject_line"],
+                        "from_name": r["from_name"],
+                        "reply_to": r["reply_to"],
+                        "title": r["title"],
+                    },
+                }
+                for r in info.get("campaigns", [])
+            ]
+
+            self.reports: List[Dict[str, Any]] = [
+                {
+                    "id": r["campaign_id"],
+                    "emails_sent": _to_int(r.get("emails_sent", 0)),
+                    "opens": {
+                        "opens_total": _to_int(r.get("opens_total", 0)),
+                        "unique_opens": _to_int(r.get("unique_opens", 0)),
+                        "open_rate": _to_float(r.get("open_rate", 0.0)),
+                    },
+                    "clicks": {
+                        "clicks_total": _to_int(r.get("clicks_total", 0)),
+                        "unique_clicks": _to_int(r.get("unique_clicks", 0)),
+                        "click_rate": _to_float(r.get("click_rate", 0.0)),
+                    },
+                    "unsubscribed": _to_int(r.get("unsubscribed", 0)),
+                    "bounces": {"hard_bounces": _to_int(r.get("bounces", 0))},
+                }
+                for r in info.get("reports", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"members": self.members, "campaigns": self.campaigns}

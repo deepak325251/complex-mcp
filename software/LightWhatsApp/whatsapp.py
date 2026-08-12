@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -26,8 +26,29 @@ class WhatsappSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "whatsapp.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.business: Dict[str, Any] = dict(info.get("business", {}))
+            self.contacts: List[Dict[str, Any]] = [
+                {**c, "opted_in": _to_bool(c.get("opted_in", False))} for c in info.get("contacts", [])
+            ]
+            self.conversations: List[Dict[str, Any]] = [
+                {**c, "within_24h_window": _to_bool(c.get("within_24h_window", False))}
+                for c in info.get("conversations", [])
+            ]
+            self.templates: List[Dict[str, Any]] = list(info.get("templates", []))
+            self.messages: List[Dict[str, Any]] = list(info.get("messages", []))
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"messages": self.messages, "conversations": self.conversations}

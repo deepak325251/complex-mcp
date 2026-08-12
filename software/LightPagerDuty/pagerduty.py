@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -40,8 +40,40 @@ class PagerDutySession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "pagerduty.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.users: List[Dict[str, Any]] = list(info.get("users", []))
+            self.services: List[Dict[str, Any]] = [
+                {**s, "auto_resolve_timeout": _strict_int(s.get("auto_resolve_timeout"))}
+                for s in info.get("services", [])
+            ]
+            self.incidents: List[Dict[str, Any]] = [
+                {
+                    **i,
+                    "incident_number": _strict_int(i.get("incident_number")),
+                    "assigned_to": _opt_str(i.get("assigned_to")),
+                    "resolved_at": _opt_str(i.get("resolved_at")),
+                }
+                for i in info.get("incidents", [])
+            ]
+            self.policies: List[Dict[str, Any]] = [
+                {**p, "num_loops": _strict_int(p.get("num_loops"))}
+                for p in info.get("escalation_policies", [])
+            ]
+            self.schedules: List[Dict[str, Any]] = list(info.get("schedules", []))
+
+            self.notes_store: Dict[str, List[Dict[str, Any]]] = {}
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"incidents": self.incidents}

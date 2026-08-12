@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,8 +30,53 @@ class MailgunSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "mailgun.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.messages: List[Dict[str, Any]] = [
+                {
+                    "id": m["id"],
+                    "domain": m["domain"],
+                    "sender": m["sender"],
+                    "recipient": m["recipient"],
+                    "subject": m["subject"],
+                    "body": m["body"],
+                    "timestamp": m["timestamp"],
+                }
+                for m in info.get("messages", [])
+            ]
+            self.events: List[Dict[str, Any]] = [
+                {
+                    "id": e["id"],
+                    "domain": e["domain"],
+                    "message_id": e["message_id"],
+                    "event": e["event"],
+                    "recipient": e["recipient"],
+                    "timestamp": e["timestamp"],
+                    "reason": (e.get("reason") or None),
+                }
+                for e in info.get("events", [])
+            ]
+            self.members: List[Dict[str, Any]] = [
+                {
+                    "list_address": r["list_address"],
+                    "address": r["address"],
+                    "name": r["name"],
+                    "subscribed": _to_bool(r.get("subscribed", False)),
+                    "vars": r["vars"],
+                }
+                for r in info.get("list_members", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"messages": self.messages, "events": self.events, "members": self.members}

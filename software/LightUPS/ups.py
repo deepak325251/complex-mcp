@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -45,8 +45,63 @@ class UpsSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "ups.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.rates: List[Dict[str, Any]] = [
+                {
+                    "service_code": r["service_code"],
+                    "service_name": r["service_name"],
+                    "origin_zip": r["origin_zip"],
+                    "dest_zip": r["dest_zip"],
+                    "weight_lb": _opt_float(r.get("weight_lb")),
+                    "currency": r["currency"],
+                    "total_charge": _opt_float(r.get("total_charge")),
+                    "transit_days": _to_int(r.get("transit_days")),
+                    "delivery_date": r["delivery_date"],
+                }
+                for r in info.get("rates", [])
+            ]
+            self.shipments: List[Dict[str, Any]] = [
+                {
+                    "tracking_number": r["tracking_number"],
+                    "service_code": r["service_code"],
+                    "service_name": r["service_name"],
+                    "ship_date": r["ship_date"],
+                    "origin_zip": r["origin_zip"],
+                    "dest_zip": r["dest_zip"],
+                    "weight_lb": _opt_float(r.get("weight_lb")),
+                    "currency": r["currency"],
+                    "total_charge": _opt_float(r.get("total_charge")),
+                    "label_url": r["label_url"],
+                }
+                for r in info.get("shipments", [])
+            ]
+            self.tracking: List[Dict[str, Any]] = [
+                {
+                    "tracking_number": r["tracking_number"],
+                    "status_type": r["status_type"],
+                    "status_code": r["status_code"],
+                    "status_description": r["status_description"],
+                    "service_name": r["service_name"],
+                    "ship_date": r["ship_date"],
+                    "scheduled_delivery": r["scheduled_delivery"],
+                    "latest_activity": r["latest_activity"],
+                    "latest_activity_location": r["latest_activity_location"],
+                    "latest_activity_time": r["latest_activity_time"],
+                }
+                for r in info.get("tracking", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"shipments": self.shipments, "tracking": self.tracking}

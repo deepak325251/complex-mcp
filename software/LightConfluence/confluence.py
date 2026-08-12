@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -35,8 +35,64 @@ class ConfluenceSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "confluence.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.spaces: List[Dict[str, Any]] = [
+                {
+                    "id": _to_int(s.get("id"), 0),
+                    "key": s["key"],
+                    "name": s["name"],
+                    "type": s["type"],
+                    "status": s["status"],
+                    "description": {"plain": {"value": s["description"], "representation": "plain"}},
+                }
+                for s in info.get("spaces", [])
+            ]
+            self.pages: List[Dict[str, Any]] = [
+                {
+                    "id": p["id"],
+                    "type": p["type"],
+                    "status": p["status"],
+                    "title": p["title"],
+                    "space_key": p["space_key"],
+                    "parent_id": (p.get("parent_id") or None),
+                    "version": _to_int(p.get("version"), 1),
+                    "body": p["body"],
+                    "created_by": p["created_by"],
+                    "created_at": p["created_at"],
+                }
+                for p in info.get("pages", [])
+            ]
+            self.comments: List[Dict[str, Any]] = [
+                {
+                    "id": c["id"],
+                    "page_id": c["page_id"],
+                    "author": c["author"],
+                    "body": c["body"],
+                    "created_at": c["created_at"],
+                }
+                for c in info.get("comments", [])
+            ]
+            self.labels: List[Dict[str, Any]] = [
+                {
+                    "id": l["id"],
+                    "page_id": l["page_id"],
+                    "name": l["name"],
+                    "prefix": l["prefix"],
+                }
+                for l in info.get("labels", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"pages": self.pages}

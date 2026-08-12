@@ -22,11 +22,40 @@ Recipe per app:
 """
 from __future__ import annotations
 
+import os
 import pickle
 
 # Per-connection attributes that must NOT be frozen into the world — they are
 # rebuilt from the live login (os_cfg) each session.
 _LIVE_ATTRS = ("os",)
+
+
+# ---------------------------------------------------------------------------
+# Seed architecture (default). The harness is seed-based: __init__ ROLLS the
+# world from a seed (random.Random(seed)) so different seeds give different
+# worlds (anti-memorisation, seed-based re-tiering). seed=42 reproduces the
+# original frozen fixture exactly.
+#
+# The seedless static snapshot (world.pkl) is now an explicit escape hatch only:
+# set COMPLEXMCP_SEED_MODE=static (or seedless/off/0/false/no) to load it.
+# ---------------------------------------------------------------------------
+def seed_mode() -> bool:
+    """True iff apps should generate their world from a seed. This is the DEFAULT;
+    only an explicit opt-out loads the frozen static snapshot."""
+    return os.environ.get("COMPLEXMCP_SEED_MODE", "seed").strip().lower() not in (
+        "static", "seedless", "snapshot", "frozen", "0", "false", "off", "no",
+    )
+
+
+def resolve_seed(seed=None) -> int:
+    """The seed to roll the world from: explicit arg wins, else $COMPLEXMCP_SEED,
+    else 42 (the fixture's own seed)."""
+    if seed is not None:
+        return int(seed)
+    env = os.environ.get("COMPLEXMCP_SEED")
+    if env not in (None, ""):
+        return int(env)
+    return 42
 
 
 def bake_session(core, path) -> None:

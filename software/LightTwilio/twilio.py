@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -53,8 +53,51 @@ class TwilioSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "twilio.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.account: Dict[str, Any] = info.get("account", {})
+            self.phone_numbers: List[Dict[str, Any]] = [
+                {
+                    **p,
+                    "sms_enabled": _to_bool(p.get("sms_enabled", False)),
+                    "voice_enabled": _to_bool(p.get("voice_enabled", False)),
+                    "mms_enabled": _to_bool(p.get("mms_enabled", False)),
+                    "capabilities_fax": _to_bool(p.get("capabilities_fax", False)),
+                }
+                for p in info.get("phone_numbers", [])
+            ]
+            self.messages: List[Dict[str, Any]] = [
+                {
+                    **m,
+                    "num_segments": _to_int(m.get("num_segments"), 0),
+                    "price": _to_float(m.get("price")),
+                    "error_code": (int(m["error_code"]) if str(m.get("error_code", "")).strip() != "" else None),
+                    "date_sent": (_opt_str(m.get("date_sent"))),
+                }
+                for m in info.get("messages", [])
+            ]
+            self.calls: List[Dict[str, Any]] = [
+                {
+                    **c,
+                    "duration": _to_int(c.get("duration"), 0),
+                    "price": _to_float(c.get("price")),
+                    "answered_by": (_opt_str(c.get("answered_by"))),
+                    "start_time": (_opt_str(c.get("start_time"))),
+                    "end_time": (_opt_str(c.get("end_time"))),
+                }
+                for c in info.get("calls", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"messages": self.messages, "calls": self.calls}

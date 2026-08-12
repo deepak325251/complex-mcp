@@ -45,14 +45,30 @@ class Transaction:
     info: Dict[str, Dict[str, int]] = field(default_factory=dict) # {sid: {cid: cnt}}
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 class ShopSession:
     def __init__(self, os_cfg, seed=None):
-        # Seedless: world loaded verbatim from a frozen snapshot next to
-        # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        _os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: roll the world from a seed (different seeds ->
+            # different worlds). This is the original pre-seedless behaviour.
+            self.rng = random.Random(resolve_seed(seed))
+            self.time_machine = TimeMachine(rng=self.rng)
+            self.os = _os
+            self.shops = self.init_shops()
+            self.my_balance = self.rng.randint(8000, 100000)
+            self.cart: List[CartItem] = []
+            self.trans_history: List[Transaction] = []
+            self.__mock_cart()
+            self.my_starred_shops = set()
+            self.my_starred_items = set()
+            self.enter_password = False
+        else:
+            # Seedless: world loaded verbatim from a frozen snapshot next to
+            # this module; `seed` is accepted for client compat and ignored.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = _os
 
     def get_session_dict(self):
         shops = {sid: asdict(shop) for sid, shop in self.shops.items()}

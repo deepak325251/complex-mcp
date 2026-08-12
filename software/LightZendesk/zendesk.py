@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -45,8 +45,56 @@ class ZendeskSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "zendesk.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.users: List[Dict[str, Any]] = [{
+                "id": _to_int(r.get("id")),
+                "name": r["name"],
+                "email": r["email"],
+                "role": r["role"],
+                "organization_id": _to_int(r.get("organization_id")),
+                "active": _to_bool(r.get("active")),
+                "created_at": r["created_at"],
+            } for r in info.get("users", [])]
+            self.organizations: List[Dict[str, Any]] = [{
+                "id": _to_int(r.get("id")),
+                "name": r["name"],
+                "domain_names": [d for d in _opt_csv_list(r.get("domain_names"), sep=";") if d],
+                "created_at": r["created_at"],
+            } for r in info.get("organizations", [])]
+            self.tickets: List[Dict[str, Any]] = [{
+                "id": _to_int(r.get("id")),
+                "subject": r["subject"],
+                "description": r["description"],
+                "status": r["status"],
+                "priority": r["priority"],
+                "type": r["type"],
+                "requester_id": _to_int(r.get("requester_id")),
+                "assignee_id": _to_int(r.get("assignee_id")),
+                "organization_id": _to_int(r.get("organization_id")),
+                "tags": [t for t in _opt_csv_list(r.get("tags"), sep=";") if t],
+                "created_at": r["created_at"],
+                "updated_at": r["updated_at"],
+            } for r in info.get("tickets", [])]
+            self.comments: List[Dict[str, Any]] = [{
+                "id": _to_int(r.get("id")),
+                "ticket_id": _to_int(r.get("ticket_id")),
+                "author_id": _to_int(r.get("author_id")),
+                "body": r["body"],
+                "public": _to_bool(r.get("public")),
+                "created_at": r["created_at"],
+            } for r in info.get("comments", [])]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"tickets": self.tickets, "comments": self.comments}

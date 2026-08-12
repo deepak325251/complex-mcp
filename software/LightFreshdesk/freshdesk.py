@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -37,8 +37,61 @@ class FreshdeskSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "freshdesk.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.tickets: List[Dict[str, Any]] = [
+                {
+                    "id": _to_int(t.get("id")),
+                    "subject": t["subject"],
+                    "description": t["description"],
+                    "status": _to_int(t.get("status")),
+                    "priority": _to_int(t.get("priority")),
+                    "requester_id": _to_int(t.get("requester_id")),
+                    "responder_id": _to_int(t.get("responder_id"), default=None),
+                    "type": t["type"],
+                    "tags": [x for x in str(t.get("tags") or "").split(";") if x],
+                    "created_at": t["created_at"],
+                    "updated_at": t["updated_at"],
+                }
+                for t in info.get("tickets", [])
+            ]
+            self.contacts: List[Dict[str, Any]] = [
+                {
+                    "id": _to_int(c.get("id")),
+                    "name": c["name"],
+                    "email": c["email"],
+                    "phone": c["phone"],
+                    "company_id": _to_int(c.get("company_id"), default=None),
+                    "active": _to_bool(c.get("active")),
+                    "created_at": c["created_at"],
+                }
+                for c in info.get("contacts", [])
+            ]
+            self.agents: List[Dict[str, Any]] = [
+                {
+                    "id": _to_int(a.get("id")),
+                    "available": _to_bool(a.get("available")),
+                    "ticket_scope": _to_int(a.get("ticket_scope")),
+                    "occasional": _to_bool(a.get("occasional")),
+                    "created_at": a["created_at"],
+                    "contact": {
+                        "name": a["name"],
+                        "email": a["email"],
+                    },
+                }
+                for a in info.get("agents", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"tickets": self.tickets}

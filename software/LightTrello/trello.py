@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -41,8 +41,48 @@ class TrelloSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "trello.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.members: List[Dict[str, Any]] = [dict(m) for m in info.get("members", [])]
+            self.boards: List[Dict[str, Any]] = [
+                {
+                    **b,
+                    "closed": _to_bool(b.get("closed", False)),
+                    "member_ids": [x for x in str(b.get("member_ids", "") or "").split(";") if x],
+                }
+                for b in info.get("boards", [])
+            ]
+            self.lists: List[Dict[str, Any]] = [
+                {
+                    **l,
+                    "pos": _to_float(l.get("pos")),
+                    "closed": _to_bool(l.get("closed", False)),
+                }
+                for l in info.get("lists", [])
+            ]
+            self.cards: List[Dict[str, Any]] = [
+                {
+                    **c,
+                    "pos": _to_float(c.get("pos")),
+                    "closed": _to_bool(c.get("closed", False)),
+                    "due": (str(c.get("due", "") or "") or None),
+                    "member_ids": [x for x in str(c.get("member_ids", "") or "").split(";") if x],
+                    "labels": [x for x in str(c.get("labels", "") or "").split(";") if x],
+                }
+                for c in info.get("cards", [])
+            ]
+            self.checklists: List[Dict[str, Any]] = [self._coerce_checklist(cl) for cl in info.get("checklists", [])]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"cards": self.cards}

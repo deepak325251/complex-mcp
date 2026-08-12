@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -48,8 +48,54 @@ class KubernetesSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "kubernetes.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.namespaces: List[Dict[str, Any]] = [
+                {**n, "labels": _labels(n.get("labels"))} for n in info.get("namespaces", [])
+            ]
+            self.nodes: List[Dict[str, Any]] = list(info.get("nodes", []))
+            self.pods: List[Dict[str, Any]] = [
+                {
+                    **p,
+                    "restart_count": _to_int(p.get("restart_count")),
+                    "ready": _to_bool(p.get("ready")),
+                    "node": (p.get("node") or None),
+                    "pod_ip": (p.get("pod_ip") or None),
+                }
+                for p in info.get("pods", [])
+            ]
+            self.deployments: List[Dict[str, Any]] = [
+                {
+                    **d,
+                    "_pk": f"{d['namespace']}/{d['name']}",
+                    "replicas": _to_int(d.get("replicas")),
+                    "available_replicas": _to_int(d.get("available_replicas")),
+                    "ready_replicas": _to_int(d.get("ready_replicas")),
+                    "updated_replicas": _to_int(d.get("updated_replicas")),
+                }
+                for d in info.get("deployments", [])
+            ]
+            self.services: List[Dict[str, Any]] = [
+                {
+                    **s,
+                    "_pk": f"{s['namespace']}/{s['name']}",
+                    "port": _to_int(s.get("port")),
+                    "target_port": _to_int(s.get("target_port")),
+                    "external_ip": (s.get("external_ip") or None),
+                }
+                for s in info.get("services", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"pods": self.pods, "deployments": self.deployments}

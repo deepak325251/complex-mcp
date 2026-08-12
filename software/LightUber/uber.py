@@ -12,7 +12,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -47,8 +47,51 @@ class UberSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "uber.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.products: List[Dict[str, Any]] = [
+                {
+                    **p,
+                    "capacity": _to_int(p["capacity"]),
+                    "base_fare": _to_float(p["base_fare"]),
+                    "cost_per_mile": _to_float(p["cost_per_mile"]),
+                    "cost_per_minute": _to_float(p["cost_per_minute"]),
+                    "booking_fee": _to_float(p["booking_fee"]),
+                    "minimum_fare": _to_float(p["minimum_fare"]),
+                    "shared": _to_bool(p["shared"]),
+                }
+                for p in info.get("products", [])
+            ]
+            self.trips: List[Dict[str, Any]] = [
+                {
+                    **t,
+                    "start_latitude": _to_float(t["start_latitude"]),
+                    "start_longitude": _to_float(t["start_longitude"]),
+                    "end_latitude": _to_float(t["end_latitude"]),
+                    "end_longitude": _to_float(t["end_longitude"]),
+                    "distance_miles": _to_float(t["distance_miles"]),
+                    "duration_minutes": _to_float(t["duration_minutes"]),
+                    "fare": _to_float(t["fare"]),
+                    "surge_multiplier": _to_float(t["surge_multiplier"]),
+                    "driver_name": (str(t.get("driver_name") or "") or None),
+                    "vehicle": (str(t.get("vehicle") or "") or None),
+                    "license_plate": (str(t.get("license_plate") or "") or None),
+                    "completed_at": (str(t.get("completed_at") or "") or None),
+                }
+                for t in info.get("trips", [])
+            ]
+            self.rider: Dict[str, Any] = dict(info.get("rider", {}))
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"trips": self.trips}

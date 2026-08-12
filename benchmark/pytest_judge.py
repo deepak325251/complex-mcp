@@ -98,6 +98,26 @@ def _score_rubric(criteria: list[dict], verdicts: dict) -> tuple[float | None, l
     return round(max(0.0, (met - penalty) / pos_total), 4), per
 
 
+def _flat_test_weights(raw):
+    """Accept both test_weights.json shapes and return the flat {test_name: weight}
+    map the pytest scorer needs.
+
+    - flat legacy:      {"test_a": 1, "test_guard_x": -3}
+    - component shape:  {"components": {"traj_tests": {"tests": {...}}, ...}}
+      -> the pytest weights live under the traj_tests component's `tests` map.
+    """
+    if not isinstance(raw, dict):
+        return {}
+    comps = raw.get("components")
+    if isinstance(comps, dict):
+        for spec in comps.values():
+            if isinstance(spec, dict) and isinstance(spec.get("tests"), dict):
+                return dict(spec["tests"])
+        return {}   # component shape but no pytest tests declared
+    # flat shape -- keep only numeric entries (drop _comment / threshold / etc.)
+    return {k: v for k, v in raw.items() if isinstance(v, (int, float))}
+
+
 def judge_trajectory_pytest(trajectory: dict, grading_dir: str, *,
                             final_message: str | None = None,
                             rubric_judge=None,
@@ -106,7 +126,8 @@ def judge_trajectory_pytest(trajectory: dict, grading_dir: str, *,
     """Grade one run from its trajectory. `grading_dir` holds test_outputs.py +
     test_weights.json (+ optional rubric.json)."""
     test_file = os.path.join(grading_dir, "test_outputs.py")
-    weights = json.load(open(os.path.join(grading_dir, "test_weights.json"), encoding="utf-8"))
+    weights = _flat_test_weights(
+        json.load(open(os.path.join(grading_dir, "test_weights.json"), encoding="utf-8")))
     a = _run_pytest_over_trajectory(test_file, weights, trajectory)
 
     rubric_score = None

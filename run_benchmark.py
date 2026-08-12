@@ -197,6 +197,10 @@ def _extract_task_query(instr: str) -> str:
     body = instr[m.end():] if m else instr
     # Cut the footer (Environment/Level/Success block) at the first thematic break.
     body = re.split(r"(?m)^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$", body, maxsplit=1)[0]
+    # Strip HTML comments (e.g. the `<!-- harbor-canary GUID ... -->` corpus
+    # canary) so they never reach the model -- they stay in instruction.md for
+    # training-corpus leak detection but must not appear in the agent prompt.
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.DOTALL)
     return body.strip()
 
 
@@ -270,6 +274,7 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             "name": info["task"]["name"],
             "query": query,
             "apps": apps,
+            "seed": meta.get("seed"),
             "level": meta.get("level"),
             "gt_env": gt_env,
             "gt_tool_cnt": gt_tool_cnt,
@@ -405,6 +410,12 @@ def main(args):
         gt_env = task_info.get("gt_env")
         gt_tool_cnt = task_info.get("gt_tool_cnt") or {}
         episode_name = task_info["name"]
+        # Seed architecture: the task's declared seed drives the world. Apps read
+        # $COMPLEXMCP_SEED at login (software.utils.world_snapshot.resolve_seed),
+        # so set it here before any world boots. The task's baked old_env/gt_env
+        # must be baked at this same seed (benchmark/bake_state.py).
+        if task_info.get("seed") is not None:
+            os.environ["COMPLEXMCP_SEED"] = str(task_info["seed"])
         # Compute the presented toolset ONCE per task so every attempt in the
         # pass@k loop sees the same distractor sample (the knob is a property of
         # the measurement, not of the individual rollout).
@@ -473,17 +484,35 @@ def main(args):
             from benchmark.graph_judge import load_gold as _load_gold, load_efs as _load_efs
             _gold = _load_gold(_task_dir) if _task_dir else None
 
-            if _grader == "graph" and _gold:
+            _rpath = None
+            for _p in (os.path.join(str(_task_dir), "tests", "rubric.json"),
+                       os.path.join(str(_task_dir), "rubric.json")):
+                if _task_dir and os.path.exists(_p):
+                    _rpath = _p; break
+
+            if _grader == "weighted":
+                # HYBRID grading: state-diff (Rc/Rb), plan-shape (graph_f1) and an
+                # optional rubric are combined as a weighted ledger with penalties
+                # (tests/test_weights.json). State components drop out and the score
+                # renormalizes when gt_env is unavailable, so seedless tasks still grade.
+                from benchmark.weighted_judge import judge_weighted
+                judge_result = judge_weighted(
+                    old_env=old_env, new_env=new_env, gt_env=gt_env,
+                    trajectory=_traj, gold_plan=_gold, efs=_load_efs(_task_dir),
+                    grading_dir=grading_dir,
+                    final_message=_traj.get("final_message"),
+                    rubric_judge=rubric_judge, rubric_path=_rpath)
+                print(f"[judge] weighted reward={judge_result['reward']} "
+                      f"({judge_result['quadrant']}) earned={judge_result['earned']} "
+                      f"penalty={judge_result['penalty']} -> passed={judge_result['passed']}")
+                passed = int(judge_result["passed"])
+                gradeable = True
+            elif _grader == "graph" and _gold:
                 # ETOM-style WORLD-INDEPENDENT grading: score the agent's tool-call
                 # DAG against the oracle's tool sequence (solution/trajectory.json)
                 # with equal-function-sets. No world state, no world-specific values
                 # (uids/tickers/IDs) -- so frozen-fixture / seed mismatches can't bite.
                 from benchmark.graph_judge import judge_trajectory_graph
-                _rpath = None
-                for _p in (os.path.join(str(_task_dir), "tests", "rubric.json"),
-                           os.path.join(str(_task_dir), "rubric.json")):
-                    if os.path.exists(_p):
-                        _rpath = _p; break
                 judge_result = judge_trajectory_graph(
                     _traj, _gold, efs=_load_efs(_task_dir),
                     final_message=_traj.get("final_message"),
@@ -692,6 +721,22 @@ def main(args):
                     }, indent=2, default=str))
                     (_vd / "detail.json").write_text(json.dumps(judge_result, indent=2, default=str))
                     print(f"[verifier] wrote {_vd} from graph grader (f1={judge_result.get('graph_f1')})")
+                elif task_dir is not None and _grd.startswith("weighted"):
+                    _vd = task_dir / "verifier"
+                    _vd.mkdir(parents=True, exist_ok=True)
+                    (_vd / "reward.json").write_text(json.dumps({
+                        "reward": judge_result.get("reward"),
+                        "passed": judge_result.get("passed"),
+                        "quadrant": judge_result.get("quadrant"),
+                        "components": judge_result.get("components"),
+                        "earned": judge_result.get("earned"),
+                        "penalty": judge_result.get("penalty"),
+                        "pos_total": judge_result.get("pos_total"),
+                        "grader": _grd,
+                    }, indent=2, default=str))
+                    (_vd / "detail.json").write_text(json.dumps(judge_result, indent=2, default=str))
+                    print(f"[verifier] wrote {_vd} from weighted grader "
+                          f"(reward={judge_result.get('reward')} {judge_result.get('quadrant')})")
 
                 # The physical run_N slot is the single source of truth for the
                 # attempt number (report.json/ctrf use it). Carry it so the trials
@@ -928,10 +973,13 @@ if __name__ == "__main__":
                         help="Rollouts per task for pass@k / pass^k. Default 1 (single-shot; "
                              "run-wide metrics are computed from attempt 1 only).")
     parser.add_argument("--grader", dest="grader", type=str, default="graph",
-                        choices=["graph", "pytest"],
+                        choices=["graph", "pytest", "weighted"],
                         help="Grading mode. 'graph' (default): ETOM-style world-independent "
                              "tool-DAG match vs the oracle plan + equivalence sets. 'pytest': "
-                             "trajectory tests/test_outputs.py assertions.")
+                             "trajectory tests/test_outputs.py assertions. 'weighted': hybrid "
+                             "ledger combining state-diff (Rc/Rb), plan-shape (graph_f1) and an "
+                             "optional rubric with per-component weights and penalties "
+                             "(tests/test_weights.json).")
     parser.add_argument("--skip-controls", dest="skip_controls", action="store_true",
                         default=False,
                         help="Skip the pre-launch admissibility gate (oracle=1.0 / nop=0.0). "

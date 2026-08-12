@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -26,8 +26,40 @@ class MondaySession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "monday.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.workspaces: List[Dict[str, Any]] = list(info.get("workspaces", []))
+            self.boards: List[Dict[str, Any]] = list(info.get("boards", []))
+            self.groups: List[Dict[str, Any]] = [
+                {**g, "position": int(g.get("position") or 0)} for g in info.get("groups", [])
+            ]
+            self.columns: List[Dict[str, Any]] = [
+                {**c, "position": int(c.get("position") or 0)} for c in info.get("columns", [])
+            ]
+            self.items: List[Dict[str, Any]] = list(info.get("items", []))
+            self.column_values: List[Dict[str, Any]] = [
+                {
+                    "item_id": cv["item_id"],
+                    "column_id": cv["column_id"],
+                    "text": cv["text"],
+                    "value": (str(cv.get("value") or "") or None),
+                }
+                for cv in info.get("column_values", [])
+            ]
+            self.users: List[Dict[str, Any]] = [
+                {**u, "is_admin": _to_bool(u.get("is_admin", False))} for u in info.get("users", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"items": self.items, "column_values": self.column_values}

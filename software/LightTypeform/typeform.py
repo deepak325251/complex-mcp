@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,8 +38,40 @@ class TypeformSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "typeform.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.forms: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "is_public": _to_bool(r["is_public"]),
+                    "response_count": _to_int(r["response_count"]),
+                }
+                for r in info.get("forms", [])
+            ]
+            self.fields: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "required": _to_bool(r["required"]),
+                    "choices": _choices(r["choices"]),
+                    "order": _to_int(r["order"]),
+                }
+                for r in info.get("fields", [])
+            ]
+            self.responses: List[Dict[str, Any]] = [
+                {**r, "completed": _to_bool(r["completed"])} for r in info.get("responses", [])
+            ]
+            self.answers: List[Dict[str, Any]] = [dict(r) for r in info.get("answers", [])]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"forms": self.forms, "responses": self.responses}

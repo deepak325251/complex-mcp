@@ -63,7 +63,7 @@ if WORK_DIR not in sys.path:
 
 from software.utils.time import TimeMachine
 from software.utils.core import OSConnector, DummyOSConnector, uuid_rng
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 corpus_path = Path("software") / "LightTalk" / "corpus"
 
@@ -75,11 +75,83 @@ class ContactSession:
         # The snapshot carries the post-generation rng state, restored by
         # restore_into, so runtime id/timestamp/network minting reproduces the
         # old seed=42 sequence byte-for-byte.
-        restore_into(self, corpus_path / "world.pkl")
-        self.os = OSConnector(
-            session_id=os_cfg["session_id"],
-            url=os_cfg["url"]
-        ) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"]
+            ) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            self.contacts_dict: Dict[str, Contact] = {}
+            self.uid_dict = {}
+            self.my_uid = f"user_{self.uuid()}"
+
+            with open(corpus_path / "contact.yaml") as f:
+                info = yaml.safe_load(f)
+
+            n_contacts = self.rng.randint(5, 100)
+
+            surnames = self.rng.choices(info["surnames"], k=n_contacts + 1)
+            tags = self.rng.choices(info["tags"], k=n_contacts)
+            genders = self.rng.choices(["male", "female"], k=n_contacts + 1)
+            first_names_arr = info["first_names"]
+            first_names = [self.rng.choice(first_names_arr[gender]) for gender in genders]
+
+            blockeds = self.rng.choices([False, True], weights=[0.9, 0.1], k=n_contacts)
+
+            self.my_name = f"{first_names[-1]} {surnames[-1]}"
+            self.my_gender = genders[-1]
+            self.my_moments: List[Moment] = []
+            self.my_ip = "UnKnown"
+            self.ip_choices = [
+                "New York", "Los Angeles", "San Francisco", "Chicago", "Seattle", "Dallas",
+                "London", "Manchester", "Frankfurt", "Berlin", "Paris",
+                "Tokyo", "Osaka", "Seoul", "Singapore",
+                "Sydney", "Melbourne", "Toronto", "Vancouver",
+                "Mumbai", "New Delhi", "Sao Paulo", "Moscow",
+                "Amsterdam", "Zurich", "Stockholm", "Helsinki",
+                "Oslo", "Copenhagen", "Rome", "Madrid",
+                "Istanbul", "Dubai", "Hong Kong", "Taipei"
+            ]
+
+            self.has_privilege = False
+
+            # Generate all contacts
+            for first_name, surname, tag, gender, blocked in \
+                zip(first_names[:-1], surnames[:-1], tags, genders, blockeds):
+                name = f"{first_name} {surname}"
+                if name in self.uid_dict:
+                    continue
+                contact = Contact(name=name, tag=tag, uid=f"user_{self.uuid()}", gender=gender, blocked=blocked)
+                self.contacts_dict[contact.uid] = contact
+                self.uid_dict[name] = contact.uid
+
+            self.uids = list(self.contacts_dict.keys())
+            self.contacts_dict[self.my_uid] = Contact(
+                name=self.my_name,
+                gender=self.my_gender,
+                tag="me",
+                uid=self.my_uid,
+                blocked=False
+            )
+
+            # Generate moments of each contact
+            self.__mock_moments()        
+            self.__mock_chat_history()
+
+            self.groups: List[Group] = []
+
+            self.__network_err_rate = self.rng.uniform(0.1, 0.5)
+            self.__network_acc = False
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, corpus_path / "world.pkl")
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"]
+            ) if os_cfg else DummyOSConnector()
 
 
     def __mock_moments(self):

@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,8 +38,51 @@ class EventbriteSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "eventbrite.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.organizations: List[Dict[str, Any]] = list(info.get("organizations", []))
+            self.events: List[Dict[str, Any]] = [
+                {
+                    **e,
+                    "capacity": _to_int(e["capacity"]),
+                    "is_free": _to_bool(e["is_free"]),
+                    "online_event": _to_bool(e["online_event"]),
+                }
+                for e in info.get("events", [])
+            ]
+            self.venues: List[Dict[str, Any]] = [
+                {
+                    **v,
+                    "latitude": _to_float(v["latitude"]),
+                    "longitude": _to_float(v["longitude"]),
+                }
+                for v in info.get("venues", [])
+            ]
+            self.ticket_classes: List[Dict[str, Any]] = [
+                {
+                    **t,
+                    "quantity_total": _to_int(t["quantity_total"]),
+                    "quantity_sold": _to_int(t["quantity_sold"]),
+                    "cost": _to_int(t["cost"]),
+                    "fee": _to_int(t["fee"]),
+                    "free": _to_bool(t["free"]),
+                }
+                for t in info.get("ticket_classes", [])
+            ]
+            self.attendees: List[Dict[str, Any]] = [
+                {**a, "checked_in": _to_bool(a["checked_in"])} for a in info.get("attendees", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"events": self.events, "attendees": self.attendees}

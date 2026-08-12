@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -63,8 +63,63 @@ class InstacartSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "instacart.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.retailers: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "min_basket": _strict_float(r["min_basket"]),
+                    "delivery_fee": _strict_float(r["delivery_fee"]),
+                    "service_fee_pct": _strict_float(r["service_fee_pct"]),
+                    "eta_minutes": _strict_int(r["eta_minutes"]),
+                    "delivers_to_zips": [z.strip() for z in _opt_csv_list(r.get("delivers_to_zips"), sep=",")],
+                }
+                for r in info.get("retailers", [])
+            ]
+            self.products: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "price": _strict_float(r["price"]),
+                    "sale_price": _opt_float(r.get("sale_price"), default=None),
+                    "in_stock": _strict_bool(r["in_stock"]),
+                }
+                for r in info.get("products", [])
+            ]
+            self.orders: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "subtotal": _strict_float(r["subtotal"]),
+                    "delivery_fee": _strict_float(r["delivery_fee"]),
+                    "service_fee": _strict_float(r["service_fee"]),
+                    "tip": _strict_float(r["tip"]),
+                    "total": _strict_float(r["total"]),
+                }
+                for r in info.get("orders", [])
+            ]
+            self.order_items: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "quantity": _strict_int(r["quantity"]),
+                    "unit_price": _strict_float(r["unit_price"]),
+                    "line_total": _strict_float(r["line_total"]),
+                    "replacement_for": _opt_str(r.get("replacement_for"), default="") or None,
+                }
+                for r in info.get("order_items", [])
+            ]
+            self.user: Dict[str, Any] = info.get("user", {})
+
+            self._carts: Dict[str, Dict[str, Any]] = {}
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {

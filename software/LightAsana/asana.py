@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,8 +30,35 @@ class AsanaSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "asana.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.workspace: Dict[str, Any] = info.get("workspace", {})
+            self.users: List[Dict[str, Any]] = list(info.get("users", []))
+            self.projects: List[Dict[str, Any]] = [
+                {**p, "archived": _to_bool(p.get("archived", False))} for p in info.get("projects", [])
+            ]
+            self.sections: List[Dict[str, Any]] = list(info.get("sections", []))
+            self.tasks: List[Dict[str, Any]] = [
+                {
+                    **t,
+                    "completed": _to_bool(t.get("completed", False)),
+                    "assignee_gid": (t.get("assignee_gid") or None),
+                    "due_on": (t.get("due_on") or None),
+                    "section_gid": (t.get("section_gid") or None),
+                }
+                for t in info.get("tasks", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"tasks": self.tasks}

@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -44,8 +44,39 @@ class AmplitudeSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "amplitude.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.events: List[Dict[str, Any]] = [
+                {
+                    "event_id": r["event_id"],
+                    "user_id": r["user_id"],
+                    "device_id": r["device_id"],
+                    "event_type": r["event_type"],
+                    "event_time": r["event_time"],
+                    "event_properties": _parse_props(r.get("event_properties")),
+                }
+                for r in info.get("events", [])
+            ]
+            self.users: List[Dict[str, Any]] = list(info.get("users", []))
+            self.segmentation: List[Dict[str, Any]] = [
+                {
+                    "event_type": r["event_type"],
+                    "date": r["date"],
+                    "count": _to_int(r.get("count")),
+                }
+                for r in info.get("segmentation", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"events": self.events}

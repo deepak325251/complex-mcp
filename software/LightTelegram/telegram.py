@@ -11,7 +11,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -47,8 +47,68 @@ class TelegramSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "telegram.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.bot: Dict[str, Any] = dict(info.get("bot", {}))
+            self.users: List[Dict[str, Any]] = [
+                {
+                    "id": _strict_int(r["id"]),
+                    "is_bot": _to_bool(r["is_bot"]),
+                    "first_name": r["first_name"],
+                    "last_name": (_opt_str(r.get("last_name"), "") or None),
+                    "username": (_opt_str(r.get("username"), "") or None),
+                    "language_code": (_opt_str(r.get("language_code"), "") or None),
+                }
+                for r in info.get("users", [])
+            ]
+            self.chats: List[Dict[str, Any]] = []
+            for r in info.get("chats", []):
+                chat = {"id": _strict_int(r["id"]), "type": r["type"]}
+                if r["title"]:
+                    chat["title"] = r["title"]
+                if r["username"]:
+                    chat["username"] = r["username"]
+                if r["first_name"]:
+                    chat["first_name"] = r["first_name"]
+                if r["last_name"]:
+                    chat["last_name"] = r["last_name"]
+                if r["description"]:
+                    chat["description"] = r["description"]
+                chat["member_count"] = _strict_int(r["member_count"])
+                self.chats.append(chat)
+            self.messages: List[Dict[str, Any]] = [
+                {
+                    "message_id": _strict_int(r["message_id"]),
+                    "chat_id": _strict_int(r["chat_id"]),
+                    "from_id": _strict_int(r["from_id"]),
+                    "text": r["text"],
+                    "date": _strict_int(r["date"]),
+                    "reply_to_message_id": _opt_int(r.get("reply_to_message_id"), None),
+                }
+                for r in info.get("messages", [])
+            ]
+            self.members: List[Dict[str, Any]] = [
+                {
+                    "chat_id": _strict_int(r["chat_id"]),
+                    "user_id": _strict_int(r["user_id"]),
+                    "status": r["status"],
+                }
+                for r in info.get("chat_members", [])
+            ]
+
+            self._next_message_id = max((m["message_id"] for m in self.messages), default=0) + 1
+            self._next_update_id = 100001
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"messages": self.messages}

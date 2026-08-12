@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -46,8 +46,52 @@ class PosthogSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "posthog.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.events: List[Dict[str, Any]] = [
+                {
+                    "id": e["id"],
+                    "project_id": _strict_int(e["project_id"]),
+                    "distinct_id": e["distinct_id"],
+                    "event": e["event"],
+                    "timestamp": e["timestamp"],
+                    "properties": _parse_props(e.get("properties")),
+                }
+                for e in info.get("events", [])
+            ]
+            self.flags: List[Dict[str, Any]] = [
+                {
+                    "id": f["id"],
+                    "project_id": _strict_int(f["project_id"]),
+                    "key": f["key"],
+                    "name": f["name"],
+                    "active": _to_bool(f.get("active", False)),
+                    "rollout_percentage": _strict_int(f["rollout_percentage"]),
+                }
+                for f in info.get("feature_flags", [])
+            ]
+            self.persons: List[Dict[str, Any]] = [
+                {
+                    "id": p["id"],
+                    "project_id": _strict_int(p["project_id"]),
+                    "distinct_id": p["distinct_id"],
+                    "name": p["name"],
+                    "email": p["email"],
+                    "created_at": p["created_at"],
+                }
+                for p in info.get("persons", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"events": self.events}

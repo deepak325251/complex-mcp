@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -30,8 +30,47 @@ class DocusignSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "docusign.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.documents: List[Dict[str, Any]] = [
+                {
+                    **d,
+                    "page_count": int(d.get("page_count")),
+                    "order": int(d.get("order")),
+                }
+                for d in info.get("documents", [])
+            ]
+            self.envelopes: List[Dict[str, Any]] = [
+                {
+                    **e,
+                    "sent_time": (e.get("sent_time") or None),
+                    "completed_time": (e.get("completed_time") or None),
+                    "template_id": (e.get("template_id") or None),
+                }
+                for e in info.get("envelopes", [])
+            ]
+            self.recipients: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "routing_order": int(r.get("routing_order")),
+                    "signed_time": (r.get("signed_time") or None),
+                }
+                for r in info.get("recipients", [])
+            ]
+            self.templates: List[Dict[str, Any]] = [
+                {**t, "shared": _to_bool(t.get("shared", False))} for t in info.get("templates", [])
+            ]
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"envelopes": self.envelopes}

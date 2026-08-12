@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -38,8 +38,32 @@ class MyfitnesspalSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "myfitnesspal.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.foods: List[Dict[str, Any]] = self._coerce_foods(info.get("foods", []))
+            self.diary_entries: List[Dict[str, Any]] = self._coerce_diary_entries(info.get("diary_entries", []))
+            self.exercise_types: List[Dict[str, Any]] = self._coerce_exercise_types(info.get("exercise_types", []))
+            self.exercise_log: List[Dict[str, Any]] = self._coerce_exercise_log(info.get("exercise_log", []))
+            self.weight_log: List[Dict[str, Any]] = self._coerce_weight_log(info.get("weight_log", []))
+            self.water_log: List[Dict[str, Any]] = self._coerce_water_log(info.get("water_log", []))
+            self.user_profile: Dict[str, Any] = dict(info.get("user_profile", {}))
+            self.scenario_user_profile: Dict[str, Any] = dict(info.get("myfitnesspal_user_profile", {}))
+
+            self._next_entry_id = max((e["entry_id"] for e in self.diary_entries), default=0) + 1
+            self._next_exercise_id = max((e["exercise_id"] for e in self.exercise_log), default=0) + 1
+            self._next_weight_id = max((w["weight_id"] for w in self.weight_log), default=0) + 1
+            self._next_water_id = max((w["water_id"] for w in self.water_log), default=0) + 1
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"diary_entries": self.diary_entries}

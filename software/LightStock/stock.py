@@ -12,7 +12,7 @@ if WORK_DIR not in sys.path:
 
 from software.utils.time import TimeMachine
 from software.utils.core import OSConnector, DummyOSConnector, uuid_rng
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 @dataclass
 class Stock:
@@ -57,8 +57,36 @@ class StockSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.time_machine = TimeMachine(rng=self.rng)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+
+            self.stocks: Dict[str, Stock] = self.init_stocks() # {tocker: Stock}
+            self.market_open = self.rng.choice([True, True, False]) # 模拟非交易时段
+
+            self.trading_balance = self.rng.randint(10000, 50000)
+            self.savings_balance = self.rng.randint(50000, 150000)
+            self.frozen_margin = 0.0
+            self.user_tier: Literal["Basic", "VIP"] = self.rng.choice(["Basic", "VIP"]) # VIP 才能做空和止损
+            self.day_trades_remaining = self.rng.randint(1, 3)
+
+            self.portfolio: Dict[str, Position] = {} # {ticker : position}
+            self.pending_orders: List[PendingOrder] = []
+            self.trade_history: List[StockTransaction] = []
+            self.watchlist: Set[str] = set()
+            self.price_alerts: Dict[str, float] = {}
+
+            self.fee_rate = 0.002 * self.rng.uniform(0.5, 1.5)
+            self.vip_fee = 8000
+
+            self.__mock_environment()
+            self.password_verified = False
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     @staticmethod
     def require_market_open(func):

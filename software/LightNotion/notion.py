@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -26,8 +26,59 @@ class NotionSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "notion.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.users: List[Dict[str, Any]] = [
+                {
+                    **u,
+                    "bot": _to_bool(u.get("bot", False)),
+                    "avatar_url": (str(u.get("avatar_url") or "") or None),
+                    "email": (str(u.get("email") or "") or None),
+                }
+                for u in info.get("users", [])
+            ]
+            self.databases: List[Dict[str, Any]] = [
+                {**d, "archived": _to_bool(d.get("archived", False))} for d in info.get("databases", [])
+            ]
+            self.pages: List[Dict[str, Any]] = [
+                {
+                    **p,
+                    "archived": _to_bool(p.get("archived", False)),
+                    "cover_url": (str(p.get("cover_url") or "") or None),
+                }
+                for p in info.get("pages", [])
+            ]
+            self.blocks: List[Dict[str, Any]] = [
+                {
+                    **b,
+                    "order": int(b.get("order") or 0),
+                    "has_children": _to_bool(b.get("has_children", False)),
+                    "checked": (_to_bool(b.get("checked")) if b.get("checked") else None),
+                    "parent_block_id": (str(b.get("parent_block_id") or "") or None),
+                }
+                for b in info.get("blocks", [])
+            ]
+            self.comments: List[Dict[str, Any]] = [
+                {
+                    **c,
+                    "resolved": _to_bool(c.get("resolved", False)),
+                    "parent_block_id": (str(c.get("parent_block_id") or "") or None),
+                }
+                for c in info.get("comments", [])
+            ]
+            self.properties: Dict[str, Dict[str, Any]] = self._group_properties(info.get("page_properties", []))
+            self.workspace: Dict[str, Any] = info.get("workspace", {})
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     @staticmethod
     def _group_properties(rows):

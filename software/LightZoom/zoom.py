@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -34,8 +34,37 @@ class ZoomSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "zoom.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.meetings: List[Dict[str, Any]] = [{
+                **r,
+                "id": _to_int(r.get("id")),
+                "type": _to_int(r.get("type")),
+                "duration": _to_int(r.get("duration")),
+                "agenda": r.get("agenda") or "",
+            } for r in info.get("meetings", [])]
+            self.recordings: List[Dict[str, Any]] = [{
+                **r,
+                "meeting_id": _to_int(r.get("meeting_id")),
+                "file_size": _to_int(r.get("file_size")),
+            } for r in info.get("recordings", [])]
+            self.registrants: List[Dict[str, Any]] = [{
+                **r,
+                "meeting_id": _to_int(r.get("meeting_id")),
+                "join_time": _opt_str(r.get("join_time")),
+            } for r in info.get("registrants", [])]
+            self.user: Dict[str, Any] = dict(info.get("user", {}))
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"meetings": self.meetings}

@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -40,8 +40,31 @@ class YoutubeSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "youtube.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.channel: Dict[str, Any] = dict(info.get("channel", {}))
+            self._CHANNEL_ID = self.channel["id"]
+            self._CHANNEL_TITLE = self.channel["snippet"]["title"]
+
+            self.videos: List[Dict[str, Any]] = self._coerce_videos(info.get("videos", []))
+            self.playlists: List[Dict[str, Any]] = self._coerce_playlists(info.get("playlists", []))
+            self.playlist_items: List[Dict[str, Any]] = self._coerce_playlist_items(info.get("playlist_items", []))
+            self.comments: List[Dict[str, Any]] = self._coerce_comments(info.get("comments", []))
+            self.captions: List[Dict[str, Any]] = self._coerce_captions(info.get("captions", []))
+            self.video_categories: List[Dict[str, Any]] = list(info.get("video_categories", []))
+            self.channel_sections: List[Dict[str, Any]] = list(info.get("channel_sections", []))
+            self.analytics: Dict[str, Any] = dict(info.get("analytics", {}))
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"videos": self.videos, "playlists": self.playlists,

@@ -10,7 +10,7 @@ if WORK_DIR not in sys.path:
     sys.path.append(WORK_DIR)
 
 from software.utils.core import OSConnector, DummyOSConnector
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 from software.utils.time import TimeMachine
 
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
@@ -34,8 +34,64 @@ class GithubSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            self.time_machine = TimeMachine(rng=self.rng)
+
+            with open(CORPUS_PATH / "github.yaml") as f:
+                info = yaml.safe_load(f)
+
+            self.repos: List[Dict[str, Any]] = [
+                {
+                    **r,
+                    "id": _to_int(r["id"]),
+                    "private": _to_bool(r.get("private", False)),
+                    "stars": _to_int(r["stars"]),
+                    "forks": _to_int(r["forks"]),
+                    "open_issues": _to_int(r["open_issues"]),
+                }
+                for r in info.get("repos", [])
+            ]
+            self.issues: List[Dict[str, Any]] = [
+                {
+                    **i,
+                    "id": _to_int(i["id"]),
+                    "number": _to_int(i["number"]),
+                    "is_pull_request": _to_bool(i.get("is_pull_request", False)),
+                    "labels": [l for l in str(i.get("labels", "")).split(";") if l],
+                    "closed_at": (i.get("closed_at") or None),
+                    "milestone": (i.get("milestone") or None),
+                }
+                for i in info.get("issues", [])
+            ]
+            self.pulls: List[Dict[str, Any]] = [
+                {
+                    **p,
+                    "number": _to_int(p["number"]),
+                    "merged": _to_bool(p.get("merged", False)),
+                    "mergeable": _to_bool(p.get("mergeable", False)),
+                    "draft": _to_bool(p.get("draft", False)),
+                    "additions": _to_int(p["additions"]),
+                    "deletions": _to_int(p["deletions"]),
+                    "changed_files": _to_int(p["changed_files"]),
+                }
+                for p in info.get("pulls", [])
+            ]
+            self.comments: List[Dict[str, Any]] = [
+                {
+                    **c,
+                    "id": _to_int(c["id"]),
+                    "issue_number": _to_int(c["issue_number"]),
+                }
+                for c in info.get("comments", [])
+            ]
+            self.user: Dict[str, Any] = dict(info.get("user", {}))
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
     def get_session_dict(self):
         return {"issues": self.issues, "comments": self.comments}

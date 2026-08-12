@@ -15,7 +15,7 @@ if WORK_DIR not in sys.path:
 
 from software.utils.time import TimeMachine
 from software.utils.core import OSConnector, DummyOSConnector, uuid_rng
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 @dataclass
 class Flight:
@@ -73,8 +73,31 @@ class FlightSession:
     def __init__(self, os_cfg, seed=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
-        restore_into(self, Path(__file__).resolve().parent / "world.pkl")
-        self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self.time_machine = TimeMachine(rng=self.rng)
+            self.os = OSConnector(
+                session_id=os_cfg["session_id"],
+                url=os_cfg["url"]
+            ) if os_cfg else DummyOSConnector()
+
+            self.airports, self.airports_in_cities = self.init_airports()
+            self.flights, self.flights_by_arrival, self.flights_by_departure = self.init_flights()
+
+            self.my_balance = self.rng.randint(15000, 60000)
+            self.current_bookings: List[BookingItem] = []
+            self.bookings_history: List[BookingRecord] = []
+            self.refund_history: List[RefundRecord] = []
+            self.passengers: List[PassengerInfo] = []
+            self.__mock_booking()
+            self.my_starred_airports = set()
+
+            self.enter_password = False
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "world.pkl")
+            self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
     
     def uuid(self, prefix: str):
         return f"{prefix}_{uuid_rng(self.rng)}"

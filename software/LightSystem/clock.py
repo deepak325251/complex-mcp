@@ -2,13 +2,19 @@ import datetime
 import random
 from pathlib import Path
 
-from software.utils.world_snapshot import restore_into
+from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 class ClockSession:
     def __init__(self, seed=None):
         # Seedless: clock state (frozen `_now` + post-init rng) is loaded from a
         # snapshot beside this module; `seed` accepted for client compat, ignored.
-        restore_into(self, Path(__file__).resolve().parent / "clock_world.pkl")
+        if seed_mode():
+            # Seed architecture: world rolled from a seed (re-armed).
+            self.rng = random.Random(seed)
+            self._now = self._init_now()
+        else:
+            # Seedless: world loaded verbatim from the frozen snapshot.
+            restore_into(self, Path(__file__).resolve().parent / "clock_world.pkl")
     
     def now(self):
         return {
