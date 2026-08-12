@@ -18,6 +18,60 @@ from benchmark.mcp_traj import from_complexmcp as _msg_traj_from_complexmcp  # n
 
 _TOOL_RE = re.compile(r"<tool>\s*(\{.*?\})\s*</tool>", re.DOTALL)
 _RESP_RE = re.compile(r"<response>\s*(.*?)\s*</response>", re.DOTALL)
+# Real extended-thinking, emitted by the agent as a self-delimiting block with an
+# optional signature attribute. Split out so `reasoning` carries the model's true
+# thinking and `message` carries its visible speech -- the two used to be merged.
+_THINK_RE = re.compile(r'<thinking(?:\s+signature="([^"]*)")?\s*>(.*?)</thinking>', re.DOTALL)
+
+
+def _rubric_rc_rb(rubric_result: dict | None):
+    """Return (Rc, Rb) for a rubric result.
+
+    Prefer the grader's own values; the criteria (LLM-judged) format leaves them
+    null, so derive from per_criterion using the documented weighting
+    (rubric_judge.py): Rc = Σ(weight of satisfied positives)/Σ(positive weight);
+    Rb = Σ(weight of violated guards)/Σ(guard weight). Guards have negative
+    weight and are "violated" when NOT satisfied.
+    """
+    if not rubric_result:
+        return None, None
+    rc, rb = rubric_result.get("rc"), rubric_result.get("rb")
+    if rc is not None or rb is not None:
+        return rc, rb
+    crit = rubric_result.get("per_criterion") or []
+    if not crit:
+        return None, None
+    pos_total = pos_hit = neg_total = neg_hit = 0.0
+    for c in crit:
+        w = c.get("score") or 0
+        if w > 0:
+            pos_total += w
+            if c.get("satisfied"):
+                pos_hit += w
+        elif w < 0:
+            neg_total += -w
+            if not c.get("satisfied"):
+                neg_hit += -w
+    rc = round(pos_hit / pos_total, 6) if pos_total else None
+    rb = round(neg_hit / neg_total, 6) if neg_total else 0.0
+    return rc, rb
+
+
+def _split_thinking(span: str):
+    """Return (thinking_text, visible_message, signatures) for a pre-tool span."""
+    thoughts, sigs = [], []
+    for m in _THINK_RE.finditer(span):
+        t = (m.group(2) or "").strip()
+        if not t:
+            # Drop empty thinking blocks entirely -- a signature must never
+            # survive without the reasoning text it vouches for (that orphan
+            # pairing was the original "signature but fake reasoning" bug).
+            continue
+        thoughts.append(t)
+        if m.group(1):
+            sigs.extend(s for s in m.group(1).split(",") if s)
+    message = _THINK_RE.sub("", span).strip()
+    return "\n\n".join(thoughts), message, sigs
 
 
 def _slug(name: str, maxlen: int = 40) -> str:
@@ -36,7 +90,10 @@ def parse_trajectory(output: str) -> dict[str, Any]:
         if not tm:
             break
         step_no += 1
-        reasoning = output[pos:tm.start()].strip()
+        # `reasoning` is now the model's REAL thinking (from <thinking> blocks);
+        # `message` is its visible speech before the tool call. Previously the
+        # whole span was labeled "reasoning", so visible text posed as thinking.
+        reasoning, message, signature = _split_thinking(output[pos:tm.start()])
         tool_json = tm.group(1)
         try:
             tool_data = json.loads(tool_json)
@@ -61,11 +118,14 @@ def parse_trajectory(output: str) -> dict[str, Any]:
         steps.append({
             "step": step_no,
             "reasoning": reasoning,
+            "message": message,
+            "signature": signature,
             "tool": tool_name,
             "arguments": tool_args,
             "response": response,
         })
-    final_message = output[pos:].strip()
+    # Strip any trailing thinking block from the final visible message too.
+    _, final_message, _ = _split_thinking(output[pos:])
     return {"steps": steps, "final_message": final_message}
 
 
@@ -88,8 +148,10 @@ def render_output_md(record: dict, traj: dict) -> str:
         "",
     ]
     for s in traj["steps"]:
-        if s["reasoning"]:
-            lines += [f"### Step {s['step']} — reasoning", "", s["reasoning"], ""]
+        if s.get("reasoning"):
+            lines += [f"### Step {s['step']} — thinking", "", s["reasoning"], ""]
+        if s.get("message"):
+            lines += [f"### Step {s['step']} — message", "", s["message"], ""]
         lines += [
             f"### Step {s['step']} — call `{s['tool']}`",
             "",
@@ -348,16 +410,11 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     # it was a superset-duplicate of the ATIF file.
     traj = parse_trajectory(record.get("output", ""))
     atif_doc = _atif_from_complexmcp(traj, agent="complexmcp", model=model,
-                                     usage=record.get("usage"))
-    # Attach per-turn Anthropic thinking signatures (proof the reasoning is
-    # model-generated) to agent steps, in emission order. Best-effort: only the
-    # steps we have signatures for get the field; a length mismatch never raises.
-    _sigs = record.get("reasoning_signatures") or []
-    if _sigs:
-        _agent_steps = [s for s in atif_doc.get("steps", []) if s.get("source") == "agent"]
-        for _step, _sig in zip(_agent_steps, _sigs):
-            if _sig:
-                _step["reasoning_signatures"] = _sig
+                                     usage=record.get("usage"),
+                                     query=record.get("query", ""))
+    # Thinking signatures are attached inside _atif_from_complexmcp, per step,
+    # straight from the <thinking> blocks -- so a signature rides only on a step
+    # that actually captured real reasoning text (no orphan-signature drift).
     atif_dir = run_dir / "agent"
     atif_dir.mkdir(parents=True, exist_ok=True)
     (atif_dir / "trajectory.json").write_text(
@@ -441,14 +498,23 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     completion_rate = (recall / total) if total else (1.0 if passed else 0.0)
     misbehaving_rate = (misbehave / total) if total else 0.0
     pytest_checks = score.get("pytest_checks")
+    channel_a_present = pytest_checks is not None
+    # test_weights_percentage: 0.0 when Channel A ran and scored zero, null ONLY
+    # when the channel is absent -- `channel_a_present` removes the null/0.0
+    # ambiguity for downstream mean-score math.
     test_weights_percentage = (
         float(pytest_checks.get("weighted_score", 0.0)) * 100.0
-        if pytest_checks else None
+        if channel_a_present else None
     )
     rubric_weights_percentage = (
         float(rubric_result.get("rubric_score", 0.0)) * 100.0
         if rubric_result else None
     )
+    # Rc/Rb are only auto-filled by the predicate-style rubric; the criteria
+    # (LLM-judged) format leaves them null. Derive them from per_criterion via
+    # the documented formula (rubric_judge.py) so report.json carries the
+    # criterion-level breakdown instead of a bare null.
+    rubric_rc, rubric_rb = _rubric_rc_rb(rubric_result)
     (run_dir / "report.json").write_text(json.dumps({
         "task": record["name"],
         "model": model,
@@ -456,13 +522,20 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         "attempt": run_no,
         "passed": passed,
         "reward": reward_val,
+        # final_score is the composite actually used to rank this run, so a
+        # leaderboard can sort off report.json alone (no cross-file join).
+        "final_score": reward_val,
+        "final_score_basis": score.get("grader") or "graph_f1+rubric",
         # State-diff surface (recall/misbehave over scored key-paths). The rubric
         # surface rides alongside as `rubric_rb`, NOT under the same name.
         "completion_rate": completion_rate,
         "misbehaving_rate": misbehaving_rate,
+        "channel_a_present": channel_a_present,
         "test_weights_percentage": test_weights_percentage,
         "rubric_weights_percentage": rubric_weights_percentage,
-        "rubric_rb": rubric_result.get("rb") if rubric_result else None,
+        "rubric_rc": rubric_rc,
+        "rubric_rb": rubric_rb,
+        "rubric_per_criterion": rubric_result.get("per_criterion") if rubric_result else None,
         "tokens": record.get("tokens", {}),
         "tool_summary": tool_summary,
     }, indent=2, ensure_ascii=False))

@@ -21,7 +21,7 @@ import ast
 
 sys.path.append('.')
 
-from client.utils import parse_tool, TOOL_START_SEQ, TOOL_STOP_SEQ
+from client.utils import parse_tool, TOOL_START_SEQ, TOOL_STOP_SEQ, thinking_block
 from client.rag import RAGEngine, ChromaRAG
 
 LOG_FORMAT = '%(log_color)s%(levelname)-8s%(reset)s %(message)s'
@@ -635,10 +635,31 @@ class AnthropicBridgeBackend(ChatBackend):
         self.base_url = (os.environ.get("ANTHROPIC_BASE_URL")
                          or os.environ.get("ANTHROPIC_API_BASE")
                          or "http://127.0.0.1:8765").rstrip("/")
-        self.api_key = os.environ.get("ANTHROPIC_API_KEY", "ccbridge-stub")
+        # HTTP header values must be ASCII. Strip surrounding whitespace/newlines
+        # (a common copy-paste artifact) and reject non-ASCII up front with an
+        # actionable message -- otherwise httpx raises a cryptic
+        # UnicodeEncodeError deep in header building (e.g. smart quotes/en-dashes
+        # that sneak in when pasting the bridge secret from a terminal).
+        self.api_key = self._ascii_header(
+            os.environ.get("ANTHROPIC_API_KEY", "ccbridge-stub"), "ANTHROPIC_API_KEY")
+        self.anthropic_version = self._ascii_header(
+            os.environ.get("ANTHROPIC_VERSION", "2023-06-01"), "ANTHROPIC_VERSION")
         _budget = os.environ.get("MAX_THINKING_TOKENS", "").strip()
         self.thinking_budget = int(_budget) if _budget.isdigit() and int(_budget) > 0 else 0
-        self.anthropic_version = os.environ.get("ANTHROPIC_VERSION", "2023-06-01")
+
+    @staticmethod
+    def _ascii_header(value: str, name: str) -> str:
+        v = (value or "").strip()
+        try:
+            v.encode("ascii")
+        except UnicodeEncodeError:
+            bad = [(i, c, hex(ord(c))) for i, c in enumerate(v) if ord(c) > 127]
+            raise RuntimeError(
+                f"{name} contains non-ASCII characters and cannot be sent as an "
+                f"HTTP header: {bad[:8]}. This usually means the value was pasted "
+                f"with smart quotes/en-dashes -- re-export it as plain ASCII."
+            ) from None
+        return v
 
     @staticmethod
     def _to_anthropic(messages: List[Dict[str, Any]]) -> Tuple[Optional[str], List[Dict[str, str]]]:
@@ -1045,12 +1066,17 @@ class AgentClient:
                     prompt_token_num += usage.prompt_tokens
                     _accumulate_usage(usage)
 
-                    # Preserve the model's reasoning (extended thinking) when the
-                    # backend surfaces it, so it lands as the step's reasoning.
+                    # Preserve the model's REAL reasoning (extended thinking) when
+                    # the backend surfaces it. Emit it as a self-delimiting
+                    # <thinking> block (with signature) so the trajectory writer
+                    # keeps it distinct from the visible assistant text below --
+                    # never conflate the two, which made visible speech masquerade
+                    # as reasoning.
                     reasoning_text = getattr(m, "reasoning_content", None)
+                    turn_sigs = list(getattr(m, "reasoning_signatures", None) or [])
+                    turn_signatures.append(turn_sigs)
                     if reasoning_text:
-                        output.append(reasoning_text)
-                    turn_signatures.append(list(getattr(m, "reasoning_signatures", None) or []))
+                        output.append(thinking_block(reasoning_text, turn_sigs))
 
                     text = m.content or ""
                     tool_calls = getattr(m, "tool_calls", None) or []
@@ -1133,10 +1159,12 @@ class AgentClient:
                 _accumulate_usage(usage)
 
                 _reasoning = getattr(resp.choices[0].message, "reasoning_content", None)
+                _sigs = list(getattr(resp.choices[0].message, "reasoning_signatures", None) or [])
+                turn_signatures.append(_sigs)
                 if _reasoning:
-                    output.append(_reasoning)
-                turn_signatures.append(
-                    list(getattr(resp.choices[0].message, "reasoning_signatures", None) or []))
+                    # Real thinking only -- kept separate from the visible `msg`
+                    # (which carries the <tool> call) so it is never mislabeled.
+                    output.append(thinking_block(_reasoning, _sigs))
 
                 if self.toolbox and resp.choices[0].finish_reason == "stop" and \
                     TOOL_START_SEQ in msg and TOOL_STOP_SEQ not in msg:

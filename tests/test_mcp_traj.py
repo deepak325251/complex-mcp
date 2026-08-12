@@ -6,10 +6,12 @@ from benchmark.mcp_traj import from_complexmcp
 
 _TRAJ = {
     "steps": [
-        {"step": 1, "reasoning": "check the cart first",
+        # Real thinking (-> thinking block) + visible speech (-> text block).
+        {"step": 1, "reasoning": "the cart may be dirty; verify before acting",
+         "message": "Let me check the cart first.", "signature": ["sig_abc"],
          "tool": "get_cart_summary", "arguments": {},
          "response": {"status": "ok", "output": []}},
-        {"step": 2, "reasoning": "",
+        {"step": 2, "reasoning": "", "message": "",
          "tool": "place_market_order", "arguments": {"ticker": "PFE", "qty": 2},
          "response": {"status": "error", "output": "internel error"}},
     ],
@@ -56,7 +58,7 @@ def test_messages_are_typed_with_ids_and_turn_index():
         assert "parentId" in m
         assert m["turn_index"] == i
         for block in m["message"]["content"]:
-            assert block["type"] in {"text", "toolCall", "toolResult"}
+            assert block["type"] in {"thinking", "text", "toolCall", "toolResult"}
 
 
 def test_parent_id_chain_links():
@@ -68,13 +70,17 @@ def test_parent_id_chain_links():
 
 def test_tool_call_and_result_blocks():
     msgs = _doc()["messages"]
-    call = msgs[1]["message"]["content"][-1]  # assistant's toolCall (after text)
+    call = msgs[1]["message"]["content"][-1]  # assistant's toolCall (last block)
     assert call["type"] == "toolCall"
     assert call["id"] == "toolu_1"
     assert call["name"] == "get_cart_summary"
-    # first step has reasoning -> a text block precedes the tool call
-    assert msgs[1]["message"]["content"][0]["type"] == "text"
-    # second step has empty reasoning -> only the tool call block
+    # first step: real thinking -> thinking block (with signature), then visible
+    # speech -> text block, then the tool call.
+    first = msgs[1]["message"]["content"]
+    assert [b["type"] for b in first] == ["thinking", "text", "toolCall"]
+    assert first[0]["thinking"] and first[0]["signature"] == "sig_abc"
+    assert first[1]["text"] == "Let me check the cart first."
+    # second step has no thinking/speech -> only the tool call block
     assert [b["type"] for b in msgs[3]["message"]["content"]] == ["toolCall"]
     result = msgs[2]["message"]["content"][0]
     assert result["type"] == "toolResult"

@@ -9,17 +9,18 @@ This keeps the parts of the reference message-based schema that are actually
 useful for complex-mcp, and drops the parts that only make sense in a
 file/multimodal task world:
 
-  KEPT   typed content blocks (`text`/`toolCall`/`toolResult`), message id +
-         parentId chain + turn_index, tool-call ids linking call<->result,
-         tool-result status/exitCode, a lean taxonomy meta_info, token usage.
+  KEPT   typed content blocks (`thinking`/`text`/`toolCall`/`toolResult`),
+         message id + parentId chain + turn_index, tool-call ids linking
+         call<->result, tool-result status/exitCode, a lean taxonomy meta_info,
+         token usage.
   DROPPED input_files/output_artifacts (complex-mcp is state-diff graded, no
          file artifacts), input/output modalities + modality tags (text-only),
          and the is_accepted/hints turn-feedback wrapper (single-shot runs).
 
-The agent.log does not capture real model `thinking` or per-tool timing, so
-reasoning text maps to a `text` block (not `thinking`) and durationMs is left
-null; a future client-instrumentation pass can fill those without changing this
-shape.
+The model's REAL extended thinking (when the backend surfaces it) maps to a
+`thinking` block carrying its signature; the visible assistant speech maps to a
+`text` block. The two are kept distinct -- visible text never poses as thinking.
+Per-tool durationMs is still left null (not captured in agent.log).
 """
 from __future__ import annotations
 
@@ -79,6 +80,13 @@ def _coerce_usage(tokens: Optional[dict], usage: Optional[dict] = None) -> dict:
 
 def _text_block(text: str) -> dict:
     return {"type": "text", "text": text}
+
+
+def _thinking_block(text: str, signature: Any = None) -> dict:
+    block: dict = {"type": "thinking", "thinking": text}
+    if signature:
+        block["signature"] = ",".join(signature) if isinstance(signature, list) else signature
+    return block
 
 
 def _tool_call_block(call_id: str, name: Any, arguments: Any) -> dict:
@@ -144,9 +152,14 @@ def from_complexmcp(
     for step in traj.get("steps", []):
         call_id = "toolu_%s" % step.get("step")
         assistant_content: list[dict] = []
-        reasoning = (step.get("reasoning") or "").strip()
-        if reasoning:
-            assistant_content.append(_text_block(reasoning))
+        # Real extended thinking -> a `thinking` block (with signature); the
+        # visible pre-tool speech -> a `text` block. Kept strictly separate.
+        thinking = (step.get("reasoning") or "").strip()
+        if thinking:
+            assistant_content.append(_thinking_block(thinking, step.get("signature")))
+        speech = (step.get("message") or "").strip()
+        if speech:
+            assistant_content.append(_text_block(speech))
         assistant_content.append(
             _tool_call_block(call_id, step.get("tool"), step.get("arguments")))
         _add("assistant", assistant_content)

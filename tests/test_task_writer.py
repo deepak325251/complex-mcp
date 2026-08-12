@@ -1,6 +1,23 @@
 import json
 
-from scripts.task_writer import parse_trajectory, _slug, write_task_dir
+from scripts.task_writer import parse_trajectory, _slug, write_task_dir, _rubric_rc_rb
+
+
+def test_rubric_rc_rb_derived_from_per_criterion():
+    # criteria-format rubric leaves rc/rb null; derive from per_criterion.
+    rr = {"format": "criteria", "per_criterion": [
+        {"score": 2, "satisfied": True}, {"score": 3, "satisfied": False},
+        {"score": -4, "satisfied": True},   # guard held (not violated)
+        {"score": -3, "satisfied": False},  # guard violated
+    ]}
+    rc, rb = _rubric_rc_rb(rr)
+    assert rc == round(2 / 5, 6)          # 2 of (2+3) positive weight satisfied
+    assert rb == round(3 / 7, 6)          # 3 of (4+3) guard weight violated
+
+
+def test_rubric_rc_rb_prefers_grader_values():
+    rr = {"rc": 0.9, "rb": 0.1, "per_criterion": [{"score": 1, "satisfied": True}]}
+    assert _rubric_rc_rb(rr) == (0.9, 0.1)
 
 
 def test_slug_strips_complexmcp_prefix_and_suffix():
@@ -30,6 +47,50 @@ def test_parse_trajectory_single_tool_and_response():
     assert step["arguments"] == {"name": "Jeremy"}
     assert step["response"] == {"status": "ok", "output": "user_XYZ"}
     assert "Done." in traj["final_message"]
+
+
+def test_parse_trajectory_separates_thinking_from_visible_speech():
+    # A <thinking> block carries the model's REAL reasoning (+signature); the
+    # rest of the pre-tool span is visible speech. They must not be conflated.
+    output = (
+        '<thinking signature="SIG123">\nThe cart is probably dirty; verify first.\n</thinking>\n'
+        "Let me check the cart.\n"
+        '<tool>\n{"name": "get_cart", "arguments": {}}\n</tool>\n'
+        '<response>\n{"status":"ok"}\n</response>\n'
+        "All set."
+    )
+    step = parse_trajectory(output)["steps"][0]
+    assert step["reasoning"] == "The cart is probably dirty; verify first."
+    assert step["message"] == "Let me check the cart."
+    assert step["signature"] == ["SIG123"]
+
+
+def test_parse_trajectory_visible_text_is_not_labeled_reasoning():
+    # The core bug: with no <thinking> block, visible speech used to masquerade
+    # as reasoning. Now reasoning is empty and no signature is fabricated.
+    output = (
+        "I'll look this up.\n"
+        '<tool>\n{"name": "get_uid", "arguments": {}}\n</tool>\n'
+        '<response>\n{"status":"ok"}\n</response>'
+    )
+    step = parse_trajectory(output)["steps"][0]
+    assert step["reasoning"] == ""
+    assert step["message"] == "I'll look this up."
+    assert step["signature"] == []
+
+
+def test_parse_trajectory_empty_thinking_block_yields_no_orphan_signature():
+    # Invariant: a signature must never survive without real reasoning text.
+    output = (
+        '<thinking signature="ORPHAN">\n\n</thinking>\n'
+        "Doing the thing.\n"
+        '<tool>\n{"name": "act", "arguments": {}}\n</tool>\n'
+        '<response>\n{"status":"ok"}\n</response>'
+    )
+    step = parse_trajectory(output)["steps"][0]
+    assert step["reasoning"] == ""
+    assert step["signature"] == []
+    assert step["message"] == "Doing the thing."
 
 
 def test_parse_trajectory_no_tools():

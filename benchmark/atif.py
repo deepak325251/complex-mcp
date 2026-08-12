@@ -210,7 +210,7 @@ def synth_from_trace(trace: list[dict], *, agent: str, model: str) -> dict:
 # --------------------------------------------------------------------------
 
 def from_complexmcp(traj: dict, *, agent: str = "complexmcp", model: str = "",
-                    usage: dict | None = None) -> dict:
+                    usage: dict | None = None, query: str = "") -> dict:
     """Convert complex-mcp's parse_trajectory() shape into an ATIF-v1.7 document.
 
     complex-mcp records one agent step per tool call with an inline `response`;
@@ -219,30 +219,46 @@ def from_complexmcp(traj: dict, *, agent: str = "complexmcp", model: str = "",
     tool_calls, which is what Trajectory.final_message() looks for.
     """
     steps: list[dict] = []
+    # Opening user turn: the task prompt as steps[0] (source:"user"), for
+    # symmetry with trajectory.messages.json turn 0 and so replay/analytics see
+    # the instruction the agent acted on -- not just the agent's steps.
+    if query:
+        steps.append({
+            "step_id": 0,
+            "source": "user",
+            "message": query,
+        })
     for step in traj.get("steps", []):
         call_id = f"call_{step['step']}"
         response = step.get("response")
         content = response if isinstance(response, str) else json.dumps(response)
-        steps.append(
-            {
-                "step_id": step["step"],
-                "source": "agent",
-                "reasoning_content": step.get("reasoning"),
-                "model_name": model,
-                "tool_calls": [
-                    {
-                        "tool_call_id": call_id,
-                        "function_name": step.get("tool"),
-                        "arguments": step.get("arguments", {}),
-                    }
-                ],
-                "observation": {
-                    "results": [
-                        {"source_call_id": call_id, "content": content}
-                    ]
-                },
-            }
-        )
+        # reasoning_content is the model's REAL extended thinking (None when the
+        # backend surfaced none) -- NOT the visible speech, which rides in
+        # `message`. reasoning_signatures are attached only when thinking is real,
+        # so a signature never vouches for text that isn't there.
+        atif_step = {
+            "step_id": step["step"],
+            "source": "agent",
+            "reasoning_content": step.get("reasoning") or None,
+            "message": step.get("message", ""),
+            "model_name": model,
+            "tool_calls": [
+                {
+                    "tool_call_id": call_id,
+                    "function_name": step.get("tool"),
+                    "arguments": step.get("arguments", {}),
+                }
+            ],
+            "observation": {
+                "results": [
+                    {"source_call_id": call_id, "content": content}
+                ]
+            },
+        }
+        _sig = step.get("signature")
+        if _sig:
+            atif_step["reasoning_signatures"] = _sig if isinstance(_sig, list) else [_sig]
+        steps.append(atif_step)
     steps.append(
         {
             "step_id": len(steps) + 1,

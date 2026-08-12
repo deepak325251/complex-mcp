@@ -21,6 +21,22 @@ def test_synth_from_trace_flattens_tool_calls():
     assert calls[0]["observation"] == "ok"
 
 
+def test_from_complexmcp_prepends_user_prompt_step():
+    traj = {"steps": [{"step": 1, "reasoning": "", "message": "ok",
+                       "tool": "t", "arguments": {}, "response": "ok"}],
+            "final_message": "done"}
+    doc = from_complexmcp(traj, model="m", query="Clean up my account.")
+    assert doc["steps"][0]["source"] == "user"
+    assert doc["steps"][0]["step_id"] == 0
+    assert doc["steps"][0]["message"] == "Clean up my account."
+    # The user step must not disturb agent-step parsing.
+    t = Trajectory(doc)
+    assert t.final_message() == "done"
+    assert len(t.tool_calls()) == 1
+    # No query -> no synthetic user step (back-compat).
+    assert from_complexmcp(traj, model="m")["steps"][0]["source"] == "agent"
+
+
 def test_from_complexmcp_round_trip():
     traj = {
         "steps": [
