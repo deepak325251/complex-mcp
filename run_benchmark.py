@@ -17,6 +17,7 @@ import sys
 import os
 import hashlib
 import re
+import subprocess
 import yaml
 import asyncio
 from collections import Counter
@@ -970,6 +971,91 @@ def load_dotenv_if_not_exist():
     if "OPENAI_API_KEY" not in os.environ:
         load_dotenv()
 
+
+def _sandbox_up(sandbox_timeout: int = 240) -> None:
+    """Bring the full sandbox (20 servers + 142 apps) up in one Docker container.
+
+    Idempotent: `docker start` an existing `complexmcp-sandbox`, else `docker run`
+    a fresh one from the `complexmcp:latest` image (whose CMD is
+    docker/start_benchmark_sandbox.sh, launching all 168 processes). Blocks until
+    the sandbox is responsive. This is the one-command sibling of the tmux path in
+    scripts/run_task.sh and the 3-container docker/docker-compose.yml stack.
+    """
+    import time
+    import urllib.request
+    import urllib.error
+
+    def _run(cmd, timeout=120):
+        try:
+            return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+            print(f"[startup] {' '.join(cmd)}: {e}")
+            return None
+
+    # Sandbox: try `docker start`; if the container was removed, `docker run` it.
+    r = _run(["docker", "start", "complexmcp-sandbox"])
+    if r is not None and r.returncode == 0:
+        print("[startup] started complexmcp-sandbox")
+    else:
+        msg = ((r.stderr or r.stdout).strip() if r is not None else "") or "unknown"
+        if "no such container" in msg.lower():
+            img = _run(["docker", "images", "-q", "complexmcp:latest"])
+            if img is None or not (img.stdout or "").strip():
+                print("[startup] complexmcp-sandbox missing AND image complexmcp:latest not found "
+                      "— run `docker build -t complexmcp:latest .` first")
+                return
+            print("[startup] complexmcp-sandbox not found — creating from complexmcp:latest")
+            run_r = _run([
+                "docker", "run", "-d", "--name", "complexmcp-sandbox",
+                "-p", "8000-8007:8000-8007",
+                "-p", "8013-8024:8013-8024",
+                "-p", "9000-9008:9000-9008",
+                "-p", "9014-9144:9014-9144",
+                "complexmcp:latest",
+            ], timeout=180)
+            if run_r is None or run_r.returncode != 0:
+                err = ((run_r.stderr or run_r.stdout).strip() if run_r is not None else "unknown")
+                print(f"[startup] complexmcp-sandbox: recreate failed: {err}")
+                return
+            print("[startup] recreated complexmcp-sandbox from image")
+        elif any(kw in msg.lower() for kw in ("already", "running")):
+            print("[startup] complexmcp-sandbox: already running")
+        else:
+            print(f"[startup] complexmcp-sandbox: {msg}")
+
+    # Poll first and LAST port. The sandbox binds sequentially low -> high, so port
+    # 9144 (LightZoom, last app in start_benchmark_sandbox.sh) being up means all 168 are up.
+    for port in (8000, 9144):
+        deadline = time.time() + sandbox_timeout
+        while time.time() < deadline:
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=3) as resp:
+                    print(f"[startup] sandbox port {port} responsive (HTTP {resp.status})")
+                    break
+            except urllib.error.HTTPError as e:
+                print(f"[startup] sandbox port {port} responsive (HTTP {e.code})")
+                break
+            except (urllib.error.URLError, OSError):
+                pass
+            time.sleep(2)
+        else:
+            print(f"[startup] WARNING: sandbox port {port} not responsive within {sandbox_timeout}s")
+
+
+def _sandbox_down() -> None:
+    """Stop the sandbox container. `docker stop` fires the in-container trap, which
+    kills all 168 child processes."""
+    try:
+        r = subprocess.run(["docker", "stop", "complexmcp-sandbox"],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode == 0:
+            print("[cleanup] stopped complexmcp-sandbox")
+        else:
+            print(f"[cleanup] complexmcp-sandbox: {(r.stderr or r.stdout).strip() or 'not running'}")
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        print(f"[cleanup] complexmcp-sandbox: {e}")
+
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-m", "--model", default="gpt-4o", type=str)
@@ -1006,6 +1092,13 @@ if __name__ == "__main__":
     parser.add_argument("--at", dest="at", type=str, default="1",
                         help="Comma-separated k values to report for pass@k and pass^k "
                              "(e.g. '1,2,8'). Values > --n-attempts are clamped.")
+    parser.add_argument("--manage-sandbox", dest="manage_sandbox", action="store_true",
+                        default=False,
+                        help="One-command lifecycle: auto-start the complexmcp-sandbox Docker "
+                             "container (all 20 servers + 142 apps) before the run and stop it "
+                             "after. Requires a built complexmcp:latest image. Omit this if you "
+                             "bring the sandbox up yourself via scripts/run_task.sh (tmux) or "
+                             "docker/docker-compose.yml.")
 
     args = parser.parse_args()
     # Parse --at into a sorted unique int list; clamp to n_attempts.
@@ -1015,5 +1108,14 @@ if __name__ == "__main__":
         _ks = [1]
     args.at_ks = [k for k in _ks if 1 <= k <= max(1, args.n_attempts)] or [1]
     load_dotenv_if_not_exist()
-    
+
+    if args.manage_sandbox:
+        exit_code = 0
+        try:
+            _sandbox_up()
+            exit_code = main(args) or 0
+        finally:
+            _sandbox_down()
+        sys.exit(exit_code)
+
     sys.exit(main(args))

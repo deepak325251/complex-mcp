@@ -349,26 +349,57 @@ class Toolbox:
                         }
                     )
         
-    def retrieve_tools(self, query: str, k: int | None = None) -> List[Dict[str, Any]]:
+    def _server_of(self, key_name: str) -> str | None:
+        return ((self.tools.get(key_name) or {}).get("server") or {}).get("name")
+
+    def _retrieve_keys(self, query: str, k: int, apps: List[str] | None = None) -> List[str]:
+        """Top-k retrieved tool key_names, optionally SCOPED to `apps`.
+
+        Retrieval over the global tool corpus can surface tools from apps the
+        harness never logged into (only env["apps"] + LightSystem get a session).
+        Such a tool is un-callable -- every invocation returns "<app> has not been
+        logged into yet" -- so offering it just derails the agent (e.g. it grabs
+        LightIssues.list_by_sprint instead of the task's LightJira.list_sprints).
+        When `apps` is given we over-fetch, keep only tools owned by those apps,
+        and top up with any remaining task-app tools RAG ranked below the horizon
+        so the agent always sees its full (small) task toolset."""
+        if not apps:
+            return [r["meta_data"]["key_name"] for r in self.rag.read(query=query, k=k)]
+        allowed = set(apps)
+        pool_k = min(len(self.tools) or k, max(k * 10, 300))
+        pool = self.rag.read(query=query, k=pool_k)
+        keys: List[str] = []
+        seen: set[str] = set()
+        for r in pool:
+            kn = r["meta_data"]["key_name"]
+            if kn in seen or self._server_of(kn) not in allowed:
+                continue
+            keys.append(kn); seen.add(kn)
+            if len(keys) >= k:
+                return keys
+        for kn in self.tools:                       # top up with unranked task-app tools
+            if kn in seen or self._server_of(kn) not in allowed:
+                continue
+            keys.append(kn); seen.add(kn)
+            if len(keys) >= k:
+                break
+        return keys
+
+    def retrieve_tools(self, query: str, k: int | None = None,
+                       apps: List[str] | None = None) -> List[Dict[str, Any]]:
         assert self.rag, "RAG engine is required."
         if k is None:
             k = self.default_k
-        tools_list = []
-        results = self.rag.read(query=query, k=k)
-        for result in results:
-            key_name = result["meta_data"]["key_name"]
-            tools_list.append(
-                self.__get_desc_of_one_tool(key_name)
-            )
+        return [self.__get_desc_of_one_tool(kn)
+                for kn in self._retrieve_keys(query, k, apps)]
 
-        return tools_list
-
-    def retrieve_tool_keys(self, query: str, k: int | None = None) -> List[str]:
+    def retrieve_tool_keys(self, query: str, k: int | None = None,
+                           apps: List[str] | None = None) -> List[str]:
         """Return the raw key_names of the top-k retrieved tools (for native mode)."""
         assert self.rag, "RAG engine is required."
         if k is None:
             k = self.default_k
-        return [r["meta_data"]["key_name"] for r in self.rag.read(query=query, k=k)]
+        return self._retrieve_keys(query, k, apps)
 
 
 class ChatBackend(ABC):
@@ -985,7 +1016,8 @@ class AgentClient:
                 # describing them in text / using the <tool> protocol.
                 system_prompt = self.toolbox.get_native_system_prompt()
                 if self.toolbox.method == "rag":
-                    key_names = self.toolbox.retrieve_tool_keys(query=query)
+                    key_names = self.toolbox.retrieve_tool_keys(
+                        query=query, apps=env.get("apps"))
                 elif self.toolbox.method == "provide":
                     key_names = list(provide_tools or [])
                 else:
@@ -998,7 +1030,7 @@ class AgentClient:
                 if self.toolbox.method == "rag":
                     system_prompt = system_prompt.replace(
                         "${CHOSEN_TOOLS}",
-                        "\n".join(map(lambda x: f"- {x}", self.toolbox.retrieve_tools(query=query)))
+                        "\n".join(map(lambda x: f"- {x}", self.toolbox.retrieve_tools(query=query, apps=env.get("apps"))))
                     )
                 elif self.toolbox.method == "provide":
                     system_prompt = system_prompt.replace(
