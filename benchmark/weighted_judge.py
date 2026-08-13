@@ -347,6 +347,15 @@ def _run_traj_pytest(test_file, trajectory, envs=None):
                 __import__("benchmark." + mod, fromlist=[mod])._CACHE.clear()
             except Exception:
                 pass
+        # Force a fresh import of the test module. A task that binds world state
+        # at module load (e.g. INITIAL = S.old()) would otherwise reuse a STALE
+        # module across pass@k attempts / episodes graded in this one process,
+        # scoring every later run against the first run's world.
+        _abs = os.path.abspath(test_file)
+        for _name in [n for n, m in list(sys.modules.items())
+                      if getattr(m, "__file__", None)
+                      and os.path.abspath(m.__file__) == _abs]:
+            sys.modules.pop(_name, None)
         try:
             pytest.main([test_file, "-q", "-p", "no:cacheprovider",
                          "--import-mode=importlib"], plugins=[_Collector()])

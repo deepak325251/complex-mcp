@@ -558,6 +558,10 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         "rubric_rb": rubric_rb,
         "rubric_per_criterion": rubric_result.get("per_criterion") if rubric_result else None,
         "tokens": record.get("tokens", {}),
+        # Real API usage incl. the prompt-cache + thinking breakdown
+        # (cache_read/cache_creation/reasoning_tokens). `tokens` above is only the
+        # tiktoken estimate; this is what the backend actually reported.
+        "usage": record.get("usage"),
         "tool_summary": tool_summary,
         # Why the episode ended: end_tag (agent emitted [END]), no_tool_calls
         # (consecutive turns with no call), or max_turns (turn/budget exhaustion).

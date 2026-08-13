@@ -189,6 +189,21 @@ class Toolbox:
         tools_desc = [self.__get_desc_of_one_tool(key_name) for key_name in key_names if key_name in self.tools]
 
         return '\n'.join(map(lambda x: f"- {x}", tools_desc))
+
+    def keys_for_apps(self, apps: List[str] | None) -> List[str]:
+        """key_names owned by `apps` (+ implicit LightSystem). None/empty -> all.
+
+        list_all otherwise presents every registered app's tools (1700+), so a
+        bare tool name shared across apps (get_ticket, create_comment, ...) is
+        offered to the model and routed to whichever app registered it FIRST --
+        usually one the task never logged into ("has not been logged into yet").
+        Scoping to the task's apps eliminates those cross-app collisions.
+        """
+        if not apps:
+            return list(self.tools.keys())
+        allowed = set(apps) | {"LightSystem"}
+        return [k for k, v in self.tools.items()
+                if ((v.get("server") or {}).get("name")) in allowed]
     
     @staticmethod
     def _json_schema_type(t: str) -> Dict[str, Any]:
@@ -261,8 +276,9 @@ class Toolbox:
             return SYSTEM_PROMPT
 
         if self.method == "list_all":
-            tool_desc_list = [self.__get_desc_of_one_tool(key_name).__str__() for key_name in self.tools]
-            SYSTEM_PROMPT += '\n'.join(map(lambda x: f"- {x}", tool_desc_list))
+            # Filled per-run in process_query, scoped to env["apps"] (see
+            # keys_for_apps) so cross-app tool-name collisions can't be offered.
+            SYSTEM_PROMPT += '${LIST_ALL_TOOLS}'
         elif self.method == "provide":
             SYSTEM_PROMPT += '${PROVIDE_TOOLS}'
         elif self.method == "rag":
@@ -755,12 +771,39 @@ class AnthropicBridgeBackend(ChatBackend):
             "anthropic-version": self.anthropic_version,
             "content-type": "application/json",
         }
+        # OAuth/subscription inference REDACTS extended-thinking (returns
+        # `redacted_thinking`, no text/signature) UNLESS the extended-thinking
+        # beta is also requested. The ccbridge merges this with its own
+        # oauth-2025-04-20 beta, so Anthropic returns full thinking blocks +
+        # signatures. Without it, reasoning_tokens are billed but the reasoning
+        # text and signature come back redacted. Override/disable via
+        # ANTHROPIC_THINKING_BETA (empty string to omit).
+        if body.get("thinking"):
+            _beta = os.environ.get("ANTHROPIC_THINKING_BETA",
+                                   "interleaved-thinking-2025-05-14").strip()
+            if _beta:
+                headers["anthropic-beta"] = _beta
         async with httpx.AsyncClient(timeout=httpx.Timeout(600.0)) as client:
             r = await client.post(f"{self.base_url}/v1/messages",
                                   headers=headers, json=body)
         if r.status_code != 200:
             raise RuntimeError(f"bridge /v1/messages {r.status_code}: {r.text[:500]}")
         data = r.json()
+        if os.environ.get("WCB_DEBUG_THINKING"):
+            import sys as _sys
+            _ct = [b.get("type") for b in (data.get("content") or [])]
+            _u = data.get("usage") or {}
+            _tt = (_u.get("output_tokens_details") or {}).get("thinking_tokens")
+            _tb = next((b for b in (data.get("content") or [])
+                        if b.get("type") in ("thinking", "redacted_thinking")), None)
+            _tbinfo = None
+            if _tb is not None:
+                _tbinfo = {k: (len(v) if isinstance(v, str) else v)
+                           for k, v in _tb.items()}
+            print(f"[thinking-debug] beta={headers.get('anthropic-beta')!r} "
+                  f"req_thinking={body.get('thinking')} content_types={_ct} "
+                  f"thinking_tokens={_tt} thinking_block_keys={_tbinfo}",
+                  file=_sys.stderr, flush=True)
 
         text_parts: list[str] = []
         reasoning_parts: list[str] = []
@@ -774,6 +817,16 @@ class AnthropicBridgeBackend(ChatBackend):
                     reasoning_parts.append(blk["thinking"])
                 if blk.get("signature"):
                     signatures.append(blk["signature"])
+            elif btype == "redacted_thinking":
+                # Subscription/OAuth inference redacts extended-thinking: Anthropic
+                # returns encrypted `redacted_thinking` (no plaintext, carries a
+                # `data` blob) instead of `thinking`. The text is unrecoverable
+                # client-side, but record that thinking occurred + keep the opaque
+                # handle so the trajectory shows it wasn't simply skipped.
+                reasoning_parts.append("[redacted_thinking]")
+                sig = blk.get("signature") or blk.get("data")
+                if sig:
+                    signatures.append(str(sig))
         content = "".join(text_parts)
         reasoning = "\n\n".join(reasoning_parts)
 
@@ -1031,7 +1084,7 @@ class AgentClient:
                 elif self.toolbox.method == "provide":
                     key_names = list(provide_tools or [])
                 else:
-                    key_names = list(self.toolbox.tools.keys())
+                    key_names = self.toolbox.keys_for_apps(env.get("apps"))
                 extra_body["tools"] = self.toolbox.to_openai_schema(key_names)
                 extra_body["tool_choice"] = "auto"
                 print(f"Tool number: {len(self.toolbox.tools)} (native schemas: {len(extra_body['tools'])})")
@@ -1047,7 +1100,15 @@ class AgentClient:
                         "${PROVIDE_TOOLS}",
                         self.toolbox.get_tool_descs(key_names=provide_tools)
                     )
-                print(f"Tool number: {len(self.toolbox.tools)}")
+                elif self.toolbox.method == "list_all":
+                    _keys = self.toolbox.keys_for_apps(env.get("apps"))
+                    system_prompt = system_prompt.replace(
+                        "${LIST_ALL_TOOLS}",
+                        self.toolbox.get_tool_descs(key_names=_keys)
+                    )
+                    print(f"Tool number: {len(_keys)} (scoped from {len(self.toolbox.tools)} to apps={env.get('apps')})")
+                if self.toolbox.method != "list_all":
+                    print(f"Tool number: {len(self.toolbox.tools)}")
             if system_prompt:
                 messages.append({
                     "role": "system",

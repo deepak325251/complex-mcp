@@ -315,6 +315,12 @@ def main(args):
 
     toolbox = parse_toolbox(tool_config_path, method, rag_conf) if tool_config_path else None
     native_tools = getattr(args, "native_tools", False)
+    # Enable extended thinking by default on the Anthropic/ccbridge path so the
+    # trajectory captures reasoning text + signatures and usage carries thinking
+    # tokens. setdefault => an explicit MAX_THINKING_TOKENS (incl. "0" to disable)
+    # always wins. Ignored by non-thinking backends (OpenAIBackend uses
+    # reasoning_effort instead).
+    os.environ.setdefault("MAX_THINKING_TOKENS", "4000")
     if model == "human":
         llm = HumanAnnotator()
     elif native_tools:
