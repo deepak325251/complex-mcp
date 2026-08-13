@@ -1,5 +1,0 @@
-{
-  "world": "seed=114514 mcp-stump sandbox",
-  "anchors": ["user_FiBXJH9uAk5v8tFppnBp6z", "PYPL", "SBUX", "ZM"],
-  "note": "Values the seed=114514 kit hardcodes; absence => the run used a different world (e.g. seedless seed=42) and the score is invalid."
-}

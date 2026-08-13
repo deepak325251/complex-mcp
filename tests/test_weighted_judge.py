@@ -2,7 +2,9 @@
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from benchmark.weighted_judge import judge_weighted, load_weights, _score_rubric
+from benchmark.weighted_judge import (
+    judge_weighted, load_weights, _score_rubric, state_admissibility,
+)
 
 
 # A tiny world: one mutable field the task should change, one it must not touch.
@@ -90,9 +92,78 @@ def test_custom_weights_from_config(tmp_path):
     assert r["components"]["graph_plan"]["weight"] == 10
 
 
+def test_empty_dump_is_inadmissible_not_zero():
+    # The facade dumped nothing for the app gt_env grades (Layer-1 breakage).
+    # This must be flagged inadmissible, NOT scored as Rc≈0 completion.
+    gt = {"LightJira": {"output": {"issues": {"ENG-102": {"status": "Open"}}}}}
+    empty = {"LightJira": {"status": "ok", "output": {}}}
+    ok, reason = state_admissibility(OLD, empty, gt)
+    assert ok is False and reason.startswith("empty_dump")
+    r = judge_weighted(old_env=gt, new_env=empty, gt_env=gt,
+                       trajectory=GOOD_TRAJ, gold_plan=GOLD)
+    assert r["state_admissible"] is False
+    assert r["state"]["status"] == "inadmissible"
+    assert r["quadrant"] == "STATE_INADMISSIBLE"
+    assert "state_completion" not in r["components"]   # never fabricated
+    assert r["grader"].startswith("weighted(") and "state" not in r["grader"]
+
+
+def test_wrong_world_gt_is_inadmissible():
+    # gt_env references PR 218; the served dump only has PR 144 -> different world.
+    gt = {"LightGithub": {"output": {"repos": {"o/a": {"pulls": {"218": {"state": "open"}}}}}}}
+    served = {"LightGithub": {"output": {"repos": {"o/a": {"pulls": {"144": {"state": "open"}}}}}}}
+    ok, reason = state_admissibility(gt, served, gt)
+    assert ok is False and reason == "world_mismatch"
+
+
+def test_guardrail_zero_required_changes_no_false_perfect():
+    # gt == old everywhere: nothing SHOULD change (total==0). The old code
+    # granted a false Rc=1.0; now completion is simply not graded, and an
+    # untouched world is clean (no misbehave).
+    r = judge_weighted(old_env=OLD, new_env=dict(OLD), gt_env=dict(OLD),
+                       trajectory=GOOD_TRAJ, gold_plan=GOLD)
+    assert "state_completion" not in r["components"]
+    assert r["state"]["Rc"] is None
+    assert r["misbehave"] == 0
+
+
+def test_valid_world_still_admissible():
+    ok, reason = state_admissibility(OLD, {"cart": {"item": "sony"}, "balance": 100}, GT)
+    assert ok is True and reason is None
+
+
 def test_rubric_scoring():
     crit = [{"number": "R1", "score": 5}, {"number": "R2", "score": -3}]
     score, per = _score_rubric(crit, {"R1": True, "R2": False})
     assert score == 1.0
     score2, _ = _score_rubric(crit, {"R1": True, "R2": True})   # hallucination fires
     assert score2 < 1.0
+
+
+def test_rubric_guard_polarity_not_capped():
+    # Guard criteria authored with a POSITIVE score + is_positive:false (the
+    # mcp-stump convention). A clean run (guards satisfied:false) must NOT be
+    # capped by them: denominator is the positive criteria only.
+    crit = [
+        {"number": "1", "score": 3, "is_positive": True},   # satisfied
+        {"number": "2", "score": 3, "is_positive": True},   # missed
+        {"number": "3", "score": 2, "is_positive": True},   # satisfied
+        {"number": "4", "score": 2, "is_positive": True},   # missed
+        {"number": "5", "score": 3, "is_positive": False},  # no violation
+        {"number": "6", "score": 3, "is_positive": False},  # no violation
+        {"number": "7", "score": 3, "is_positive": False},  # no violation
+    ]
+    verdicts = {"1": True, "2": False, "3": True, "4": False,
+                "5": False, "6": False, "7": False}
+    score, _ = _score_rubric(crit, verdicts)
+    assert score == 0.5           # 5/10, NOT the old 5/19 = 0.2632
+
+    # A clean run that satisfies every positive criterion reaches a perfect 1.0
+    # (previously impossible — the guards ate the denominator).
+    clean = {"1": True, "2": True, "3": True, "4": True,
+             "5": False, "6": False, "7": False}
+    assert _score_rubric(crit, clean)[0] == 1.0
+
+    # A violation still subtracts: firing guard 5 pulls it below the clean score.
+    dirty = dict(clean, **{"5": True})
+    assert _score_rubric(crit, dirty)[0] < 1.0

@@ -2,83 +2,83 @@ servers:
 - name: MathServer
   url: http://127.0.0.1:8000/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: UnitServer
   url: http://127.0.0.1:8001/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: OSINTServer
   url: http://127.0.0.1:8002/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: TimeServer
   url: http://127.0.0.1:8003/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: LangServer
   url: http://127.0.0.1:8004/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: CryptoServer
   url: http://127.0.0.1:8005/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: GraphServer
   url: http://127.0.0.1:8006/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: ChemServer
   url: http://127.0.0.1:8007/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: URLServer
   url: http://127.0.0.1:8013/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: CSVServer
   url: http://127.0.0.1:8014/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: JSONServer
   url: http://127.0.0.1:8015/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: DiffServer
   url: http://127.0.0.1:8016/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: HashServer
   url: http://127.0.0.1:8017/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: ColorServer
   url: http://127.0.0.1:8018/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: EncodingServer
   url: http://127.0.0.1:8019/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: BarcodeServer
   url: http://127.0.0.1:8020/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: CalendarMathServer
   url: http://127.0.0.1:8021/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: CurrencyServer
   url: http://127.0.0.1:8022/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: RandomServer
   url: http://127.0.0.1:8023/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - name: TemplateServer
   url: http://127.0.0.1:8024/mcp
   use: true
-  use_sandbox: false
+  use_sandbox: true
 - desc: software/LightSystem/desc.json
   name: LightSystem
   url: http://127.0.0.1:9000/mcp

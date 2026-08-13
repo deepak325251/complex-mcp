@@ -18,6 +18,14 @@ stale, the two `state_*` components drop out and `Σ positive_w` renormalizes ar
 what remains — the score stays valid, just plan/rubric-driven, and is marked
 `state: "unavailable"` rather than silently scored zero.
 
+Admissibility (the loud-failure rule): providing all three envs is NOT enough for
+them to be *gradable*. A facade dump that came back empty (`output: {}`) or a
+`gt_env` baked against a different seed/world would make the state-diff fabricate a
+score (Rc≈0, or a false Rc=1.0 when there is nothing to grade) and report it as a
+real state grade. `state_admissibility()` catches those up front, drops the state
+components, and marks `state: {"status": "inadmissible", "reason": ...}` with the
+exact defect — so a broken state channel can never masquerade as a low completion.
+
 The result dict carries `recall`/`total`/`misbehave` so the existing completion &
 misbehave-rate aggregates in run_benchmark keep working.
 """
@@ -88,6 +96,11 @@ exclude_keys = {
     "bid", "brid", "rid",          # LightFlight
     "oid",                         # LightStock
     "nid",                         # LightNews
+    # mcp-stump apps (Jira/Notion/Slack/…): generated ids and clock stamps are
+    # non-deterministic across a GT bake and a live run, so grading them would
+    # penalize a semantically-correct write. Grade content, not the receipt.
+    "id", "ts",
+    "created_time", "last_edited_time", "created", "updated_at",
 }
 
 eq_methods = {"content": fuzzy_match}
@@ -103,6 +116,108 @@ def _get(dic, key):
     if not isinstance(dic, dict):
         return None
     return dic.get(key)
+
+
+# ---------------------------------------------------------------------------
+# State-channel admissibility — refuse to *fake* a state grade when the inputs
+# are broken. A missing dump, an empty facade dump, or a gt_env baked against a
+# different world instance would otherwise make judge_env fabricate Rc≈0 (or a
+# false Rc=1.0 when there is nothing to grade) and report it as a real score.
+# We detect those and mark the channel inadmissible with a reason instead.
+# ---------------------------------------------------------------------------
+_CONTAINER_KEYS = {
+    "pulls", "prs", "pages", "issues", "channels", "repos", "rooms",
+    "tickets", "cards", "boards", "sprints", "users", "projects",
+}
+
+
+def _content(app_val):
+    """Unwrap a facade dump entry ``{"status":..,"output":{...}}`` to its output;
+    pass any other shape through unchanged."""
+    if isinstance(app_val, dict) and "output" in app_val \
+            and set(app_val) <= {"status", "output", "error"}:
+        return app_val["output"]
+    return app_val
+
+
+def _is_empty(x):
+    return x is None or x == {} or x == [] or x == ""
+
+
+def _empty_dump_apps(new_env, gt_env):
+    """Apps that gt_env expects to carry state but the served dump left empty —
+    the Layer-1 broken-capture signature (``output: {}``)."""
+    bad = []
+    if not (isinstance(gt_env, dict) and isinstance(new_env, dict)):
+        return bad
+    for app, gtv in gt_env.items():
+        if isinstance(app, str) and app.startswith("_"):
+            continue
+        if _is_empty(_content(gtv)):
+            continue  # gt encodes nothing here → nothing to capture
+        if _is_empty(_content(new_env.get(app))):
+            bad.append(app)
+    return bad
+
+
+def _ids_by_container(node, parent_key="", acc=None):
+    """Map each known collection container (pulls, pages, issues, channels, …)
+    to the set of entity-id keys found under it. Grouping by container lets us
+    spot a disjoint ``pulls`` set even when a parent ``repos`` id matches."""
+    if acc is None:
+        acc = {}
+    if isinstance(node, dict):
+        if parent_key in _CONTAINER_KEYS:
+            acc.setdefault(parent_key, set()).update(
+                k for k in node if isinstance(k, str))
+        for k, v in node.items():
+            _ids_by_container(v, k, acc)
+    elif isinstance(node, list):
+        for it in node:
+            _ids_by_container(it, parent_key, acc)
+    return acc
+
+
+def _world_mismatch(new_env, gt_env):
+    """True when, for some collection present in both, gt_env's entity ids and
+    the served dump's ids are disjoint — gt_env was baked against a different
+    seed/world (Layer 2). Per-container so a shared parent id can't mask it."""
+    gt_ids = _ids_by_container(gt_env)
+    new_ids = _ids_by_container(new_env)
+    for container, gset in gt_ids.items():
+        nset = new_ids.get(container)
+        if gset and nset and gset.isdisjoint(nset):
+            return True
+    return False
+
+
+def state_admissibility(old_env, new_env, gt_env):
+    """Return ``(admissible: bool, reason: str)``. ``reason == "unavailable"``
+    means the state channel simply wasn't provided (all envs None) — a normal
+    plan-only task, not a defect. Any other reason is a real inadmissibility
+    (broken capture or wrong-world ground truth)."""
+    if old_env is None or new_env is None or gt_env is None:
+        return False, "unavailable"
+    empty = _empty_dump_apps(new_env, gt_env)
+    if empty:
+        return False, "empty_dump:" + ",".join(sorted(empty))
+    if _world_mismatch(new_env, gt_env):
+        return False, "world_mismatch"
+    return True, None
+
+
+def _state_report(admissible, reason, Rc, Rb, state):
+    """Shape the per-run ``state`` field: 'unavailable' (no channel),
+    'inadmissible' (channel broken, with reason), or the scored detail."""
+    if reason == "unavailable":
+        return {"status": "unavailable"}
+    if not admissible:
+        return {"status": "inadmissible", "reason": reason}
+    rep = {"Rc": round(Rc, 4) if Rc is not None else None,
+           "Rb": round(Rb, 4) if Rb is not None else None}
+    if isinstance(state, dict):
+        rep.update(state)
+    return rep
 
 
 def judge_env(old_env, new_env, gt_env):
@@ -195,10 +310,14 @@ def load_weights(grading_dir=None):
 # ---------------------------------------------------------------------------
 # Rubric (Channel B) — optional
 # ---------------------------------------------------------------------------
-def _run_traj_pytest(test_file, trajectory):
-    """Run a task's test_outputs.py against the agent trajectory (world-free) and
-    return {test_name: passed}. The trajectory is staged at $COMPLEXMCP_TRAJECTORY,
-    which is what benchmark.traj_asserts reads."""
+def _run_traj_pytest(test_file, trajectory, envs=None):
+    """Run a task's test_outputs.py and return {test_name: passed}.
+
+    The trajectory is staged at $COMPLEXMCP_TRAJECTORY (read by traj_asserts) so
+    world-FREE tests can check the agent's tool calls. When `envs` (old/new/gt
+    snapshots) is given, they are ALSO staged at $COMPLEXMCP_{OLD,NEW,GT}_ENV so
+    a world-FULL state-diff test case (via benchmark.state_asserts) runs in the
+    SAME pytest suite — one uniform grader for tool checks + state diff + rubric."""
     import pytest
     import tempfile
 
@@ -209,25 +328,34 @@ def _run_traj_pytest(test_file, trajectory):
             if report.when == "call":
                 passed[report.nodeid.split("::")[-1]] = report.passed
 
+    staged = {}   # env var -> temp file path we set (to restore afterwards)
     with tempfile.TemporaryDirectory() as tmp:
-        tpath = os.path.join(tmp, "trajectory.json")
-        with open(tpath, "w") as fh:
-            json.dump(trajectory or {"steps": []}, fh)
-        prev = os.environ.get("COMPLEXMCP_TRAJECTORY")
-        os.environ["COMPLEXMCP_TRAJECTORY"] = tpath
-        try:
-            from benchmark import traj_asserts
-            traj_asserts._CACHE.clear()
-        except Exception:
-            pass
+        def _stage(var, obj):
+            path = os.path.join(tmp, var.lower() + ".json")
+            with open(path, "w", encoding="utf-8") as fh:
+                json.dump(obj if obj is not None else {}, fh, ensure_ascii=False)
+            staged[var] = os.environ.get(var)          # remember prior value
+            os.environ[var] = path
+
+        _stage("COMPLEXMCP_TRAJECTORY", trajectory or {"steps": []})
+        if envs:
+            _stage("COMPLEXMCP_OLD_ENV", envs.get("old_env"))
+            _stage("COMPLEXMCP_NEW_ENV", envs.get("new_env"))
+            _stage("COMPLEXMCP_GT_ENV", envs.get("gt_env"))
+        for mod in ("traj_asserts", "state_asserts"):   # drop cross-run caches
+            try:
+                __import__("benchmark." + mod, fromlist=[mod])._CACHE.clear()
+            except Exception:
+                pass
         try:
             pytest.main([test_file, "-q", "-p", "no:cacheprovider",
                          "--import-mode=importlib"], plugins=[_Collector()])
         finally:
-            if prev is None:
-                os.environ.pop("COMPLEXMCP_TRAJECTORY", None)
-            else:
-                os.environ["COMPLEXMCP_TRAJECTORY"] = prev
+            for var, prev in staged.items():
+                if prev is None:
+                    os.environ.pop(var, None)
+                else:
+                    os.environ[var] = prev
     return passed
 
 
@@ -259,21 +387,35 @@ def _score_traj_tests(passed, tests_map):
 
 
 def _score_rubric(criteria, verdicts):
-    """Weighted rubric score in [0, 1] from {criterion_number: bool} verdicts."""
+    """Weighted rubric score in [0, 1] from {criterion_number: bool} verdicts.
+
+    Polarity: a criterion is a GUARD (violation-worded) when it is flagged
+    ``is_positive: false`` OR carries a negative ``score``. For a guard,
+    ``satisfied: true`` means the violation FIRED (a penalty) and
+    ``satisfied: false`` means the run stayed clean (no credit, no penalty) — so
+    a run that avoids every violation is never capped for it. Only positive
+    criteria earn weight and define the denominator. This matches
+    rubric_judge.evaluate_rubric; the old sign-only rule mis-scored guard
+    criteria that authors wrote with a positive score + ``is_positive: false``
+    (e.g. 5/19 instead of 5/10 on a clean run)."""
     met = pen = pos_total = 0.0
     per = []
     for c in criteria or []:
         w = c.get("score", 0) or 0
-        if w > 0:
-            pos_total += w
+        is_pos = c.get("is_positive")
+        # is_positive wins when present; else fall back to the sign of the score.
+        guard = (is_pos is False) or (is_pos is None and w < 0)
+        mag = abs(w)
         v = bool(verdicts.get(c.get("number")))
         per.append({"number": c.get("number"), "criterion": c.get("criterion"),
-                    "score": w, "satisfied": v})
-        if v:
-            if w > 0:
-                met += w
-            else:
-                pen += abs(w)
+                    "score": w, "is_positive": (not guard), "satisfied": v})
+        if guard:
+            if v:
+                pen += mag          # violation fired
+        else:
+            pos_total += mag
+            if v:
+                met += mag
     score = round(max(0.0, (met - pen) / pos_total), 4) if pos_total else None
     return score, per
 
@@ -306,9 +448,10 @@ def judge_weighted(
 
     trajectory = _normalize_traj(trajectory)
     components: dict[str, dict] = {}   # name -> {weight, value|severity, ...}
-    state_available = (
-        old_env is not None and new_env is not None and gt_env is not None
-    )
+    # Admissibility gate: providing the three envs is not enough — an empty dump
+    # or a wrong-world gt_env must NOT be scored as if the agent did nothing.
+    admissible, state_reason = state_admissibility(old_env, new_env, gt_env)
+    state_available = admissible
 
     # --- state components -----------------------------------------------------
     Rc = Rb = None
@@ -317,15 +460,19 @@ def judge_weighted(
     if state_available and wants_state:
         state = judge_env(old_env, new_env, gt_env)
         total = state["total"]
-        Rc = (state["recall"] / total) if total else 1.0
-        Rb = (state["misbehave"] / total) if total else float(state["misbehave"])
-        Rb = min(Rb, 1.0)
-        wc = _weight_of(weights, "state_completion")
-        if wc:
-            components["state_completion"] = {"weight": wc, "value": round(Rc, 4)}
+        Rb = min((state["misbehave"] / total) if total else float(state["misbehave"]), 1.0)
         wm = _weight_of(weights, "state_misbehave")
         if wm:
             components["state_misbehave"] = {"weight": wm, "severity": round(Rb, 4)}
+        # Completion is only gradable when the world encodes required changes.
+        # total == 0 (a pure "don't touch anything" guardrail) must NOT earn a
+        # false Rc = 1.0 — it simply leaves state_completion out of the ledger,
+        # while state_misbehave above still guards against over-action.
+        if total:
+            Rc = state["recall"] / total
+            wc = _weight_of(weights, "state_completion")
+            if wc:
+                components["state_completion"] = {"weight": wc, "value": round(Rc, 4)}
 
     # --- plan component -------------------------------------------------------
     graph = None
@@ -345,7 +492,11 @@ def judge_weighted(
     if wt and grading_dir:
         test_file = os.path.join(str(grading_dir), tt_spec.get("test_file", "test_outputs.py"))
         if os.path.exists(test_file):
-            passed = _run_traj_pytest(test_file, trajectory)
+            # Hand the pytest suite the world snapshots too, so a state-diff test
+            # case (benchmark.state_asserts) can run alongside the world-free
+            # tool/answer checks in the same file.
+            passed = _run_traj_pytest(test_file, trajectory, envs={
+                "old_env": old_env, "new_env": new_env, "gt_env": gt_env})
             val, traj = _score_traj_tests(passed, tt_spec.get("tests"))
             traj["passed_tests"] = passed
             components["traj_tests"] = {"weight": wt, "value": round(val, 4)}
@@ -383,17 +534,25 @@ def judge_weighted(
     passed = bool(pos_total) and reward >= threshold
 
     # --- aggregate passthrough (state preferred, else plan) ------------------
+    # `misbehave_kind` records what the aggregate misbehave/total counts MEAN, so
+    # downstream reporting can't relabel plan false-positives as state corruption.
     if state is not None:
         recall, total_n, misbehave = state["recall"], state["total"], state["misbehave"]
+        misbehave_kind = "state_guard"
     elif traj is not None:
         recall, total_n, misbehave = traj["recall"], traj["total"], traj["misbehave"]
+        misbehave_kind = "traj_guard"
     elif graph is not None:
         recall, total_n = graph.get("tp", 0), graph.get("total_gt_nodes", 0)
         misbehave = graph.get("fp", 0)
+        misbehave_kind = "plan_fp"      # unmatched plan nodes, NOT state corruption
     else:
         recall = total_n = misbehave = 0
+        misbehave_kind = None
 
-    label = _label(Rc, Rb, graph, state_available, plan_threshold)
+    basis = sorted(components.keys())   # components that actually contributed
+    label = _label(Rc, Rb, graph, state_available, wants_state, state_reason,
+                   plan_threshold)
 
     return {
         "reward": reward,
@@ -401,6 +560,7 @@ def judge_weighted(
         "quadrant": label,
         "threshold": threshold,
         "components": components,
+        "basis": basis,
         "earned": round(earned, 4),
         "penalty": round(penalty, 4),
         "pos_total": pos_total,
@@ -408,11 +568,11 @@ def judge_weighted(
         "recall": recall,
         "total": total_n,
         "misbehave": misbehave,
+        "misbehave_kind": misbehave_kind,
         # per-channel detail
-        "state": (
-            {"status": "unavailable"} if not state_available
-            else {"Rc": round(Rc, 4), "Rb": round(Rb, 4), **state}
-        ),
+        "state_admissible": admissible,
+        "state_reason": state_reason,
+        "state": _state_report(admissible, state_reason, Rc, Rb, state),
         "plan": None if graph is None else {
             "graph_f1": graph["graph_f1"],
             "graph_precision": graph["graph_precision"],
@@ -423,7 +583,9 @@ def judge_weighted(
         "traj_tests": traj,
         "rubric_score": rubric_score,
         "rubric_per_criterion": rubric_per,
-        "grader": "weighted(state+graph+rubric)",
+        # grader label names only the channels that actually contributed, so a
+        # plan-only fallback can never be reported as "state+graph+rubric".
+        "grader": "weighted(" + "+".join(basis) + ")" if basis else "weighted(empty)",
     }
 
 
@@ -436,10 +598,16 @@ def _weight_of(weights, name):
     return 0
 
 
-def _label(Rc, Rb, graph, state_available, plan_threshold):
+def _label(Rc, Rb, graph, state_available, wants_state, state_reason, plan_threshold):
     if not state_available:
+        # Distinguish a task that simply has no state channel (PLAN_ONLY) from a
+        # task whose state channel was provided but is broken (STATE_INADMISSIBLE).
+        if wants_state and state_reason not in (None, "unavailable"):
+            return "STATE_INADMISSIBLE"
         return "PLAN_ONLY"
-    state_ok = (Rc == 1.0 and Rb == 0.0)
+    # Rc is None for a pure guardrail (no required changes) — then completion is
+    # vacuously met and only the misbehave guard decides the state verdict.
+    state_ok = (Rc is None or Rc == 1.0) and Rb == 0.0
     plan_ok = graph is not None and graph["graph_f1"] >= plan_threshold
     if graph is None:
         return "SOLVED" if state_ok else "FAILED"

@@ -45,7 +45,7 @@ async def logout(session_id: str | None = None):
 	logger.info(f"A user logged out! [{session_id}]")
 	return {
 		"status": "ok",
-		"output": {}
+		"output": session.jira_session.get_session_dict()
 	}
 
 

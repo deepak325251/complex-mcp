@@ -23,6 +23,13 @@ _RESP_RE = re.compile(r"<response>\s*(.*?)\s*</response>", re.DOTALL)
 # thinking and `message` carries its visible speech -- the two used to be merged.
 _THINK_RE = re.compile(r'<thinking(?:\s+signature="([^"]*)")?\s*>(.*?)</thinking>', re.DOTALL)
 
+# Backend control/format sentinels that leak from the (redacted) thinking channel
+# into the visible-text stream -- e.g. a stray `end_turn` token glued onto prose
+# (`...boundary.\nendturnLet me...`) or an `_input=...` scaffold prefix. They are
+# never real assistant speech, so strip them from the visible message before it
+# is recorded, rather than letting the garble land in the trace.
+_LEAK_RE = re.compile(r'_input=\.+|\bend_?turn')
+
 
 def _rubric_rc_rb(rubric_result: dict | None):
     """Return (Rc, Rb) for a rubric result.
@@ -51,7 +58,12 @@ def _rubric_rc_rb(rubric_result: dict | None):
     pos_total = pos_hit = 0.0
     for c in crit:
         w = c.get("score") or 0
-        if w > 0:
+        # Guard criteria (is_positive: false, or a negative score) are NOT part
+        # of the completion denominator -- counting them capped a clean run's Rc
+        # (e.g. 5/19 instead of 5/10). Only positive criteria define Rc.
+        is_pos = c.get("is_positive")
+        guard = (is_pos is False) or (is_pos is None and w < 0)
+        if not guard and w > 0:
             pos_total += w
             if c.get("satisfied"):
                 pos_hit += w
@@ -73,7 +85,8 @@ def _split_thinking(span: str):
         thoughts.append(t)
         if m.group(1):
             sigs.extend(s for s in m.group(1).split(",") if s)
-    message = _THINK_RE.sub("", span).strip()
+    message = _THINK_RE.sub("", span)
+    message = _LEAK_RE.sub("", message).strip()
     return "\n\n".join(thoughts), message, sigs
 
 
@@ -528,7 +541,12 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         # final_score is the composite actually used to rank this run, so a
         # leaderboard can sort off report.json alone (no cross-file join).
         "final_score": reward_val,
-        "final_score_basis": score.get("grader") or "graph_f1+rubric",
+        # Never hardcode a blend that didn't run: prefer the grader's own label,
+        # else name the channels that actually contributed (score["basis"]).
+        "final_score_basis": (
+            score.get("grader")
+            or ("+".join(score["basis"]) if score.get("basis") else "unknown")
+        ),
         # State-diff surface (recall/misbehave over scored key-paths). The rubric
         # surface rides alongside as `rubric_rb`, NOT under the same name.
         "completion_rate": completion_rate,
@@ -541,6 +559,10 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         "rubric_per_criterion": rubric_result.get("per_criterion") if rubric_result else None,
         "tokens": record.get("tokens", {}),
         "tool_summary": tool_summary,
+        # Why the episode ended: end_tag (agent emitted [END]), no_tool_calls
+        # (consecutive turns with no call), or max_turns (turn/budget exhaustion).
+        # Distinguishes a clean finish from a forced cutoff at 510k-token runs.
+        "termination_reason": record.get("termination_reason"),
     }, indent=2, ensure_ascii=False))
 
     _write_rubric_json(run_dir, rubric_result)
@@ -554,10 +576,42 @@ def write_trials_aggregate(output_root: Path, task_name: str, model: str,
                            run_records: list[dict], *,
                            instruction: str | None = None,
                            at: list[int] | None = None,
-                           controls: dict | None = None) -> Path:
+                           controls: dict | None = None,
+                           trajectory_root: Path | None = None) -> Path:
     slug = _mcp_stump_slug(task_name)
     trials_dir = output_root / f"trials_{slug}"
     trials_dir.mkdir(parents=True, exist_ok=True)
+
+    # H5: reconcile against run_N dirs on disk. A run that hard-bounced (e.g. a
+    # missing-prerequisite bounce at step 0) may never have produced a graded
+    # record; counting only in-memory records silently drops it from n and the
+    # failure histogram -- collapsing two distinct failure modes into one. Fold
+    # any unrecorded run_N slot back in as an explicit "unrecorded_run" so the
+    # denominator and taxonomy reflect what actually ran. When no root is passed,
+    # auto-discover this task's own trajectories/ dir so the reconciliation is on
+    # by default (no-op when the dir is absent, so existing callers are unaffected).
+    if trajectory_root is None:
+        _auto = trials_dir / "trajectories"
+        trajectory_root = _auto if _auto.exists() else None
+    if trajectory_root is not None:
+        recorded = {r.get("attempt") for r in run_records if r.get("attempt")}
+        run_records = list(run_records)
+        for d in sorted(Path(trajectory_root).rglob("run_*")):
+            if not d.is_dir():
+                continue
+            try:
+                num = int(d.name.split("_", 1)[1])
+            except (IndexError, ValueError):
+                continue
+            if num in recorded:
+                continue
+            recorded.add(num)
+            run_records.append({
+                "attempt": num, "passed": False,
+                "failure_class": "unrecorded_run",
+                "reason": (f"run_{num} present on disk but produced no graded "
+                           f"record (hard bounce?); folded in so n is honest"),
+            })
 
     n = len(run_records)
     c = sum(1 for r in run_records if r.get("passed"))

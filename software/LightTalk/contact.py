@@ -145,6 +145,8 @@ class ContactSession:
 
             self.__network_err_rate = self.rng.uniform(0.1, 0.5)
             self.__network_acc = False
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightTalk")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, corpus_path / "world.pkl")

@@ -64,6 +64,8 @@ class ShopSession:
             self.my_starred_shops = set()
             self.my_starred_items = set()
             self.enter_password = False
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightShop")
         else:
             # Seedless: world loaded verbatim from a frozen snapshot next to
             # this module; `seed` is accepted for client compat and ignored.

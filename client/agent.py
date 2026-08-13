@@ -95,10 +95,10 @@ class Toolbox:
         session_id_dict: Dict[str, str] = {}
     ):
         if key_name not in self.tools:
-            return {
+            return json.dumps({
                 "status": "error",
                 "output": f"This tool `{key_name}` doesn't exist."
-            }
+            })
         if key_name == "retrieve_tools":
             try:
                 return self.retrieve_tools(
@@ -106,10 +106,10 @@ class Toolbox:
                     k=arguments.get("k", self.default_k)
                 )
             except Exception as e:
-                return {
+                return json.dumps({
                     "status": "error",
                     "output": e.__str__()
-                }
+                })
         tool = self.tools[key_name]
         if self.pseudo:
             # ETOM: no world, no session, no server -- return a schema-shaped
@@ -124,10 +124,10 @@ class Toolbox:
         if need_session:
             server_name = server["name"]
             if server_name not in session_id_dict:
-                return {
+                return json.dumps({
                     "status": "failed",
                     "output": f"{server_name} has not been logged into yet."
-                }
+                })
             session_id = session_id_dict[server_name]
             arguments["session_id"] = session_id
 
@@ -143,10 +143,10 @@ class Toolbox:
                 )).content[0].text
                 return result
         except Exception as e:
-            return {
+            return json.dumps({
                 "status": "error",
                 "output": e.__str__()
-            }
+            })
 
     async def call_with_server(
         self,
@@ -169,11 +169,11 @@ class Toolbox:
                 )).content[0].text
                 return result
         except Exception as e:
-            return {
+            return json.dumps({
                 "status": "failed",
                 "output": e.__str__()
-            }.__str__()
-    
+            })
+
     def __get_desc_of_one_tool(self, key_name: str):
         tool = self.tools[key_name]
         tool_desc = {
@@ -909,6 +909,12 @@ class AgentClient:
                 arguments={}
             )
             login_info: Dict[str, Any] = json.loads(login_info)
+            if "session_info" not in login_info:
+                url = self.toolbox.servers.get(system_app, {}).get("url", "?")
+                raise RuntimeError(
+                    f"{system_app} login failed (no session_info) — is the server up at {url}? "
+                    f"Start the app suite (COMPLEXMCP_SEED=... ./start_softwares.sh) and verify "
+                    f"the port is listening. Response: {login_info}")
             session_info = login_info.pop("session_info")
             results["old_apps"][system_app] = session_info
             logger.info(f"Logged into the app {system_app}: {login_info}")
@@ -937,6 +943,10 @@ class AgentClient:
                     
                     # print(login_info)
                     login_info: Dict[str, Any] = json.loads(login_info)
+                    if "session_info" not in login_info:
+                        raise RuntimeError(
+                            f"{app} login failed (no session_info) — is the server up at "
+                            f"{server.get('url', '?')}? Response: {login_info}")
                     session_info = login_info.pop("session_info")
                     results["old_apps"][app] = session_info
 
@@ -1096,6 +1106,11 @@ class AgentClient:
                     "completion_tokens_details.reasoning_tokens") or 0
                 usage_acc["cost_usd"] += _usage_val(u, "cost_usd") or 0.0
 
+            # Why the episode loop ended. Defaults to max_turns (loop exhausted
+            # without an explicit stop) and is overwritten at each break below so
+            # report.json records the real termination cause (end_tag vs
+            # no_tool_calls vs budget/turn exhaustion).
+            results["termination_reason"] = "max_turns"
             for idx in range(max_turns):
                 if native:
                     resp = await self.llm.chat(messages, extra_body=extra_body)
@@ -1145,8 +1160,10 @@ class AgentClient:
                     if not tool_calls:
                         cnt_without_tc += 1
                         if stop_tag and text.strip().endswith(stop_tag):
+                            results["termination_reason"] = "end_tag"
                             break
                         if cnt_without_tc >= 2:
+                            results["termination_reason"] = "no_tool_calls"
                             break
                         continue
 
@@ -1273,8 +1290,10 @@ class AgentClient:
                 else:
                     cnt_without_tc += 1
                     if stop_tag and msg.strip().endswith(stop_tag):
+                        results["termination_reason"] = "end_tag"
                         break # quit
                     if cnt_without_tc >= 5:
+                        results["termination_reason"] = "no_tool_calls"
                         break # quit
             results["tokens"] = {
                 "prompt": prompt_token_num,

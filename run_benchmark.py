@@ -276,6 +276,7 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             "query": query,
             "apps": apps,
             "seed": meta.get("seed"),
+            "fixture": meta.get("fixture"),
             "level": meta.get("level"),
             "gt_env": gt_env,
             "gt_tool_cnt": gt_tool_cnt,
@@ -417,6 +418,14 @@ def main(args):
         # must be baked at this same seed (benchmark/bake_state.py).
         if task_info.get("seed") is not None:
             os.environ["COMPLEXMCP_SEED"] = str(task_info["seed"])
+        # Task-specific world overlay (software.utils.fixtures): apps whose world
+        # is rolled randomly (LightShop/Wallet/Budget/Talk) read this at login to
+        # inject fixed story entities. Must match the fixture the task's gt_env
+        # was baked with; cleared when absent so it never leaks across tasks.
+        if task_info.get("fixture"):
+            os.environ["COMPLEXMCP_FIXTURE"] = str(task_info["fixture"])
+        else:
+            os.environ.pop("COMPLEXMCP_FIXTURE", None)
         # Compute the presented toolset ONCE per task so every attempt in the
         # pass@k loop sees the same distractor sample (the knob is a property of
         # the measurement, not of the individual rollout).
@@ -489,6 +498,22 @@ def main(args):
             _traj = parse_trajectory(result.get("output", ""))
             _grader = getattr(args, "grader", "graph")
             _task_dir = task_info.get("task_dir")
+            # World-full 'before' snapshot: the login dump (result["old_apps"]) is
+            # the session handshake, NOT a full world capture (~empty output), so
+            # diffing `new`/`gt` against it makes the WHOLE pre-existing world look
+            # "changed" and inflates Rc (e.g. a real 0.67 shows as 0.99). Prefer the
+            # task's baked tests/old_env.json — a FULL snapshot at this same seed.
+            # Keep the live dump only when there is no baked one (world-free tasks,
+            # which never touch the state channel anyway).
+            if _task_dir:
+                _bp = os.path.join(str(_task_dir), "tests", "old_env.json")
+                if os.path.exists(_bp):
+                    try:
+                        _baked_old = json.load(open(_bp, encoding="utf-8"))
+                        if _baked_old:
+                            old_env = _baked_old
+                    except (OSError, json.JSONDecodeError):
+                        pass
             from benchmark.graph_judge import load_gold as _load_gold, load_efs as _load_efs
             _gold = _load_gold(_task_dir) if _task_dir else None
 
@@ -504,6 +529,22 @@ def main(args):
                 # (tests/test_weights.json). State components drop out and the score
                 # renormalizes when gt_env is unavailable, so seedless tasks still grade.
                 from benchmark.weighted_judge import judge_weighted
+                # Layer-1 repair: if the Docker facade dumped empty for the state
+                # apps, rebuild new_env in-process by replaying the trajectory so
+                # the state channel can grade instead of dropping to inadmissible.
+                # Fully guarded: no-op on a healthy dump / missing gt, and any
+                # error is swallowed so grading proceeds exactly as before.
+                if _task_dir and old_env and gt_env and new_env is not None:
+                    try:
+                        from benchmark.bake_state_mcp import repair_new_env
+                        new_env, _rep = repair_new_env(
+                            str(_task_dir), new_env, old_env, gt_env, _traj)
+                        if _rep.get("repaired"):
+                            print(f"[state] repaired empty facade dump via "
+                                  f"in-process replay ({_rep.get('calls_applied')} "
+                                  f"calls) — was {_rep.get('reason')}")
+                    except Exception as _exc:
+                        print(f"[state] repair skipped: {type(_exc).__name__}: {_exc}")
                 judge_result = judge_weighted(
                     old_env=old_env, new_env=new_env, gt_env=gt_env,
                     trajectory=_traj, gold_plan=_gold, efs=_load_efs(_task_dir),
@@ -650,6 +691,10 @@ def main(args):
                     "query": query,
                     "apps": apps,
                     "level": level,
+                    # Seed drives the world (COMPLEXMCP_SEED, set above); it was
+                    # missing from the record so report.json/summary.json/pairs
+                    # all logged seed=null despite a seeded world. Carry it here.
+                    "seed": task_info.get("seed"),
                     "tool_cnt": tool_cnt,
                     "tokens": tokens,
                     "usage": usage,
@@ -659,6 +704,7 @@ def main(args):
                     "output": result.get("output", ""),
                     "expected_tool_calls": task_info.get("expected_tool_calls"),
                     "reasoning_signatures": result.get("reasoning_signatures") or [],
+                    "termination_reason": result.get("termination_reason"),
                 }
                 # Context for the failure classifier (commit 9990708).
                 task_context = {
@@ -766,6 +812,13 @@ def main(args):
                         if final_score.get("total") else (1.0 if passed else 0.0),
                     "misbehaving_rate": (final_score.get("misbehave") / final_score.get("total"))
                         if final_score.get("total") else 0.0,
+                    # `misbehave_kind` says what the two rates above MEAN (state
+                    # corruption vs plan false-positives); `state_admissible`
+                    # flags a run whose state channel was inadmissible, so the
+                    # rates aren't read as a real completion/misbehave score.
+                    "misbehave_kind": final_score.get("misbehave_kind"),
+                    "state_admissible": final_score.get("state_admissible"),
+                    "state_reason": final_score.get("state_reason"),
                     "failure_class": final_score.get("failure_class"),
                     "reason": final_score.get("reason"),
                     "query": query,

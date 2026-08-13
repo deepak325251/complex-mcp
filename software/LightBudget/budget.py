@@ -86,6 +86,8 @@ class BudgetSession:
             self.budgets: Dict[str, Budget] = {}
             self._seed_transactions()
             self._seed_budgets()
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightBudget")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

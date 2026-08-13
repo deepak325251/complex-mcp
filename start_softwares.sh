@@ -1,9 +1,27 @@
 #!/bin/zsh
 
+_ROOT="$(cd "$(dirname "$0")" && pwd)"
+
 # Apps now import `software.utils.*` (seedless world.pkl fixtures). `fastmcp run`
 # only puts the app's own dir on sys.path, so make the repo root importable or
 # LightSystem (and others) die with "No module named 'software'".
-export PYTHONPATH="$(cd "$(dirname "$0")" && pwd):${PYTHONPATH}"
+export PYTHONPATH="${_ROOT}:${PYTHONPATH}"
+
+# Use the project venv's binaries (fastmcp, python) without requiring the caller
+# to `source .venv/bin/activate` first -- otherwise every server dies with
+# "command not found: fastmcp" and the "started (PID ...)" lines lie.
+if [ -x "${_ROOT}/.venv/bin/fastmcp" ]; then
+    export PATH="${_ROOT}/.venv/bin:${PATH}"
+fi
+if ! command -v fastmcp >/dev/null 2>&1; then
+    echo "ERROR: 'fastmcp' not found. Create the venv (python -m venv .venv && .venv/bin/pip install -r requirements.txt) or activate it." >&2
+    exit 1
+fi
+
+# World seed for every app (rolled at login). Override by exporting COMPLEXMCP_SEED
+# before running. Children inherit it.
+export COMPLEXMCP_SEED="${COMPLEXMCP_SEED:-42}"
+echo "[start_softwares] fastmcp=$(command -v fastmcp)  COMPLEXMCP_SEED=${COMPLEXMCP_SEED}${COMPLEXMCP_FIXTURE:+  COMPLEXMCP_FIXTURE=$COMPLEXMCP_FIXTURE}"
 
 # Signal handler function
 cleanup() {
