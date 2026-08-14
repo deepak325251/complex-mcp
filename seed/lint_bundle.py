@@ -19,11 +19,15 @@ import sys
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_HERE)
 
-# Every file a complete, gradeable bundle must carry (BUNDLE_SCHEMA.md).
+# Files a bundle MUST carry to be gradeable in-process (weighted/graph/pytest).
+# This is the family-agnostic core: it holds for both the complexmcp-native
+# bundles this pipeline emits and the mcp-stump-family bundles authored
+# elsewhere. The Docker state-diff path files (verify.py/test.sh/gen_gt.py/
+# GT_GENERATION.md, environment/Dockerfile) are recommended for harbor parity
+# but NOT required — the in-process graders never read them.
 REQUIRED = [
     "task.toml",
     "instruction.md",
-    "environment/Dockerfile",
     "environment/docker-compose.yaml",
     "tests/oracle.json",
     "tests/old_env.json",
@@ -33,12 +37,18 @@ REQUIRED = [
     "tests/rubric.json",
     "tests/test_outputs.py",
     "tests/test_weights.json",
-    "tests/test.sh",
-    "tests/verify.py",
-    "tests/gen_gt.py",
-    "tests/GT_GENERATION.md",
     "solution/solve.sh",
     "solution/trajectory.json",
+]
+
+# Present in harbor-parity bundles; their absence is reported as a note, not a
+# failure (the in-process grading path does not use them).
+RECOMMENDED = [
+    "environment/Dockerfile",
+    "tests/verify.py",
+    "tests/test.sh",
+    "tests/gen_gt.py",
+    "tests/GT_GENERATION.md",
 ]
 
 
@@ -70,20 +80,31 @@ def bundle_complete(task_dir: str) -> list:
         if str(doc.get("schema_version")) != "1.0":
             problems.append('task.toml schema_version != "1.0"')
         meta = doc.get("task", {}).get("metadata", {})
-        for key in ("seed", "apps", "level"):
+        for key in ("seed", "apps"):
             if meta.get(key) is None:
                 problems.append(f"task.toml [task.metadata].{key} missing")
-        guid = meta.get("canary_guid")
+        # Difficulty may be encoded as an integer `level` (complexmcp-native)
+        # or a `capability_level` label (mcp-stump family) — either satisfies it.
+        if meta.get("level") is None and meta.get("capability_level") is None:
+            problems.append("task.toml [task.metadata] has neither level nor "
+                            "capability_level")
+        # The canary lives in the "# harbor-canary GUID <guid>" banner comment
+        # (both families). The separate [task.metadata].canary_guid key is a
+        # bonus our emitter adds but is not required.
+        import re
         raw = open(toml_path, encoding="utf-8").read()
-        if "harbor-canary" not in raw or not guid:
+        m = re.search(r"harbor-canary GUID\s+([0-9a-fA-F-]{8,})", raw)
+        if not m:
             problems.append("task.toml missing harbor-canary GUID")
-        instr = os.path.join(task_dir, "instruction.md")
-        if os.path.exists(instr):
-            itext = open(instr, encoding="utf-8").read()
-            if "harbor-canary" not in itext:
-                problems.append("instruction.md missing harbor-canary canary comment")
-            elif guid and guid not in itext:
-                problems.append("instruction.md canary GUID does not match task.toml")
+        else:
+            guid = m.group(1)
+            instr = os.path.join(task_dir, "instruction.md")
+            if os.path.exists(instr):
+                itext = open(instr, encoding="utf-8").read()
+                if "harbor-canary" not in itext:
+                    problems.append("instruction.md missing harbor-canary canary comment")
+                elif guid not in itext:
+                    problems.append("instruction.md canary GUID does not match task.toml")
 
     return problems
 
@@ -94,6 +115,9 @@ def main(argv=None) -> int:
         raise SystemExit("usage: python -m seed.lint_bundle <slug|task_dir>")
     task_dir = resolve_task_dir(argv[0])
     problems = bundle_complete(task_dir)
+    notes = [f"recommended (harbor-parity) file absent: {rel}"
+             for rel in RECOMMENDED
+             if not os.path.exists(os.path.join(task_dir, rel))]
     slug = os.path.basename(task_dir.rstrip("/"))
     if problems:
         print(f"[FAIL] {slug}")
@@ -101,6 +125,8 @@ def main(argv=None) -> int:
             print(f"  - {p}")
         return 1
     print(f"[PASS] {slug} — complete bundle")
+    for n in notes:
+        print(f"  note: {n}")
     return 0
 
 

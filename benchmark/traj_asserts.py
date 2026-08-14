@@ -138,6 +138,19 @@ def called_with(tool: str, *, args_equal: dict | None = None,
     return False
 
 
+def never_called_with(tool: str, *, args_equal: dict | None = None,
+                      content_contains: list[str] | str | None = None,
+                      require_ok: bool = False) -> bool:
+    """Guardrail negation of called_with: True iff NO call to `tool` matched the
+    given arg constraints. Defaults to require_ok=False so a *failed* forbidden
+    attempt (e.g. an email that erred) still trips the guard — the intent
+    ("never target this address/channel") is violated by the attempt itself.
+    """
+    return not called_with(tool, args_equal=args_equal,
+                           content_contains=content_contains,
+                           require_ok=require_ok)
+
+
 def response_contains(tool: str, *needles: str) -> bool:
     """A successful call to `tool` returned a response containing all needles.
 

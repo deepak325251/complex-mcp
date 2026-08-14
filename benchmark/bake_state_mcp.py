@@ -70,21 +70,37 @@ def _candidates(app):
 
 def _boot(app, seed):
     """Boot one app's seeded session in-process. Tries the registry then the
-    naming convention, so unregistered apps still work."""
+    naming convention; if the convention's class name misses (e.g. casing like
+    Quickbooks vs QuickBooks) or resolves to a wrapper without get_session_dict,
+    scans the module for ANY *Session class that exposes get_session_dict."""
     import importlib
+    import inspect
     last = None
+    seen_mods = set()
     for modpath, clsname in _candidates(app):
         try:
             mod = importlib.import_module(modpath)
-            cls = getattr(mod, clsname, None)
-            if cls is None:
-                continue
-            sess = cls(os_cfg=None, seed=seed)
-            if not hasattr(sess, "get_session_dict"):
-                continue
-            return sess
         except Exception as exc:                       # try the next candidate
             last = exc
+            continue
+        # exact convention class first, then any *Session class in this module
+        cands = []
+        exact = getattr(mod, clsname, None)
+        if exact is not None:
+            cands.append(exact)
+        if modpath not in seen_mods:
+            seen_mods.add(modpath)
+            for name, obj in inspect.getmembers(mod, inspect.isclass):
+                if (name.endswith("Session") and obj is not exact
+                        and getattr(obj, "__module__", None) == mod.__name__):
+                    cands.append(obj)
+        for cls in cands:
+            try:
+                sess = cls(os_cfg=None, seed=seed)
+                if hasattr(sess, "get_session_dict"):
+                    return sess
+            except Exception as exc:
+                last = exc
     raise SystemExit(f"could not boot a seeded session for {app!r}: {last}")
 
 
@@ -174,7 +190,21 @@ def replay_trajectory(task_dir, trajectory, *, seed=None, apps=None, repo_root=N
             continue
         tool = s.get("tool") or s.get("function_name")
         app, meth = _split_tool(tool, apps)
-        if not app or not meth or app not in sessions:
+        if not meth:
+            continue
+        if not app:
+            # Bare, collision-free tool name (the toolbox presents unambiguous
+            # tools without the server prefix, so the agent calls e.g.
+            # `create_draft` not `LightGmail_create_draft`). _split_tool can't
+            # resolve these in a multi-app task, so fall back to the sole app
+            # that actually owns the method — otherwise the write (create_draft!)
+            # is silently dropped and new_env never reflects the agent's mutation.
+            owners = [a for a in sessions
+                      if callable(getattr(sessions.get(a), meth, None))]
+            if len(owners) != 1:
+                continue                                # unknown / ambiguous bare name
+            app = owners[0]
+        if app not in sessions:
             continue
         fn = getattr(sessions[app], meth, None)
         if not callable(fn):
@@ -182,6 +212,13 @@ def replay_trajectory(task_dir, trajectory, *, seed=None, apps=None, repo_root=N
         args = s.get("arguments") or s.get("args") or {}
         if not isinstance(args, dict):
             continue
+        resp = s.get("response")
+        if isinstance(resp, dict):
+            st = str(resp.get("status", "")).strip().lower()
+            if st and st not in ("ok", "success", "200", "true", "created"):
+                continue        # the call FAILED in the real run — replaying it here
+                                # would credit an effect (a write, a misbehave) that
+                                # never happened. Only successful calls mutate.
         try:
             fn(**args)
             applied += 1
@@ -191,16 +228,40 @@ def replay_trajectory(task_dir, trajectory, *, seed=None, apps=None, repo_root=N
 
 
 def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None):
-    """Return a state-gradable new_env. If the provided dump is inadmissible
-    because the facade came back empty, rebuild it from the trajectory in-process
-    (Layer-1 repair). Any other state (fine, or inadmissible for a non-empty
-    reason) is returned unchanged — this only repairs the empty-dump case."""
-    from benchmark.weighted_judge import state_admissibility
+    """Return a state-gradable new_env, reconstructed from the trajectory when
+    the live dump under-captures the agent's writes.
+
+    The live world dump re-reads a re-seeded session, so it silently drops the
+    agent's mutations (a created draft, a sent message, a voided envelope). That
+    shows up two ways: an *empty* dump (facade returned nothing) or a *stale*
+    non-empty dump that is missing writes the agent actually made. Both are
+    repaired here by replaying the trajectory in-process — the same
+    boot_world+dump_world path that bakes old/gt, so schemas stay consistent and
+    only the agent's *successful* calls mutate. The replay is preferred only when
+    it is a strictly better capture of ground truth (higher Rc), so a healthy
+    dump is never downgraded."""
+    from benchmark.weighted_judge import state_admissibility, judge_env
     ok, reason = state_admissibility(old_env, new_env, gt_env)
-    if ok or not (reason or "").startswith("empty_dump"):
+    empty = (reason or "").startswith("empty_dump")
+    try:
+        rebuilt, applied = replay_trajectory(task_dir, trajectory, seed=seed)
+    except Exception as exc:
+        return new_env, {"repaired": False, "reason": f"replay_error:{type(exc).__name__}"}
+    if not rebuilt:
         return new_env, {"repaired": False, "reason": reason}
-    rebuilt, applied = replay_trajectory(task_dir, trajectory, seed=seed)
-    return rebuilt, {"repaired": True, "reason": reason, "calls_applied": applied}
+    if empty:
+        return rebuilt, {"repaired": True, "reason": reason, "calls_applied": applied}
+    # Non-empty dump: swap in the replay only if it recalls more of GT than the
+    # dump did (i.e. the dump missed writes). Faithful to misbehaviour too — a
+    # successful bad call is applied by the replay and still counts.
+    d = judge_env(old_env, new_env, gt_env)
+    r = judge_env(old_env, rebuilt, gt_env)
+    dump_rc = d["recall"] / d["total"] if d["total"] else 0.0
+    rep_rc = r["recall"] / r["total"] if r["total"] else 0.0
+    if rep_rc > dump_rc:
+        return rebuilt, {"repaired": True, "reason": "stale_dump", "calls_applied": applied,
+                         "dump_rc": round(dump_rc, 4), "replay_rc": round(rep_rc, 4)}
+    return new_env, {"repaired": False, "reason": reason}
 
 
 def resolve_seed(task_dir, spec=None):

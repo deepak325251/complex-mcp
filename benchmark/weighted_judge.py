@@ -101,6 +101,14 @@ exclude_keys = {
     # penalize a semantically-correct write. Grade content, not the receipt.
     "id", "ts",
     "created_time", "last_edited_time", "created", "updated_at",
+    # Free-text write payloads (draft/message bodies, subjects, recipients) are
+    # author-phrased and never reproduced verbatim by a free-form agent. Grading
+    # them by exact string match makes any correct-but-differently-worded draft
+    # score Rc=0. The STATE channel therefore verifies the structural fact (the
+    # write happened, nothing protected changed); the CONTENT is enforced by the
+    # traj-test content_contains fingerprints. Same "grade content, not the
+    # receipt" rationale as the ids/stamps above.
+    "to_addr", "cc_addr", "subject", "body",
 }
 
 eq_methods = {"content": fuzzy_match}
@@ -627,6 +635,78 @@ def _label(Rc, Rb, graph, state_available, wants_state, state_reason, plan_thres
     if plan_ok and not state_ok:
         return "EXECUTION_FAIL"
     return "FAILED"
+
+
+def write_weighted_verifier(out_dir, result, grading_dir=None) -> str:
+    """Write the FULL verifier/{reward.json, reward.txt, ctrf.json, detail.json}
+    folder for a weighted grade — the same 4-file set the pytest+rubric grader
+    (benchmark.pytest_judge.write_verifier) and the legacy snapshot verifier
+    produced. The weighted branch used to emit only reward.json + detail.json,
+    so downstream tooling reading verifier/ lost ctrf.json and reward.txt; this
+    restores them from the weighted result's traj_tests + component ledger."""
+    from datetime import datetime, timezone
+
+    vdir = os.path.join(str(out_dir), "verifier")
+    os.makedirs(vdir, exist_ok=True)
+
+    tt = result.get("traj_tests") or {}
+    passed = tt.get("passed_tests") or {}
+    # Per-test weights from test_weights.json (components.traj_tests.tests) so a
+    # guard (negative weight) reads as "passed" when it did NOT trigger.
+    tw = {}
+    if grading_dir:
+        try:
+            raw = json.load(open(os.path.join(str(grading_dir), "test_weights.json"),
+                                 encoding="utf-8"))
+            tw = ((raw.get("components") or {}).get("traj_tests") or {}).get("tests") or {}
+        except (OSError, json.JSONDecodeError, AttributeError):
+            tw = {}
+
+    tests = []
+    for name, is_pass in passed.items():
+        w = tw.get(name, 1)
+        triggered = bool(is_pass)
+        status = ("passed" if triggered else "failed") if w >= 0 \
+            else ("failed" if triggered else "passed")           # guard polarity
+        tests.append({"name": name, "status": status,
+                      "extra": {"weight": w, "kind": "goal" if w >= 0 else "guard"}})
+    for c in (result.get("rubric_per_criterion") or []):
+        tests.append({"name": f"rubric.{c.get('number')}",
+                      "status": "passed" if c.get("satisfied") else "failed",
+                      "extra": {"criterion": c.get("criterion")}})
+    n_pass = sum(1 for t in tests if t["status"] == "passed")
+    ctrf = {"results": {
+        "tool": {"name": "complexmcp-weighted"},
+        "summary": {"tests": len(tests), "passed": n_pass,
+                    "failed": len(tests) - n_pass, "pending": 0, "skipped": 0,
+                    "other": 0, "start": 0,
+                    "stop": int(datetime.now(timezone.utc).timestamp())},
+        "tests": tests,
+    }}
+
+    state = result.get("state") or {}
+    reward = {
+        "reward": result.get("reward"),
+        "passed": result.get("passed"),
+        "quadrant": result.get("quadrant"),
+        "completion_rate": state.get("Rc"),
+        "misbehaving_rate": state.get("Rb"),
+        "components": result.get("components"),
+        "earned": result.get("earned"),
+        "penalty": result.get("penalty"),
+        "pos_total": result.get("pos_total"),
+        "grader": result.get("grader"),
+    }
+
+    with open(os.path.join(vdir, "reward.json"), "w", encoding="utf-8") as f:
+        json.dump(reward, f, indent=2, default=str)
+    with open(os.path.join(vdir, "reward.txt"), "w", encoding="utf-8") as f:
+        f.write(str(result.get("reward")))
+    with open(os.path.join(vdir, "ctrf.json"), "w", encoding="utf-8") as f:
+        json.dump(ctrf, f, indent=2, default=str)
+    with open(os.path.join(vdir, "detail.json"), "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, default=str)
+    return vdir
 
 
 # ---------------------------------------------------------------------------

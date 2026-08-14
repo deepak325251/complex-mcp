@@ -780,21 +780,25 @@ def main(args):
                         "grader": _grd,
                     }, indent=2, default=str))
                     (_vd / "detail.json").write_text(json.dumps(judge_result, indent=2, default=str))
+                    (_vd / "reward.txt").write_text(str(judge_result.get("reward")))
+                    _gf1 = judge_result.get("graph_f1")
+                    (_vd / "ctrf.json").write_text(json.dumps({"results": {
+                        "tool": {"name": "complexmcp-graph"},
+                        "summary": {"tests": 1, "passed": 1 if judge_result.get("passed") else 0,
+                                    "failed": 0 if judge_result.get("passed") else 1,
+                                    "pending": 0, "skipped": 0, "other": 0, "start": 0, "stop": 0},
+                        "tests": [{"name": "graph_f1", "status": "passed" if judge_result.get("passed") else "failed",
+                                   "extra": {"graph_f1": _gf1, "graph_precision": judge_result.get("graph_precision"),
+                                             "graph_recall": judge_result.get("graph_recall")}}],
+                    }}, indent=2, default=str))
                     print(f"[verifier] wrote {_vd} from graph grader (f1={judge_result.get('graph_f1')})")
                 elif task_dir is not None and _grd.startswith("weighted"):
-                    _vd = task_dir / "verifier"
-                    _vd.mkdir(parents=True, exist_ok=True)
-                    (_vd / "reward.json").write_text(json.dumps({
-                        "reward": judge_result.get("reward"),
-                        "passed": judge_result.get("passed"),
-                        "quadrant": judge_result.get("quadrant"),
-                        "components": judge_result.get("components"),
-                        "earned": judge_result.get("earned"),
-                        "penalty": judge_result.get("penalty"),
-                        "pos_total": judge_result.get("pos_total"),
-                        "grader": _grd,
-                    }, indent=2, default=str))
-                    (_vd / "detail.json").write_text(json.dumps(judge_result, indent=2, default=str))
+                    # Write the FULL verifier folder (reward.json, reward.txt,
+                    # ctrf.json, detail.json) — same 4-file set the pytest+rubric
+                    # and legacy snapshot verifiers produced. Previously this
+                    # branch dropped reward.txt + ctrf.json.
+                    from benchmark.weighted_judge import write_weighted_verifier
+                    _vd = write_weighted_verifier(task_dir, judge_result, grading_dir)
                     print(f"[verifier] wrote {_vd} from weighted grader "
                           f"(reward={judge_result.get('reward')} {judge_result.get('quadrant')})")
 
