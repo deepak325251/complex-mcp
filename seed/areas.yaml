@@ -1,0 +1,65 @@
+# Combination catalog — the SEED stage samples from this (plan §5, §7 decision #7).
+#
+# There is no abstract "area" registry in complex-mcp: task variety is
+#   (apps) × (seed) × (level) × (stump_levers) × (optional fixture) × (tags)
+# and the seed alone drives the world (random.Random(seed); see
+# software/utils/world_snapshot.py). This file is that combination space,
+# human-authored and human-diffable. seed/seed.py draws a point from it and
+# seed/canonical.py hashes the point into the registry key.
+
+apps:
+  # Stateful Light* apps that boot a seeded in-process session with
+  # get_session_dict() — i.e. bake_state_mcp can bake old_env/gt_env for them.
+  # These are the registered sessions in benchmark/bake_state_mcp.py::_APP_SESSIONS
+  # (any other software/Light* that exposes a seeded session also works via the
+  # naming-convention fallback, but start the pilot from these).
+  stateful:
+    - LightTalk       # messaging / contacts        (software/LightTalk/contact.py)
+    - LightShop       # storefront / cart / checkout (software/LightShop/shop.py)
+    - LightWallet     # wallet pots / balances       (software/LightWallet/wallet.py)
+    - LightBudget     # budget categories / txns     (software/LightBudget/budget.py)
+    - LightGithub     # issues / repos               (software/LightGithub/github.py)
+    - LightSlack      # channels / messages          (software/LightSlack/slack.py)
+    - LightJira       # tickets                      (software/LightJira/jira.py)
+    - LightNotion     # docs                         (software/LightNotion/notion.py)
+    - LightConfluence # pages                        (software/LightConfluence/confluence.py)
+
+# Difficulty tiers. `level` is the [task.metadata].level int (or "adhoc");
+# `capability_level` is the L1..L5 label; `stump_levers` is the difficulty
+# mechanism vocabulary a task at this tier may draw from.
+levels:
+  L1:
+    level: 1
+    capability_level: L1
+    stump_levers: [hidden_prerequisite]
+  L2:
+    level: 2
+    capability_level: L2
+    stump_levers: [hidden_prerequisite, multi_app_orchestration]
+  L3:
+    level: 3
+    capability_level: L3
+    stump_levers:
+      - hidden_prerequisite
+      - multi_app_orchestration
+      - named_entity_resolution
+      - temporal_reasoning
+      - distraction_selection
+  adhoc:
+    level: adhoc
+    capability_level: L5
+    stump_levers: [state_diff_precision, dirty_state]
+
+# Registered deterministic overlays (software/utils/fixtures.py::_REGISTRY).
+# A fixture pins specific story entities on top of the seeded world so a
+# narrative can reference them by id. Only these names are valid for `fixture=`.
+# Adding a new fixture is app-code work (a new overlay fn) and is out of scope
+# for the pipeline itself.
+fixtures:
+  - camping-gear    # LightShop/LightBudget/LightTalk story entities (seed 42)
+
+# Seed sampling bounds when --seed is not given explicitly.
+seed_range: [1, 100000]
+
+# Default number of apps to sample when --k is given without --apps.
+default_k: 2

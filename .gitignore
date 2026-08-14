@@ -239,3 +239,5 @@ benchmark/harbor_final_all.zip
 /model-training-ckpt-codec-recovery
 
 /bundle
+seed/__pycache__/
+tasks_backup/

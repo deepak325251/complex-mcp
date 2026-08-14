@@ -197,6 +197,13 @@ _CHECKS = {
     "traj_tests": check_traj_tests,
 }
 
+# NOTE: the seed pipeline's two authoring lints (bundle_complete, rubric_trace)
+# are deliberately NOT registered here. They enforce the pipeline-emitted
+# superset schema (tests/oracle.json + gt_env + rubric + …), which the 43
+# harbor_final_all state-diff bundles legitimately do not carry. Registering
+# them globally would fail every legacy bundle. seed/finish.py runs them
+# alongside validate() for pipeline bundles instead. See seed/BUNDLE_SCHEMA.md.
+
 
 def validate(task_dir):
     """Return {ok, checks: {name: [problems]}, problems: [all]}."""
