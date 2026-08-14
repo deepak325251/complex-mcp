@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from square import SquareSession
+try:
+    from square import SquareSession
+except ImportError:
+    from software.LightSquare.square import SquareSession
 
 
 class LightSquareSession:

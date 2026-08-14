@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSlackSession
+try:
+    from session import LightSlackSession
+except ImportError:
+    from software.LightSlack.session import LightSlackSession
 import logging
 import colorlog
 

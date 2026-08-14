@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightWordPressSession
+try:
+    from session import LightWordPressSession
+except ImportError:
+    from software.LightWordPress.session import LightWordPressSession
 import logging
 import colorlog
 

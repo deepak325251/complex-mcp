@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from vault import VaultSession
+try:
+    from vault import VaultSession
+except ImportError:
+    from software.LightVault.vault import VaultSession
 
 class LightVaultSession:
     def __init__(self, os_cfg: Dict[str, str]

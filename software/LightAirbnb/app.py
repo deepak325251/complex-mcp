@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAirbnbSession
+try:
+    from session import LightAirbnbSession
+except ImportError:
+    from software.LightAirbnb.session import LightAirbnbSession
 import logging
 import colorlog
 

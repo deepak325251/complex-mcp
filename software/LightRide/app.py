@@ -1,6 +1,9 @@
 from typing import Dict, Optional
 from fastmcp import FastMCP
-from session import LightRideSession
+try:
+    from session import LightRideSession
+except ImportError:
+    from software.LightRide.session import LightRideSession
 import logging
 import colorlog
 

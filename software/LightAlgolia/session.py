@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from algolia import AlgoliaSession
+try:
+    from algolia import AlgoliaSession
+except ImportError:
+    from software.LightAlgolia.algolia import AlgoliaSession
 
 
 class LightAlgoliaSession:

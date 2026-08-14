@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from ticketmaster import TicketmasterSession
+try:
+    from ticketmaster import TicketmasterSession
+except ImportError:
+    from software.LightTicketmaster.ticketmaster import TicketmasterSession
 
 
 class LightTicketmasterSession:

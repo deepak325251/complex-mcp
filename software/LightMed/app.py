@@ -1,6 +1,9 @@
 from typing import Dict, Optional
 from fastmcp import FastMCP
-from session import LightMedSession
+try:
+    from session import LightMedSession
+except ImportError:
+    from software.LightMed.session import LightMedSession
 import logging
 import colorlog
 

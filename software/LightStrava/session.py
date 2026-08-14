@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from strava import StravaSession
+try:
+    from strava import StravaSession
+except ImportError:
+    from software.LightStrava.strava import StravaSession
 
 
 class LightStravaSession:

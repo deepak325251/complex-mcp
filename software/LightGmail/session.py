@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from gmail import GmailSession
+try:
+    from gmail import GmailSession
+except ImportError:
+    from software.LightGmail.gmail import GmailSession
 
 
 class LightGmailSession:

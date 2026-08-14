@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from amazon_seller import AmazonSellerSession
+try:
+    from amazon_seller import AmazonSellerSession
+except ImportError:
+    from software.LightAmazonSeller.amazon_seller import AmazonSellerSession
 
 
 class LightAmazonSellerSession:

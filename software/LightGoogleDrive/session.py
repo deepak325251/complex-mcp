@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from google_drive import GoogleDriveSession
+try:
+    from google_drive import GoogleDriveSession
+except ImportError:
+    from software.LightGoogleDrive.google_drive import GoogleDriveSession
 
 
 class LightGoogleDriveSession:

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from mailchimp import MailchimpSession
+try:
+    from mailchimp import MailchimpSession
+except ImportError:
+    from software.LightMailchimp.mailchimp import MailchimpSession
 
 
 class LightMailchimpSession:

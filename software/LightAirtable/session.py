@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from airtable import AirtableSession
+try:
+    from airtable import AirtableSession
+except ImportError:
+    from software.LightAirtable.airtable import AirtableSession
 
 
 class LightAirtableSession:

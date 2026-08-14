@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightRingSession
+try:
+    from session import LightRingSession
+except ImportError:
+    from software.LightRing.session import LightRingSession
 import logging
 import colorlog
 

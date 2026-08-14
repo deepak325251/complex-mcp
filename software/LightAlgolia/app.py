@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAlgoliaSession
+try:
+    from session import LightAlgoliaSession
+except ImportError:
+    from software.LightAlgolia.session import LightAlgoliaSession
 import logging
 import colorlog
 

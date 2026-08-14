@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSegmentSession
+try:
+    from session import LightSegmentSession
+except ImportError:
+    from software.LightSegment.session import LightSegmentSession
 import logging
 import colorlog
 

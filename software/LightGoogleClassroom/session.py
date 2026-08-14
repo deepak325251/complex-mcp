@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from google_classroom import GoogleClassroomSession
+try:
+    from google_classroom import GoogleClassroomSession
+except ImportError:
+    from software.LightGoogleClassroom.google_classroom import GoogleClassroomSession
 
 
 class LightGoogleClassroomSession:

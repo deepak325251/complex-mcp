@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightCoinbaseSession
+try:
+    from session import LightCoinbaseSession
+except ImportError:
+    from software.LightCoinbase.session import LightCoinbaseSession
 import logging
 import colorlog
 

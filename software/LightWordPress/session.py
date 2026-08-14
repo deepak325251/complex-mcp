@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from wordpress import WordpressSession
+try:
+    from wordpress import WordpressSession
+except ImportError:
+    from software.LightWordPress.wordpress import WordpressSession
 
 
 class LightWordPressSession:

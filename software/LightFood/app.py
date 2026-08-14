@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightFoodSession
+try:
+    from session import LightFoodSession
+except ImportError:
+    from software.LightFood.session import LightFoodSession
 import logging
 import colorlog
 

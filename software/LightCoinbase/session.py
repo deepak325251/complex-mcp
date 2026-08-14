@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from coinbase import CoinbaseSession
+try:
+    from coinbase import CoinbaseSession
+except ImportError:
+    from software.LightCoinbase.coinbase import CoinbaseSession
 
 
 class LightCoinbaseSession:

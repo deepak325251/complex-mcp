@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from twilio import TwilioSession
+try:
+    from twilio import TwilioSession
+except ImportError:
+    from software.LightTwilio.twilio import TwilioSession
 
 
 class LightTwilioSession:

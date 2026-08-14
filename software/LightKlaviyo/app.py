@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightKlaviyoSession
+try:
+    from session import LightKlaviyoSession
+except ImportError:
+    from software.LightKlaviyo.session import LightKlaviyoSession
 import logging
 import colorlog
 

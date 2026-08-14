@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from google_analytics import GoogleAnalyticsSession
+try:
+    from google_analytics import GoogleAnalyticsSession
+except ImportError:
+    from software.LightGoogleAnalytics.google_analytics import GoogleAnalyticsSession
 
 
 class LightGoogleAnalyticsSession:

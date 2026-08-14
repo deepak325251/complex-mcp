@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from hubspot import HubspotSession
+try:
+    from hubspot import HubspotSession
+except ImportError:
+    from software.LightHubspot.hubspot import HubspotSession
 
 
 class LightHubspotSession:

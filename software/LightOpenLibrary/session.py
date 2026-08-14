@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from openlibrary import OpenlibrarySession
+try:
+    from openlibrary import OpenlibrarySession
+except ImportError:
+    from software.LightOpenLibrary.openlibrary import OpenlibrarySession
 
 
 class LightOpenLibrarySession:

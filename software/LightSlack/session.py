@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from slack import SlackSession
+try:
+    from slack import SlackSession
+except ImportError:
+    from software.LightSlack.slack import SlackSession
 
 
 class LightSlackSession:

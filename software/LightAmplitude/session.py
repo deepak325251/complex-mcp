@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from amplitude import AmplitudeSession
+try:
+    from amplitude import AmplitudeSession
+except ImportError:
+    from software.LightAmplitude.amplitude import AmplitudeSession
 
 
 class LightAmplitudeSession:

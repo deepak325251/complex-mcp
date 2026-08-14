@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from eventbrite import EventbriteSession
+try:
+    from eventbrite import EventbriteSession
+except ImportError:
+    from software.LightEventbrite.eventbrite import EventbriteSession
 
 
 class LightEventbriteSession:

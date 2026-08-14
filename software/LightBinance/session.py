@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from binance import BinanceSession
+try:
+    from binance import BinanceSession
+except ImportError:
+    from software.LightBinance.binance import BinanceSession
 
 
 class LightBinanceSession:

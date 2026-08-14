@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightOktaSession
+try:
+    from session import LightOktaSession
+except ImportError:
+    from software.LightOkta.session import LightOktaSession
 import logging
 import colorlog
 

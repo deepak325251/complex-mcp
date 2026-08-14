@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from notion import NotionSession
+try:
+    from notion import NotionSession
+except ImportError:
+    from software.LightNotion.notion import NotionSession
 
 
 class LightNotionSession:

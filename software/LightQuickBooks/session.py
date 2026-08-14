@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from quickbooks import QuickbooksSession
+try:
+    from quickbooks import QuickbooksSession
+except ImportError:
+    from software.LightQuickBooks.quickbooks import QuickbooksSession
 
 
 class LightQuickBooksSession:

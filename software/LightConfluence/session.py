@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from confluence import ConfluenceSession
+try:
+    from confluence import ConfluenceSession
+except ImportError:
+    from software.LightConfluence.confluence import ConfluenceSession
 
 
 class LightConfluenceSession:

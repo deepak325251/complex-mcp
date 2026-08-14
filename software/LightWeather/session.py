@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from weather import WeatherSession
+try:
+    from weather import WeatherSession
+except ImportError:
+    from software.LightWeather.weather import WeatherSession
 
 class LightWeatherSession:
     def __init__(self, os_cfg: Dict[str, str], seed=None):

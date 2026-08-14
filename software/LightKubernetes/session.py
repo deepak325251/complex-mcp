@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from kubernetes import KubernetesSession
+try:
+    from kubernetes import KubernetesSession
+except ImportError:
+    from software.LightKubernetes.kubernetes import KubernetesSession
 
 
 class LightKubernetesSession:

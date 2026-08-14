@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from read import ReadSession
+try:
+    from read import ReadSession
+except ImportError:
+    from software.LightRead.read import ReadSession
 
 class LightReadSession:
     def __init__(self, os_cfg: Dict[str, str], seed=None):

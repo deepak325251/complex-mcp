@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from nasa import NasaSession
+try:
+    from nasa import NasaSession
+except ImportError:
+    from software.LightNASA.nasa import NasaSession
 
 
 class LightNASASession:

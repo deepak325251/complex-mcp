@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from news import NewsSession
+try:
+    from news import NewsSession
+except ImportError:
+    from software.LightNews.news import NewsSession
 
 class LightNewsSession:
     def __init__(self, os_cfg: Dict[str, str]

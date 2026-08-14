@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from bamboohr import BamboohrSession
+try:
+    from bamboohr import BamboohrSession
+except ImportError:
+    from software.LightBambooHR.bamboohr import BamboohrSession
 
 
 class LightBambooHRSession:

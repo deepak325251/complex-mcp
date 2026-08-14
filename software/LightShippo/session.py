@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from shippo import ShippoSession
+try:
+    from shippo import ShippoSession
+except ImportError:
+    from software.LightShippo.shippo import ShippoSession
 
 
 class LightShippoSession:

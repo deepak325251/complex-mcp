@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from contentful import ContentfulSession
+try:
+    from contentful import ContentfulSession
+except ImportError:
+    from software.LightContentful.contentful import ContentfulSession
 
 
 class LightContentfulSession:

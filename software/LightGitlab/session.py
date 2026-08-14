@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from gitlab import GitlabSession
+try:
+    from gitlab import GitlabSession
+except ImportError:
+    from software.LightGitlab.gitlab import GitlabSession
 
 
 class LightGitlabSession:

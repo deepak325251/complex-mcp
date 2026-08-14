@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from drive import DriveSession
+try:
+    from drive import DriveSession
+except ImportError:
+    from software.LightDrive.drive import DriveSession
 
 class LightDriveSession:
     def __init__(self, os_cfg: Dict[str, str]

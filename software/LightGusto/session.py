@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from gusto import GustoSession
+try:
+    from gusto import GustoSession
+except ImportError:
+    from software.LightGusto.gusto import GustoSession
 
 
 class LightGustoSession:

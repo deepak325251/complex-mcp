@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from calendly import CalendlySession
+try:
+    from calendly import CalendlySession
+except ImportError:
+    from software.LightCalendly.calendly import CalendlySession
 
 
 class LightCalendlySession:

@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from crm import CRMSession
+try:
+    from crm import CRMSession
+except ImportError:
+    from software.LightCRM.crm import CRMSession
 
 class LightCRMSession:
     def __init__(self, os_cfg: Dict[str, str]

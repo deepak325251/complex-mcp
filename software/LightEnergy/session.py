@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from energy import EnergySession
+try:
+    from energy import EnergySession
+except ImportError:
+    from software.LightEnergy.energy import EnergySession
 
 class LightEnergySession:
     def __init__(self, os_cfg: Dict[str, str], seed=None):

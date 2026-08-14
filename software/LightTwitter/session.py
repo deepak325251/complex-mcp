@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from twitter import TwitterSession
+try:
+    from twitter import TwitterSession
+except ImportError:
+    from software.LightTwitter.twitter import TwitterSession
 
 
 class LightTwitterSession:

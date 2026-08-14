@@ -1,6 +1,9 @@
 from typing import Dict, Optional
 from fastmcp import FastMCP
-from session import LightVideoSession
+try:
+    from session import LightVideoSession
+except ImportError:
+    from software.LightVideo.session import LightVideoSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from myfitnesspal import MyfitnesspalSession
+try:
+    from myfitnesspal import MyfitnesspalSession
+except ImportError:
+    from software.LightMyFitnessPal.myfitnesspal import MyfitnesspalSession
 
 
 class LightMyFitnessPalSession:

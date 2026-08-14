@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightAuctionSession
+try:
+    from session import LightAuctionSession
+except ImportError:
+    from software.LightAuction.session import LightAuctionSession
 import logging, colorlog
 
 LOG_FORMAT = '%(log_color)s%(levelname)-8s%(reset)s %(message)s'

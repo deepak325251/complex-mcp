@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from jira import JiraSession
+try:
+    from jira import JiraSession
+except ImportError:
+    from software.LightJira.jira import JiraSession
 
 
 class LightJiraSession:

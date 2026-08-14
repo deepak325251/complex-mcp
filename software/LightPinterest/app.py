@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightPinterestSession
+try:
+    from session import LightPinterestSession
+except ImportError:
+    from software.LightPinterest.session import LightPinterestSession
 import logging
 import colorlog
 

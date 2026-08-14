@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from notes import NotesSession
+try:
+    from notes import NotesSession
+except ImportError:
+    from software.LightNotes.notes import NotesSession
 
 class LightNotesSession:
     def __init__(self, os_cfg: Dict[str, str]

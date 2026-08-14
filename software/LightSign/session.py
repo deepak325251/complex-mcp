@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from sign import SignSession
+try:
+    from sign import SignSession
+except ImportError:
+    from software.LightSign.sign import SignSession
 
 class LightSignSession:
     def __init__(self, os_cfg: Dict[str, str]

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightPostHogSession
+try:
+    from session import LightPostHogSession
+except ImportError:
+    from software.LightPostHog.session import LightPostHogSession
 import logging
 import colorlog
 

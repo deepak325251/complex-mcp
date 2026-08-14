@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from freshdesk import FreshdeskSession
+try:
+    from freshdesk import FreshdeskSession
+except ImportError:
+    from software.LightFreshdesk.freshdesk import FreshdeskSession
 
 
 class LightFreshdeskSession:

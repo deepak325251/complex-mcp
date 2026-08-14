@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightCalendlySession
+try:
+    from session import LightCalendlySession
+except ImportError:
+    from software.LightCalendly.session import LightCalendlySession
 import logging
 import colorlog
 

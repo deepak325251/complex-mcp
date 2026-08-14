@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTMDBSession
+try:
+    from session import LightTMDBSession
+except ImportError:
+    from software.LightTMDB.session import LightTMDBSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from cloudflare import CloudflareSession
+try:
+    from cloudflare import CloudflareSession
+except ImportError:
+    from software.LightCloudflare.cloudflare import CloudflareSession
 
 
 class LightCloudflareSession:

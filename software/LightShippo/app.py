@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightShippoSession
+try:
+    from session import LightShippoSession
+except ImportError:
+    from software.LightShippo.session import LightShippoSession
 import logging
 import colorlog
 

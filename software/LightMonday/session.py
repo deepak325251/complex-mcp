@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from monday import MondaySession
+try:
+    from monday import MondaySession
+except ImportError:
+    from software.LightMonday.monday import MondaySession
 
 
 class LightMondaySession:

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAsanaSession
+try:
+    from session import LightAsanaSession
+except ImportError:
+    from software.LightAsana.session import LightAsanaSession
 import logging
 import colorlog
 

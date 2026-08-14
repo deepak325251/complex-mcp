@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightZoomSession
+try:
+    from session import LightZoomSession
+except ImportError:
+    from software.LightZoom.session import LightZoomSession
 import logging
 import colorlog
 

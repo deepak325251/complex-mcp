@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from sentry import SentrySession
+try:
+    from sentry import SentrySession
+except ImportError:
+    from software.LightSentry.sentry import SentrySession
 
 
 class LightSentrySession:

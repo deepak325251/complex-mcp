@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGoogleClassroomSession
+try:
+    from session import LightGoogleClassroomSession
+except ImportError:
+    from software.LightGoogleClassroom.session import LightGoogleClassroomSession
 import logging
 import colorlog
 

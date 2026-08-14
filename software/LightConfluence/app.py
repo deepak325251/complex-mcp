@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightConfluenceSession
+try:
+    from session import LightConfluenceSession
+except ImportError:
+    from software.LightConfluence.session import LightConfluenceSession
 import logging
 import colorlog
 

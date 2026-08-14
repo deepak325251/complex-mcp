@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from openweather import OpenweatherSession
+try:
+    from openweather import OpenweatherSession
+except ImportError:
+    from software.LightOpenWeather.openweather import OpenweatherSession
 
 
 class LightOpenWeatherSession:

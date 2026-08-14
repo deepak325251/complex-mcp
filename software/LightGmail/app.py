@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGmailSession
+try:
+    from session import LightGmailSession
+except ImportError:
+    from software.LightGmail.session import LightGmailSession
 import logging
 import colorlog
 

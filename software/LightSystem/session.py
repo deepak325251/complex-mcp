@@ -1,6 +1,9 @@
 from shortuuid import uuid
 
-from clock import ClockSession
+try:
+    from clock import ClockSession
+except ImportError:
+    from software.LightSystem.clock import ClockSession
 
 class LightSystemSession:
     def __init__(self, seed=None):

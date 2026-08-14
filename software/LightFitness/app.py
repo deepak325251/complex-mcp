@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightFitnessSession
+try:
+    from session import LightFitnessSession
+except ImportError:
+    from software.LightFitness.session import LightFitnessSession
 import logging
 import colorlog
 

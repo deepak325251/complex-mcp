@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from uber import UberSession
+try:
+    from uber import UberSession
+except ImportError:
+    from software.LightUber.uber import UberSession
 
 
 class LightUberSession:

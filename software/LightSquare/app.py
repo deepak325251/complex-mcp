@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSquareSession
+try:
+    from session import LightSquareSession
+except ImportError:
+    from software.LightSquare.session import LightSquareSession
 import logging
 import colorlog
 

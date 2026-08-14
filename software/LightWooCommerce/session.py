@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from woocommerce import WoocommerceSession
+try:
+    from woocommerce import WoocommerceSession
+except ImportError:
+    from software.LightWooCommerce.woocommerce import WoocommerceSession
 
 
 class LightWooCommerceSession:

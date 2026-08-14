@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightPayPalSession
+try:
+    from session import LightPayPalSession
+except ImportError:
+    from software.LightPayPal.session import LightPayPalSession
 import logging
 import colorlog
 

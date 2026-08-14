@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTwilioSession
+try:
+    from session import LightTwilioSession
+except ImportError:
+    from software.LightTwilio.session import LightTwilioSession
 import logging
 import colorlog
 

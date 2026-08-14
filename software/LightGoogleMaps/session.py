@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from google_maps import GoogleMapsSession
+try:
+    from google_maps import GoogleMapsSession
+except ImportError:
+    from software.LightGoogleMaps.google_maps import GoogleMapsSession
 
 
 class LightGoogleMapsSession:

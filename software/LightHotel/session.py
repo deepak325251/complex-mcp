@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from hotel import HotelSession
+try:
+    from hotel import HotelSession
+except ImportError:
+    from software.LightHotel.hotel import HotelSession
 
 class LightHotelSession:
     def __init__(self, os_cfg: Dict[str, str]

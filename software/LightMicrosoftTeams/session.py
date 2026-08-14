@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from microsoft_teams import MicrosoftTeamsSession
+try:
+    from microsoft_teams import MicrosoftTeamsSession
+except ImportError:
+    from software.LightMicrosoftTeams.microsoft_teams import MicrosoftTeamsSession
 
 
 class LightMicrosoftTeamsSession:

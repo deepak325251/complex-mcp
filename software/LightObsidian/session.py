@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from obsidian import ObsidianSession
+try:
+    from obsidian import ObsidianSession
+except ImportError:
+    from software.LightObsidian.obsidian import ObsidianSession
 
 
 class LightObsidianSession:

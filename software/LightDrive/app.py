@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightDriveSession
+try:
+    from session import LightDriveSession
+except ImportError:
+    from software.LightDrive.session import LightDriveSession
 import logging
 import colorlog
 

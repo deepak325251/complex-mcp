@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from telegram import TelegramSession
+try:
+    from telegram import TelegramSession
+except ImportError:
+    from software.LightTelegram.telegram import TelegramSession
 
 
 class LightTelegramSession:

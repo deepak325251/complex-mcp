@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightZillowSession
+try:
+    from session import LightZillowSession
+except ImportError:
+    from software.LightZillow.session import LightZillowSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from trello import TrelloSession
+try:
+    from trello import TrelloSession
+except ImportError:
+    from software.LightTrello.trello import TrelloSession
 
 
 class LightTrelloSession:

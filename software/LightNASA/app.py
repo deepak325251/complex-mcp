@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightNASASession
+try:
+    from session import LightNASASession
+except ImportError:
+    from software.LightNASA.session import LightNASASession
 import logging
 import colorlog
 

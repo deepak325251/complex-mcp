@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from instagram import InstagramSession
+try:
+    from instagram import InstagramSession
+except ImportError:
+    from software.LightInstagram.instagram import InstagramSession
 
 
 class LightInstagramSession:

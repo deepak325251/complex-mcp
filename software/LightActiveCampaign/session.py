@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from activecampaign import ActiveCampaignSession
+try:
+    from activecampaign import ActiveCampaignSession
+except ImportError:
+    from software.LightActiveCampaign.activecampaign import ActiveCampaignSession
 
 
 class LightActiveCampaignSession:

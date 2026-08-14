@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTwitchSession
+try:
+    from session import LightTwitchSession
+except ImportError:
+    from software.LightTwitch.session import LightTwitchSession
 import logging
 import colorlog
 

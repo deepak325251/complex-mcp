@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from forum import ForumSession
+try:
+    from forum import ForumSession
+except ImportError:
+    from software.LightForum.forum import ForumSession
 
 class LightForumSession:
     def __init__(self, os_cfg: Dict[str, str], seed=None):

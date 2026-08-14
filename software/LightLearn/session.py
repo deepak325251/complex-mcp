@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from learn import LearnSession
+try:
+    from learn import LearnSession
+except ImportError:
+    from software.LightLearn.learn import LearnSession
 
 class LightLearnSession:
     def __init__(self, os_cfg: Dict[str, str]

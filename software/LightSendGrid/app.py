@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSendGridSession
+try:
+    from session import LightSendGridSession
+except ImportError:
+    from software.LightSendGrid.session import LightSendGridSession
 import logging
 import colorlog
 

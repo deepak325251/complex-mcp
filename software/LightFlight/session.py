@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from flight import FlightSession
+try:
+    from flight import FlightSession
+except ImportError:
+    from software.LightFlight.flight import FlightSession
 
 
 class LightFlightSession:

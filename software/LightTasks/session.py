@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from tasks import TasksSession
+try:
+    from tasks import TasksSession
+except ImportError:
+    from software.LightTasks.tasks import TasksSession
 
 class LightTasksSession:
     def __init__(self, os_cfg: Dict[str, str]

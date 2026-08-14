@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightHubspotSession
+try:
+    from session import LightHubspotSession
+except ImportError:
+    from software.LightHubspot.session import LightHubspotSession
 import logging
 import colorlog
 

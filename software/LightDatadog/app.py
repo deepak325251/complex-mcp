@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightDatadogSession
+try:
+    from session import LightDatadogSession
+except ImportError:
+    from software.LightDatadog.session import LightDatadogSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightEnergySession
+try:
+    from session import LightEnergySession
+except ImportError:
+    from software.LightEnergy.session import LightEnergySession
 import logging
 import colorlog
 

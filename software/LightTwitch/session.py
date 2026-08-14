@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from twitch import TwitchSession
+try:
+    from twitch import TwitchSession
+except ImportError:
+    from software.LightTwitch.twitch import TwitchSession
 
 
 class LightTwitchSession:

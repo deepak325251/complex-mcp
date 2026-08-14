@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTrelloSession
+try:
+    from session import LightTrelloSession
+except ImportError:
+    from software.LightTrello.session import LightTrelloSession
 import logging
 import colorlog
 

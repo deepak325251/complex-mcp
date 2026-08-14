@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from outlook import OutlookSession
+try:
+    from outlook import OutlookSession
+except ImportError:
+    from software.LightOutlook.outlook import OutlookSession
 
 
 class LightOutlookSession:

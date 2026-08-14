@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from med import MedSession
+try:
+    from med import MedSession
+except ImportError:
+    from software.LightMed.med import MedSession
 
 class LightMedSession:
     def __init__(self, os_cfg: Dict[str, str]

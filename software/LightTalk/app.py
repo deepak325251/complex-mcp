@@ -1,6 +1,9 @@
 from typing import Dict, List
 from fastmcp import FastMCP
-from session import LightTalkSession
+try:
+    from session import LightTalkSession
+except ImportError:
+    from software.LightTalk.session import LightTalkSession
 import logging
 import colorlog
 

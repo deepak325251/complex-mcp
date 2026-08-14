@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightHomeSession
+try:
+    from session import LightHomeSession
+except ImportError:
+    from software.LightHome.session import LightHomeSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightVimeoSession
+try:
+    from session import LightVimeoSession
+except ImportError:
+    from software.LightVimeo.session import LightVimeoSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from fitness import FitnessSession
+try:
+    from fitness import FitnessSession
+except ImportError:
+    from software.LightFitness.fitness import FitnessSession
 
 class LightFitnessSession:
     def __init__(self, os_cfg: Dict[str, str]

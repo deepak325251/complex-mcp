@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightMailchimpSession
+try:
+    from session import LightMailchimpSession
+except ImportError:
+    from software.LightMailchimp.session import LightMailchimpSession
 import logging
 import colorlog
 

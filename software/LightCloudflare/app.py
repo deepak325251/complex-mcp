@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightCloudflareSession
+try:
+    from session import LightCloudflareSession
+except ImportError:
+    from software.LightCloudflare.session import LightCloudflareSession
 import logging
 import colorlog
 

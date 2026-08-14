@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGoogleDriveSession
+try:
+    from session import LightGoogleDriveSession
+except ImportError:
+    from software.LightGoogleDrive.session import LightGoogleDriveSession
 import logging
 import colorlog
 

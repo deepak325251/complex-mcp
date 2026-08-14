@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightUberSession
+try:
+    from session import LightUberSession
+except ImportError:
+    from software.LightUber.session import LightUberSession
 import logging
 import colorlog
 

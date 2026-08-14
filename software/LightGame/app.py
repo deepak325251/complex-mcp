@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightGameSession
+try:
+    from session import LightGameSession
+except ImportError:
+    from software.LightGame.session import LightGameSession
 import logging
 import colorlog
 

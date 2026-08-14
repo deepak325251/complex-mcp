@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from salesforce import SalesforceSession
+try:
+    from salesforce import SalesforceSession
+except ImportError:
+    from software.LightSalesforce.salesforce import SalesforceSession
 
 
 class LightSalesforceSession:

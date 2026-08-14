@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightNotionSession
+try:
+    from session import LightNotionSession
+except ImportError:
+    from software.LightNotion.session import LightNotionSession
 import logging
 import colorlog
 

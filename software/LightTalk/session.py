@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from contact import ContactSession
+try:
+    from contact import ContactSession
+except ImportError:
+    from software.LightTalk.contact import ContactSession
 
 from software.utils.core import OSConnector
 

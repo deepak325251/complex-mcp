@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from klaviyo import KlaviyoSession
+try:
+    from klaviyo import KlaviyoSession
+except ImportError:
+    from software.LightKlaviyo.klaviyo import KlaviyoSession
 
 
 class LightKlaviyoSession:

@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightTaxSession
+try:
+    from session import LightTaxSession
+except ImportError:
+    from software.LightTax.session import LightTaxSession
 import logging
 import colorlog
 

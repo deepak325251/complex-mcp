@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightDoorDashSession
+try:
+    from session import LightDoorDashSession
+except ImportError:
+    from software.LightDoorDash.session import LightDoorDashSession
 import logging
 import colorlog
 

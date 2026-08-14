@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from food import FoodSession
+try:
+    from food import FoodSession
+except ImportError:
+    from software.LightFood.food import FoodSession
 
 class LightFoodSession:
     def __init__(self, os_cfg: Dict[str, str]

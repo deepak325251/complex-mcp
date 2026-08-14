@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTwitterSession
+try:
+    from session import LightTwitterSession
+except ImportError:
+    from software.LightTwitter.session import LightTwitterSession
 import logging
 import colorlog
 

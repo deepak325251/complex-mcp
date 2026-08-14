@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from mailgun import MailgunSession
+try:
+    from mailgun import MailgunSession
+except ImportError:
+    from software.LightMailgun.mailgun import MailgunSession
 
 
 class LightMailgunSession:

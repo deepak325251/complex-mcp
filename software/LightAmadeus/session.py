@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from amadeus import AmadeusSession
+try:
+    from amadeus import AmadeusSession
+except ImportError:
+    from software.LightAmadeus.amadeus import AmadeusSession
 
 
 class LightAmadeusSession:

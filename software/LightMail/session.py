@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from mail import MailSession
+try:
+    from mail import MailSession
+except ImportError:
+    from software.LightMail.mail import MailSession
 
 class LightMailSession:
     def __init__(self, os_cfg: Dict[str, str]

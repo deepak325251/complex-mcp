@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightMixpanelSession
+try:
+    from session import LightMixpanelSession
+except ImportError:
+    from software.LightMixpanel.session import LightMixpanelSession
 import logging
 import colorlog
 

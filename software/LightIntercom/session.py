@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from intercom import IntercomSession
+try:
+    from intercom import IntercomSession
+except ImportError:
+    from software.LightIntercom.intercom import IntercomSession
 
 
 class LightIntercomSession:

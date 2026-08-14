@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from pinterest import PinterestSession
+try:
+    from pinterest import PinterestSession
+except ImportError:
+    from software.LightPinterest.pinterest import PinterestSession
 
 
 class LightPinterestSession:

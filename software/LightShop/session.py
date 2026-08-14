@@ -8,7 +8,10 @@ from shortuuid import uuid
 # if WORK_DIR not in sys.path:
 #     sys.path.append(WORK_DIR)
 
-from shop import ShopSession
+try:
+    from shop import ShopSession
+except ImportError:
+    from software.LightShop.shop import ShopSession
 from typing import Dict
 
 class LightShopSession:

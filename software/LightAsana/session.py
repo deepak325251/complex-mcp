@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from asana import AsanaSession
+try:
+    from asana import AsanaSession
+except ImportError:
+    from software.LightAsana.asana import AsanaSession
 
 
 class LightAsanaSession:

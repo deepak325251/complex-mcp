@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightWalletSession
+try:
+    from session import LightWalletSession
+except ImportError:
+    from software.LightWallet.session import LightWalletSession
 import logging
 import colorlog
 

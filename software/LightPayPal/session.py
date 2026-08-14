@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from paypal import PaypalSession
+try:
+    from paypal import PaypalSession
+except ImportError:
+    from software.LightPayPal.paypal import PaypalSession
 
 
 class LightPayPalSession:

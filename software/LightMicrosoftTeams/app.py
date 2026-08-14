@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightMicrosoftTeamsSession
+try:
+    from session import LightMicrosoftTeamsSession
+except ImportError:
+    from software.LightMicrosoftTeams.session import LightMicrosoftTeamsSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightContentfulSession
+try:
+    from session import LightContentfulSession
+except ImportError:
+    from software.LightContentful.session import LightContentfulSession
 import logging
 import colorlog
 

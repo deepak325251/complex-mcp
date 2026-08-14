@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from okta import OktaSession
+try:
+    from okta import OktaSession
+except ImportError:
+    from software.LightOkta.okta import OktaSession
 
 
 class LightOktaSession:

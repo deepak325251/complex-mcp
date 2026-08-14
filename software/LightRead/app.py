@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightReadSession
+try:
+    from session import LightReadSession
+except ImportError:
+    from software.LightRead.session import LightReadSession
 import logging, colorlog
 
 LOG_FORMAT = '%(log_color)s%(levelname)-8s%(reset)s %(message)s'

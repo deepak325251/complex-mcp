@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from plaid import PlaidSession
+try:
+    from plaid import PlaidSession
+except ImportError:
+    from software.LightPlaid.plaid import PlaidSession
 
 
 class LightPlaidSession:

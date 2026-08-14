@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from ups import UpsSession
+try:
+    from ups import UpsSession
+except ImportError:
+    from software.LightUPS.ups import UpsSession
 
 
 class LightUPSSession:

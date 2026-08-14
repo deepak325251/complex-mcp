@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightZendeskSession
+try:
+    from session import LightZendeskSession
+except ImportError:
+    from software.LightZendesk.session import LightZendeskSession
 import logging
 import colorlog
 

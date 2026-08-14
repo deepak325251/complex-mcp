@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from alpaca import AlpacaSession
+try:
+    from alpaca import AlpacaSession
+except ImportError:
+    from software.LightAlpaca.alpaca import AlpacaSession
 
 
 class LightAlpacaSession:

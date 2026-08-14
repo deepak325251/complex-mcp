@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from podcast import PodcastSession
+try:
+    from podcast import PodcastSession
+except ImportError:
+    from software.LightPodcast.podcast import PodcastSession
 
 class LightPodcastSession:
     def __init__(self, os_cfg: Dict[str, str]

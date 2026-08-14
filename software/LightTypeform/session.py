@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from typeform import TypeformSession
+try:
+    from typeform import TypeformSession
+except ImportError:
+    from software.LightTypeform.typeform import TypeformSession
 
 
 class LightTypeformSession:

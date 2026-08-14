@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightForumSession
+try:
+    from session import LightForumSession
+except ImportError:
+    from software.LightForum.session import LightForumSession
 import logging, colorlog
 
 LOG_FORMAT = '%(log_color)s%(levelname)-8s%(reset)s %(message)s'

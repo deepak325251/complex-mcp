@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from game import GameSession
+try:
+    from game import GameSession
+except ImportError:
+    from software.LightGame.game import GameSession
 
 class LightGameSession:
     def __init__(self, os_cfg: Dict[str, str]

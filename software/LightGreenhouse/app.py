@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGreenhouseSession
+try:
+    from session import LightGreenhouseSession
+except ImportError:
+    from software.LightGreenhouse.session import LightGreenhouseSession
 import logging
 import colorlog
 

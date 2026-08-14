@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from tax import TaxSession
+try:
+    from tax import TaxSession
+except ImportError:
+    from software.LightTax.tax import TaxSession
 
 class LightTaxSession:
     def __init__(self, os_cfg: Dict[str, str]

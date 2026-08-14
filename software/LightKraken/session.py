@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from kraken import KrakenSession
+try:
+    from kraken import KrakenSession
+except ImportError:
+    from software.LightKraken.kraken import KrakenSession
 
 
 class LightKrakenSession:

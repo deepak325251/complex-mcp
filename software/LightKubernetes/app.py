@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightKubernetesSession
+try:
+    from session import LightKubernetesSession
+except ImportError:
+    from software.LightKubernetes.session import LightKubernetesSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from etsy import EtsySession
+try:
+    from etsy import EtsySession
+except ImportError:
+    from software.LightEtsy.etsy import EtsySession
 
 
 class LightEtsySession:

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from tmdb import TmdbSession
+try:
+    from tmdb import TmdbSession
+except ImportError:
+    from software.LightTMDB.tmdb import TmdbSession
 
 
 class LightTMDBSession:

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from servicenow import ServicenowSession
+try:
+    from servicenow import ServicenowSession
+except ImportError:
+    from software.LightServiceNow.servicenow import ServicenowSession
 
 
 class LightServiceNowSession:

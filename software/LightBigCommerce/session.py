@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from bigcommerce import BigcommerceSession
+try:
+    from bigcommerce import BigcommerceSession
+except ImportError:
+    from software.LightBigCommerce.bigcommerce import BigcommerceSession
 
 
 class LightBigCommerceSession:

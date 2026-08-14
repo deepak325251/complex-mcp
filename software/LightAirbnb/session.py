@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from airbnb import AirbnbSession
+try:
+    from airbnb import AirbnbSession
+except ImportError:
+    from software.LightAirbnb.airbnb import AirbnbSession
 
 
 class LightAirbnbSession:

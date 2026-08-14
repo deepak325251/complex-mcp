@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from doordash import DoordashSession
+try:
+    from doordash import DoordashSession
+except ImportError:
+    from software.LightDoorDash.doordash import DoordashSession
 
 
 class LightDoorDashSession:

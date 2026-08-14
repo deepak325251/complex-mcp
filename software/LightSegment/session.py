@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from segment import SegmentSession
+try:
+    from segment import SegmentSession
+except ImportError:
+    from software.LightSegment.segment import SegmentSession
 
 
 class LightSegmentSession:

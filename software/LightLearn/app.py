@@ -1,6 +1,9 @@
 from typing import Dict, Optional
 from fastmcp import FastMCP
-from session import LightLearnSession
+try:
+    from session import LightLearnSession
+except ImportError:
+    from software.LightLearn.session import LightLearnSession
 import logging
 import colorlog
 

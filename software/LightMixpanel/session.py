@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from mixpanel import MixpanelSession
+try:
+    from mixpanel import MixpanelSession
+except ImportError:
+    from software.LightMixpanel.mixpanel import MixpanelSession
 
 
 class LightMixpanelSession:

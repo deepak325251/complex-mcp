@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightDiscordSession
+try:
+    from session import LightDiscordSession
+except ImportError:
+    from software.LightDiscord.session import LightDiscordSession
 import logging
 import colorlog
 

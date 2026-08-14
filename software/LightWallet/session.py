@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from wallet import WalletSession
+try:
+    from wallet import WalletSession
+except ImportError:
+    from software.LightWallet.wallet import WalletSession
 
 class LightWalletSession:
     def __init__(self, os_cfg: Dict[str, str]

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGoogleMapsSession
+try:
+    from session import LightGoogleMapsSession
+except ImportError:
+    from software.LightGoogleMaps.session import LightGoogleMapsSession
 import logging
 import colorlog
 

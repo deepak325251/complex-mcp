@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightMyFitnessPalSession
+try:
+    from session import LightMyFitnessPalSession
+except ImportError:
+    from software.LightMyFitnessPal.session import LightMyFitnessPalSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightWebflowSession
+try:
+    from session import LightWebflowSession
+except ImportError:
+    from software.LightWebflow.session import LightWebflowSession
 import logging
 import colorlog
 

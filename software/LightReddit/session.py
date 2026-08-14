@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from reddit import RedditSession
+try:
+    from reddit import RedditSession
+except ImportError:
+    from software.LightReddit.reddit import RedditSession
 
 
 class LightRedditSession:

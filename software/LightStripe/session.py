@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from stripe import StripeSession
+try:
+    from stripe import StripeSession
+except ImportError:
+    from software.LightStripe.stripe import StripeSession
 
 
 class LightStripeSession:

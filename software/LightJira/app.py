@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightJiraSession
+try:
+    from session import LightJiraSession
+except ImportError:
+    from software.LightJira.session import LightJiraSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from photo import PhotoSession
+try:
+    from photo import PhotoSession
+except ImportError:
+    from software.LightPhoto.photo import PhotoSession
 
 class LightPhotoSession:
     def __init__(self, os_cfg: Dict[str, str]

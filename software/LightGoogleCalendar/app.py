@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGoogleCalendarSession
+try:
+    from session import LightGoogleCalendarSession
+except ImportError:
+    from software.LightGoogleCalendar.session import LightGoogleCalendarSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from box import BoxSession
+try:
+    from box import BoxSession
+except ImportError:
+    from software.LightBox.box import BoxSession
 
 
 class LightBoxSession:

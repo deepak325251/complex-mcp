@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from yelp import YelpSession
+try:
+    from yelp import YelpSession
+except ImportError:
+    from software.LightYelp.yelp import YelpSession
 
 
 class LightYelpSession:

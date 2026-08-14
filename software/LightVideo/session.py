@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from video import VideoSession
+try:
+    from video import VideoSession
+except ImportError:
+    from software.LightVideo.video import VideoSession
 
 class LightVideoSession:
     def __init__(self, os_cfg: Dict[str, str]

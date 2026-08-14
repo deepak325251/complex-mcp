@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from youtube import YoutubeSession
+try:
+    from youtube import YoutubeSession
+except ImportError:
+    from software.LightYouTube.youtube import YoutubeSession
 
 
 class LightYouTubeSession:

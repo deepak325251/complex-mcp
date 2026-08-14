@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from sendgrid import SendgridSession
+try:
+    from sendgrid import SendgridSession
+except ImportError:
+    from software.LightSendGrid.sendgrid import SendgridSession
 
 
 class LightSendGridSession:

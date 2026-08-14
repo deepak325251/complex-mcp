@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightBambooHRSession
+try:
+    from session import LightBambooHRSession
+except ImportError:
+    from software.LightBambooHR.session import LightBambooHRSession
 import logging
 import colorlog
 

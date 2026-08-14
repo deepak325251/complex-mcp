@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAirtableSession
+try:
+    from session import LightAirtableSession
+except ImportError:
+    from software.LightAirtable.session import LightAirtableSession
 import logging
 import colorlog
 

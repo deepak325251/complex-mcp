@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightBudgetSession
+try:
+    from session import LightBudgetSession
+except ImportError:
+    from software.LightBudget.session import LightBudgetSession
 import logging
 import colorlog
 

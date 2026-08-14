@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from auction import AuctionSession
+try:
+    from auction import AuctionSession
+except ImportError:
+    from software.LightAuction.auction import AuctionSession
 
 class LightAuctionSession:
     def __init__(self, os_cfg: Dict[str, str], seed=None):

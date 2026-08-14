@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTelegramSession
+try:
+    from session import LightTelegramSession
+except ImportError:
+    from software.LightTelegram.session import LightTelegramSession
 import logging
 import colorlog
 

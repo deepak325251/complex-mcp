@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from posthog import PosthogSession
+try:
+    from posthog import PosthogSession
+except ImportError:
+    from software.LightPostHog.posthog import PosthogSession
 
 
 class LightPostHogSession:

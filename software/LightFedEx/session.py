@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from fedex import FedexSession
+try:
+    from fedex import FedexSession
+except ImportError:
+    from software.LightFedEx.fedex import FedexSession
 
 
 class LightFedExSession:

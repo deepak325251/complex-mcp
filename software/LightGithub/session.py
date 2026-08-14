@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from github import GithubSession
+try:
+    from github import GithubSession
+except ImportError:
+    from software.LightGithub.github import GithubSession
 
 
 class LightGithubSession:

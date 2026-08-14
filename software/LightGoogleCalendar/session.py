@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from google_calendar import GoogleCalendarSession
+try:
+    from google_calendar import GoogleCalendarSession
+except ImportError:
+    from software.LightGoogleCalendar.google_calendar import GoogleCalendarSession
 
 
 class LightGoogleCalendarSession:

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from xero import XeroSession
+try:
+    from xero import XeroSession
+except ImportError:
+    from software.LightXero.xero import XeroSession
 
 
 class LightXeroSession:

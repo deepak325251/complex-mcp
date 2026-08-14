@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from pagerduty import PagerDutySession
+try:
+    from pagerduty import PagerDutySession
+except ImportError:
+    from software.LightPagerDuty.pagerduty import PagerDutySession
 
 
 class LightPagerDutySession:

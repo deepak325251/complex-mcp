@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 from fastmcp import FastMCP
-from session import LightNotesSession
+try:
+    from session import LightNotesSession
+except ImportError:
+    from software.LightNotes.session import LightNotesSession
 import logging
 import colorlog
 

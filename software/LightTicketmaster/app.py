@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTicketmasterSession
+try:
+    from session import LightTicketmasterSession
+except ImportError:
+    from software.LightTicketmaster.session import LightTicketmasterSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from stock import StockSession
+try:
+    from stock import StockSession
+except ImportError:
+    from software.LightStock.stock import StockSession
 
 
 class LightStockSession:

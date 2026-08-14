@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAlpacaSession
+try:
+    from session import LightAlpacaSession
+except ImportError:
+    from software.LightAlpaca.session import LightAlpacaSession
 import logging
 import colorlog
 

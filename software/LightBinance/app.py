@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightBinanceSession
+try:
+    from session import LightBinanceSession
+except ImportError:
+    from software.LightBinance.session import LightBinanceSession
 import logging
 import colorlog
 

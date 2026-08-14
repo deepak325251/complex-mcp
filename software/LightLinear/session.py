@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from linear import LinearSession
+try:
+    from linear import LinearSession
+except ImportError:
+    from software.LightLinear.linear import LinearSession
 
 
 class LightLinearSession:

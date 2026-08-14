@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from whatsapp import WhatsappSession
+try:
+    from whatsapp import WhatsappSession
+except ImportError:
+    from software.LightWhatsApp.whatsapp import WhatsappSession
 
 
 class LightWhatsAppSession:

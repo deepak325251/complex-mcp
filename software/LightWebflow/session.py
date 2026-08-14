@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from webflow import WebflowSession
+try:
+    from webflow import WebflowSession
+except ImportError:
+    from software.LightWebflow.webflow import WebflowSession
 
 
 class LightWebflowSession:

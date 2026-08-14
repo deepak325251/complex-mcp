@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightActiveCampaignSession
+try:
+    from session import LightActiveCampaignSession
+except ImportError:
+    from software.LightActiveCampaign.session import LightActiveCampaignSession
 import logging
 import colorlog
 

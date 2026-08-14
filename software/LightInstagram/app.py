@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightInstagramSession
+try:
+    from session import LightInstagramSession
+except ImportError:
+    from software.LightInstagram.session import LightInstagramSession
 import logging
 import colorlog
 

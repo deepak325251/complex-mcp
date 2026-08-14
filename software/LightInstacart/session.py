@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from instacart import InstacartSession
+try:
+    from instacart import InstacartSession
+except ImportError:
+    from software.LightInstacart.instacart import InstacartSession
 
 
 class LightInstacartSession:

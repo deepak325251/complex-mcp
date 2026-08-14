@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from linkedin import LinkedinSession
+try:
+    from linkedin import LinkedinSession
+except ImportError:
+    from software.LightLinkedIn.linkedin import LinkedinSession
 
 
 class LightLinkedInSession:

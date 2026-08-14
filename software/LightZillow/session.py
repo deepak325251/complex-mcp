@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from zillow import ZillowSession
+try:
+    from zillow import ZillowSession
+except ImportError:
+    from software.LightZillow.zillow import ZillowSession
 
 
 class LightZillowSession:

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from docusign import DocusignSession
+try:
+    from docusign import DocusignSession
+except ImportError:
+    from software.LightDocuSign.docusign import DocusignSession
 
 
 class LightDocuSignSession:

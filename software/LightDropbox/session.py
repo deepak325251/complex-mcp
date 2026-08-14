@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from dropbox import DropboxSession
+try:
+    from dropbox import DropboxSession
+except ImportError:
+    from software.LightDropbox.dropbox import DropboxSession
 
 
 class LightDropboxSession:

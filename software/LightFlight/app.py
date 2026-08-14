@@ -1,6 +1,9 @@
 from typing import Dict, List
 from fastmcp import FastMCP
-from session import LightFlightSession
+try:
+    from session import LightFlightSession
+except ImportError:
+    from software.LightFlight.session import LightFlightSession
 import logging
 import colorlog
 

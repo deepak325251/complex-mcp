@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSentrySession
+try:
+    from session import LightSentrySession
+except ImportError:
+    from software.LightSentry.session import LightSentrySession
 import logging
 import colorlog
 

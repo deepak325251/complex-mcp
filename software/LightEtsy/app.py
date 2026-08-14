@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightEtsySession
+try:
+    from session import LightEtsySession
+except ImportError:
+    from software.LightEtsy.session import LightEtsySession
 import logging
 import colorlog
 

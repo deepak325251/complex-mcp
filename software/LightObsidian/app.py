@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightObsidianSession
+try:
+    from session import LightObsidianSession
+except ImportError:
+    from software.LightObsidian.session import LightObsidianSession
 import logging
 import colorlog
 

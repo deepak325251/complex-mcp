@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightLinearSession
+try:
+    from session import LightLinearSession
+except ImportError:
+    from software.LightLinear.session import LightLinearSession
 import logging
 import colorlog
 

@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from discord import DiscordSession
+try:
+    from discord import DiscordSession
+except ImportError:
+    from software.LightDiscord.discord import DiscordSession
 
 
 class LightDiscordSession:

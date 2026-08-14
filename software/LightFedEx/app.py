@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightFedExSession
+try:
+    from session import LightFedExSession
+except ImportError:
+    from software.LightFedEx.session import LightFedExSession
 import logging
 import colorlog
 

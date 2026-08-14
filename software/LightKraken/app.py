@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightKrakenSession
+try:
+    from session import LightKrakenSession
+except ImportError:
+    from software.LightKraken.session import LightKrakenSession
 import logging
 import colorlog
 

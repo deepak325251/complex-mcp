@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightDocuSignSession
+try:
+    from session import LightDocuSignSession
+except ImportError:
+    from software.LightDocuSign.session import LightDocuSignSession
 import logging
 import colorlog
 

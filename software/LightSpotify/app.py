@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightSpotifySession
+try:
+    from session import LightSpotifySession
+except ImportError:
+    from software.LightSpotify.session import LightSpotifySession
 import logging
 import colorlog
 

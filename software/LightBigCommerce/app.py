@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightBigCommerceSession
+try:
+    from session import LightBigCommerceSession
+except ImportError:
+    from software.LightBigCommerce.session import LightBigCommerceSession
 import logging
 import colorlog
 

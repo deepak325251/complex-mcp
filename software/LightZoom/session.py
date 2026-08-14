@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from zoom import ZoomSession
+try:
+    from zoom import ZoomSession
+except ImportError:
+    from software.LightZoom.zoom import ZoomSession
 
 
 class LightZoomSession:

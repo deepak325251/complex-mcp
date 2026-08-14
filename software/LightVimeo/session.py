@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from vimeo import VimeoSession
+try:
+    from vimeo import VimeoSession
+except ImportError:
+    from software.LightVimeo.vimeo import VimeoSession
 
 
 class LightVimeoSession:

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightTypeformSession
+try:
+    from session import LightTypeformSession
+except ImportError:
+    from software.LightTypeform.session import LightTypeformSession
 import logging
 import colorlog
 

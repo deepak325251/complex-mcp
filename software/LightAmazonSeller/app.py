@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAmazonSellerSession
+try:
+    from session import LightAmazonSellerSession
+except ImportError:
+    from software.LightAmazonSeller.session import LightAmazonSellerSession
 import logging
 import colorlog
 

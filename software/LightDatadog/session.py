@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from datadog import DatadogSession
+try:
+    from datadog import DatadogSession
+except ImportError:
+    from software.LightDatadog.datadog import DatadogSession
 
 
 class LightDatadogSession:

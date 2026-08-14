@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from ring import RingSession
+try:
+    from ring import RingSession
+except ImportError:
+    from software.LightRing.ring import RingSession
 
 
 class LightRingSession:

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightIntercomSession
+try:
+    from session import LightIntercomSession
+except ImportError:
+    from software.LightIntercom.session import LightIntercomSession
 import logging
 import colorlog
 

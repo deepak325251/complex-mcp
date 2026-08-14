@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightWeatherSession
+try:
+    from session import LightWeatherSession
+except ImportError:
+    from software.LightWeather.session import LightWeatherSession
 import logging
 import colorlog
 

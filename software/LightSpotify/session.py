@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from spotify import SpotifySession
+try:
+    from spotify import SpotifySession
+except ImportError:
+    from software.LightSpotify.spotify import SpotifySession
 
 
 class LightSpotifySession:

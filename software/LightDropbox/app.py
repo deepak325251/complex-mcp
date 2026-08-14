@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightDropboxSession
+try:
+    from session import LightDropboxSession
+except ImportError:
+    from software.LightDropbox.session import LightDropboxSession
 import logging
 import colorlog
 

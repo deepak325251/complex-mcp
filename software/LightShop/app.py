@@ -1,6 +1,9 @@
 from typing import Dict
 from fastmcp import FastMCP
-from session import LightShopSession
+try:
+    from session import LightShopSession
+except ImportError:
+    from software.LightShop.session import LightShopSession
 import logging
 import colorlog
 

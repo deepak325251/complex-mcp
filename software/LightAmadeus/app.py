@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightAmadeusSession
+try:
+    from session import LightAmadeusSession
+except ImportError:
+    from software.LightAmadeus.session import LightAmadeusSession
 import logging
 import colorlog
 

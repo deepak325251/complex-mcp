@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightGitlabSession
+try:
+    from session import LightGitlabSession
+except ImportError:
+    from software.LightGitlab.session import LightGitlabSession
 import logging
 import colorlog
 

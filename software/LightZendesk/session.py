@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from zendesk import ZendeskSession
+try:
+    from zendesk import ZendeskSession
+except ImportError:
+    from software.LightZendesk.zendesk import ZendeskSession
 
 
 class LightZendeskSession:

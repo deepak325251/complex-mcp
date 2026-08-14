@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from figma import FigmaSession
+try:
+    from figma import FigmaSession
+except ImportError:
+    from software.LightFigma.figma import FigmaSession
 
 
 class LightFigmaSession:

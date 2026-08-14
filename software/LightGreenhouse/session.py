@@ -1,7 +1,10 @@
 from shortuuid import uuid
 from typing import Dict
 
-from greenhouse import GreenhouseSession
+try:
+    from greenhouse import GreenhouseSession
+except ImportError:
+    from software.LightGreenhouse.greenhouse import GreenhouseSession
 
 
 class LightGreenhouseSession:

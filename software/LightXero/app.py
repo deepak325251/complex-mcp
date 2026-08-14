@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightXeroSession
+try:
+    from session import LightXeroSession
+except ImportError:
+    from software.LightXero.session import LightXeroSession
 import logging
 import colorlog
 

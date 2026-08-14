@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightRedditSession
+try:
+    from session import LightRedditSession
+except ImportError:
+    from software.LightReddit.session import LightRedditSession
 import logging
 import colorlog
 

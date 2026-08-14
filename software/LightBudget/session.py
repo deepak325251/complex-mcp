@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from budget import BudgetSession
+try:
+    from budget import BudgetSession
+except ImportError:
+    from software.LightBudget.budget import BudgetSession
 
 class LightBudgetSession:
     def __init__(self, os_cfg: Dict[str, str]

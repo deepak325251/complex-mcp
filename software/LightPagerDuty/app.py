@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightPagerDutySession
+try:
+    from session import LightPagerDutySession
+except ImportError:
+    from software.LightPagerDuty.session import LightPagerDutySession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightStravaSession
+try:
+    from session import LightStravaSession
+except ImportError:
+    from software.LightStrava.session import LightStravaSession
 import logging
 import colorlog
 

@@ -1,6 +1,9 @@
 from typing import Dict, List, Any
 from fastmcp import FastMCP
-from session import LightWhatsAppSession
+try:
+    from session import LightWhatsAppSession
+except ImportError:
+    from software.LightWhatsApp.session import LightWhatsAppSession
 import logging
 import colorlog
 

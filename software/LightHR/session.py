@@ -1,6 +1,9 @@
 from shortuuid import uuid
 from typing import Dict
-from hr import HRSession
+try:
+    from hr import HRSession
+except ImportError:
+    from software.LightHR.hr import HRSession
 
 class LightHRSession:
     def __init__(self, os_cfg: Dict[str, str]
