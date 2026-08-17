@@ -1,6 +1,6 @@
 from client.agent import OpenAIBackend, HumanAnnotator, AgentClient, Toolbox
 from client.rag import ChromaRAG
-from benchmark.rubric_pytest_judge import make_openai_rubric_judge
+from benchmark.rubric_pytest_judge import make_openai_rubric_judge, make_anthropic_rubric_judge
 from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
 from benchmark.classify_failure import classify as _classify_failure, parse_expected_tools as _parse_expected_tools
 from benchmark.passk import estimate as _passk_estimate
@@ -399,9 +399,11 @@ def main(args):
     per_episode: list = []
     controls_by_task: dict = {}
     trials_runs: dict[str, list[dict]] = {}
-    # Channel-B rubric judge (Skoll-style). Built once; None if OPENAI creds absent,
+    # Channel-B rubric judge (Skoll-style). Built once. Prefer OpenAI creds; fall
+    # back to the Anthropic ccbridge (ANTHROPIC_BASE_URL/API_KEY) so the rubric
+    # still runs without an OpenAI key. None only if neither backend is available,
     # in which case rubric+pytest tasks grade on Channel A (pytest) alone.
-    rubric_judge = make_openai_rubric_judge()
+    rubric_judge = make_openai_rubric_judge() or make_anthropic_rubric_judge()
     if output_dir:
         safe_model = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_") or "model"
         if layout == "mcp-stump":

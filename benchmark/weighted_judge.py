@@ -522,7 +522,10 @@ def judge_weighted(
     rubric_score = None
     rubric_per = None
     wr = _weight_of(weights, "rubric")
-    if wr and rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
+    # Run the judge whenever it's available and a rubric exists -- even at weight
+    # 0 -- so rubric_score/rubric_per are populated for REPORTING. It is folded
+    # into the reward ledger only when the task opts in with weight > 0.
+    if rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
         try:
             _rub = json.load(open(rubric_path, encoding="utf-8"))
             # rubric.json is either {"criteria": [...]} or a bare list of criteria.
@@ -531,7 +534,7 @@ def judge_weighted(
             criteria = []
         verdicts = rubric_judge(criteria, final_message or "") or {}
         rubric_score, rubric_per = _score_rubric(criteria, verdicts)
-        if rubric_score is not None:
+        if wr and rubric_score is not None:
             components["rubric"] = {"weight": wr, "value": rubric_score}
 
     # --- reduce ---------------------------------------------------------------
