@@ -72,7 +72,7 @@ Output: `runs/<timestamp>__<model>__<method>/tasks/task_NNN__<slug>/{meta.json, 
 
 ```bash
 # bash scripts/run_task_local.sh <tasks-dir> <task-slug> [model]
-bash scripts/run_task_local.sh inputs_1408_2 03-household-week-coordination
+bash scripts/run_task.sh inputs_1408_2 03-household-week-coordination
 ```
 
 Options (environment variables):
