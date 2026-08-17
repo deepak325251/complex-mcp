@@ -427,7 +427,9 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     traj = parse_trajectory(record.get("output", ""))
     atif_doc = _atif_from_complexmcp(traj, agent="complexmcp", model=model,
                                      usage=record.get("usage"),
-                                     query=record.get("query", ""))
+                                     query=record.get("query", ""),
+                                     turns=record.get("turns"),
+                                     session_id=record.get("session_id"))
     # Thinking signatures are attached inside _atif_from_complexmcp, per step,
     # straight from the <thinking> blocks -- so a signature rides only on a step
     # that actually captured real reasoning text (no orphan-signature drift).
