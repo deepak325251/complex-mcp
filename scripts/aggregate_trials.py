@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Post-hoc roll-up over per-task trials_*/summary.json folders.
 
-run_benchmark.py only writes the top-level pass_summary.json from the
+run_benchmark.py only writes the top-level passk_summary.json from the
 `trials_runs` it held *in memory* during a single invocation. When a results
 directory is assembled from several separate runs (or tasks are run one at a
 time and collected), that top-level file is stale -- it reflects only the last
@@ -98,14 +98,14 @@ def main() -> None:
     ap.add_argument("--model", default=None)
     ap.add_argument("--at", default="1", help="comma-separated k values, e.g. 1,2,4")
     ap.add_argument("--write", action="store_true",
-                    help="overwrite <run_dir>/pass_summary.json (default: print only)")
+                    help="overwrite <run_dir>/passk_summary.json (default: print only)")
     args = ap.parse_args()
 
     at_ks = [int(x) for x in args.at.split(",") if x.strip()]
     summary = aggregate(args.run_dir, args.model, at_ks)
     text = json.dumps(summary, indent=2)
     if args.write:
-        out = args.run_dir / "pass_summary.json"
+        out = args.run_dir / "passk_summary.json"
         out.write_text(text)
         print(f"[output] wrote {out}")
     print(text)

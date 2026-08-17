@@ -230,6 +230,7 @@ FAILURE_DESCRIPTIONS: dict[FailureClass, str] = {
     FailureClass.HALLUCINATED_ARG: COGNITIVE_MODES["hallucinated_arg"]["description"],
     FailureClass.LOGICAL_ERROR: COGNITIVE_MODES["logical_error"]["description"],
     FailureClass.CONSTRAINT_VIOLATION: COGNITIVE_MODES["constraint_violation"]["description"],
+    FailureClass.EXECUTION_DROP: COGNITIVE_MODES["execution_drop"]["description"],
     FailureClass.CLEAN_SLATE_BIAS: STATEFUL_MODES["clean_slate_bias"]["description"],
     FailureClass.DIRTY_STATE_IGNORED: STATEFUL_MODES["dirty_state_ignored"]["description"],
     FailureClass.MISSING_PREREQ: STATEFUL_MODES["missing_prereq"]["description"],

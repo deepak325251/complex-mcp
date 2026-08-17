@@ -46,6 +46,18 @@ def count_tokens(text: str, model: str) -> int:
         return 0
     return len(get_encoding(model).encode(text))
 
+
+def _utc_now_iso() -> str:
+    """UTC timestamp in ATIF's step format (millisecond precision, `Z` suffix).
+
+    One `now()` read, formatted from that single instant -- reading the clock
+    twice can straddle a second boundary and stamp a step with the previous
+    second's time and the current second's milliseconds.
+    """
+    from datetime import datetime, timezone
+    now = datetime.now(timezone.utc)
+    return f"{now:%Y-%m-%dT%H:%M:%S}.{now.microsecond // 1000:03d}Z"
+
 class Toolbox:
     def __init__(self, tools: Dict[str, Dict[str, Any]] = {}, rag_cls = None, method: Literal["list_all", "provide", "rag", "fetch"] = "list_all", *args, **kwargs):
         self.tools = tools
@@ -1167,6 +1179,44 @@ class AgentClient:
                     "completion_tokens_details.reasoning_tokens") or 0
                 usage_acc["cost_usd"] += _usage_val(u, "cost_usd") or 0.0
 
+            def _turn_metrics(u):
+                """Per-turn usage in ATIF `metrics` shape.
+
+                `_accumulate_usage` above folds each turn into a running total and
+                DISCARDS the per-turn value, so ATIF steps could carry no metrics
+                at all. Both are needed: the totals for final_metrics, the per-turn
+                slice for step.metrics -- and summing the latter must reproduce the
+                former, which is why this reads the same fields the accumulator does.
+                """
+                return {
+                    "prompt_tokens": _usage_val(u, "uncached_input_tokens", "prompt_tokens") or 0,
+                    "completion_tokens": _usage_val(u, "output_tokens", "completion_tokens") or 0,
+                    "cached_tokens": _usage_val(
+                        u, "cache_read_tokens",
+                        "prompt_tokens_details.cache_read_input_tokens",
+                        "prompt_tokens_details.cached_tokens") or 0,
+                    "extra": {
+                        "cache_creation_input_tokens": _usage_val(
+                            u, "cache_creation_tokens",
+                            "prompt_tokens_details.cache_creation_input_tokens") or 0,
+                        "cache_read_input_tokens": _usage_val(
+                            u, "cache_read_tokens",
+                            "prompt_tokens_details.cache_read_input_tokens",
+                            "prompt_tokens_details.cached_tokens") or 0,
+                        "reasoning_tokens": _usage_val(
+                            u, "reasoning_tokens",
+                            "completion_tokens_details.reasoning_tokens") or 0,
+                    },
+                }
+
+            # One record per LLM call: timestamp + that turn's own token slice +
+            # how many tool calls it emitted. The trajectory is reconstructed from
+            # the flat text stream, which has no turn boundaries -- so a turn that
+            # emits two parallel tool calls is indistinguishable from two turns
+            # unless the boundary is recorded here. ATIF groups by turn.
+            turns: list[dict] = []
+            results["turns"] = turns
+
             # Why the episode loop ended. Defaults to max_turns (loop exhausted
             # without an explicit stop) and is overwritten at each break below so
             # report.json records the real termination cause (end_tag vs
@@ -1196,6 +1246,13 @@ class AgentClient:
 
                     text = m.content or ""
                     tool_calls = getattr(m, "tool_calls", None) or []
+                    turns.append({
+                        "timestamp": _utc_now_iso(),
+                        "metrics": _turn_metrics(usage),
+                        "llm_call_count": 1,
+                        "n_tool_calls": len(tool_calls),
+                        "stop_reason": getattr(resp.choices[0], "finish_reason", None),
+                    })
 
                     if text:
                         llm_token_num += count_tokens(text, token_model)
@@ -1269,7 +1326,9 @@ class AgentClient:
                     continue
 
                 resp = await self.llm.chat(messages)
-                msg: str = resp.choices[0].message.content
+                # A thinking-only turn returns content=None; every `in msg` /
+                # `msg.endswith` below would TypeError on it.
+                msg: str = resp.choices[0].message.content or ""
                 usage = resp.usage
 
                 # Accumulate every turn (see native branch above).
@@ -1284,6 +1343,17 @@ class AgentClient:
                     # (which carries the <tool> call) so it is never mislabeled.
                     output.append(thinking_block(_reasoning, _sigs))
 
+                # Text protocol: msg is truncated at the first TOOL_STOP_SEQ, so a
+                # turn emits at most ONE tool call. n_tool_calls is finalised after
+                # the parse below rather than guessed here.
+                turns.append({
+                    "timestamp": _utc_now_iso(),
+                    "metrics": _turn_metrics(usage),
+                    "llm_call_count": 1,
+                    "n_tool_calls": 0,
+                    "stop_reason": getattr(resp.choices[0], "finish_reason", None),
+                })
+
                 if self.toolbox and resp.choices[0].finish_reason == "stop" and \
                     TOOL_START_SEQ in msg and TOOL_STOP_SEQ not in msg:
                     msg += TOOL_STOP_SEQ
@@ -1296,13 +1366,26 @@ class AgentClient:
                     print(msg)
 
                 output.append(msg)
-                messages.append({
-                    "role": "assistant",
-                    "content": msg
-                })
+                # Anthropic rejects a request whose history contains a
+                # whitespace-only text block ("messages: text content blocks
+                # must contain non-whitespace text"), so an empty assistant turn
+                # poisons the NEXT call and aborts the run mid-rollout. A turn
+                # that spent its budget entirely on extended thinking arrives
+                # here with msg == "" -- real, and more likely with thinking on
+                # by default. Drop the empty turn instead of recording it; the
+                # cnt_without_tc >= 5 guard below still terminates the episode if
+                # the model keeps producing nothing.
+                if msg and msg.strip():
+                    messages.append({
+                        "role": "assistant",
+                        "content": msg
+                    })
                 
                 if msg.endswith(TOOL_STOP_SEQ) and self.toolbox:
                     tool_calling_req = parse_tool(msg)
+                    # This turn did emit a call (even a malformed one still
+                    # produces a trajectory step carrying the error response).
+                    turns[-1]["n_tool_calls"] = 1
                     cnt_without_tc *= 0
                     if tool_calling_req is None:
                         tool_resp = {

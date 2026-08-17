@@ -86,38 +86,88 @@ def _score_rubric(criteria, verdicts):
     return round(max(0.0, (met - penalty) / pos_total), 4) if pos_total else 0.0
 
 
-def make_openai_rubric_judge(model=None):
+def _parse_narrative(text: str):
+    """`(verdict, justification)` from a narrative judge reply.
+
+    Expected first token is YES/NO, with the reasoning after it. A reply whose
+    verdict cannot be read returns `(None, ...)` -- unreadable is NOT "no", and
+    collapsing the two silently marks satisfied criteria as failed.
+    """
+    body = (text or "").strip()
+    head = body.lstrip("*# ").upper()
+    if head.startswith("YES"):
+        return True, body
+    if head.startswith("NO"):
+        return False, body
+    return None, body
+
+
+def make_openai_rubric_judge(model=None, narrative: bool | None = None):
     """Build a rubric judge from OPENAI_API_KEY / OPENAI_BASE_URL (same creds the agent uses).
-    Returns None if creds are absent so the caller degrades to Channel A only."""
+    Returns None if creds are absent so the caller degrades to Channel A only.
+
+    With `narrative` (env `RUBRIC_JUDGE_NARRATIVE=1`) the judge also returns a
+    written justification per criterion, which is what fills
+    `report.json` `rubric[].justification` and `judge_response.txt`. It costs
+    more tokens per criterion, so it is opt-in; with it off those fields stay
+    empty rather than being invented.
+
+    The returned callable exposes the justifications on `judge.justifications`
+    (a `{number: text}` dict) so the verdict contract -- `{number: bool}` --
+    is unchanged for every existing caller.
+    """
     if not os.environ.get("OPENAI_API_KEY") or not os.environ.get("OPENAI_BASE_URL"):
         return None
     from openai import OpenAI
+
+    if narrative is None:
+        narrative = os.environ.get("RUBRIC_JUDGE_NARRATIVE", "") == "1"
 
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY"], base_url=os.environ["OPENAI_BASE_URL"])
     judge_model = model or os.environ.get("RUBRIC_JUDGE_MODEL", "gpt-4o-mini")
 
     def judge(criteria, output):
         verdicts = {}
+        judge.justifications = {}
         for c in criteria:
-            prompt = (
-                "You are grading one rubric criterion against an AI agent's final message.\n"
-                "Answer with exactly one word: YES or NO.\n"
-                "Answer YES iff the statement in the criterion is literally true of the message.\n\n"
-                f"CRITERION: {c['criterion']}\n\n"
-                f"AGENT MESSAGE:\n{output}\n\nAnswer (YES/NO):"
-            )
+            if narrative:
+                prompt = (
+                    "You are grading one rubric criterion against an AI agent's final message.\n"
+                    "Begin your reply with exactly YES or NO, then one or two sentences\n"
+                    "citing the specific evidence for that verdict.\n"
+                    "Answer YES iff the statement in the criterion is literally true of the message.\n\n"
+                    f"CRITERION: {c['criterion']}\n\n"
+                    f"AGENT MESSAGE:\n{output}\n\nAnswer:"
+                )
+            else:
+                prompt = (
+                    "You are grading one rubric criterion against an AI agent's final message.\n"
+                    "Answer with exactly one word: YES or NO.\n"
+                    "Answer YES iff the statement in the criterion is literally true of the message.\n\n"
+                    f"CRITERION: {c['criterion']}\n\n"
+                    f"AGENT MESSAGE:\n{output}\n\nAnswer (YES/NO):"
+                )
             try:
                 resp = client.chat.completions.create(
                     model=judge_model,
                     messages=[{"role": "user", "content": prompt}],
-                    max_completion_tokens=4,
+                    max_completion_tokens=300 if narrative else 4,
                 )
-                ans = (resp.choices[0].message.content or "").strip().upper()
-                verdicts[c["number"]] = ans.startswith("Y")
+                raw = resp.choices[0].message.content or ""
+                if narrative:
+                    verdict, text = _parse_narrative(raw)
+                    verdicts[c["number"]] = verdict
+                    judge.justifications[c["number"]] = text
+                else:
+                    verdicts[c["number"]] = raw.strip().upper().startswith("Y")
             except Exception:
                 verdicts[c["number"]] = None
         return verdicts
 
+    # Advertised on the callable so callers can read the extra output without
+    # changing the verdict contract ({number: bool}) every existing caller uses.
+    judge.narrative = narrative
+    judge.justifications = {}
     return judge
 
 

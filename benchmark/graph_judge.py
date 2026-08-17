@@ -48,7 +48,7 @@ def load_efs(task_dir: str | None) -> dict | None:
              ["registry/efs.json"]:
         if os.path.exists(p):
             try:
-                return json.load(open(p))
+                return json.load(open(p, encoding="utf-8-sig"))
             except (OSError, json.JSONDecodeError):
                 continue
     return None
@@ -66,7 +66,7 @@ def load_gold(task_dir: str) -> list | None:
     op = os.path.join(str(task_dir), "solution", "trajectory.json")
     if os.path.exists(op):
         try:
-            plan = json.load(open(op))
+            plan = json.load(open(op, encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
             plan = None
         # Accept both shapes: a list of {tool,args} OR {"steps":[{tool,...}]}.
@@ -78,7 +78,7 @@ def load_gold(task_dir: str) -> list | None:
     gp = os.path.join(str(task_dir), "tests", "gold_plan.json")
     if os.path.exists(gp):
         try:
-            return json.load(open(gp))
+            return json.load(open(gp, encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
             return None
     return None
@@ -124,7 +124,7 @@ def judge_trajectory_graph(trajectory: dict, gold_plan: list, *,
     rubric_score = None
     rubric_per = None
     if rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
-        rub = json.load(open(rubric_path, encoding="utf-8"))
+        rub = json.load(open(rubric_path, encoding="utf-8-sig"))
         criteria = rub.get("criteria", rub) if isinstance(rub, dict) else rub
         verdicts = rubric_judge(criteria, final_message or "")
         pos_total = sum(c["score"] for c in criteria if c["score"] > 0)

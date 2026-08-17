@@ -59,7 +59,8 @@ RUNNER="${RUNNER:-run_benchmark.py}"
 CONFIG="${CONFIG:-config/general.yaml}"
 TASKS_DIR="${TASKS_DIR:-tasks}"
 LAYOUT="${LAYOUT:-mcp-stump}"
-if [ "$LAYOUT" = "mcp-stump" ]; then
+# Both mcp-stump and harbor write under output/; only the legacy layout uses runs/.
+if [ "$LAYOUT" = "mcp-stump" ] || [ "$LAYOUT" = "harbor" ]; then
     OUTPUT_DIR="${OUTPUT_DIR:-output}"
 else
     OUTPUT_DIR="${OUTPUT_DIR:-runs}"
