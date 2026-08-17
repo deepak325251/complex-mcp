@@ -195,6 +195,44 @@ def _name(outcome: dict, kind: str) -> str:
 # per-model roll-up
 # --------------------------------------------------------------------------
 
+def pass_summary_rows(model: str, rows: Sequence[dict], mean=None) -> dict:
+    """Per-model roll-up built from already-computed per-run PERCENTAGES.
+
+    The delivered shape carries two fields `pass_summary` below does not:
+    `combined_score` per run (the mean of that run's test and rubric
+    percentages) and `average_combined_score` over the runs. Defined here, next
+    to `pass_summary`, so the file's shape has ONE definition rather than one
+    per writer.
+
+    `mean` is injectable because the delivered numbers round half-UP while
+    Python rounds half-to-even; `benchmark.harbor_layout` passes its own so
+    every percentage in the tree agrees. Each row:
+    {run_index, test_weights_percentage, rubric_weights_percentage,
+     combined_score, include_multimodal?}.
+    """
+    if mean is None:
+        def mean(values):
+            vals = [v for v in values if v is not None]
+            return round(statistics.fmean(vals), 2) if vals else None
+
+    return {
+        "model": model,
+        "runs": len(rows),
+        "average_combined_score": mean([r.get("combined_score") for r in rows]),
+        "average_test_weights_percentage": mean(
+            [r.get("test_weights_percentage") for r in rows]),
+        "average_rubric_weights_percentage": mean(
+            [r.get("rubric_weights_percentage") for r in rows]),
+        "per_run": [{
+            "run_index": r.get("run_index"),
+            "include_multimodal": bool(r.get("include_multimodal", False)),
+            "test_weights_percentage": r.get("test_weights_percentage"),
+            "rubric_weights_percentage": r.get("rubric_weights_percentage"),
+            "combined_score": r.get("combined_score"),
+        } for r in rows],
+    }
+
+
 def pass_summary(model: str, reports: Sequence[RunReport]) -> dict:
     tests = [r.test_score for r in reports if r.test_score is not None]
     rubs = [r.rubric_score for r in reports if r.rubric_score is not None]

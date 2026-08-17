@@ -17,11 +17,12 @@ import sys
 import os
 import hashlib
 import re
+import uuid as _stdlib_uuid
 import subprocess
 import yaml
 import asyncio
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pandas as pd
 from shortuuid import uuid
@@ -35,7 +36,13 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
     re-reads every trials dir so the headline number is always correct.
     """
     tasks: list[dict] = []
-    for sd in sorted(run_dir.glob("trials_*")):
+    # mcp-stump layout puts trials dirs directly under run_dir; the harbor layout
+    # nests them at <task-slug>/.raw/trials_*. Globbing only the flat form
+    # reported "0 tasks, accuracy 0.0" for every harbor run -- the roll-up found
+    # nothing and said so as though it were a result.
+    trial_dirs = sorted(run_dir.glob("trials_*")) + \
+        sorted(run_dir.glob("*/.raw/trials_*"))
+    for sd in trial_dirs:
         sp = sd / "summary.json"
         if not sp.is_file():
             continue
@@ -86,6 +93,32 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
         "mean_pass^k": {str(k): _mean("pass^k", k) for k in all_ks},
         "failure_mode_histogram": dict(hist.most_common()),
         "per_task": tasks,
+    }
+
+
+def _iso_z(dt) -> str | None:
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z" if dt else None
+
+
+def _phase_timings(trial_start, agent_start, agent_end) -> dict:
+    """The four phase spans result.json carries.
+
+    Only the spans this process actually measures are filled. `environment_setup`
+    and `agent_setup` happen once per process (the sandbox is brought up outside
+    the attempt loop, or by scripts/run_task.sh), so attributing them to a
+    particular attempt would invent a measurement -- they stay null.
+    """
+    now = datetime.now(timezone.utc)
+    return {
+        "started_at": _iso_z(trial_start),
+        "finished_at": _iso_z(now),
+        "environment_setup": None,
+        "agent_setup": None,
+        "agent_execution": {"started_at": _iso_z(agent_start),
+                            "finished_at": _iso_z(agent_end)},
+        # Everything between the rollout ending and the record being written is
+        # grading.
+        "verifier": {"started_at": _iso_z(agent_end), "finished_at": _iso_z(now)},
     }
 
 
@@ -392,7 +425,7 @@ def main(args):
     tool_tokens = 0
 
     layout = getattr(args, "layout", "legacy") or "legacy"
-    default_output = "output" if layout == "mcp-stump" else "runs"
+    default_output = "output" if layout in ("mcp-stump", "harbor") else "runs"
     output_dir = getattr(args, "output_dir", None) or default_output
     run_dir = None
     tasks_dir = None
@@ -404,7 +437,7 @@ def main(args):
     rubric_judge = make_openai_rubric_judge()
     if output_dir:
         safe_model = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_") or "model"
-        if layout == "mcp-stump":
+        if layout in ("mcp-stump", "harbor"):
             run_dir = Path(output_dir)
             tasks_dir = run_dir
             tasks_dir.mkdir(parents=True, exist_ok=True)
@@ -417,6 +450,15 @@ def main(args):
 
     n_attempts = max(1, getattr(args, "n_attempts", 1) or 1)
     at_ks = getattr(args, "at_ks", None) or [1]
+
+    # Harbor layout: one job per task (D8). The id and timestamp are fixed once
+    # per invocation so every trial of every task agrees on them.
+    _harbor_job_id = str(_stdlib_uuid.uuid4())
+    _harbor_stamp = datetime.now().strftime("%H%M%S")
+    _harbor_started = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z"
+    _harbor_trials: dict[str, list] = {}
+    _harbor_job_labels: dict[str, str] = {}
+    _harbor_task_dirs: dict[str, str] = {}
 
     for i in range(len(tasks_list)):
         print(f"Completion: [{i + 1} / {len(tasks_list)}]")
@@ -488,6 +530,14 @@ def main(args):
             if n_attempts > 1:
                 print(f"  attempt {attempt + 1} / {n_attempts}")
 
+            # Phase timings for result.json. Recorded around the real work
+            # rather than reconstructed afterwards; `agent_execution` brackets
+            # the rollout, and the remaining span up to the grade is the
+            # verifier. Environment/agent setup happen once per process (the
+            # sandbox is already up), so those are left null rather than
+            # attributed to an arbitrary attempt.
+            _t_trial_start = datetime.now(timezone.utc)
+
             task = agent.process_query(
                 query=query,
                 max_turns=100,
@@ -500,7 +550,9 @@ def main(args):
                 native=native_tools
             )
 
+            _t_agent_start = datetime.now(timezone.utc)
             result = asyncio.run(task)
+            _t_agent_end = datetime.now(timezone.utc)
 
             old_env = result["old_apps"]
             new_env = result["apps"]
@@ -629,6 +681,23 @@ def main(args):
                 if reward is None:
                     reward = float(recall) / total if total else (1.0 if recall == 0 else None)
                 if gradeable:
+                    # Per-test outcomes for report.json / detail.json / ctrf.json.
+                    # The weighted grader keeps them under `traj_tests`, NOT under
+                    # `detail` -- reading only `detail` reported every weighted run
+                    # as "no tests ran" (test_weights_percentage=null,
+                    # passed_tests=null) while verifier/ctrf.json listed them all.
+                    _pt = (judge_result.get("traj_tests") or {}).get("passed_tests") \
+                        or (judge_result.get("detail") or {}).get("passed_tests")
+                    _checks = None
+                    if judge_result.get("traj_tests"):
+                        from benchmark.weighted_judge import traj_test_rows
+                        _rows, _wscore = traj_test_rows(judge_result, grading_dir)
+                        if _rows:
+                            # weighted_score is the ledger's own traj_tests value,
+                            # not a recomputation, so report.json cannot drift from
+                            # the reward that was actually awarded.
+                            _checks = {"weighted_score": _wscore if _wscore is not None else 0.0,
+                                       "tests": _rows}
                     score = {
                         "gradeable": True,
                         "reward": reward,
@@ -638,7 +707,8 @@ def main(args):
                         "passed": bool(passed),
                         "pytest_score": judge_result.get("pytest_score"),
                         "rubric_score": judge_result.get("rubric_score"),
-                        "passed_tests": (judge_result.get("detail") or {}).get("passed_tests"),
+                        "passed_tests": _pt,
+                        "pytest_checks": _checks,
                         # Per-key-path detail (judge_spec allowlist) so the CTRF
                         # writer can emit one row per scored path instead of a
                         # single #reward aggregate.
@@ -719,6 +789,15 @@ def main(args):
                     "expected_tool_calls": task_info.get("expected_tool_calls"),
                     "reasoning_signatures": result.get("reasoning_signatures") or [],
                     "termination_reason": result.get("termination_reason"),
+                    # Per-turn timestamps + token slices + tool-call counts. The
+                    # trajectory is reconstructed from a flat text stream with no
+                    # turn boundaries, so ATIF cannot group calls into turns (or
+                    # stamp them) without this.
+                    "turns": result.get("turns") or [],
+                    "session_id": str(_stdlib_uuid.uuid4()),
+                    # Verifier span closes here: grading has run by this point.
+                    "timings": _phase_timings(_t_trial_start, _t_agent_start,
+                                              _t_agent_end),
                 }
                 # Context for the failure classifier (commit 9990708).
                 task_context = {
@@ -730,7 +809,42 @@ def main(args):
                 record["old_env"] = old_env
                 record["new_env"] = new_env
                 traj_for_pair = _parse_traj_for_layout(record.get("output", ""))
-                if layout == "mcp-stump":
+                if layout == "harbor":
+                    # `.raw` holds the mcp-stump tree verbatim; the Harbor-shaped
+                    # trial is written BESIDE it. The reshape has no slot for
+                    # diagnosis/trace/world-snapshots, and those are what the
+                    # training pipeline reads -- so nothing is relocated, only added.
+                    from benchmark.harbor_layout import (
+                        write_harbor_trial, job_name as _job_name, slug_of as _slug_of)
+                    _job_dir = run_dir / _slug_of(episode_name)
+                    task_dir, final_score = write_mcp_stump_run(
+                        _job_dir / ".raw", record, model=model, score=score,
+                        task_context=task_context,
+                        rubric_result=rubric_result,
+                        task_dir_source=task_info.get("task_dir"),
+                    )
+                    _run_no = int(task_dir.name.split("_", 1)[1]) \
+                        if task_dir.name.startswith("run_") else attempt + 1
+                    _atif = None
+                    _ap = task_dir / "agent" / "trajectory.json"
+                    if _ap.exists():
+                        _atif = json.loads(_ap.read_text())
+                    _label = _harbor_job_labels.setdefault(
+                        episode_name, _job_name(episode_name, _harbor_stamp))
+                    _row = write_harbor_trial(
+                        _job_dir, _run_no, record=record, model=model,
+                        judge_result=judge_result,
+                        task_dir=task_info.get("task_dir"),
+                        grading_dir=grading_dir,
+                        rubric_result=rubric_result,
+                        atif_doc=_atif,
+                        job_id=_harbor_job_id, job_label=_label,
+                        timings=record.get("timings"),
+                        judge_response=(rubric_result or {}).get("judge_response"),
+                    )
+                    _harbor_trials.setdefault(episode_name, []).append(_row)
+                    _harbor_task_dirs[episode_name] = task_info.get("task_dir")
+                elif layout == "mcp-stump":
                     # Every attempt writes its own run_N under trials_<task>/.
                     task_dir, final_score = write_mcp_stump_run(
                         run_dir, record, model=model, score=score,
@@ -991,14 +1105,38 @@ def main(args):
         if trials_runs:
             per_task_passk: list[dict] = []
             for task_name, runs in trials_runs.items():
+                # Harbor layout keeps the mcp-stump aggregate under .raw/ beside
+                # the Harbor job files, so nothing the training pipeline reads
+                # (pairs.jsonl, failure_analysis.json) is lost in the reshape.
+                _agg_root = run_dir
+                if layout == "harbor":
+                    from benchmark.harbor_layout import slug_of as _slug_of
+                    _agg_root = run_dir / _slug_of(task_name) / ".raw"
                 trials_dir = write_trials_aggregate(
-                    run_dir, task_name, model, runs,
+                    _agg_root, task_name, model, runs,
                     instruction=runs[0].get("query") if runs else None,
                     at=at_ks,
                 )
                 n = len(runs)
                 c = sum(1 for r in runs if r.get("passed"))
                 est = _passk_estimate(n, c, at_ks)
+                if layout == "harbor" and _harbor_trials.get(task_name):
+                    from benchmark.harbor_layout import (
+                        write_harbor_job as _wjob, slug_of as _slugx)
+                    _jd = _wjob(
+                        run_dir / _slugx(task_name),
+                        task_name=task_name,
+                        task_dir=_harbor_task_dirs.get(task_name),
+                        model=model,
+                        trials=_harbor_trials[task_name],
+                        job_id=_harbor_job_id,
+                        job_label=_harbor_job_labels.get(task_name, ""),
+                        started_at=_harbor_started,
+                        finished_at=datetime.now(timezone.utc).strftime(
+                            "%Y-%m-%dT%H:%M:%S.%f") + "Z",
+                        pass_at_k={str(k): v for k, v in est["pass@k"].items()},
+                    )
+                    print(f"[output] wrote harbor job {_jd}")
                 per_task_passk.append({
                     "task": task_name,
                     "n": n, "c": c,
@@ -1026,7 +1164,11 @@ def main(args):
                 "failure_mode_histogram": dict(mode_hist.most_common()),
                 "per_task": per_task_passk,
             }
-            ps_path = run_dir / "pass_summary.json"
+            # D4: `pass_summary.json` is claimed by the percentage-shaped
+            # per-model roll-up (benchmark.harbor_layout). This pass@k-shaped
+            # corpus roll-up is a different artifact answering a different
+            # question, so it gets its own name rather than racing for one.
+            ps_path = run_dir / "passk_summary.json"
             # A1 fix: the headline roll-up aggregates EVERY trials_*/ on disk, not
             # just this invocation's episodes -- so piecemeal runs and re-runs
             # report the true corpus accuracy instead of last-writer-wins.
@@ -1141,7 +1283,7 @@ if __name__ == "__main__":
     parser.add_argument("--topk", type=int, default=30)
     parser.add_argument("--limit", type=int, default=0, help="Max episodes to run (0 = all)")
     parser.add_argument("--output-dir", type=str, default=None, help="Directory to write per-run results. Default depends on --layout: 'runs' (legacy) or 'output' (mcp-stump). Set to '' to disable.")
-    parser.add_argument("--layout", type=str, default="legacy", choices=["legacy", "mcp-stump"], help="Output layout. 'legacy' writes runs/<ts>__model__method/tasks/task_NNN__slug/*.json. 'mcp-stump' writes output/trials_<task>/trajectories/<model>/run_N/*.json matching mcp-stump/out/ format.")
+    parser.add_argument("--layout", type=str, default="legacy", choices=["legacy", "mcp-stump", "harbor"], help="Output layout. 'legacy' writes runs/<ts>__model__method/tasks/task_NNN__slug/*.json. 'mcp-stump' writes output/trials_<task>/trajectories/<model>/run_N/*.json matching mcp-stump/out/ format. 'harbor' writes output/<task>/ with .raw/ (the mcp-stump tree, verbatim) beside trajectory/Run N/ in the Harbor-native shape.")
     parser.add_argument("--source", type=str, default="auto", choices=["auto", "parquet", "harbor"], help="Task source. 'auto' picks 'harbor' if --tasks-dir is a directory, else 'parquet'.")
     parser.add_argument("--tasks-dir", type=str, default=None, help="Path to task source. For harbor: directory of complexmcp-* task packages. For parquet: path to .parquet file. Defaults to benchmark/data/data.parquet.")
     parser.add_argument("--task", type=str, default=None, help="Run only tasks whose name equals or starts with this string.")
