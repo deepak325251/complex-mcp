@@ -17,6 +17,7 @@ class FailureClass(str, Enum):
     TOOL_ERROR_UNRECOVERED = "tool_error_unrecovered"
     MAX_TURNS_EXCEEDED = "max_turns_exceeded"
     UNKNOWN = "unknown"
+    EXECUTION_DROP = "execution_drop"
     ERR_RECOVERY = "err_recovery"
     TASK_MISUNDERSTANDING = "task_misunderstanding"
     FAULTY_SYNTHESIS = "faulty_synthesis"
@@ -103,6 +104,15 @@ COGNITIVE_MODES: dict[str, dict[str, str]] = {
         "description": "Ignored an explicit condition or filter stated in the prompt.",
         "example": "Prompt said 'two separate messages, no additional text'; sent one combined message.",
     },
+    "execution_drop": {
+        "description": (
+            "Agent verbalized a planned action in reasoning but never emitted the "
+            "corresponding tool call. Distinct from partial_completion (which stops "
+            "early) and over_action (which does extra) -- here the plan is complete "
+            "but one step slips between planning text and execution."
+        ),
+        "example": "Reasoning listed 'mark A read, mark B read, unstar C'; tool trace only shows the B and C calls.",
+    },
 }
 
 
@@ -186,11 +196,12 @@ DETERMINISTIC_MODES: set[str] = {
     "missing_prereq",
     "referential_error",
     "over_action",
+    "execution_drop",
 }
 
 
 LEVER_TO_EXPECTED_MODES: dict[str, set[str]] = {
-    "dirty_state": {"clean_slate_bias", "dirty_state_ignored", "over_action"},
+    "dirty_state": {"clean_slate_bias", "dirty_state_ignored", "over_action", "execution_drop"},
     "transient_failure": {"err_recovery", "tool_error_unrecovered"},
     "hidden_prerequisite": {"missing_prereq"},
     "referential_ambiguity": {"referential_error"},

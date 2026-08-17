@@ -96,6 +96,10 @@ else
         CMD+=(--topk "$TOPK")
         echo "[run_task] TOPK=$TOPK"
     fi
+    if [ -n "${GRADER:-}" ]; then
+        CMD+=(--grader "$GRADER")
+        echo "[run_task] GRADER=$GRADER"
+    fi
     if [ -n "${TASK:-}" ]; then
         echo "[run_task] launching: $RUNNER --task $TASK"
         CMD+=(--task "$TASK")

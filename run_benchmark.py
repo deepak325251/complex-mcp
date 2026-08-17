@@ -49,12 +49,15 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
         c = m.get("c")
         if c is None:
             c = sum(1 for a in attempts if a.get("passed"))
+        rewards = [a.get("reward") for a in attempts if a.get("reward") is not None]
+        mean_reward = round(sum(rewards) / len(rewards), 6) if rewards else None
         tasks.append({
             "task": s.get("task", sd.name),
             "n": n, "c": c,
             "pass@1": round(c / n, 6) if n else 0.0,
             "pass@k": m.get("pass@k", {}) or {},
             "pass^k": m.get("pass^k", {}) or {},
+            "mean_reward_per_trial": mean_reward,
             "failure_breakdown": m.get("failure_breakdown", {}) or {},
         })
     total = len(tasks)
@@ -69,11 +72,16 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
         vals = [t[field].get(str(k)) for t in tasks if str(k) in t[field]]
         return round(sum(vals) / len(vals), 6) if vals else None
 
+    task_rewards = [t["mean_reward_per_trial"] for t in tasks
+                    if t.get("mean_reward_per_trial") is not None]
+    corpus_mean_reward = (round(sum(task_rewards) / len(task_rewards), 6)
+                          if task_rewards else None)
     return {
         "model": model,
         "tasks": total,
         "passed": passed,
         "accuracy": round(passed / total, 6) if total else 0.0,
+        "mean_reward_per_trial": corpus_mean_reward,
         "mean_pass@k": {str(k): _mean("pass@k", k) for k in all_ks},
         "mean_pass^k": {str(k): _mean("pass^k", k) for k in all_ks},
         "failure_mode_histogram": dict(hist.most_common()),

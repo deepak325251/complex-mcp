@@ -323,6 +323,15 @@ def classify(
                   "state_reason": score.get("state_reason")}
         return _verdict(FailureClass.PARTIAL_COMPLETION, reason, ev)
 
+    if total > 0 and recall >= total and misbehave == 0:
+        return _verdict(
+            FailureClass.EXECUTION_DROP,
+            f"reached all gold nodes (recall {recall}/{total}) with no misbehavior "
+            f"but state transitions did not verify -- a planned action likely "
+            f"slipped between reasoning and the tool trace",
+            {"recall": recall, "total": total, "misbehave": misbehave},
+        )
+
     return _verdict(
         FailureClass.UNKNOWN,
         "no rule matched; inspect trajectory manually",

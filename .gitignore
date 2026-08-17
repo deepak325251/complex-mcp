@@ -6,6 +6,7 @@ __pycache__/
 # Benchmark run artifacts
 runs/
 output/
+tasks/
 
 # Serena IDE metadata
 .serena/
