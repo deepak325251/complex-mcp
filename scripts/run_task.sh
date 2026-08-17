@@ -58,7 +58,10 @@ LIMIT="${LIMIT:-4}"
 RUNNER="${RUNNER:-run_benchmark.py}"
 CONFIG="${CONFIG:-config/general.yaml}"
 TASKS_DIR="${TASKS_DIR:-tasks}"
-LAYOUT="${LAYOUT:-mcp-stump}"
+# harbor is the delivered format (output/<task>/trajectory/Run_N/...). The older
+# mcp-stump tree is still produced inside it under .raw/, and is selectable on
+# its own with LAYOUT=mcp-stump.
+LAYOUT="${LAYOUT:-harbor}"
 # Both mcp-stump and harbor write under output/; only the legacy layout uses runs/.
 if [ "$LAYOUT" = "mcp-stump" ] || [ "$LAYOUT" = "harbor" ]; then
     OUTPUT_DIR="${OUTPUT_DIR:-output}"
