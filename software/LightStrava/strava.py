@@ -42,7 +42,7 @@ class StravaSession:
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
             # Seed architecture: world rolled from a seed (re-armed).
-            self.rng = random.Random(seed)
+            self.rng = random.Random(resolve_seed(seed))
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 

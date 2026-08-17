@@ -239,8 +239,21 @@ def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None)
     boot_world+dump_world path that bakes old/gt, so schemas stay consistent and
     only the agent's *successful* calls mutate. The replay is preferred only when
     it is a strictly better capture of ground truth (higher Rc), so a healthy
-    dump is never downgraded."""
-    from benchmark.weighted_judge import state_admissibility, judge_env
+    dump is never downgraded.
+
+    The empty-dump branch does NOT accept the replay unconditionally. It was
+    rebuilt at `seed` (in-process, via boot_world — the same trusted path that
+    bakes old/gt), but the trajectory itself was recorded against whatever
+    world the agent actually talked to during the episode. If that live world
+    was seeded differently (the seed-plumbing bug this guards against), the
+    agent's tool calls reference entity ids that don't exist in this replay's
+    world; replaying them either drops silently (id not found -> exception ->
+    skipped) or, worse, "succeeds" against the wrong entities. So the rebuilt
+    world is itself checked for a world_mismatch against gt_env before being
+    trusted — the same check `state_admissibility` runs on a live dump. This
+    stops the harness from swapping one fabricated state channel (an empty
+    dump quietly reported as a real diff) for another (a fabricated replay)."""
+    from benchmark.weighted_judge import state_admissibility, judge_env, _world_mismatch
     ok, reason = state_admissibility(old_env, new_env, gt_env)
     empty = (reason or "").startswith("empty_dump")
     try:
@@ -250,6 +263,8 @@ def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None)
     if not rebuilt:
         return new_env, {"repaired": False, "reason": reason}
     if empty:
+        if _world_mismatch(rebuilt, gt_env):
+            return new_env, {"repaired": False, "reason": "empty_dump+replay_world_mismatch"}
         return rebuilt, {"repaired": True, "reason": reason, "calls_applied": applied}
     # Non-empty dump: swap in the replay only if it recalls more of GT than the
     # dump did (i.e. the dump missed writes). Faithful to misbehaviour too — a

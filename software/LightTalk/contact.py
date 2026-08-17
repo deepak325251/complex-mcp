@@ -77,7 +77,7 @@ class ContactSession:
         # old seed=42 sequence byte-for-byte.
         if seed_mode():
             # Seed architecture: world rolled from a seed (re-armed).
-            self.rng = random.Random(seed)
+            self.rng = random.Random(resolve_seed(seed))
             self.os = OSConnector(
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"]

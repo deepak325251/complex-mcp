@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from benchmark.weighted_judge import (
     judge_weighted, load_weights, _score_rubric, state_admissibility,
+    _world_mismatch, _ids_by_container,
 )
 
 
@@ -167,3 +168,55 @@ def test_rubric_guard_polarity_not_capped():
     # A violation still subtracts: firing guard 5 pulls it below the clean score.
     dirty = dict(clean, **{"5": True})
     assert _score_rubric(crit, dirty)[0] < 1.0
+
+
+# ---------------------------------------------------------------------------
+# _ids_by_container / _world_mismatch: the old cross-app allowlist
+# (pulls/issues/channels/repos/tickets/cards/boards/sprints/users/projects...)
+# was shaped for GitHub/Jira/Slack/Trello-style apps. It had zero overlap with
+# apps like Gmail (messages/drafts/labels), QuickBooks (invoices/payments/...),
+# DocuSign (envelopes) or Calendar (events) — so a whole-world substitution in
+# those apps produced no entries at all and passed as admissible. The detector
+# is now structural (any dict-of-dicts is a container), no allowlist needed.
+# ---------------------------------------------------------------------------
+
+def _gmail_shaped_env(message_ids):
+    return {
+        "LightGmail": {
+            "status": "ok",
+            "output": {
+                "messages": {mid: {"subject": "hi", "from": "a@b.com"} for mid in message_ids},
+                "drafts": {},
+                "labels": {"INBOX": {"name": "Inbox"}},
+            },
+        },
+    }
+
+
+def test_world_mismatch_catches_non_allowlisted_app():
+    gt = _gmail_shaped_env(["msg-woodworks-1", "msg-woodworks-2"])
+    # Same schema, completely disjoint entity ids -> a different seeded world
+    # (e.g. served under a different default company/org than gt was baked
+    # against), exactly the "orbit-labs vs woodworks" substitution scenario.
+    wrong_world = _gmail_shaped_env(["msg-orbit-labs-9", "msg-orbit-labs-10"])
+    assert _world_mismatch(wrong_world, gt) is True
+
+    same_world = _gmail_shaped_env(["msg-woodworks-1", "msg-woodworks-2"])
+    assert _world_mismatch(same_world, gt) is False
+
+
+def test_ids_by_container_buckets_arbitrary_container_names():
+    env = _gmail_shaped_env(["m1", "m2"])
+    acc = _ids_by_container(env)
+    # "messages" was never in the old _CONTAINER_KEYS allowlist.
+    assert acc["messages"] == {"m1", "m2"}
+    assert acc["labels"] == {"INBOX"}
+
+
+def test_state_admissibility_flags_world_mismatch_for_non_allowlisted_app():
+    gt = _gmail_shaped_env(["msg-woodworks-1"])
+    old = _gmail_shaped_env([])
+    wrong_world = _gmail_shaped_env(["msg-orbit-labs-9"])
+    ok, reason = state_admissibility(old, wrong_world, gt)
+    assert ok is False
+    assert "world_mismatch" in reason

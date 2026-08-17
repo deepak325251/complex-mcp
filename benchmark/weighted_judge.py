@@ -133,10 +133,6 @@ def _get(dic, key):
 # false Rc=1.0 when there is nothing to grade) and report it as a real score.
 # We detect those and mark the channel inadmissible with a reason instead.
 # ---------------------------------------------------------------------------
-_CONTAINER_KEYS = {
-    "pulls", "prs", "pages", "issues", "channels", "repos", "rooms",
-    "tickets", "cards", "boards", "sprints", "users", "projects",
-}
 
 
 def _content(app_val):
@@ -169,13 +165,28 @@ def _empty_dump_apps(new_env, gt_env):
 
 
 def _ids_by_container(node, parent_key="", acc=None):
-    """Map each known collection container (pulls, pages, issues, channels, …)
-    to the set of entity-id keys found under it. Grouping by container lets us
-    spot a disjoint ``pulls`` set even when a parent ``repos`` id matches."""
+    """Map each collection container to the set of entity-id keys found under it.
+    Grouping by container lets us spot a disjoint ``messages`` set even when a
+    parent id elsewhere happens to match.
+
+    A "container" is detected structurally — any non-empty dict whose values are
+    themselves dicts (an entity-id -> record mapping) — instead of off a fixed
+    cross-app name allowlist. The allowlist this replaced (pulls/issues/channels/
+    repos/tickets/cards/boards/sprints/...) was shaped for GitHub/Jira/Slack/
+    Trello-style apps; it had zero overlap with e.g. Gmail (messages/drafts/
+    labels), QuickBooks (invoices/bills/payments/...), DocuSign (envelopes) or
+    Calendar (events), so a whole-world substitution in those apps produced no
+    entries in ``acc`` at all and ``_world_mismatch`` below silently passed it
+    as admissible. Detecting containers structurally covers every app without
+    a per-app name registered here. Harmless false positives picked up along
+    the way (e.g. an intermediate ``output`` wrapper whose values are the real
+    per-container dicts) don't hurt: their key-sets are schema-level (container
+    *names*, not entity ids) and identical across worlds, so they never read as
+    disjoint — they just add a no-op bucket."""
     if acc is None:
         acc = {}
     if isinstance(node, dict):
-        if parent_key in _CONTAINER_KEYS:
+        if node and all(isinstance(v, dict) for v in node.values()):
             acc.setdefault(parent_key, set()).update(
                 k for k in node if isinstance(k, str))
         for k, v in node.items():

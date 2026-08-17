@@ -10,7 +10,7 @@ class ClockSession:
         # snapshot beside this module; `seed` accepted for client compat, ignored.
         if seed_mode():
             # Seed architecture: world rolled from a seed (re-armed).
-            self.rng = random.Random(seed)
+            self.rng = random.Random(resolve_seed(seed))
             self._now = self._init_now()
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.

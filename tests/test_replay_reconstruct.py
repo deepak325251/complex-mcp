@@ -49,3 +49,51 @@ def test_good_dump_not_touched():
     # a fine dump (gt itself) must pass through unchanged, not be rebuilt
     fixed, info = repair_new_env(TASK, gt, old, gt, {"steps": []})
     assert info["repaired"] is False
+
+
+def test_repair_new_env_rejects_world_mismatched_replay(monkeypatch):
+    """repair_new_env must not swap an empty dump for an *unverified* replay.
+
+    If the trajectory was recorded against a differently-seeded live world
+    (the seed-plumbing bug), replaying it in-process at the *correct* seed
+    still won't land on gt_env's entities. This reproduces that: the replay
+    comes back non-empty but with an entity-id set disjoint from gt_env's —
+    repair_new_env must refuse it rather than accept any non-empty rebuild."""
+    import benchmark.bake_state_mcp as bsm
+
+    gt = {"LightGmail": {"status": "ok", "output": {
+        "messages": {"msg-woodworks-1": {"subject": "hi"}}}}}
+    old = {"LightGmail": {"status": "ok", "output": {"messages": {}}}}
+    empty = {"LightGmail": {"status": "ok", "output": {}}}
+    wrong_world_replay = {"LightGmail": {"status": "ok", "output": {
+        "messages": {"msg-orbit-labs-9": {"subject": "hi"}}}}}
+
+    monkeypatch.setattr(bsm, "replay_trajectory",
+                         lambda *a, **k: (wrong_world_replay, 1))
+
+    fixed, info = bsm.repair_new_env(TASK, empty, old, gt, {"steps": [
+        {"tool": "LightGmail_send", "arguments": {}}]})
+    assert info["repaired"] is False
+    assert info["reason"] == "empty_dump+replay_world_mismatch"
+    assert fixed == empty  # falls back to the (honestly empty) dump, not the bad replay
+
+
+def test_repair_new_env_accepts_matching_replay(monkeypatch):
+    """Sanity check: a replay that DOES land on gt_env's entities is still
+    accepted on an empty dump — the new guard only rejects mismatched worlds."""
+    import benchmark.bake_state_mcp as bsm
+
+    gt = {"LightGmail": {"status": "ok", "output": {
+        "messages": {"msg-woodworks-1": {"subject": "hi"}}}}}
+    old = {"LightGmail": {"status": "ok", "output": {"messages": {}}}}
+    empty = {"LightGmail": {"status": "ok", "output": {}}}
+    matching_replay = {"LightGmail": {"status": "ok", "output": {
+        "messages": {"msg-woodworks-1": {"subject": "hi"}}}}}
+
+    monkeypatch.setattr(bsm, "replay_trajectory",
+                         lambda *a, **k: (matching_replay, 1))
+
+    fixed, info = bsm.repair_new_env(TASK, empty, old, gt, {"steps": [
+        {"tool": "LightGmail_send", "arguments": {}}]})
+    assert info["repaired"] is True
+    assert fixed == matching_replay

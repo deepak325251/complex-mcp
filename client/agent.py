@@ -968,10 +968,18 @@ class AgentClient:
             return
         if len(env["apps"]) > 0:
             system_app = "LightSystem"
+            # Thread the task's seed into every login call. run_benchmark.py sets
+            # $COMPLEXMCP_SEED per task before invoking this episode (same process,
+            # so the env var is visible here); previously it was never forwarded
+            # into the login RPC itself, so it never reached the already-running
+            # software-server processes and every world was rolled unseeded
+            # (random.Random(None)) regardless of what the task declared.
+            login_seed_raw = os.environ.get("COMPLEXMCP_SEED")
+            login_seed = int(login_seed_raw) if login_seed_raw not in (None, "") else None
             login_info = await self.toolbox.call_with_server(
                 server_name=system_app,
                 tool_name="login",
-                arguments={}
+                arguments={"seed": login_seed} if login_seed is not None else {}
             )
             login_info: Dict[str, Any] = json.loads(login_info)
             if "session_info" not in login_info:
@@ -1002,7 +1010,8 @@ class AgentClient:
                             "os_cfg": {
                                 "session_id": session_id_dict[system_app],
                                 "url": system_url
-                            }
+                            },
+                            **({"seed": login_seed} if login_seed is not None else {}),
                         }
                     )
                     
