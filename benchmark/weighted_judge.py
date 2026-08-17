@@ -295,7 +295,7 @@ def load_weights(grading_dir=None):
     path = os.path.join(str(grading_dir), "test_weights.json") if grading_dir else None
     if path and os.path.exists(path):
         try:
-            raw = json.load(open(path, encoding="utf-8"))
+            raw = json.load(open(path, encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
             raw = None
         if isinstance(raw, dict):
@@ -533,7 +533,7 @@ def judge_weighted(
     wr = _weight_of(weights, "rubric")
     if rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
         try:
-            _rub = json.load(open(rubric_path, encoding="utf-8"))
+            _rub = json.load(open(rubric_path, encoding="utf-8-sig"))
             # rubric.json is either {"criteria": [...]} or a bare list of criteria.
             criteria = _rub.get("criteria", []) if isinstance(_rub, dict) else _rub
         except (OSError, json.JSONDecodeError):
@@ -663,7 +663,7 @@ def load_test_weight_map(grading_dir) -> dict:
         return {}
     try:
         raw = json.load(open(os.path.join(str(grading_dir), "test_weights.json"),
-                             encoding="utf-8"))
+                             encoding="utf-8-sig"))
     except (OSError, json.JSONDecodeError):
         return {}
     return ((raw.get("components") or {}).get("traj_tests") or {}).get("tests") or {}
@@ -769,7 +769,7 @@ def write_weighted_verifier(out_dir, result, grading_dir=None) -> str:
 def _load(path):
     if path and os.path.exists(path):
         try:
-            return json.load(open(path, encoding="utf-8"))
+            return json.load(open(path, encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
             return None
     return None

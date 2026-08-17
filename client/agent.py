@@ -1326,7 +1326,9 @@ class AgentClient:
                     continue
 
                 resp = await self.llm.chat(messages)
-                msg: str = resp.choices[0].message.content
+                # A thinking-only turn returns content=None; every `in msg` /
+                # `msg.endswith` below would TypeError on it.
+                msg: str = resp.choices[0].message.content or ""
                 usage = resp.usage
 
                 # Accumulate every turn (see native branch above).
@@ -1364,10 +1366,20 @@ class AgentClient:
                     print(msg)
 
                 output.append(msg)
-                messages.append({
-                    "role": "assistant",
-                    "content": msg
-                })
+                # Anthropic rejects a request whose history contains a
+                # whitespace-only text block ("messages: text content blocks
+                # must contain non-whitespace text"), so an empty assistant turn
+                # poisons the NEXT call and aborts the run mid-rollout. A turn
+                # that spent its budget entirely on extended thinking arrives
+                # here with msg == "" -- real, and more likely with thinking on
+                # by default. Drop the empty turn instead of recording it; the
+                # cnt_without_tc >= 5 guard below still terminates the episode if
+                # the model keeps producing nothing.
+                if msg and msg.strip():
+                    messages.append({
+                        "role": "assistant",
+                        "content": msg
+                    })
                 
                 if msg.endswith(TOOL_STOP_SEQ) and self.toolbox:
                     tool_calling_req = parse_tool(msg)
