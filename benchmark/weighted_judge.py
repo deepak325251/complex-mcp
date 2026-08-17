@@ -519,10 +519,19 @@ def judge_weighted(
             components["traj_tests"] = {"weight": wt, "value": round(val, 4)}
 
     # --- rubric component (optional) -----------------------------------------
+    # Judging and scoring are deliberately separate concerns. A task that sets
+    # `rubric` weight 0 is saying "keep this out of the reward" -- NOT "never
+    # evaluate it". Gating evaluation on the weight meant a task shipping a
+    # 7-criterion rubric.json at weight 0 produced rubric_score=null and an empty
+    # rubric block forever, so the whole QC/reporting channel was dark on exactly
+    # the tasks that had deliberately excluded it from the reward.
+    #
+    # So: evaluate whenever a rubric exists and a judge is available; add it to
+    # the ledger only when it carries weight.
     rubric_score = None
     rubric_per = None
     wr = _weight_of(weights, "rubric")
-    if wr and rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
+    if rubric_judge is not None and rubric_path and os.path.exists(rubric_path):
         try:
             _rub = json.load(open(rubric_path, encoding="utf-8"))
             # rubric.json is either {"criteria": [...]} or a bare list of criteria.
@@ -531,7 +540,14 @@ def judge_weighted(
             criteria = []
         verdicts = rubric_judge(criteria, final_message or "") or {}
         rubric_score, rubric_per = _score_rubric(criteria, verdicts)
-        if rubric_score is not None:
+        # A narrative judge also returns written evidence per criterion; attach
+        # it to the rows so report.json's `justification` is filled from what the
+        # judge actually said rather than left blank or invented.
+        _just = getattr(rubric_judge, "justifications", None) or {}
+        if _just and rubric_per:
+            for row in rubric_per:
+                row["justification"] = _just.get(row.get("number"), "")
+        if rubric_score is not None and wr:
             components["rubric"] = {"weight": wr, "value": rubric_score}
 
     # --- reduce ---------------------------------------------------------------
@@ -637,6 +653,52 @@ def _label(Rc, Rb, graph, state_available, wants_state, state_reason, plan_thres
     return "FAILED"
 
 
+def load_test_weight_map(grading_dir) -> dict:
+    """`{test_name: weight}` from a task's tests/test_weights.json.
+
+    Reads `components.traj_tests.tests` (the ledger shape). Returns {} when the
+    file is absent or flat-shaped, in which case callers fall back to weight 1.
+    """
+    if not grading_dir:
+        return {}
+    try:
+        raw = json.load(open(os.path.join(str(grading_dir), "test_weights.json"),
+                             encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return ((raw.get("components") or {}).get("traj_tests") or {}).get("tests") or {}
+
+
+def traj_test_rows(result, grading_dir=None):
+    """`([{name, weight, passed}], weighted_score)` for a weighted grade.
+
+    THE single source of truth for per-test outcomes. `write_weighted_verifier`
+    (verifier/ctrf.json) and the run report (report.json `pytest.tests[]`,
+    `test_weights_percentage`) both read it, because two independent derivations
+    of one number is exactly how ctrf.json and report.json drifted apart before.
+
+    `passed` here is the OUTCOME, not the raw flag: a guard carries a negative
+    weight and `passed_tests[name] is True` means the forbidden thing happened,
+    so the guard's outcome is False. Counting the raw flag reports a guard doing
+    its job as a failure.
+
+    `weighted_score` is the `traj_tests` component value already computed by
+    `_score_traj_tests`, not a recomputation -- it is what the reward actually
+    used, so report.json can never disagree with the ledger.
+    """
+    tt = result.get("traj_tests") or {}
+    passed = tt.get("passed_tests") or {}
+    weights = load_test_weight_map(grading_dir)
+    rows = []
+    for name, fired in passed.items():
+        w = float(weights.get(name, 1))
+        outcome = bool(fired) if w >= 0 else not bool(fired)
+        rows.append({"name": name, "weight": w, "passed": outcome})
+    rows.sort(key=lambda r: r["name"])
+    comp = (result.get("components") or {}).get("traj_tests") or {}
+    return rows, comp.get("value")
+
+
 def write_weighted_verifier(out_dir, result, grading_dir=None) -> str:
     """Write the FULL verifier/{reward.json, reward.txt, ctrf.json, detail.json}
     folder for a weighted grade — the same 4-file set the pytest+rubric grader
@@ -649,27 +711,15 @@ def write_weighted_verifier(out_dir, result, grading_dir=None) -> str:
     vdir = os.path.join(str(out_dir), "verifier")
     os.makedirs(vdir, exist_ok=True)
 
-    tt = result.get("traj_tests") or {}
-    passed = tt.get("passed_tests") or {}
-    # Per-test weights from test_weights.json (components.traj_tests.tests) so a
-    # guard (negative weight) reads as "passed" when it did NOT trigger.
-    tw = {}
-    if grading_dir:
-        try:
-            raw = json.load(open(os.path.join(str(grading_dir), "test_weights.json"),
-                                 encoding="utf-8"))
-            tw = ((raw.get("components") or {}).get("traj_tests") or {}).get("tests") or {}
-        except (OSError, json.JSONDecodeError, AttributeError):
-            tw = {}
-
-    tests = []
-    for name, is_pass in passed.items():
-        w = tw.get(name, 1)
-        triggered = bool(is_pass)
-        status = ("passed" if triggered else "failed") if w >= 0 \
-            else ("failed" if triggered else "passed")           # guard polarity
-        tests.append({"name": name, "status": status,
-                      "extra": {"weight": w, "kind": "goal" if w >= 0 else "guard"}})
+    # Per-test rows come from the shared helper (guard polarity applied there),
+    # so verifier/ctrf.json and report.json can never disagree about which
+    # tests ran or how they came out.
+    rows, _ = traj_test_rows(result, grading_dir)
+    tests = [{"name": r["name"],
+              "status": "passed" if r["passed"] else "failed",
+              "extra": {"weight": r["weight"],
+                        "kind": "goal" if r["weight"] >= 0 else "guard"}}
+             for r in rows]
     for c in (result.get("rubric_per_criterion") or []):
         tests.append({"name": f"rubric.{c.get('number')}",
                       "status": "passed" if c.get("satisfied") else "failed",
