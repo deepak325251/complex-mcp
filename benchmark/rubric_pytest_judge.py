@@ -171,6 +171,57 @@ def make_openai_rubric_judge(model=None, narrative: bool | None = None):
     return judge
 
 
+def make_anthropic_rubric_judge(model=None):
+    """Build a rubric judge from ANTHROPIC_BASE_URL / ANTHROPIC_API_KEY -- the
+    same ccbridge creds the agent uses, so no OpenAI key is needed.
+
+    Returns None if creds are absent so the caller degrades to Channel A only.
+    Uses the raw /v1/messages HTTP API via stdlib urllib (no anthropic SDK dep).
+    """
+    base = (os.environ.get("ANTHROPIC_BASE_URL") or os.environ.get("ANTHROPIC_API_BASE") or "").rstrip("/")
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if not base or not key:
+        return None
+    import json as _json
+    import urllib.request
+
+    judge_model = model or os.environ.get("RUBRIC_JUDGE_MODEL", "claude-opus-4-8")
+    url = f"{base}/v1/messages"
+
+    def judge(criteria, output):
+        verdicts = {}
+        for c in criteria:
+            prompt = (
+                "You are grading one rubric criterion against an AI agent's final message.\n"
+                "Answer with exactly one word: YES or NO.\n"
+                "Answer YES iff the statement in the criterion is literally true of the message.\n\n"
+                f"CRITERION: {c['criterion']}\n\n"
+                f"AGENT MESSAGE:\n{output}\n\nAnswer (YES/NO):"
+            )
+            body = _json.dumps({
+                "model": judge_model,
+                "max_tokens": 8,
+                "messages": [{"role": "user", "content": prompt}],
+            }).encode()
+            req = urllib.request.Request(url, data=body, method="POST", headers={
+                "x-api-key": key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            })
+            try:
+                with urllib.request.urlopen(req, timeout=60) as resp:
+                    data = _json.loads(resp.read().decode())
+                # /v1/messages -> {"content": [{"type":"text","text":"YES"}], ...}
+                parts = data.get("content") or []
+                text = "".join(p.get("text", "") for p in parts if isinstance(p, dict)).strip().upper()
+                verdicts[c["number"]] = text.startswith("Y")
+            except Exception:
+                verdicts[c["number"]] = None
+        return verdicts
+
+    return judge
+
+
 def judge_rubric_pytest(old_env, new_env, output, grading_dir,
                         rubric_judge=None, a_threshold=1.0, b_threshold=0.7, verbose=False):
     """Grade one episode. `grading_dir` holds test_outputs.py + test_weights.json (+ rubric.json)."""
