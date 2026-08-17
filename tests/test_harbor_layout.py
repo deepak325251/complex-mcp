@@ -289,6 +289,37 @@ def test_cost_estimate_is_labelled_and_never_lands_in_cost_usd(tmp_path, task_di
     assert ar["metadata"]["cost_usd_estimate"] == 22.5   # 1M*15 + 0.1M*75
 
 
+def test_cache_reads_are_priced_at_the_cache_rate(tmp_path, task_dir):
+    """Cache reads bill at 0.1x input. Pricing them at the full input rate turned
+    a $7.78 run into a $12.87 one."""
+    from benchmark.harbor_layout import _cost_estimate
+    e = _cost_estimate("claude-opus-4-8", {
+        "input_tokens": 272_635, "output_tokens": 41_599,
+        "cache_read_tokens": 377_190, "cache_creation_tokens": 0})
+    assert e["cost_usd_estimate"] == 7.775235
+    assert e["cost_breakdown_usd"]["cache_read"] == 0.565785
+    assert sum(e["cost_breakdown_usd"].values()) == e["cost_usd_estimate"]
+
+
+def test_thinking_tokens_are_not_double_billed():
+    """Anthropic counts thinking inside output_tokens; adding reasoning_tokens
+    again would double-bill the most expensive class."""
+    from benchmark.harbor_layout import _cost_estimate
+    base = {"input_tokens": 0, "output_tokens": 1_000_000, "cache_read_tokens": 0,
+            "cache_creation_tokens": 0}
+    a = _cost_estimate("claude-opus-4-8", base)
+    b = _cost_estimate("claude-opus-4-8", dict(base, reasoning_tokens=900_000))
+    assert a["cost_usd_estimate"] == b["cost_usd_estimate"] == 75.0
+
+
+def test_cache_writes_are_priced_above_input(tmp_path):
+    from benchmark.harbor_layout import _cost_estimate
+    e = _cost_estimate("claude-opus-4-8", {
+        "input_tokens": 0, "output_tokens": 0,
+        "cache_creation_tokens": 1_000_000, "cache_read_tokens": 0})
+    assert e["cost_usd_estimate"] == 18.75
+
+
 def test_measured_cost_suppresses_the_estimate(tmp_path, task_dir):
     jd = tmp_path / "j"
     rec = dict(RECORD, usage={"input_tokens": 10, "output_tokens": 5, "cost_usd": 4.59})

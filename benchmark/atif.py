@@ -361,7 +361,9 @@ def from_complexmcp(traj: dict, *, agent: str = "complexmcp", model: str = "",
             "total_prompt_tokens": usage.get("input_tokens", 0),
             "total_completion_tokens": usage.get("output_tokens", 0),
             "total_cached_tokens": usage.get("cache_read_tokens", 0),
-            "total_cost_usd": usage.get("cost_usd"),
+            # 0.0 from a backend that reports no cost is not a measurement of
+            # zero spend -- publish null so nothing sums a false zero.
+            "total_cost_usd": usage.get("cost_usd") or None,
             "total_steps": len(steps),
             "extra": {
                 "total_cache_creation_input_tokens": usage.get("cache_creation_tokens", 0),

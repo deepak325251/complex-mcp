@@ -145,25 +145,36 @@ def _honest_cost(usage: dict | None):
     return cost
 
 
-# USD per million tokens (input, output). Only used for the clearly-labelled
-# ESTIMATE below -- never written to `cost_usd`, which is reserved for what the
-# backend actually reported. An out-of-date table would otherwise quietly turn
-# into a fabricated measurement.
+# USD per million tokens, per billed class. Cache writes bill at 1.25x input
+# (5-minute TTL) and cache READS at 0.1x -- a 10x difference, so folding reads in
+# at the input rate turns a $6 run into a $13 one. Only used for the
+# clearly-labelled ESTIMATE below, never written to `cost_usd`, which is reserved
+# for what the backend actually reported: an out-of-date table must not quietly
+# become a fabricated measurement.
 _PRICES = {
-    "claude-opus-4-8": (15.0, 75.0),
-    "claude-opus-4": (15.0, 75.0),
-    "claude-sonnet-4-5": (3.0, 15.0),
-    "claude-sonnet-4": (3.0, 15.0),
-    "claude-haiku-4-5": (1.0, 5.0),
+    #                     input   output  cache_write  cache_read
+    "claude-opus-4-8":   (15.0,   75.0,   18.75,       1.50),
+    "claude-opus-4":     (15.0,   75.0,   18.75,       1.50),
+    "claude-sonnet-4-5": (3.0,    15.0,   3.75,        0.30),
+    "claude-sonnet-4":   (3.0,    15.0,   3.75,        0.30),
+    "claude-haiku-4-5":  (1.0,    5.0,    1.25,        0.10),
 }
 
 
 def _cost_estimate(model: str, usage: dict | None) -> dict | None:
-    """A labelled estimate for when the backend reports no cost.
+    """A labelled cost estimate for when the backend reports none.
 
-    Rides in `agent_result.metadata`, never in `cost_usd`: the reader can tell
-    a measurement from an estimate, and cached input is priced at full rate here
-    (an over-estimate), which is stated rather than hidden.
+    Rides in `agent_result.metadata`, never in `cost_usd`, so a reader can always
+    tell a measurement from a calculation.
+
+    Prices each token class at its own rate and returns the per-class breakdown,
+    so the number is auditable rather than a bare total. `reasoning_tokens` are
+    NOT added: Anthropic already counts thinking inside `output_tokens`, and
+    adding them again would double-bill the most expensive class.
+
+    ccbridge fronts a Claude Code subscription, which has no per-request charge,
+    so this is "what this run would cost at API list price" -- useful for
+    comparing runs, not a bill.
     """
     usage = usage or {}
     if usage.get("cost_usd"):
@@ -171,15 +182,24 @@ def _cost_estimate(model: str, usage: dict | None) -> dict | None:
     key = next((k for k in _PRICES if str(model).startswith(k)), None)
     if not key:
         return None
-    inp = (usage.get("input_tokens") or 0) + (usage.get("cache_read_tokens") or 0)
-    out = usage.get("output_tokens") or 0
-    if not (inp or out):
+    p_in, p_out, p_write, p_read = _PRICES[key]
+    counts = {
+        "input": (usage.get("input_tokens") or 0, p_in),
+        "output": (usage.get("output_tokens") or 0, p_out),
+        "cache_write": (usage.get("cache_creation_tokens") or 0, p_write),
+        "cache_read": (usage.get("cache_read_tokens") or 0, p_read),
+    }
+    if not any(n for n, _ in counts.values()):
         return None
-    pin, pout = _PRICES[key]
+    breakdown = {k: _round(n * rate / 1e6, 6) for k, (n, rate) in counts.items()}
     return {
-        "cost_usd_estimate": _round((inp * pin + out * pout) / 1e6, 6),
-        "estimate_basis": f"{key} @ ${pin}/${pout} per Mtok, cached input priced "
-                          f"at full input rate (over-estimate)",
+        "cost_usd_estimate": _round(sum(breakdown.values()), 6),
+        "cost_breakdown_usd": breakdown,
+        "tokens": {k: n for k, (n, _) in counts.items()},
+        "rates_usd_per_mtok": {"input": p_in, "output": p_out,
+                               "cache_write": p_write, "cache_read": p_read},
+        "estimate_basis": f"{key} list price; thinking tokens already counted in "
+                          f"output; subscription runs have no per-request charge",
         "is_measured": False,
     }
 
