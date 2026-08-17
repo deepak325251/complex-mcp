@@ -66,6 +66,24 @@ BAKE_GT=1 LIMIT=0 bash scripts/run_task.sh
 Overrides: `MODEL`, `METHOD`, `LIMIT`, `TASK`, `TASKS_DIR`, `OUTPUT_DIR`.
 Output: `runs/<timestamp>__<model>__<method>/tasks/task_NNN__<slug>/{meta.json, output.md, trajectory.json, tool_summary.json, tokens.json, score.json}`.
 
+### 4b) Run the trajectory for ONE task locally (recommended)
+
+`scripts/run_task_local.sh` runs a single task **end to end** on your machine: it starts exactly one `ccbridge` (Claude OAuth proxy on `:8765`), boots the task's apps at the task's own seed, waits for every port to listen, generates the agent trajectory, grades it with the weighted judge, then tears everything down. This is the command to use when you just want the trajectory for a task.
+
+```bash
+# bash scripts/run_task_local.sh <tasks-dir> <task-slug> [model]
+bash scripts/run_task_local.sh inputs_1408_2 03-household-week-coordination
+```
+
+Options (environment variables):
+
+- `CCBRIDGE_CREDS=/path/to/creds.json` — explicit Claude OAuth credentials JSON. If unset, the bridge falls back to `~/.claude/.credentials.json` (or the macOS Keychain / Claude Code login).
+- `DRY_RUN=1` — bring up the bridge + apps and verify all ports, but **skip** the benchmark (leaves the sandbox running until Ctrl-C; handy for poking the tools by hand).
+- `LAYOUT=mcp-stump` (default) writes results under `output/trials_<task>/...`; `LAYOUT=legacy` writes under `runs/<timestamp>/...`.
+- Third positional argument overrides the model (default `claude-opus-4-8`).
+
+The task's `seed`, `fixture`, and `apps` are read from its `task.toml`, so the live world always matches the baked ground-truth env. The trajectory and grading artifacts land next to each other (`trajectory.json`, `output.md`, `tool_summary.json`, `tokens.json`, `score.json`).
+
 ### 5) 3-container Docker stack
 
 ```bash
