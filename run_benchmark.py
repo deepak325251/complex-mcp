@@ -4,6 +4,7 @@ from benchmark.rubric_pytest_judge import make_openai_rubric_judge, make_anthrop
 from benchmark.rubric_judge import evaluate_rubric, find_rubric_for_task, load_rubric
 from benchmark.classify_failure import classify as _classify_failure, parse_expected_tools as _parse_expected_tools
 from benchmark.passk import estimate as _passk_estimate
+from benchmark.harbor_layout import slug_of as _hslug
 from scripts.task_writer import write_task_dir, write_mcp_stump_run, write_trials_aggregate, parse_trajectory as _parse_traj_for_layout, parse_trajectory
 from dotenv import load_dotenv
 from argparse import ArgumentParser
@@ -40,8 +41,11 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
     # nests them at <task-slug>/.raw/trials_*. Globbing only the flat form
     # reported "0 tasks, accuracy 0.0" for every harbor run -- the roll-up found
     # nothing and said so as though it were a result.
+    # Three shapes: mcp-stump (flat), harbor pointed at the output root, and
+    # harbor pointed at a single task dir (the per-task roll-up).
     trial_dirs = sorted(run_dir.glob("trials_*")) + \
-        sorted(run_dir.glob("*/.raw/trials_*"))
+        sorted(run_dir.glob("*/.raw/trials_*")) + \
+        sorted(run_dir.glob(".raw/trials_*"))
     for sd in trial_dirs:
         sp = sd / "summary.json"
         if not sp.is_file():
@@ -94,6 +98,43 @@ def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
         "failure_mode_histogram": dict(hist.most_common()),
         "per_task": tasks,
     }
+
+
+def _scoped_summary(summary: dict, task_name: str) -> dict:
+    """`summary` narrowed to one task, with its headline metrics recomputed.
+
+    The invocation-level summary aggregates every task in the run, so dropping a
+    copy of it into each task directory would report other tasks' numbers under
+    this task's name. Filtering the episodes and re-deriving the averages from
+    them keeps each task directory self-describing.
+    """
+    eps = [e for e in summary.get("episodes", []) if e.get("name") == task_name]
+    out = {**summary, "episodes": eps, "scope": "task", "task": task_name}
+    if not eps:
+        return out
+
+    def _avg(fn):
+        vals = [v for v in (fn(e) for e in eps) if v is not None]
+        return round(sum(vals) / len(vals), 6) if vals else 0.0
+
+    def _rate(e, num, den):
+        j = e.get("judge") or {}
+        t = j.get(den) or 0
+        return (j.get(num) or 0) / t if t else None
+
+    out["metrics"] = {
+        "accuracy": round(sum(1 for e in eps if e.get("passed")) / len(eps), 6),
+        "avg_completion_rate": _avg(lambda e: _rate(e, "recall", "total")),
+        "avg_misbehave_rate": _avg(lambda e: _rate(e, "misbehave", "total")),
+        "avg_valid_tool_calls": _avg(lambda e: e.get("valid_tool_calls")),
+        "avg_invalid_tool_calls": _avg(lambda e: e.get("invalid_tool_calls")),
+        "avg_error_tool_calls": _avg(lambda e: e.get("error_tool_calls")),
+        "avg_prompt_tokens": _avg(lambda e: (e.get("tokens") or {}).get("prompt")),
+        "avg_llm_tokens": _avg(lambda e: (e.get("tokens") or {}).get("llm")),
+        "avg_tool_tokens": _avg(lambda e: (e.get("tokens") or {}).get("tool")),
+    }
+    out["config"] = {**summary.get("config", {}), "episodes": len(eps)}
+    return out
 
 
 def _iso_z(dt) -> str | None:
@@ -1028,9 +1069,18 @@ def main(args):
             },
             "episodes": per_episode,
         }
-        summary_path = run_dir / "summary.json"
-        with open(summary_path, "w") as f:
-            json.dump(summary, f, indent=2, default=str)
+        # Harbor layout: these live INSIDE the task directory, so running several
+        # tasks (or the same task again) never overwrites another task's summary
+        # at the output root. Each copy is narrowed to its own task.
+        _names = [e.get("name") for e in per_episode if e.get("name")]
+        _dests = ([(run_dir / _hslug(n), _scoped_summary(summary, n)) for n in dict.fromkeys(_names)]
+                  if layout == "harbor" and _names else [(run_dir, summary)])
+        summary_path = None
+        for _d, _s in _dests:
+            _d.mkdir(parents=True, exist_ok=True)
+            summary_path = _d / "summary.json"
+            with open(summary_path, "w") as f:
+                json.dump(_s, f, indent=2, default=str)
 
         report_lines = [
             f"# Benchmark Report — {run_dir.name}",
@@ -1096,7 +1146,7 @@ def main(args):
             ]
             for fc, count in failure_counts.most_common():
                 report_lines.append(f"| `{fc}` | {count} |")
-        report_path = run_dir / "report.md"
+        report_path = (summary_path.parent if summary_path else run_dir) / "report.md"
         with open(report_path, "w") as f:
             f.write("\n".join(report_lines) + "\n")
 
@@ -1171,15 +1221,29 @@ def main(args):
             # corpus roll-up is a different artifact answering a different
             # question, so it gets its own name rather than racing for one.
             ps_path = run_dir / "passk_summary.json"
+            if layout == "harbor" and trials_runs:
+                # One roll-up per task dir; the corpus view is recoverable by
+                # reading them together, and nothing collides at the root.
+                for _tn in trials_runs:
+                    _td = run_dir / _hslug(_tn)
+                    _td.mkdir(parents=True, exist_ok=True)
+                    _c = _aggregate_trials_on_disk(_td, model)
+                    _c["attempts_per_task"] = n_attempts
+                    _c["at"] = at_ks
+                    (_td / "passk_summary.json").write_text(
+                        json.dumps(_c, indent=2, default=str))
+                ps_path = None
             # A1 fix: the headline roll-up aggregates EVERY trials_*/ on disk, not
             # just this invocation's episodes -- so piecemeal runs and re-runs
             # report the true corpus accuracy instead of last-writer-wins.
             corpus = _aggregate_trials_on_disk(run_dir, model)
             corpus["attempts_per_task"] = n_attempts
             corpus["at"] = at_ks
-            ps_path.write_text(json.dumps(corpus, indent=2, default=str))
+            if ps_path is not None:
+                ps_path.write_text(json.dumps(corpus, indent=2, default=str))
             print(f"[output] corpus roll-up: {corpus['passed']}/{corpus['tasks']} "
-                  f"tasks passed (accuracy {corpus['accuracy']}) -> {ps_path}")
+                  f"tasks passed (accuracy {corpus['accuracy']})"
+                  + (f" -> {ps_path}" if ps_path else " -> per-task passk_summary.json"))
 
 
 def load_dotenv_if_not_exist():

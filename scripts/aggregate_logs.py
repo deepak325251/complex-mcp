@@ -22,29 +22,23 @@ import shutil
 from pathlib import Path
 
 # (source relative to the job dir, name inside logs/)
+# Job-level JSON is NOT mirrored: config/lock/result/pass_summary already sit at
+# the job root, so copying them here only doubled every delivered trajectory.
+# Logs proper (job.log/wrapper.log/finalize.log) are mirrored when they exist --
+# they have no canonical home elsewhere.
 JOB_FILES = [
-    ("config.json", "job-config.json"),
-    ("lock.json", "job-lock.json"),
-    ("result.json", "job-result.json"),
-    ("pass_summary.json", "pass-summary.json"),
-    ("passk_summary.json", "passk-summary.json"),
     ("job.log", "job.log"),
     ("wrapper.log", "wrapper.log"),
     ("finalize.log", "finalize.log"),
 ]
 
 # (source relative to a Run dir, name inside logs/<trial>/)
+# Only files with no canonical duplicate under trajectory/Run N/. report.json,
+# result.json, trial-config.json and the reward JSONs were straight copies.
 TRIAL_FILES = [
-    ("report.json", "report.json"),
-    ("result.json", "result.json"),
-    ("config.json", "trial-config.json"),
     ("judge_response.txt", "judge-response.txt"),
-    ("artifacts/manifest.json", "artifacts-manifest.json"),
     ("verifier/ctrf.json", "verifier-ctrf.json"),
-    ("verifier/reward.json", "verifier-reward.json"),
     ("verifier/reward.txt", "verifier-reward.txt"),
-    ("verifier/reward_raw.json", "verifier-reward-raw.json"),
-    ("verifier/reward_raw.txt", "verifier-reward-raw.txt"),
     ("verifier/test-stdout.txt", "verifier-stdout.txt"),
     ("agent/complexmcp.txt", "agent-stream.txt"),
     ("trial.log", "trial.log"),
@@ -61,71 +55,40 @@ def _copy(src: Path, dest: Path) -> int | None:
 
 
 def _run_sort_key(p: Path):
-    """`Run 10` must sort after `Run 9`, not between `Run 1` and `Run 2`."""
-    tail = p.name.rsplit(" ", 1)[-1]
+    """`Run_10` must sort after `Run_9`, not between `Run_1` and `Run_2`."""
+    tail = p.name.replace(" ", "_").rsplit("_", 1)[-1]
     return (0, int(tail)) if tail.isdigit() else (1, 0)
 
 
 def aggregate(job_dir: str | Path) -> Path:
+    """Write each run's logs INSIDE its own run directory.
+
+    They used to live at `logs/<trial_name>/` at the job root, but `trial_name`
+    is derived from the task digest and is therefore identical for every attempt
+    -- so a 2-attempt run produced ONE mirror and Run_2 silently overwrote
+    Run_1's agent stream. Keying on the run directory instead makes collision
+    impossible by construction, no matter how the trial is named.
+    """
     job_dir = Path(job_dir)
-    logs = job_dir / "logs"
-    logs.mkdir(parents=True, exist_ok=True)
-
-    written: list[tuple[str, int]] = []
-    for src_name, dest_name in JOB_FILES:
-        size = _copy(job_dir / src_name, logs / dest_name)
-        if size is not None:
-            written.append((dest_name, size))
-
-    trials: list[tuple[str, list[tuple[str, int]]]] = []
     traj = job_dir / "trajectory"
-    if traj.is_dir():
-        for run_dir in sorted((d for d in traj.iterdir() if d.is_dir()),
-                              key=_run_sort_key):
-            # Name the mirror directory by the trial name the trial itself
-            # recorded, falling back to the run dir when it is unreadable --
-            # `Run 1` contains a space, which is awkward but never wrong.
-            name = _trial_name(run_dir)
-            rows: list[tuple[str, int]] = []
-            for src_name, dest_name in TRIAL_FILES:
-                size = _copy(run_dir / src_name, logs / name / dest_name)
-                if size is not None:
-                    rows.append((dest_name, size))
-            if rows:
-                trials.append((name, rows))
+    if not traj.is_dir():
+        return traj
 
-    (logs / "INDEX.md").write_text(_index(job_dir.name, written, trials))
-    return logs
-
-
-def _trial_name(run_dir: Path) -> str:
-    import json
-    cfg = run_dir / "config.json"
-    if cfg.is_file():
-        try:
-            name = json.loads(cfg.read_text()).get("trial_name")
-            if name:
-                return str(name)
-        except (OSError, json.JSONDecodeError):
-            pass
-    return run_dir.name
+    for run_dir in sorted((d for d in traj.iterdir() if d.is_dir()),
+                          key=_run_sort_key):
+        logs = run_dir / "logs"
+        for src_name, dest_name in TRIAL_FILES:
+            _copy(run_dir / src_name, logs / dest_name)
+        # Job-level logs (job.log/wrapper.log/finalize.log) have no canonical
+        # home elsewhere; mirror them alongside the first run only.
+        if run_dir == min(traj.iterdir(), key=_run_sort_key):
+            for src_name, dest_name in JOB_FILES:
+                _copy(job_dir / src_name, logs / dest_name)
+        if logs.is_dir() and not any(logs.iterdir()):
+            logs.rmdir()          # never leave an empty logs/ behind
+    return traj
 
 
-def _index(job_label: str, job_rows, trials) -> str:
-    out = [f"# Logs index for {job_label}", "",
-           "Aggregated by scripts/aggregate_logs.py. Sources are the canonical",
-           "files under this job dir; this tree is a flat mirror for grep and",
-           "archiving. Every entry below was actually written.", "",
-           "## Job-level", ""]
-    out += [f"- `{n}` — {s} bytes" for n, s in job_rows] or ["- (none)"]
-    out += ["", "## Trials", ""]
-    if not trials:
-        out.append("- (none)")
-    for name, rows in trials:
-        out += [f"### {name}", ""]
-        out += [f"- `{name}/{n}` — {s} bytes" for n, s in rows]
-        out.append("")
-    return "\n".join(out) + "\n"
 
 
 def main(argv=None) -> int:
@@ -134,7 +97,8 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     if not args.job_dir.is_dir():
         raise SystemExit(f"not a directory: {args.job_dir}")
-    print(f"[logs] wrote {aggregate(args.job_dir)}")
+    aggregate(args.job_dir)
+    print(f"[logs] wrote per-run logs under {args.job_dir}/trajectory/Run_*/logs")
     return 0
 
 

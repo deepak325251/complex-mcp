@@ -105,18 +105,6 @@ def test_pct_of_none_is_none():
     assert pct(None) is None
 
 
-def test_reward_files_are_one_conversion_apart(job):
-    for n in (1, 2):
-        v = job / "trajectory" / f"Run {n}" / "verifier"
-        raw = json.loads((v / "reward_raw.json").read_text())["reward"]
-        shown = json.loads((v / "reward.json").read_text())["reward"]
-        assert raw == 0.230754                 # fraction, full precision
-        assert shown == pct(raw)               # percentage
-        assert (v / "reward_raw.txt").read_text() == str(raw)
-        assert (v / "reward.txt").read_text() == str(shown)
-
-
-# --- report ----------------------------------------------------------------
 
 def test_percentage_comes_from_the_ledger_not_a_recomputation(task_dir):
     r = build_report("m", 1, JUDGE, task_dir / "tests", RUBRIC)
@@ -159,23 +147,23 @@ def test_final_reward_is_the_mean_of_the_two_percentages(task_dir):
 
 def test_expected_files_exist(job):
     for rel in ("config.json", "lock.json", "result.json", "pass_summary.json",
-                "trajectory/Run 1/report.json", "trajectory/Run 1/config.json",
-                "trajectory/Run 1/lock.json", "trajectory/Run 1/result.json",
-                "trajectory/Run 1/agent/trajectory.json",
-                f"trajectory/Run 1/agent/{PRODUCER}.txt",
-                "trajectory/Run 1/verifier/ctrf.json",
-                "trajectory/Run 1/verifier/test-stdout.txt",
-                "trajectory/Run 1/artifacts/manifest.json"):
+                "trajectory/Run_1/report.json", "trajectory/Run_1/config.json",
+                "trajectory/Run_1/lock.json", "trajectory/Run_1/result.json",
+                "trajectory/Run_1/agent/trajectory.json",
+                f"trajectory/Run_1/agent/{PRODUCER}.txt",
+                "trajectory/Run_1/verifier/ctrf.json",
+                "trajectory/Run_1/verifier/reward.txt",
+                "trajectory/Run_1/verifier/test-stdout.txt"):
         assert (job / rel).is_file(), rel
 
 
 def test_run_dir_naming(job):
     names = sorted(p.name for p in (job / "trajectory").iterdir())
-    assert names == ["Run 1", "Run 2"]      # capital R, literal space
+    assert names == ["Run_1", "Run_2"]      # capital R, literal space
 
 
 def test_ctrf_summary_carries_scores(job):
-    c = json.loads((job / "trajectory/Run 1/verifier/ctrf.json").read_text())["results"]
+    c = json.loads((job / "trajectory/Run_1/verifier/ctrf.json").read_text())["results"]
     assert c["summary"]["weighted_percentage"] == 33.33
     assert c["summary"]["overall_score"] == 0.3333
     assert set(c["tests"][0]) == {"name", "status", "duration"}
@@ -202,20 +190,20 @@ def test_job_result_totals_are_summed_not_sampled(job):
 # --- no fabricated provenance ---------------------------------------------
 
 def test_agent_is_never_claimed_to_be_claude_code(job):
-    res = json.loads((job / "trajectory/Run 1/result.json").read_text())
+    res = json.loads((job / "trajectory/Run_1/result.json").read_text())
     assert res["agent_info"]["name"] == PRODUCER != "claude-code"
     assert json.loads((job / "config.json").read_text())["agents"][0]["name"] == PRODUCER
 
 
 def test_no_synthesised_claude_code_sessions(job):
-    assert not (job / "trajectory/Run 1/agent/sessions").exists()
-    assert not (job / "trajectory/Run 1/agent/claude-code.txt").exists()
+    assert not (job / "trajectory/Run_1/agent/sessions").exists()
+    assert not (job / "trajectory/Run_1/agent/claude-code.txt").exists()
 
 
 def test_digest_is_recomputable(job, task_dir):
-    lock = json.loads((job / "trajectory/Run 1/lock.json").read_text())
+    lock = json.loads((job / "trajectory/Run_1/lock.json").read_text())
     assert lock["task"]["digest"] == task_digest(task_dir)
-    res = json.loads((job / "trajectory/Run 1/result.json").read_text())
+    res = json.loads((job / "trajectory/Run_1/result.json").read_text())
     assert res["task_checksum"] == task_digest(task_dir).removeprefix("sha256:")
 
 
@@ -247,14 +235,6 @@ def test_job_cost_is_none_when_any_trial_cost_is_unknown(tmp_path, task_dir):
     assert json.loads((jd / "result.json").read_text())["stats"]["cost_usd"] is None
 
 
-def test_manifest_reports_missing_artifacts_rather_than_omitting_them(job):
-    m = json.loads((job / "trajectory/Run 1/artifacts/manifest.json").read_text())
-    assert m and m[0]["source"] == "/tmp/final_state.json"
-    assert m[0]["status"] == "missing"
-    assert m[0]["service"] == "sandbox"
-
-
-# --- phase timings + cost estimate ----------------------------------------
 
 def test_agent_execution_span_is_recorded(tmp_path, task_dir):
     jd = tmp_path / "j"
@@ -268,7 +248,7 @@ def test_agent_execution_span_is_recorded(tmp_path, task_dir):
     write_harbor_trial(jd, 1, record=RECORD, model="m", judge_result=JUDGE,
                        task_dir=task_dir, grading_dir=task_dir / "tests",
                        job_id="j", job_label="l", timings=timings)
-    res = json.loads((jd / "trajectory/Run 1/result.json").read_text())
+    res = json.loads((jd / "trajectory/Run_1/result.json").read_text())
     assert res["agent_execution"]["started_at"] == "2026-08-17T10:00:01.0Z"
     assert res["verifier"]["finished_at"] == "2026-08-17T10:05:00.0Z"
     # Unmeasured phases stay null rather than being attributed to an attempt.
@@ -282,7 +262,7 @@ def test_cost_estimate_is_labelled_and_never_lands_in_cost_usd(tmp_path, task_di
     write_harbor_trial(jd, 1, record=rec, model="claude-opus-4-8",
                        judge_result=JUDGE, task_dir=task_dir,
                        grading_dir=task_dir / "tests", job_id="j", job_label="l")
-    ar = json.loads((jd / "trajectory/Run 1/result.json").read_text())["agent_result"]
+    ar = json.loads((jd / "trajectory/Run_1/result.json").read_text())["agent_result"]
     assert ar["cost_usd"] is None                      # not a measurement
     assert ar["metadata"]["is_measured"] is False
     assert "cost_usd" not in ar["metadata"]             # estimate never renamed
@@ -326,63 +306,22 @@ def test_measured_cost_suppresses_the_estimate(tmp_path, task_dir):
     write_harbor_trial(jd, 1, record=rec, model="claude-opus-4-8",
                        judge_result=JUDGE, task_dir=task_dir,
                        grading_dir=task_dir / "tests", job_id="j", job_label="l")
-    ar = json.loads((jd / "trajectory/Run 1/result.json").read_text())["agent_result"]
+    ar = json.loads((jd / "trajectory/Run_1/result.json").read_text())["agent_result"]
     assert ar["cost_usd"] == 4.59
     assert ar["metadata"] is None
 
 
 # --- logs mirror -----------------------------------------------------------
 
-def test_logs_mirror_is_written(job):
-    logs = job / "logs"
-    for n in ("INDEX.md", "job-config.json", "job-lock.json", "job-result.json",
-              "pass-summary.json"):
-        assert (logs / n).is_file(), n
 
 
-def test_mirror_is_byte_identical_to_its_source(job):
-    for src, dest in (("config.json", "job-config.json"),
-                      ("lock.json", "job-lock.json"),
-                      ("result.json", "job-result.json"),
-                      ("pass_summary.json", "pass-summary.json")):
-        assert (job / src).read_bytes() == (job / "logs" / dest).read_bytes()
 
 
-def test_per_trial_subdir_named_by_trial_name(job):
-    tn = json.loads((job / "trajectory/Run 1/config.json").read_text())["trial_name"]
-    d = job / "logs" / tn
-    assert d.is_dir()
-    for n in ("report.json", "result.json", "trial-config.json",
-              "verifier-ctrf.json", "verifier-reward.json",
-              "verifier-reward-raw.json", "agent-stream.txt"):
-        assert (d / n).is_file(), n
-
-
-def test_index_lists_only_files_that_exist(job):
-    """The reference INDEX.md advertises files it does not ship. An index that
-    lists absent files reads as evidence they were produced."""
-    import re
-    text = (job / "logs" / "INDEX.md").read_text()
-    for rel in re.findall(r"^- `([^`]+)`", text, re.M):
-        assert (job / "logs" / rel).is_file(), rel
-
-
-def test_index_reports_real_byte_sizes(job):
-    import re
-    text = (job / "logs" / "INDEX.md").read_text()
-    for rel, size in re.findall(r"^- `([^`]+)` — (\d+) bytes", text, re.M):
-        assert (job / "logs" / rel).stat().st_size == int(size)
-
-
-def test_absent_optional_files_are_simply_not_indexed(job):
-    """judge_response.txt is absent unless the narrative judge ran."""
-    text = (job / "logs" / "INDEX.md").read_text()
-    assert "judge-response.txt" not in text
 
 
 def test_run_10_sorts_after_run_9(tmp_path, task_dir):
     from scripts.aggregate_logs import _run_sort_key
-    dirs = [tmp_path / f"Run {i}" for i in (1, 2, 9, 10, 11)]
+    dirs = [tmp_path / f"Run_{i}" for i in (1, 2, 9, 10, 11)]
     assert sorted(dirs, key=_run_sort_key) == dirs
 
 
@@ -394,7 +333,7 @@ def _types(obj):
 
 
 def test_trial_result_keyset(job):
-    r = json.loads((job / "trajectory/Run 1/result.json").read_text())
+    r = json.loads((job / "trajectory/Run_1/result.json").read_text())
     assert set(r) == {
         "id", "task_name", "trial_name", "trial_uri", "task_id", "source",
         "task_checksum", "config", "agent_info", "agent_result",
@@ -419,13 +358,8 @@ def test_job_result_keyset(job):
 def test_locks_declare_their_schema_versions(job):
     assert json.loads((job / "lock.json").read_text())["schema_version"] == 2
     assert json.loads(
-        (job / "trajectory/Run 1/lock.json").read_text())["schema_version"] == 1
+        (job / "trajectory/Run_1/lock.json").read_text())["schema_version"] == 1
 
-
-def test_verifier_reward_is_a_number_not_a_string(job):
-    for n in ("reward.json", "reward_raw.json"):
-        v = json.loads((job / "trajectory/Run 1/verifier" / n).read_text())["reward"]
-        assert isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
 def test_every_emitted_json_parses(job):
@@ -444,3 +378,72 @@ def test_producer_is_named_in_the_job_lock(job):
     lock = json.loads((job / "lock.json").read_text())
     assert lock["producer"]["name"] == PRODUCER
     assert "harbor" not in lock
+
+
+# --- output trimming -------------------------------------------------------
+
+TRIMMED = [
+    "trajectory/Run_1/verifier/reward.json",
+    "trajectory/Run_1/verifier/reward_raw.json",
+    "trajectory/Run_1/verifier/reward_raw.txt",
+    "trajectory/Run_1/artifacts/manifest.json",
+    "logs/job-config.json", "logs/job-lock.json", "logs/job-result.json",
+    "logs/pass-summary.json", "logs/INDEX.md",
+]
+
+
+@pytest.mark.parametrize("rel", TRIMMED)
+def test_redundant_file_is_not_emitted(job, rel):
+    """Each of these duplicated a canonical file elsewhere in the tree."""
+    assert not (job / rel).exists(), rel
+
+
+def test_artifacts_dir_is_not_created(job):
+    for n in (1, 2):
+        assert not (job / "trajectory" / f"Run_{n}" / "artifacts").exists()
+
+
+def test_per_trial_log_duplicates_are_gone(job):
+    for d in (job / "logs").glob("*/"):
+        for gone in ("report.json", "result.json", "trial-config.json",
+                     "verifier-reward.json", "verifier-reward-raw.json",
+                     "verifier-reward-raw.txt"):
+            assert not (d / gone).exists(), gone
+
+
+def test_reward_txt_survives_and_is_the_percentage(job):
+    """The only scalar kept. The fraction still lives in result.json, so
+    dropping reward_raw.* loses nothing."""
+    txt = (job / "trajectory/Run_1/verifier/reward.txt").read_text()
+    res = json.loads((job / "trajectory/Run_1/result.json").read_text())
+    assert float(txt) == pct(res["verifier_result"]["rewards"]["reward"])
+
+
+# --- per-run logs ----------------------------------------------------------
+
+def test_run_dirs_use_underscore_not_space(job):
+    names = sorted(p.name for p in (job / "trajectory").iterdir())
+    assert names == ["Run_1", "Run_2"]
+    assert not any(" " in n for n in names)
+
+
+def test_logs_live_inside_each_run(job):
+    """Keyed by run dir, not trial_name -- trial_name is derived from the task
+    digest and is identical for every attempt, so a shared logs/<trial>/ meant
+    Run_2 silently overwrote Run_1's agent stream."""
+    assert not (job / "logs").exists()          # no job-root mirror any more
+    for n in (1, 2):
+        assert (job / "trajectory" / f"Run_{n}" / "logs").is_dir()
+
+
+def test_each_run_keeps_its_own_agent_stream(job):
+    a = (job / "trajectory/Run_1/logs/agent-stream.txt")
+    b = (job / "trajectory/Run_2/logs/agent-stream.txt")
+    assert a.is_file() and b.is_file()
+    assert a.resolve() != b.resolve()           # two files, not one shared path
+
+
+def test_run_10_sorts_after_run_9_with_underscores(tmp_path):
+    from scripts.aggregate_logs import _run_sort_key
+    dirs = [tmp_path / f"Run_{i}" for i in (1, 2, 9, 10, 11)]
+    assert sorted(dirs, key=_run_sort_key) == dirs

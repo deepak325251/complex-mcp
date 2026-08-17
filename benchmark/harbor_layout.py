@@ -4,9 +4,8 @@ Emits, per task:
 
     output/<task-slug>/
     ├── .raw/…                  the mcp-stump layout, verbatim and untouched
-    ├── trajectory/Run N/…      the Harbor-shaped trial (capital R, literal space)
+    ├── trajectory/Run_N/…      the Harbor-shaped trial (logs live inside it)
     ├── config.json  lock.json  result.json  pass_summary.json
-    └── logs/…                  flat mirror (scripts/aggregate_logs.py)
 
 `.raw` sits BESIDE the Harbor tree rather than being replaced by it: the reshape
 has no slot for `diagnosis.json`, `trace.jsonl`, the world snapshots or the
@@ -60,6 +59,15 @@ RETRY_EXCLUDE = [
 # Widths measured off the reference layout:
 #   job   "model-training-ckpt-codec-reco"   -> 30
 #   trial "model-training-ckpt-codec-recove" -> 32
+# ---------------------------------------------------------------------------
+# Output trimming. Every file below is either a duplicate of a canonical file or
+# derivable from one, so they are off by default to keep a delivered trajectory
+# readable. Flip to True (or set the env var) to restore full Harbor parity.
+# ---------------------------------------------------------------------------
+EMIT_REDUNDANT_REWARD_FILES = os.environ.get("HARBOR_EMIT_REWARD_FILES") == "1"
+EMIT_ARTIFACTS = os.environ.get("HARBOR_EMIT_ARTIFACTS") == "1"
+EMIT_LOGS_MIRROR = os.environ.get("HARBOR_EMIT_LOGS", "1") != "0"
+
 _JOB_NAME_WIDTH = 30
 _TRIAL_NAME_WIDTH = 32
 
@@ -303,10 +311,11 @@ def write_harbor_trial(job_dir: Path, run_no: int, *, record: dict, model: str,
                        judge_response: str | None = None) -> dict:
     """Write `trajectory/Run N/`. Returns a summary row for the job aggregate."""
     job_dir = Path(job_dir)
-    run_dir = job_dir / "trajectory" / f"Run {run_no}"
+    run_dir = job_dir / "trajectory" / f"Run_{run_no}"
     (run_dir / "agent").mkdir(parents=True, exist_ok=True)
     (run_dir / "verifier").mkdir(parents=True, exist_ok=True)
-    (run_dir / "artifacts").mkdir(parents=True, exist_ok=True)
+    if EMIT_ARTIFACTS:
+        (run_dir / "artifacts").mkdir(parents=True, exist_ok=True)
 
     task_name = record.get("name", "")
     digest = task_digest(task_dir)
@@ -324,10 +333,14 @@ def write_harbor_trial(job_dir: Path, run_no: int, *, record: dict, model: str,
 
     # --- verifier ---------------------------------------------------------
     v = run_dir / "verifier"
-    (v / "reward_raw.json").write_text(json.dumps({"reward": reward}))
-    (v / "reward_raw.txt").write_text(str(reward))
-    _dump(v / "reward.json", {"reward": pct(reward)})
+    # reward.txt (percentage) is the only scalar kept. reward.json duplicated it
+    # as JSON, and reward_raw.{json,txt} carried the fraction -- which survives in
+    # result.json at verifier_result.rewards.reward, so nothing is lost.
     (v / "reward.txt").write_text(str(pct(reward)))
+    if EMIT_REDUNDANT_REWARD_FILES:
+        (v / "reward_raw.json").write_text(json.dumps({"reward": reward}))
+        (v / "reward_raw.txt").write_text(str(reward))
+        _dump(v / "reward.json", {"reward": pct(reward)})
 
     rows, traj_value = traj_test_rows(judge_result, grading_dir)
     n_pass = sum(1 for r in rows if r["passed"])
@@ -376,8 +389,12 @@ def write_harbor_trial(job_dir: Path, run_no: int, *, record: dict, model: str,
         exception=record.get("exception_info")))
 
     # --- artifacts ---------------------------------------------------------
-    _dump(run_dir / "artifacts" / "manifest.json",
-          _artifact_manifest(task_dir, run_dir))
+    # complex-mcp captures no container files (its task artifacts are the world
+    # snapshots, which live under .raw/), so the manifest only ever described
+    # absent files. Off by default.
+    if EMIT_ARTIFACTS:
+        _dump(run_dir / "artifacts" / "manifest.json",
+              _artifact_manifest(task_dir, run_dir))
 
     return {
         "run": run_no, "trial_name": tname,
@@ -604,8 +621,9 @@ def write_harbor_job(job_dir: Path, *, task_name: str, task_dir, model: str,
     # Flat mirror, generated last so it indexes everything above. Failure here
     # must not lose the job files that were already written correctly.
     try:
-        from scripts.aggregate_logs import aggregate as _aggregate_logs
-        _aggregate_logs(job_dir)
+        if EMIT_LOGS_MIRROR:
+            from scripts.aggregate_logs import aggregate as _aggregate_logs
+            _aggregate_logs(job_dir)   # writes trajectory/Run_N/logs/
     except Exception as exc:
         print(f"[logs] mirror skipped: {type(exc).__name__}: {exc}")
     return job_dir

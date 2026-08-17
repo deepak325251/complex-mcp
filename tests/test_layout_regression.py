@@ -82,7 +82,7 @@ def test_raw_sits_beside_the_harbor_tree_not_inside_it(tmp_path):
                        judge_result={"reward": 0.5, "traj_tests": {}},
                        task_dir=tmp_path / "t", grading_dir=tmp_path / "t" / "tests",
                        job_id="j", job_label="l")
-    assert (job / ".raw").is_dir() and (job / "trajectory" / "Run 1").is_dir()
+    assert (job / ".raw").is_dir() and (job / "trajectory" / "Run_1").is_dir()
     # Neither tree is nested inside the other.
     assert not (job / "trajectory" / ".raw").exists()
     assert not any(p.name == "trajectory" for p in (job / ".raw").rglob("*"))
@@ -117,3 +117,61 @@ def test_corpus_rollup_finds_trials_in_both_layouts(tmp_path):
     out = rb._aggregate_trials_on_disk(tmp_path, "m")
     assert out["tasks"] == 2
     assert {t["task"] for t in out["per_task"]} == {"t", "u"}
+
+
+def _rb():
+    import importlib.util, sys
+    spec = importlib.util.spec_from_file_location(
+        "_rb2", Path(__file__).resolve().parent.parent / "run_benchmark.py")
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["_rb2"] = m
+    spec.loader.exec_module(m)
+    return m
+
+
+SUMMARY = {
+    "run_id": "x", "timestamp": "t",
+    "config": {"model": "m", "episodes": 2},
+    "metrics": {"accuracy": 0.5},
+    "episodes": [
+        {"name": "A", "passed": True, "judge": {"recall": 4, "total": 4, "misbehave": 0},
+         "valid_tool_calls": 10, "invalid_tool_calls": 0, "error_tool_calls": 0,
+         "tokens": {"prompt": 100, "llm": 10, "tool": 5}},
+        {"name": "B", "passed": False, "judge": {"recall": 1, "total": 4, "misbehave": 2},
+         "valid_tool_calls": 20, "invalid_tool_calls": 1, "error_tool_calls": 0,
+         "tokens": {"prompt": 200, "llm": 20, "tool": 10}},
+    ],
+}
+
+
+def test_scoped_summary_reports_only_its_own_task():
+    """Copying the invocation summary into each task dir would report another
+    task's numbers under this task's name."""
+    a = _rb()._scoped_summary(SUMMARY, "A")
+    assert [e["name"] for e in a["episodes"]] == ["A"]
+    assert a["metrics"]["accuracy"] == 1.0          # not the 0.5 cross-task value
+    assert a["metrics"]["avg_completion_rate"] == 1.0
+    assert a["metrics"]["avg_misbehave_rate"] == 0.0
+    assert a["scope"] == "task" and a["task"] == "A"
+    assert a["config"]["episodes"] == 1
+
+
+def test_scoped_summary_is_independent_per_task():
+    rb = _rb()
+    b = rb._scoped_summary(SUMMARY, "B")
+    assert b["metrics"]["accuracy"] == 0.0
+    assert b["metrics"]["avg_completion_rate"] == 0.25
+    assert b["metrics"]["avg_misbehave_rate"] == 0.5
+
+
+def test_rollup_finds_trials_under_a_single_task_dir(tmp_path):
+    """passk_summary.json now lives in the task dir, so the roll-up must resolve
+    .raw/trials_* directly beneath it."""
+    tr = tmp_path / ".raw" / "trials_a"
+    tr.mkdir(parents=True)
+    (tr / "summary.json").write_text(json.dumps({
+        "task": "a", "metrics": {"n": 2, "c": 1, "pass@k": {}, "pass^k": {},
+                                 "failure_breakdown": {}},
+        "attempts": [{"passed": True, "reward": 1.0}]}))
+    out = _rb()._aggregate_trials_on_disk(tmp_path, "m")
+    assert out["tasks"] == 1 and out["passed"] == 1

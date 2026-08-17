@@ -93,7 +93,7 @@ def test_file_absent_when_the_yes_no_judge_ran(tmp_path):
                        rubric_result={"per_criterion": [
                            {"number": "1", "criterion": "c", "satisfied": True}]},
                        job_id="j", job_label="l")
-    assert not (jd / "trajectory/Run 1/judge_response.txt").exists()
+    assert not (jd / "trajectory/Run_1/judge_response.txt").exists()
 
 
 def test_file_written_when_evidence_exists(tmp_path):
@@ -106,5 +106,5 @@ def test_file_written_when_evidence_exists(tmp_path):
                            {"number": "1", "criterion": "c", "satisfied": True,
                             "justification": "YES. Because X."}]},
                        job_id="j", job_label="l")
-    p = jd / "trajectory/Run 1/judge_response.txt"
+    p = jd / "trajectory/Run_1/judge_response.txt"
     assert p.is_file() and "YES. Because X." in p.read_text()
