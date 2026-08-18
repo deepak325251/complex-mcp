@@ -30,7 +30,7 @@ class QuickbooksSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
@@ -72,6 +72,9 @@ class QuickbooksSession:
             self.corporate_expense_ledger: Dict[str, Any] = dict(info.get("Corporate_Expense_Ledger", {}))
             self.reimbursement_policy: Dict[str, Any] = dict(info.get("Reimbursement_Policy", {}))
             self.break_even_analysis: Dict[str, Any] = dict(info.get("break-even-analysis", {}))
+
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightQuickBooks", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

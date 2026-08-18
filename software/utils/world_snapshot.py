@@ -22,12 +22,29 @@ Recipe per app:
 """
 from __future__ import annotations
 
+import inspect
+import logging
 import os
 import pickle
+from pathlib import Path
+
+_log = logging.getLogger("complexmcp.world_snapshot")
 
 # Per-connection attributes that must NOT be frozen into the world — they are
 # rebuilt from the live login (os_cfg) each session.
 _LIVE_ATTRS = ("os",)
+
+
+def _caller_app_label() -> str:
+    """Best-effort app name for a boot-mode log line: the directory name of
+    whichever module called seed_mode() (software/<App>/foo.py -> "<App>").
+    Best-effort only — falls back to "?" if the stack is shallower than
+    expected (e.g. seed_mode() called directly from a REPL/test)."""
+    try:
+        caller = inspect.stack()[2]  # [0]=this fn, [1]=seed_mode, [2]=app __init__
+        return Path(caller.filename).resolve().parent.name
+    except Exception:
+        return "?"
 
 
 # ---------------------------------------------------------------------------
@@ -38,13 +55,28 @@ _LIVE_ATTRS = ("os",)
 #
 # The seedless static snapshot (world.pkl) is now an explicit escape hatch only:
 # set COMPLEXMCP_SEED_MODE=static (or seedless/off/0/false/no) to load it.
+#
+# Log
 # ---------------------------------------------------------------------------
 def seed_mode() -> bool:
     """True iff apps should generate their world from a seed. This is the DEFAULT;
     only an explicit opt-out loads the frozen static snapshot."""
-    return os.environ.get("COMPLEXMCP_SEED_MODE", "seed").strip().lower() not in (
+    raw = os.environ.get("COMPLEXMCP_SEED_MODE", "seed")
+    seeded = raw.strip().lower() not in (
         "static", "seedless", "snapshot", "frozen", "0", "false", "off", "no",
     )
+    app = _caller_app_label()
+    if seeded:
+        _log.info("[seed-mode] %s booting seed=%s (COMPLEXMCP_SEED_MODE=%r)",
+                   app, resolve_seed(), raw)
+    else:
+        _log.warning(
+            "[seed-mode] %s booting SEEDLESS from frozen world.pkl "
+            "(COMPLEXMCP_SEED_MODE=%r) — gt_env is baked per-task-seed, so this "
+            "world will NOT match gt_env unless world.pkl was baked at this "
+            "task's seed. If this is unexpected, unset COMPLEXMCP_SEED_MODE.",
+            app, raw)
+    return seeded
 
 
 def resolve_seed(seed=None) -> int:

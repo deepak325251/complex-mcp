@@ -368,6 +368,7 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             "capability_level": meta.get("capability_level"),
             "expected_tool_calls": meta.get("expected_tool_calls"),
             "task_dir": str(td),
+            "grader": meta.get("grader"),
         })
     return out
 
@@ -605,7 +606,14 @@ def main(args):
 
             grading_dir = task_info.get("grading_dir")
             _traj = parse_trajectory(result.get("output", ""))
-            _grader = getattr(args, "grader", "graph")
+            # Prefer the task's own task.toml [task.metadata].grader when it
+            # declares one (e.g. "weighted") -- args.grader is a single global
+            # CLI flag (default "graph") applied uniformly to every task, so a
+            # task that opts into weighted grading was silently graded "graph"
+            # instead whenever the CLI wasn't invoked with --grader weighted
+            # (e.g. docker/docker-compose.yml's runner never passes it). Falls
+            # back to the CLI flag/default for tasks that declare none.
+            _grader = task_info.get("grader") or getattr(args, "grader", "graph")
             _task_dir = task_info.get("task_dir")
             # World-full 'before' snapshot: the login dump (result["old_apps"]) is
             # the session handshake, NOT a full world capture (~empty output), so

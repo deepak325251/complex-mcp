@@ -68,7 +68,7 @@ from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 corpus_path = Path("software") / "LightTalk" / "corpus"
 
 class ContactSession:
-    def __init__(self, os_cfg: Dict[str, str], seed: int | None = None):
+    def __init__(self, os_cfg: Dict[str, str], seed: int | None = None, fixture: str | None = None):
         # Seedless (ETOM-style): the world is loaded verbatim from a frozen
         # snapshot (corpus/world.pkl) rather than rolled from `seed`. `seed` is
         # accepted for backward-compat with the client's login call and ignored.
@@ -146,7 +146,7 @@ class ContactSession:
             self.__network_err_rate = self.rng.uniform(0.1, 0.5)
             self.__network_acc = False
             from software.utils.fixtures import apply as _apply_fixtures
-            _apply_fixtures(self, "LightTalk")
+            _apply_fixtures(self, "LightTalk", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, corpus_path / "world.pkl")

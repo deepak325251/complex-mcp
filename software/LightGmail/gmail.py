@@ -31,7 +31,7 @@ class GmailSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
@@ -69,6 +69,9 @@ class GmailSession:
                 {**d, "body": d["body"].replace("\\n", "\n")} for d in info.get("drafts", [])
             ]
             self.profile: Dict[str, Any] = dict(info.get("profile", {}))
+
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightGmail", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

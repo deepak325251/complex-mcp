@@ -23,7 +23,7 @@ def _to_bool(v) -> bool:
 class WhatsappSession:
     """Deterministic sandbox for the WhatsApp Cloud API mock, ported from the FastAPI service."""
 
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
@@ -45,6 +45,9 @@ class WhatsappSession:
             ]
             self.templates: List[Dict[str, Any]] = list(info.get("templates", []))
             self.messages: List[Dict[str, Any]] = list(info.get("messages", []))
+
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightWhatsApp", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

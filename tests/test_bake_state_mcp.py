@@ -76,3 +76,55 @@ def test_bake_aborts_on_failed_write(tmp_path, monkeypatch):
     })
     with pytest.raises(SystemExit, match="failed"):
         B.bake(str(task))
+
+
+def _msg_env(id_, from_addr, subject, snippet):
+    return {"App": {"status": "ok", "output": {"messages": [{
+        "id": id_, "thread_id": f"thr-{id_}",
+        "from_addr": from_addr, "subject": subject, "snippet": snippet,
+    }]}}}
+
+
+def test_repair_new_env_rejects_replay_that_succeeds_against_wrong_entities(monkeypatch):
+    # The empty-dump branch's own docstring warning: a replayed call can keep
+    # gt_env's ids but "succeed against the wrong entities" -- same id, unrelated
+    # content. _world_mismatch (id-set disjointness) can't see this; only the
+    # content check can. Reproduces a same-id-different-content substitution
+    # at this call site specifically (bake_state_mcp calls _world_mismatch
+    # directly, not through state_admissibility).
+    gt = _msg_env("msg-101", "sender-a@example.com",
+                  "Subject A",
+                  "Content belonging to world A.")
+    old = _msg_env("msg-101", "sender-a@example.com",
+                   "Subject A",
+                   "Content belonging to world A.")
+    empty_new = {"App": {"status": "ok", "output": {}}}
+    wrong_content_replay = _msg_env("msg-101", "sender-b@example.com",
+                                     "Subject B",
+                                     "Unrelated content from world B.")
+
+    monkeypatch.setattr(B, "replay_trajectory",
+                         lambda task_dir, trajectory, seed=None: (wrong_content_replay, 1))
+
+    rebuilt, info = B.repair_new_env("task_dir", empty_new, old, gt, trajectory=[], seed=1)
+    assert info["repaired"] is False
+    assert info["reason"] == "empty_dump+replay_content_mismatch"
+    assert rebuilt == empty_new  # not swapped in
+
+
+def test_repair_new_env_accepts_replay_matching_gt_content(monkeypatch):
+    gt = _msg_env("msg-101", "sender-a@example.com",
+                  "Subject A",
+                  "Content belonging to world A.")
+    old = {"App": {"status": "ok", "output": {"messages": []}}}
+    empty_new = {"App": {"status": "ok", "output": {}}}
+    good_replay = _msg_env("msg-101", "sender-a@example.com",
+                           "Subject A",
+                           "Content belonging to world A.")
+
+    monkeypatch.setattr(B, "replay_trajectory",
+                         lambda task_dir, trajectory, seed=None: (good_replay, 1))
+
+    rebuilt, info = B.repair_new_env("task_dir", empty_new, old, gt, trajectory=[], seed=1)
+    assert info["repaired"] is True
+    assert rebuilt == good_replay

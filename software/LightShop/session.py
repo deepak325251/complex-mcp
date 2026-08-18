@@ -15,6 +15,6 @@ except ImportError:
 from typing import Dict
 
 class LightShopSession:
-    def __init__(self, os_cfg: Dict[str, str], seed=None):
+    def __init__(self, os_cfg: Dict[str, str], seed=None, fixture=None):
         self.session_id = f"session_{uuid()}"
-        self.shop_session = ShopSession(os_cfg=os_cfg, seed=seed)
+        self.shop_session = ShopSession(os_cfg=os_cfg, seed=seed, fixture=fixture)

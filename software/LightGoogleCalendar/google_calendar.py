@@ -27,7 +27,7 @@ class GoogleCalendarSession:
     in-memory tables so repeated calls within a session stay consistent.
     """
 
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
@@ -59,6 +59,9 @@ class GoogleCalendarSession:
                     "optional": _to_bool(r.get("optional", False)),
                     "organizer": _to_bool(r.get("organizer", False)),
                 })
+
+            from software.utils.fixtures import apply as _apply_fixtures
+            _apply_fixtures(self, "LightGoogleCalendar", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")
@@ -166,8 +169,14 @@ class GoogleCalendarSession:
             "end": end.get("dateTime") or end.get("date") or self._now(),
             "all_day": all_day,
             "status": "confirmed",
-            "creator": "amelia@orbit-labs.com",
-            "organizer": "amelia@orbit-labs.com",
+            # Was hardcoded to "amelia@orbit-labs.com" regardless of which
+            # calendar the event was actually created on -- stamped the wrong
+            # persona onto every event created for any other calendar_id
+            # (e.g. a task's own amos.whitfield@Finthesiss.ai calendar).
+            # The creator/organizer of a newly created event is the calendar
+            # it was created on.
+            "creator": resolved,
+            "organizer": resolved,
             "recurrence": recurrence or [],
             "visibility": visibility or "default",
         }

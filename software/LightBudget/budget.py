@@ -68,7 +68,7 @@ class Budget:
 
 
 class BudgetSession:
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         # Seedless: world loaded verbatim from a frozen snapshot next to
         # this module; `seed` is accepted for client compat and ignored.
         if seed_mode():
@@ -87,7 +87,7 @@ class BudgetSession:
             self._seed_transactions()
             self._seed_budgets()
             from software.utils.fixtures import apply as _apply_fixtures
-            _apply_fixtures(self, "LightBudget")
+            _apply_fixtures(self, "LightBudget", fixture)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

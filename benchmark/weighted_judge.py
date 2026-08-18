@@ -164,43 +164,192 @@ def _empty_dump_apps(new_env, gt_env):
     return bad
 
 
-def _ids_by_container(node, parent_key="", acc=None):
+_ID_KEY_RE = re.compile(r"(^|_)id$", re.IGNORECASE)
+
+
+def _record_id(item):
+    """The identity value of a list-item record, read off its first id-like key
+    (``id``, ``Id``, ``conversation_id``, ``message_id``, ...) in the record's own
+    field order. Every app in this repo lists its identity field first (checked
+    against LightGmail/LightGoogleCalendar/LightQuickBooks/LightWhatsApp), so this
+    recovers the right field without a per-app name registry. Returns ``None`` for
+    non-dict items or records with no id-like field (e.g. a QuickBooks invoice
+    ``Line`` entry), so those never register as a spurious container."""
+    if not isinstance(item, dict):
+        return None
+    for k, v in item.items():
+        if isinstance(k, str) and _ID_KEY_RE.search(k) and isinstance(v, (str, int)):
+            return str(v)
+    return None
+
+
+def _ids_by_container(node, parent_key="", acc=None, app=None):
     """Map each collection container to the set of entity-id keys found under it.
     Grouping by container lets us spot a disjoint ``messages`` set even when a
     parent id elsewhere happens to match.
 
-    A "container" is detected structurally — any non-empty dict whose values are
-    themselves dicts (an entity-id -> record mapping) — instead of off a fixed
-    cross-app name allowlist. The allowlist this replaced (pulls/issues/channels/
-    repos/tickets/cards/boards/sprints/...) was shaped for GitHub/Jira/Slack/
-    Trello-style apps; it had zero overlap with e.g. Gmail (messages/drafts/
-    labels), QuickBooks (invoices/bills/payments/...), DocuSign (envelopes) or
-    Calendar (events), so a whole-world substitution in those apps produced no
-    entries in ``acc`` at all and ``_world_mismatch`` below silently passed it
-    as admissible. Detecting containers structurally covers every app without
-    a per-app name registered here. Harmless false positives picked up along
-    the way (e.g. an intermediate ``output`` wrapper whose values are the real
-    per-container dicts) don't hurt: their key-sets are schema-level (container
-    *names*, not entity ids) and identical across worlds, so they never read as
-    disjoint — they just add a no-op bucket."""
+    Two container shapes are detected structurally, instead of off a fixed
+    cross-app name allowlist:
+
+    1. A non-empty dict whose values are themselves dicts (an entity-id -> record
+       mapping) — the GitHub/Jira/Slack/Trello shape the allowlist this replaced
+       (pulls/issues/channels/repos/tickets/cards/boards/sprints/...) targeted.
+    2. A non-empty list of dict records that each carry their own id-like field
+       (via ``_record_id``) — the shape every app actually *in this repo* uses:
+       Gmail ``messages``, GoogleCalendar ``events``, QuickBooks ``invoices``/
+       ``payments``, WhatsApp ``conversations``/``messages``, all JSON arrays,
+       none of them id-keyed dicts. Shape 1 alone has zero overlap with any of
+       these, so a whole-world substitution in this repo's own apps produced no
+       entries in ``acc`` at all and ``_world_mismatch`` below silently passed it
+       as admissible — verified empirically: two ``messages`` lists with
+       completely disjoint ``id``s read as a non-mismatch under shape 1 alone.
+
+    Detecting both shapes structurally covers every app without a per-app name
+    registered here. Harmless false positives picked up along the way (e.g. an
+    intermediate ``output`` wrapper whose values are the real per-container
+    dicts) don't hurt: their key-sets are schema-level (container *names*, not
+    entity ids) and identical across worlds, so they never read as disjoint —
+    they just add a no-op bucket.
+
+    Containers are scoped by top-level app name (``LightGmail.messages`` vs
+    ``LightWhatsApp.messages``, not a shared ``messages`` bucket). Without this,
+    two different apps that both happen to name their list "messages" — Gmail
+    and WhatsApp both do — merge into one id set; a handful of real ids from
+    one app is then enough to make a genuinely mismatched *other* app's ids
+    look non-disjoint, verified empirically against this repo's own gt_env.json
+    (a hand-built Gmail-only substitution read as a non-mismatch solely because
+    WhatsApp's unrelated message ids shared the "messages" bucket). ``app`` is
+    threaded down as the first-level key below the root and never overwritten
+    by a deeper wrapper key (``output``, etc.)."""
     if acc is None:
         acc = {}
     if isinstance(node, dict):
         if node and all(isinstance(v, dict) for v in node.values()):
-            acc.setdefault(parent_key, set()).update(
+            key = f"{app}.{parent_key}" if app else parent_key
+            acc.setdefault(key, set()).update(
                 k for k in node if isinstance(k, str))
         for k, v in node.items():
-            _ids_by_container(v, k, acc)
+            _ids_by_container(v, k, acc, app=app if app is not None else k)
+    elif isinstance(node, list):
+        rec_ids = {rid for it in node if (rid := _record_id(it)) is not None}
+        if rec_ids:
+            key = f"{app}.{parent_key}" if app else parent_key
+            acc.setdefault(key, set()).update(rec_ids)
+        for it in node:
+            _ids_by_container(it, parent_key, acc, app=app)
+    return acc
+
+
+def _leaf_strings(node, out=None):
+    """Every non-empty string leaf under ``node``, lowercased — a cheap content
+    fingerprint. Skips ``exclude_keys`` (fields already exempt from state
+    grading elsewhere in this module) and any id-like key (``_ID_KEY_RE`` —
+    ``thread_id``, ``conversation_id``, ...): an id is a reference, not
+    content, and two independently-generated worlds can coincidentally reuse
+    the same secondary id (e.g. both mint ``thread_id: thr-101`` for their
+    respective, unrelated messages) which would otherwise inflate the overlap
+    score and mask a genuine content swap. What's left is the actual
+    substance — subject lines, snippets, statuses, names — that a same-id
+    content substitution changes."""
+    if out is None:
+        out = set()
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if isinstance(k, str) and (k in exclude_keys or _ID_KEY_RE.search(k)):
+                continue
+            _leaf_strings(v, out)
     elif isinstance(node, list):
         for it in node:
-            _ids_by_container(it, parent_key, acc)
+            _leaf_strings(it, out)
+    elif isinstance(node, str) and len(node.strip()) >= 12:
+        # Short strings (status words like "inbox", app/workspace tags like
+        # "woodworks", bare timestamps) are structural/categorical, not
+        # content — they legitimately repeat across unrelated records in the
+        # same app and would otherwise inflate the overlap score enough to
+        # mask a real content swap (verified: dropping this filter left the
+        # Orbit-Labs-vs-woodworking msg-101 substitution at Jaccard ~0.43,
+        # above any threshold that doesn't also misfire on legitimate single-
+        # field edits). >=12 chars keeps subject lines, snippets, email
+        # addresses and free-text bodies — the fields that actually carry a
+        # record's identity — while dropping single-word/id-shaped noise.
+        out.add(node.strip().lower())
+    return out
+
+
+def _records_by_id(node, parent_key="", acc=None, app=None):
+    """Same app-scoped container traversal as ``_ids_by_container``, but keeps
+    ``{container: {id: record}}`` instead of just the id set — needed to compare
+    *content* behind a shared id (see ``_content_mismatch``)."""
+    if acc is None:
+        acc = {}
+    if isinstance(node, dict):
+        for k, v in node.items():
+            _records_by_id(v, k, acc, app=app if app is not None else k)
+    elif isinstance(node, list):
+        for it in node:
+            rid = _record_id(it)
+            if rid is not None:
+                key = f"{app}.{parent_key}" if app else parent_key
+                acc.setdefault(key, {})[rid] = it
+        for it in node:
+            _records_by_id(it, parent_key, acc, app=app)
     return acc
+
+
+def _jaccard(a, b):
+    """|intersection| / |union| of two string sets, 1.0 if both empty."""
+    if not a and not b:
+        return 1.0
+    return len(a & b) / len(a | b)
+
+
+def _content_mismatch(new_env, gt_env):
+    """True when records that share an id between ``new_env`` and ``gt_env``
+    have low content overlap for most of a container's shared ids.
+
+    ``_world_mismatch`` (disjoint id *sets*) cannot catch a same-id-space world
+    substitution: a live server and the local seed-roller can independently
+    generate the same id range (msg-100..msg-106) while assigning unrelated
+    content to each id — verified against a real trial where the agent's live
+    ``get_message(msg-101)`` returned an "Orbit Labs latency alert" while
+    gt_env's msg-101 is a white-oak supplier confirmation. Same id, same
+    thread_id/date/label boilerplate, unrelated subject/sender/body — so
+    ``gt_strs.isdisjoint(new_strs)`` (tried first) never fires: shared
+    boilerplate strings (a status label, a repeated timestamp) keep the two
+    leaf-string sets from ever being *fully* disjoint even when the actual
+    content is unrelated. Jaccard similarity below a threshold is what
+    actually separates "same record, minor field drift" (near 1.0, e.g. a
+    line-item total updated by a legitimate write) from "different record
+    wearing the same id" (near 0, verified against the real Orbit-Labs
+    substitution above) — checked against every record type in this task's
+    own gt_env.json (invoices/payments/events unaffected by the substitution
+    score ~1.0; the substituted messages score ~0.2)."""
+    gt_recs = _records_by_id(gt_env)
+    new_recs = _records_by_id(new_env)
+    for key, gt_by_id in gt_recs.items():
+        new_by_id = new_recs.get(key)
+        if not new_by_id:
+            continue
+        shared = set(gt_by_id) & set(new_by_id)
+        if not shared:
+            continue
+        diverged = 0
+        for rid in shared:
+            gt_strs = _leaf_strings(gt_by_id[rid])
+            new_strs = _leaf_strings(new_by_id[rid])
+            if _jaccard(gt_strs, new_strs) < 0.3:
+                diverged += 1
+        if diverged / len(shared) > 0.5:
+            return True
+    return False
 
 
 def _world_mismatch(new_env, gt_env):
     """True when, for some collection present in both, gt_env's entity ids and
     the served dump's ids are disjoint — gt_env was baked against a different
-    seed/world (Layer 2). Per-container so a shared parent id can't mask it."""
+    seed/world (Layer 2). Per-container so a shared parent id can't mask it.
+    Catches a disjoint *id space*; see ``_content_mismatch`` for the same-id,
+    different-content variant this alone cannot see."""
     gt_ids = _ids_by_container(gt_env)
     new_ids = _ids_by_container(new_env)
     for container, gset in gt_ids.items():
@@ -222,6 +371,8 @@ def state_admissibility(old_env, new_env, gt_env):
         return False, "empty_dump:" + ",".join(sorted(empty))
     if _world_mismatch(new_env, gt_env):
         return False, "world_mismatch"
+    if _content_mismatch(new_env, gt_env):
+        return False, "content_mismatch"
     return True, None
 
 

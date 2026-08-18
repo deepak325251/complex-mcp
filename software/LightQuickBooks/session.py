@@ -8,6 +8,6 @@ except ImportError:
 
 
 class LightQuickBooksSession:
-    def __init__(self, os_cfg: Dict[str, str], seed=None):
+    def __init__(self, os_cfg: Dict[str, str], seed=None, fixture=None):
         self.session_id = f"session_{uuid()}"
-        self.quickbooks_session = QuickbooksSession(os_cfg=os_cfg, seed=seed)
+        self.quickbooks_session = QuickbooksSession(os_cfg=os_cfg, seed=seed, fixture=fixture)

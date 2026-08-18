@@ -394,7 +394,24 @@ class Toolbox:
         if not apps:
             return [r["meta_data"]["key_name"] for r in self.rag.read(query=query, k=k)]
         allowed = set(apps)
-        pool_k = min(len(self.tools) or k, max(k * 10, 300))
+        # `k` bounds retrieval over the OPEN-ENDED global corpus, but once
+        # scoped to the task's own logged-in apps the toolset is small and
+        # finite -- the comment above promises the agent "always sees its
+        # full (small) task toolset". That promise breaks silently whenever
+        # a scoped app's own tool count exceeds k (e.g. a 4-app task with
+        # ~90 combined tools vs. the rag-mode default k=30): the ranked pool
+        # fills up on the top-k most instruction-similar tools and returns
+        # before the top-up loop below ever runs, so tools the initial
+        # instruction's wording doesn't closely echo (e.g. create_event,
+        # send_template) never surface even though they're the only tools
+        # for the job. Fix: raise the effective floor to cover every scoped
+        # tool (capped, so one pathologically large single app can't balloon
+        # context back to a full corpus dump) instead of letting `k` cap the
+        # task's own toolset. `k` still governs presentation ORDER via the
+        # RAG-ranked pool below -- it just can no longer cause silent drops.
+        scoped_total = sum(1 for kn in self.tools if self._server_of(kn) in allowed)
+        k_eff = max(k, min(scoped_total, 200))
+        pool_k = min(len(self.tools) or k_eff, max(k_eff * 10, 300))
         pool = self.rag.read(query=query, k=pool_k)
         keys: List[str] = []
         seen: set[str] = set()
@@ -403,13 +420,13 @@ class Toolbox:
             if kn in seen or self._server_of(kn) not in allowed:
                 continue
             keys.append(kn); seen.add(kn)
-            if len(keys) >= k:
+            if len(keys) >= k_eff:
                 return keys
         for kn in self.tools:                       # top up with unranked task-app tools
             if kn in seen or self._server_of(kn) not in allowed:
                 continue
             keys.append(kn); seen.add(kn)
-            if len(keys) >= k:
+            if len(keys) >= k_eff:
                 break
         return keys
 
@@ -976,6 +993,8 @@ class AgentClient:
             # (random.Random(None)) regardless of what the task declared.
             login_seed_raw = os.environ.get("COMPLEXMCP_SEED")
             login_seed = int(login_seed_raw) if login_seed_raw not in (None, "") else None
+           
+            login_fixture = os.environ.get("COMPLEXMCP_FIXTURE") or None
             login_info = await self.toolbox.call_with_server(
                 server_name=system_app,
                 tool_name="login",
@@ -1012,6 +1031,7 @@ class AgentClient:
                                 "url": system_url
                             },
                             **({"seed": login_seed} if login_seed is not None else {}),
+                            **({"fixture": login_fixture} if login_fixture is not None else {}),
                         }
                     )
                     
@@ -1112,10 +1132,14 @@ class AgentClient:
             elif self.toolbox:
                 extra_body["stop"] = TOOL_STOP_SEQ
                 if self.toolbox.method == "rag":
+                    _chosen = self.toolbox.retrieve_tools(query=query, apps=env.get("apps"))
                     system_prompt = system_prompt.replace(
                         "${CHOSEN_TOOLS}",
-                        "\n".join(map(lambda x: f"- {x}", self.toolbox.retrieve_tools(query=query, apps=env.get("apps"))))
+                        "\n".join(map(lambda x: f"- {x}", _chosen))
                     )
+                  
+                    print(f"Tool number: {len(_chosen)} chosen "
+                          f"(from {len(self.toolbox.tools)} total, apps={env.get('apps')})")
                 elif self.toolbox.method == "provide":
                     system_prompt = system_prompt.replace(
                         "${PROVIDE_TOOLS}",

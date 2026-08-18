@@ -26,10 +26,10 @@ def get_session(session_id: str):
     return session, None
 
 @mcp.tool
-async def login(os_cfg: Dict[str, str], seed: int | None = None):
+async def login(os_cfg: Dict[str, str], seed: int | None = None, fixture: str | None = None):
     # Seedless: the world is loaded from corpus/world.json. `seed` is accepted
     # for backward-compat with the client's login call and ignored.
-    session = LightTalkSession(os_cfg=os_cfg, seed=seed)
+    session = LightTalkSession(os_cfg=os_cfg, seed=seed, fixture=fixture)
     session_dict[session.session_id] = session
     logger.info(f"A new user logged in! [{session.session_id}]")
     return {

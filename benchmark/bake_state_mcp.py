@@ -253,7 +253,9 @@ def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None)
     trusted — the same check `state_admissibility` runs on a live dump. This
     stops the harness from swapping one fabricated state channel (an empty
     dump quietly reported as a real diff) for another (a fabricated replay)."""
-    from benchmark.weighted_judge import state_admissibility, judge_env, _world_mismatch
+    from benchmark.weighted_judge import (
+        state_admissibility, judge_env, _world_mismatch, _content_mismatch,
+    )
     ok, reason = state_admissibility(old_env, new_env, gt_env)
     empty = (reason or "").startswith("empty_dump")
     try:
@@ -265,6 +267,8 @@ def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None)
     if empty:
         if _world_mismatch(rebuilt, gt_env):
             return new_env, {"repaired": False, "reason": "empty_dump+replay_world_mismatch"}
+        if _content_mismatch(rebuilt, gt_env):
+            return new_env, {"repaired": False, "reason": "empty_dump+replay_content_mismatch"}
         return rebuilt, {"repaired": True, "reason": reason, "calls_applied": applied}
     # Non-empty dump: swap in the replay only if it recalls more of GT than the
     # dump did (i.e. the dump missed writes). Faithful to misbehaviour too — a

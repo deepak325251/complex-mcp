@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from benchmark.weighted_judge import (
     judge_weighted, load_weights, _score_rubric, state_admissibility,
-    _world_mismatch, _ids_by_container,
+    _world_mismatch, _ids_by_container, _content_mismatch,
 )
 
 
@@ -194,29 +194,113 @@ def _gmail_shaped_env(message_ids):
 
 
 def test_world_mismatch_catches_non_allowlisted_app():
-    gt = _gmail_shaped_env(["msg-woodworks-1", "msg-woodworks-2"])
+    gt = _gmail_shaped_env(["msg-world-a-1", "msg-world-a-2"])
     # Same schema, completely disjoint entity ids -> a different seeded world
     # (e.g. served under a different default company/org than gt was baked
-    # against), exactly the "orbit-labs vs woodworks" substitution scenario.
-    wrong_world = _gmail_shaped_env(["msg-orbit-labs-9", "msg-orbit-labs-10"])
+    # against) -- a same-id-space check alone can't see this.
+    wrong_world = _gmail_shaped_env(["msg-world-b-1", "msg-world-b-2"])
     assert _world_mismatch(wrong_world, gt) is True
 
-    same_world = _gmail_shaped_env(["msg-woodworks-1", "msg-woodworks-2"])
+    same_world = _gmail_shaped_env(["msg-world-a-1", "msg-world-a-2"])
     assert _world_mismatch(same_world, gt) is False
 
 
 def test_ids_by_container_buckets_arbitrary_container_names():
     env = _gmail_shaped_env(["m1", "m2"])
     acc = _ids_by_container(env)
-    # "messages" was never in the old _CONTAINER_KEYS allowlist.
-    assert acc["messages"] == {"m1", "m2"}
-    assert acc["labels"] == {"INBOX"}
+    # "messages" was never in the old _CONTAINER_KEYS allowlist. Bucketed
+    # under "LightGmail.messages", not a bare "messages" key, so a second
+    # app that also names its container "messages" (WhatsApp does) can't
+    # merge into the same bucket and mask a real per-app mismatch.
+    assert acc["LightGmail.messages"] == {"m1", "m2"}
+    assert acc["LightGmail.labels"] == {"INBOX"}
 
 
 def test_state_admissibility_flags_world_mismatch_for_non_allowlisted_app():
-    gt = _gmail_shaped_env(["msg-woodworks-1"])
+    gt = _gmail_shaped_env(["msg-world-a-1"])
     old = _gmail_shaped_env([])
-    wrong_world = _gmail_shaped_env(["msg-orbit-labs-9"])
+    wrong_world = _gmail_shaped_env(["msg-world-b-1"])
     ok, reason = state_admissibility(old, wrong_world, gt)
     assert ok is False
     assert "world_mismatch" in reason
+
+
+def _list_shaped_env(app, container, records):
+    # The shape every app in this repo actually uses: a list of dict records
+    # each carrying its own id-like field, not an id-keyed dict (see
+    # _record_id / Shape 2 in _ids_by_container).
+    return {app: {"status": "ok", "output": {container: records}}}
+
+
+def test_ids_by_container_scopes_by_app_for_shared_container_names():
+    # Gmail and WhatsApp both name their list "messages". Without app
+    # scoping, two apps' entity ids merge into one bucket and a real
+    # per-app mismatch can hide behind the other app's overlapping ids.
+    gmail = _list_shaped_env("LightGmail", "messages", [{"id": "msg-1"}, {"id": "msg-2"}])
+    whatsapp = _list_shaped_env("LightWhatsApp", "messages", [{"id": "wa-1"}, {"id": "wa-2"}])
+    env = {**gmail, **whatsapp}
+    acc = _ids_by_container(env)
+    assert acc["LightGmail.messages"] == {"msg-1", "msg-2"}
+    assert acc["LightWhatsApp.messages"] == {"wa-1", "wa-2"}
+
+
+def test_world_mismatch_not_masked_by_other_apps_sharing_container_name():
+    gt = {
+        **_list_shaped_env("LightGmail", "messages", [{"id": "msg-world-a-1"}]),
+        **_list_shaped_env("LightWhatsApp", "messages", [{"id": "wa-1"}]),
+    }
+    # Gmail's ids are swapped for an unrelated world; WhatsApp's ids (which
+    # also live under a "messages" key) are unchanged. Before app-scoping,
+    # WhatsApp's shared "wa-1" id made the merged "messages" bucket look
+    # non-disjoint and the Gmail substitution went undetected.
+    wrong_world = {
+        **_list_shaped_env("LightGmail", "messages", [{"id": "msg-world-b-1"}]),
+        **_list_shaped_env("LightWhatsApp", "messages", [{"id": "wa-1"}]),
+    }
+    assert _world_mismatch(wrong_world, gt) is True
+
+
+def test_content_mismatch_catches_same_id_different_content():
+    # A real bug pattern this guards against: the served world and gt_env
+    # agree on the id ("msg-101") but disagree completely on content
+    # (sender, subject, body) — an id-set-disjointness check alone can't see
+    # this because the ids aren't disjoint.
+    gt = _list_shaped_env("LightGmail", "messages", [{
+        "id": "msg-101", "thread_id": "thr-101",
+        "from_addr": "sender-a@example.com",
+        "subject": "Subject A",
+        "snippet": "Content belonging to world A.",
+    }])
+    other_world = _list_shaped_env("LightGmail", "messages", [{
+        "id": "msg-101", "thread_id": "thr-101",
+        "from_addr": "sender-b@example.com",
+        "subject": "Subject B",
+        "snippet": "Unrelated content from world B.",
+    }])
+    assert _world_mismatch(other_world, gt) is False  # same id space -> not caught here
+    assert _content_mismatch(other_world, gt) is True
+
+
+def test_content_mismatch_false_positive_free_on_matching_worlds():
+    gt = _gmail_shaped_env(["msg-world-a-1", "msg-world-a-2"])
+    same_world = _gmail_shaped_env(["msg-world-a-1", "msg-world-a-2"])
+    assert _content_mismatch(same_world, gt) is False
+
+
+def test_state_admissibility_flags_content_mismatch_for_same_id_swap():
+    gt = _list_shaped_env("LightGmail", "messages", [{
+        "id": "msg-101", "thread_id": "thr-101",
+        "from_addr": "sender-a@example.com",
+        "subject": "Subject A",
+        "snippet": "Content belonging to world A.",
+    }])
+    old = _list_shaped_env("LightGmail", "messages", [])
+    other_world = _list_shaped_env("LightGmail", "messages", [{
+        "id": "msg-101", "thread_id": "thr-101",
+        "from_addr": "sender-b@example.com",
+        "subject": "Subject B",
+        "snippet": "Unrelated content from world B.",
+    }])
+    ok, reason = state_admissibility(old, other_world, gt)
+    assert ok is False
+    assert reason == "content_mismatch"

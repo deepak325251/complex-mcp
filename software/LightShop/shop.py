@@ -48,7 +48,7 @@ from software.utils.core import OSConnector, DummyOSConnector
 from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
 
 class ShopSession:
-    def __init__(self, os_cfg, seed=None):
+    def __init__(self, os_cfg, seed=None, fixture=None):
         _os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
         if seed_mode():
             # Seed architecture: roll the world from a seed (different seeds ->
@@ -65,7 +65,7 @@ class ShopSession:
             self.my_starred_items = set()
             self.enter_password = False
             from software.utils.fixtures import apply as _apply_fixtures
-            _apply_fixtures(self, "LightShop")
+            _apply_fixtures(self, "LightShop", fixture)
         else:
             # Seedless: world loaded verbatim from a frozen snapshot next to
             # this module; `seed` is accepted for client compat and ignored.
