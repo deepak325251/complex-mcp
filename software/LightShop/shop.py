@@ -66,6 +66,8 @@ class ShopSession:
             self.enter_password = False
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightShop", fixture)
+            from software.utils.world_data import hydrate as _hydrate_world_data
+            _hydrate_world_data(self, "LightShop")
         else:
             # Seedless: world loaded verbatim from a frozen snapshot next to
             # this module; `seed` is accepted for client compat and ignored.

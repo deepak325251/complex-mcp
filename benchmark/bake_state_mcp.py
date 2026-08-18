@@ -318,6 +318,13 @@ def bake(task_dir, repo_root=None, write=True):
     if spec.get("fixture"):
         os.environ["COMPLEXMCP_FIXTURE"] = spec["fixture"]
 
+    # Bring-your-own world data (software.utils.world_data): same idea as the
+    # fixture overlay above, but replaces a whole app's world wholesale. Must
+    # be set BEFORE boot so old_env/gt_env are baked against the same JSON the
+    # runner will export via COMPLEXMCP_WORLD_DATA for this task.
+    if spec.get("world_data"):
+        os.environ["COMPLEXMCP_WORLD_DATA"] = spec["world_data"]
+
     sessions = boot_world(apps, seed)
     old = dump_world(sessions)
 

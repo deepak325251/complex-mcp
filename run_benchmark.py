@@ -359,6 +359,7 @@ def _load_harbor_tasks(dir_path: Path, task_name: str | None, limit: int) -> lis
             "apps": apps,
             "seed": meta.get("seed"),
             "fixture": meta.get("fixture"),
+            "world_data": meta.get("world_data"),
             "level": meta.get("level"),
             "gt_env": gt_env,
             "gt_tool_cnt": gt_tool_cnt,
@@ -526,6 +527,16 @@ def main(args):
             os.environ["COMPLEXMCP_FIXTURE"] = str(task_info["fixture"])
         else:
             os.environ.pop("COMPLEXMCP_FIXTURE", None)
+        # Bring-your-own world data (software.utils.world_data): a task's own
+        # "world_data" meta (e.g. a Harbor bundle's bundle-relative world_data/)
+        # wins per-task; otherwise fall back to the run-wide --world-data dir;
+        # cleared when neither is set so it never leaks across tasks.
+        if task_info.get("world_data"):
+            os.environ["COMPLEXMCP_WORLD_DATA"] = str(task_info["world_data"])
+        elif getattr(args, "world_data", None):
+            os.environ["COMPLEXMCP_WORLD_DATA"] = str(Path(args.world_data).resolve())
+        else:
+            os.environ.pop("COMPLEXMCP_WORLD_DATA", None)
         # Compute the presented toolset ONCE per task so every attempt in the
         # pass@k loop sees the same distractor sample (the knob is a property of
         # the measurement, not of the individual rollout).
@@ -1386,6 +1397,12 @@ if __name__ == "__main__":
                              "after. Requires a built complexmcp:latest image. Omit this if you "
                              "bring the sandbox up yourself via scripts/run_task.sh (tmux) or "
                              "docker/docker-compose.yml.")
+    parser.add_argument("--world-data", dest="world_data", type=str, default=None,
+                        help="Directory of <AppName>.json files (software.utils.world_data) to "
+                             "replace the seed-rolled world with user-authored state, for every "
+                             "app that has a JSON file there. Applies to every task in this run "
+                             "unless a task's own meta declares 'world_data' (e.g. a Harbor "
+                             "bundle's task.toml, bundle-relative), which wins per-task.")
 
     args = parser.parse_args()
     # Parse --at into a sorted unique int list; clamp to n_attempts.
@@ -1395,6 +1412,12 @@ if __name__ == "__main__":
         _ks = [1]
     args.at_ks = [k for k in _ks if 1 <= k <= max(1, args.n_attempts)] or [1]
     load_dotenv_if_not_exist()
+
+    if args.world_data:
+        # Run-wide default; a per-task "world_data" meta key (below) overrides
+        # this for that task only (Harbor bundles ship their own bundle-relative
+        # world_data/, distinct from a locally-authored --world-data dir).
+        os.environ["COMPLEXMCP_WORLD_DATA"] = str(Path(args.world_data).resolve())
 
     if args.manage_sandbox:
         exit_code = 0

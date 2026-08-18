@@ -88,6 +88,8 @@ class BudgetSession:
             self._seed_budgets()
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightBudget", fixture)
+            from software.utils.world_data import hydrate as _hydrate_world_data
+            _hydrate_world_data(self, "LightBudget")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -147,6 +147,8 @@ class ContactSession:
             self.__network_acc = False
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightTalk", fixture)
+            from software.utils.world_data import hydrate as _hydrate_world_data
+            _hydrate_world_data(self, "LightTalk")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, corpus_path / "world.pkl")

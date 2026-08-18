@@ -16,21 +16,28 @@ registered overlay for the given app does anything change.
 Wiring:
   * run_benchmark exports COMPLEXMCP_FIXTURE from the task's ``fixture`` meta.
   * benchmark.bake_state_mcp exports it from the oracle spec's ``fixture`` key.
-  * each participating app calls ``apply(self, "LightShop")`` at the end of its
-    seed-branch __init__.
+  * the client also forwards a per-login ``fixture`` name over the login RPC
+    (COMPLEXMCP_FIXTURE env var read at login time); that explicit name wins
+    over the env var lookup below when both are present.
+  * each participating app calls ``apply(self, "LightShop", fixture)`` at the
+    end of its seed-branch __init__.
 """
 from __future__ import annotations
 
 import os
 
 
-def active_fixture() -> str:
+def active_fixture(explicit: str | None = None) -> str:
+    """The fixture name in effect: an explicit per-login name wins, else the
+    process-wide ``COMPLEXMCP_FIXTURE`` env var (back-compat)."""
+    if explicit:
+        return explicit.strip()
     return os.environ.get("COMPLEXMCP_FIXTURE", "").strip()
 
 
-def apply(session, app_name: str) -> None:
+def apply(session, app_name: str, fixture: str | None = None) -> None:
     """Apply the active fixture's overlay for ``app_name`` onto ``session``."""
-    fx = active_fixture()
+    fx = active_fixture(fixture)
     if not fx:
         return
     fn = _REGISTRY.get((fx, app_name))
