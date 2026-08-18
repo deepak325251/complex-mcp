@@ -250,7 +250,11 @@ def build_report(model: str, run_no: int, judge_result: dict,
             importance=c.get("importance", "important"),
             score=float(c.get("score", 1) or 0),
             is_positive=bool(c.get("is_positive", True)),
-            passed=bool(c.get("satisfied")),
+            # OUTCOME, not the raw verdict. For a guard, satisfied=True means
+            # the violation FIRED, so passed=True there would read as good news
+            # -- the inverse of the pytest.tests[] block in this same file.
+            passed=(bool(c.get("satisfied")) if c.get("is_positive", True)
+                    else not bool(c.get("satisfied"))),
             justification=c.get("justification", "") or "",
         ))
 
