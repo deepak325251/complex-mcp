@@ -21,13 +21,36 @@ sleep 1
 
 chmod +x start_servers.sh start_softwares.sh 2>/dev/null || true
 
+# WORLD_DATA (dir of <AppName>.json files, software.utils.world_data) must be
+# exported *before* the sandbox app servers are forked, not just passed to
+# run_benchmark.py later -- those servers are long-lived processes started
+# here in tmux, and each app's hydrate() call reads COMPLEXMCP_WORLD_DATA from
+# its own process env at session-login time. Setting the var only inside
+# run_benchmark.py's process (e.g. via --world-data) never reaches these
+# already-forked servers, so the live agent would silently keep talking to
+# the normal seeded world while only in-process grading/baking saw the world
+# data -- a split-brain that trips the state-admissibility guard. Exporting
+# it here, before both tmux launches, makes the live servers and the grading
+# side agree.
+COMPLEXMCP_WORLD_DATA=""
+if [ -n "${WORLD_DATA:-}" ]; then
+    COMPLEXMCP_WORLD_DATA="$(cd "$WORLD_DATA" && pwd)"
+    export COMPLEXMCP_WORLD_DATA
+    echo "[run_task] COMPLEXMCP_WORLD_DATA=$COMPLEXMCP_WORLD_DATA (exported to sandbox servers)"
+fi
+# Injected into the tmux command strings explicitly (not relied on via plain
+# env inheritance): if a tmux *server* is already running from an earlier
+# invocation, `tmux new-session` on it reuses that server's own captured
+# environment rather than this script's -- an inline assignment in the
+# command string is unconditionally reliable either way.
+
 echo "[run_task] launching all 20 utility servers in tmux:$SERVERS_SESSION"
 tmux new-session -d -s "$SERVERS_SESSION" \
-    "cd $REPO_ROOT && source .venv/bin/activate && bash start_servers.sh 2>&1 | tee /tmp/omcp-servers.log"
+    "cd $REPO_ROOT && source .venv/bin/activate && COMPLEXMCP_WORLD_DATA='$COMPLEXMCP_WORLD_DATA' bash start_servers.sh 2>&1 | tee /tmp/omcp-servers.log"
 
 echo "[run_task] launching all 140 sandbox apps in tmux:$SOFTS_SESSION"
 tmux new-session -d -s "$SOFTS_SESSION" \
-    "cd $REPO_ROOT && source .venv/bin/activate && zsh start_softwares.sh 2>&1 | tee /tmp/omcp-softs.log"
+    "cd $REPO_ROOT && source .venv/bin/activate && COMPLEXMCP_WORLD_DATA='$COMPLEXMCP_WORLD_DATA' zsh start_softwares.sh 2>&1 | tee /tmp/omcp-softs.log"
 
 REQUIRED_PORTS=({8000..8007} {8013..8024} {9000..9008} {9014..9144})
 echo "[run_task] waiting up to 240s for ${#REQUIRED_PORTS[@]} required ports..."
@@ -103,6 +126,13 @@ else
     if [ -n "${GRADER:-}" ]; then
         CMD+=(--grader "$GRADER")
         echo "[run_task] GRADER=$GRADER"
+    fi
+    if [ -n "${WORLD_DATA:-}" ]; then
+        # Same dir the sandbox servers were exported above -- keeps
+        # run_benchmark.py's in-process baking/repair consistent with what
+        # the live servers actually served, instead of the two diverging.
+        CMD+=(--world-data "$COMPLEXMCP_WORLD_DATA")
+        echo "[run_task] WORLD_DATA=$COMPLEXMCP_WORLD_DATA"
     fi
     if [ -n "${TASK:-}" ]; then
         echo "[run_task] launching: $RUNNER --task $TASK"

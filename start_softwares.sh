@@ -21,7 +21,7 @@ fi
 # World seed for every app (rolled at login). Override by exporting COMPLEXMCP_SEED
 # before running. Children inherit it.
 export COMPLEXMCP_SEED="${COMPLEXMCP_SEED:-42}"
-echo "[start_softwares] fastmcp=$(command -v fastmcp)  COMPLEXMCP_SEED=${COMPLEXMCP_SEED}${COMPLEXMCP_FIXTURE:+  COMPLEXMCP_FIXTURE=$COMPLEXMCP_FIXTURE}"
+echo "[start_softwares] fastmcp=$(command -v fastmcp)  COMPLEXMCP_SEED=${COMPLEXMCP_SEED}${COMPLEXMCP_FIXTURE:+  COMPLEXMCP_FIXTURE=$COMPLEXMCP_FIXTURE}${COMPLEXMCP_WORLD_DATA:+  COMPLEXMCP_WORLD_DATA=$COMPLEXMCP_WORLD_DATA}"
 
 # Signal handler function
 cleanup() {

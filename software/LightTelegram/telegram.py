@@ -105,6 +105,12 @@ class TelegramSession:
 
             self._next_message_id = max((m["message_id"] for m in self.messages), default=0) + 1
             self._next_update_id = 100001
+
+            from software.utils.world_data import hydrate as _hydrate_world_data
+            _hydrate_world_data(self, "LightTelegram")
+            # world data may replace messages wholesale (e.g. new/different ids);
+            # recompute the id counter from whatever's live now, not the corpus.
+            self._next_message_id = max((m["message_id"] for m in self.messages), default=0) + 1
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

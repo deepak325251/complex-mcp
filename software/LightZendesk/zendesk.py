@@ -91,6 +91,9 @@ class ZendeskSession:
                 "public": _to_bool(r.get("public")),
                 "created_at": r["created_at"],
             } for r in info.get("comments", [])]
+
+            from software.utils.world_data import hydrate as _hydrate_world_data
+            _hydrate_world_data(self, "LightZendesk")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")
