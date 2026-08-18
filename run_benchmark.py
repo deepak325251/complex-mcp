@@ -660,6 +660,13 @@ def main(args):
                             print(f"[state] repaired empty facade dump via "
                                   f"in-process replay ({_rep.get('calls_applied')} "
                                   f"calls) — was {_rep.get('reason')}")
+                        elif _rep.get("reason", "").startswith("empty_dump+"):
+                            print(f"[state] replay REFUSED ({_rep.get('reason')}) — "
+                                  f"state channel will be marked inadmissible "
+                                  f"rather than graded against an unverified world")
+                        # Carried so report.json can say the state channel was
+                        # reconstructed, not natively captured.
+                        _state_repair = _rep
                     except Exception as _exc:
                         print(f"[state] repair skipped: {type(_exc).__name__}: {_exc}")
                 judge_result = judge_weighted(
@@ -993,8 +1000,10 @@ def main(args):
                     "reward": final_score.get("reward"),
                     "completion_rate": (final_score.get("recall") / final_score.get("total"))
                         if final_score.get("total") else (1.0 if passed else 0.0),
-                    "misbehaving_rate": (final_score.get("misbehave") / final_score.get("total"))
-                        if final_score.get("total") else 0.0,
+                    # Clamped to [0,1]; see task_writer for why.
+                    "misbehaving_rate": min(
+                        (final_score.get("misbehave") / final_score.get("total"))
+                        if final_score.get("total") else 0.0, 1.0),
                     # `misbehave_kind` says what the two rates above MEAN (state
                     # corruption vs plan false-positives); `state_admissible`
                     # flags a run whose state channel was inadmissible, so the

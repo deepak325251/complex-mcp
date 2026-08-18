@@ -20,10 +20,18 @@ def _call(score):
 
 def test_inadmissible_state_not_called_state_change():
     # plan-fallback numbers on an empty-dump run -> honest wording, no state claim.
+    #
+    # This used to land on PARTIAL_COMPLETION with "state channel unavailable"
+    # in the prose. It now classifies as ENVIRONMENT_MISMATCH outright, which is
+    # a stronger version of the same guarantee: the run is labelled a harness
+    # fact rather than a model behaviour, so failure histograms stop routing
+    # environment defects to model-behaviour work.
     v = _call(_score(state_admissible=False, misbehave_kind="plan_fp",
                      state_reason="empty_dump:LightJira"))
     assert "partial state changes" not in v.reason
-    assert "state channel unavailable" in v.reason
+    assert v.failure_class.value == "environment_mismatch"
+    assert v.category == "programmatic"
+    assert "not gradeable" in v.reason
     assert v.evidence.get("state_admissible") is False
 
 

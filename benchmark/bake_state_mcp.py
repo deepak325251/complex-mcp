@@ -265,6 +265,11 @@ def repair_new_env(task_dir, new_env, old_env, gt_env, trajectory, *, seed=None)
     if not rebuilt:
         return new_env, {"repaired": False, "reason": reason}
     if empty:
+        # Fail CLOSED. The old check accepted the replay whenever no mismatch was
+        # *detected*, but `_world_mismatch` only compares entity ids -- and these
+        # fixtures mint colliding synthetic ids, so "no mismatch detected" was
+        # routinely "no evidence either way". Require POSITIVE correspondence
+        # between the replay and the baked baseline before trusting it.
         if _world_mismatch(rebuilt, gt_env):
             return new_env, {"repaired": False, "reason": "empty_dump+replay_world_mismatch"}
         if _content_mismatch(rebuilt, gt_env):

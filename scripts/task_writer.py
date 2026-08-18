@@ -514,7 +514,9 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     recall = score.get("recall") or 0
     misbehave = score.get("misbehave") or 0
     completion_rate = (recall / total) if total else (1.0 if passed else 0.0)
-    misbehaving_rate = (misbehave / total) if total else 0.0
+    # Clamped, as the ledger component already is. Unclamped this reported
+    # 12.39 -- a "rate" of 1239% -- and corrupted any downstream average.
+    misbehaving_rate = min((misbehave / total) if total else 0.0, 1.0)
     pytest_checks = score.get("pytest_checks")
     channel_a_present = pytest_checks is not None
     # test_weights_percentage: 0.0 when Channel A ran and scored zero, null ONLY

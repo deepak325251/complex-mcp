@@ -31,6 +31,7 @@ class FailureClass(str, Enum):
     OVER_ACTION = "over_action"
     ANALYSIS_ERROR = "analysis_error"
     INFRA_ERROR = "infra_error"
+    ENVIRONMENT_MISMATCH = "environment_mismatch"
     TIMEOUT = "timeout"
     SOLVED = "solved"
 
@@ -174,6 +175,7 @@ MODE_TO_CATEGORY: dict[str, str] = {
 
 
 PROGRAMMATIC_LABELS: list[str] = [
+    "environment_mismatch",
     "analysis_error",
     "infra_error",
     "timeout",
@@ -239,6 +241,11 @@ FAILURE_DESCRIPTIONS: dict[FailureClass, str] = {
     FailureClass.MAX_TURNS_EXCEEDED: "Agent ran out of turns before reaching [END].",
     FailureClass.ANALYSIS_ERROR: "Trajectory could not be parsed or analysed.",
     FailureClass.INFRA_ERROR: "Harness or infrastructure error unrelated to model behavior.",
+    FailureClass.ENVIRONMENT_MISMATCH: (
+        "The state channel could not be graded: the served world does not "
+        "correspond to the task's baked ground truth (empty dump, disjoint "
+        "entity ids, or same ids carrying different content). Says nothing "
+        "about the agent -- routing this to model-behaviour work is wasted."),
     FailureClass.TIMEOUT: "Agent exceeded wall-clock timeout.",
     FailureClass.SOLVED: "Task completed successfully; no failure to classify.",
     FailureClass.UNKNOWN: "No rule matched — inspect the transcript manually.",

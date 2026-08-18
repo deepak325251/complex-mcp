@@ -214,6 +214,18 @@ def classify(
             evidence = {**evidence, "crux_aligned": aligned, "stump_levers": list(stump_levers)}
         return FailureVerdict(fc, reason, evidence)
 
+    # An unmeasurable state channel is a HARNESS fact, not a model behaviour.
+    # These runs previously came back `partial_completion` / `unknown`, which
+    # sent environment defects to the model-behaviour pile in every failure
+    # histogram. Decided before any behavioural rule so nothing can outrank it.
+    if state_admissible is False:
+        return _verdict(
+            FailureClass.ENVIRONMENT_MISMATCH,
+            f"state channel not gradeable ({score.get('state_reason') or 'inadmissible'}); "
+            f"no conclusion about the agent can be drawn from it",
+            {"state_admissible": False, "state_reason": score.get("state_reason"),
+             "misbehave_kind": misbehave_kind})
+
     if max_turns_hit:
         return _verdict(
             FailureClass.MAX_TURNS_EXCEEDED,
