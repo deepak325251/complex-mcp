@@ -193,6 +193,39 @@ def test_crux_aligned_false_when_lever_mismatches():
     assert v.evidence["crux_aligned"] is False
 
 
+def test_dirty_state_ignored_when_agent_skips_a_nonempty_list():
+    steps = [
+        {"step": 1, "tool": "list_alerts",
+         "response": {"status": "ok", "output": [{"aid": "stale_1"}]}},
+    ]
+    v = _call(_traj(steps),
+              _tool_summary(valid_tool_calls=1, tool_cnt={"list_alerts": {"ok": 1}}),
+              _score(recall=1, total=3, misbehave=0),
+              {"stump_levers": ["dirty_state"]},
+              "")
+    assert v.failure_class == FailureClass.DIRTY_STATE_IGNORED
+
+
+def test_dirty_state_becomes_environment_mismatch_when_world_is_empty():
+    # Regression: whitfield-reunion-cookout -- list_alerts() legitimately
+    # returned [] because the world was never seeded with the declared
+    # alerts. The agent read an empty collection; it had nothing to clean.
+    steps = [
+        {"step": 1, "tool": "get_primary_location",
+         "response": {"status": "ok", "output": "Savannah"}},
+        {"step": 2, "tool": "list_alerts",
+         "response": {"status": "ok", "output": []}},
+    ]
+    v = _call(_traj(steps),
+              _tool_summary(valid_tool_calls=2,
+                            tool_cnt={"get_primary_location": {"ok": 1},
+                                      "list_alerts": {"ok": 1}}),
+              _score(recall=2, total=9, misbehave=0),
+              {"stump_levers": ["dirty_state"]},
+              "")
+    assert v.failure_class == FailureClass.ENVIRONMENT_MISMATCH
+
+
 def test_bare_and_qualified_tool_names_normalize():
     from benchmark.classify_failure import _base
     assert _base("LightShop::checkout_all") == "checkout_all"

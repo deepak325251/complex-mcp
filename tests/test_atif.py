@@ -37,6 +37,32 @@ def test_from_complexmcp_prepends_user_prompt_step():
     assert from_complexmcp(traj, model="m")["steps"][0]["source"] == "agent"
 
 
+def test_from_complexmcp_final_step_id_is_contiguous():
+    # Regression: whitfield-reunion-cookout run_1/run_2 -- the final synthetic
+    # step's id was computed as len(steps) + 1, but the synthetic step_id=0
+    # user-prompt entry inflates len(steps) by one relative to the highest
+    # real step_id, so the id sequence always skipped a number (e.g. real
+    # steps 0..7 then final jumped to 9, silently skipping 8).
+    traj = {
+        "steps": [
+            {"step": 1, "reasoning": "", "message": "", "tool": "get_primary_location",
+             "arguments": {}, "response": "ok"},
+            {"step": 2, "reasoning": "", "message": "", "tool": "list_alerts",
+             "arguments": {}, "response": "ok"},
+        ],
+        "final_message": "done",
+    }
+    doc = from_complexmcp(traj, model="m", query="Do the thing.")
+    step_ids = [s["step_id"] for s in doc["steps"]]
+    # user(0), tool(1), tool(2), final(3) -- no gaps.
+    assert step_ids == [0, 1, 2, 3]
+
+    # Same check without the synthetic user step (no query passed).
+    doc_no_query = from_complexmcp(traj, model="m")
+    step_ids_no_query = [s["step_id"] for s in doc_no_query["steps"]]
+    assert step_ids_no_query == [1, 2, 3]
+
+
 def test_from_complexmcp_round_trip():
     traj = {
         "steps": [

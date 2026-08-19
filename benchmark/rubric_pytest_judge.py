@@ -22,6 +22,7 @@ tests that triggered.
 """
 import json
 import os
+import sys
 import tempfile
 
 
@@ -73,17 +74,35 @@ def _run_pytest(test_file, weights, old_path, new_path):
 
 
 def _score_rubric(criteria, verdicts):
+    """`None` in ``verdicts`` means the grader call failed for that criterion
+    (see make_openai_rubric_judge/make_anthropic_rubric_judge below) -- it is
+    "not evaluated", not "evaluated and found lacking". If every criterion
+    failed to grade, the denominator would still be the full rubric weight
+    while nothing was ever actually checked, silently reporting a confident
+    0.0 for a run that was never judged. Report None (not evaluated) instead,
+    same "absent means null, not zero" contract as runreport.py."""
     pos_total = sum(c["score"] for c in criteria if c["score"] > 0)
     met = penalty = 0.0
+    n_graded = 0
     for c in criteria:
         v = verdicts.get(c["number"])
-        if v is None or not v:
+        if v is None:
+            continue
+        n_graded += 1
+        if not v:
             continue
         if c["score"] > 0:
             met += c["score"]
         else:
             penalty += abs(c["score"])
-    return round(max(0.0, (met - penalty) / pos_total), 4) if pos_total else 0.0
+    if criteria and n_graded == 0:
+        print(
+            f"[rubric] WARNING: all {len(criteria)} rubric criteria failed to "
+            "grade -- reporting rubric_score as None, not 0.0.",
+            file=sys.stderr,
+        )
+        return None
+    return (met - penalty) / pos_total if pos_total else 0.0
 
 
 def _parse_narrative(text: str):
@@ -160,8 +179,14 @@ def make_openai_rubric_judge(model=None, narrative: bool | None = None):
                     judge.justifications[c["number"]] = text
                 else:
                     verdicts[c["number"]] = raw.strip().upper().startswith("Y")
-            except Exception:
+            except Exception as exc:
                 verdicts[c["number"]] = None
+                if not getattr(judge, "_warned", False):
+                    judge._warned = True
+                    print(f"[rubric] OpenAI rubric judge call failed ({type(exc).__name__}: "
+                          f"{exc}) against {os.environ.get('OPENAI_BASE_URL')!r} -- "
+                          "criterion(s) will report as ungraded, not failed. This warning "
+                          "prints once per process.", file=sys.stderr)
         return verdicts
 
     # Advertised on the callable so callers can read the extra output without
@@ -215,8 +240,13 @@ def make_anthropic_rubric_judge(model=None):
                 parts = data.get("content") or []
                 text = "".join(p.get("text", "") for p in parts if isinstance(p, dict)).strip().upper()
                 verdicts[c["number"]] = text.startswith("Y")
-            except Exception:
+            except Exception as exc:
                 verdicts[c["number"]] = None
+                if not getattr(judge, "_warned", False):
+                    judge._warned = True
+                    print(f"[rubric] Anthropic rubric judge call failed ({type(exc).__name__}: "
+                          f"{exc}) against {url!r} -- criterion(s) will report as ungraded, "
+                          "not failed. This warning prints once per process.", file=sys.stderr)
         return verdicts
 
     return judge
@@ -249,6 +279,7 @@ def judge_rubric_pytest(old_env, new_env, output, grading_dir,
             "is_positive": c.get("is_positive", True),
             "score": c.get("score"),
             "satisfied": bool(verdicts.get(c.get("number"))),
+            "graded": verdicts.get(c.get("number")) is not None,
         } for c in criteria]
 
     passed = int(a["pytest_score"] >= a_threshold and (rubric_score is None or rubric_score >= b_threshold))

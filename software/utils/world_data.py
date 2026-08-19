@@ -200,6 +200,23 @@ def _stock_shape():
     }
 
 
+def _weather_alerts_fn(session, value):
+    # self.alerts is Dict[aid -> plain dict] (alerts aren't a dataclass), but
+    # get_session_dict() dumps it as list(self.alerts.values()), so the JSON
+    # round-trips as a list. Auto-derivation can't recover the dict key from
+    # that shape alone and skips it; rebuild the dict here using each alert's
+    # own "aid" field as the key.
+    session.alerts = {
+        a["aid"]: a for a in value if isinstance(a, dict) and "aid" in a
+    }
+
+
+def _weather_shape():
+    return {
+        "alerts": ("fn", _weather_alerts_fn),
+    }
+
+
 _SHAPES = {
     "LightShop": _shop_shape,
     "LightBudget": _budget_shape,
@@ -209,6 +226,7 @@ _SHAPES = {
     "LightPodcast": _podcast_shape,
     "LightFlight": _flight_shape,
     "LightStock": _stock_shape,
+    "LightWeather": _weather_shape,
 }
 
 

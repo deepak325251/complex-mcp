@@ -571,6 +571,12 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
         # (consecutive turns with no call), or max_turns (turn/budget exhaustion).
         # Distinguishes a clean finish from a forced cutoff at 510k-token runs.
         "termination_reason": record.get("termination_reason"),
+        # RAG method only: the one-shot-per-query key_names the retriever
+        # actually surfaced to the model. None for non-rag methods (list_all,
+        # provide, ...) where every declared tool is visible regardless.
+        # Lets post-hoc analysis distinguish "never retrieved" from
+        # "retrieved but the agent didn't call it".
+        "retrieved_tools": record.get("retrieved_tools"),
     }, indent=2, ensure_ascii=False))
 
     _write_rubric_json(run_dir, rubric_result)
@@ -578,6 +584,47 @@ def write_mcp_stump_run(output_root: Path, record: dict, *,
     _write_ctrf_json(run_dir, record["name"], model, run_no, score, rubric_result)
 
     return run_dir, score
+
+
+def _load_recorded_run(run_dir: Path) -> dict | None:
+    """Best-effort reconstruction of a run_records-shaped dict from what a
+    prior write_mcp_stump_run() call already left on disk for this run_N dir.
+
+    H5's reconciliation loop below folds in any run_N slot missing from the
+    in-memory run_records list. Before this fix it always synthesized a fake
+    "unrecorded_run" placeholder for that slot -- even when the run actually
+    completed and graded fine, and only fell out of run_records because the
+    process restarted between writing report.json and building the aggregate.
+    That silently overwrote a real reward/failure_class with a fabricated
+    "hard bounce" label. Return the real record when one exists on disk;
+    return None (caller falls back to the synthetic placeholder) only when
+    there's genuinely nothing to recover from.
+    """
+    report_path = run_dir / "report.json"
+    if not report_path.exists():
+        return None
+    try:
+        report = json.loads(report_path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+    diagnosis: dict = {}
+    diag_path = run_dir / "diagnosis.json"
+    if diag_path.exists():
+        try:
+            diagnosis = json.loads(diag_path.read_text())
+        except (json.JSONDecodeError, OSError):
+            diagnosis = {}
+    return {
+        "attempt": report.get("attempt"),
+        "passed": bool(report.get("passed", False)),
+        "reward": report.get("reward"),
+        "completion_rate": report.get("completion_rate"),
+        "misbehaving_rate": report.get("misbehaving_rate"),
+        "failure_class": diagnosis.get("failure_class"),
+        "reason": diagnosis.get("reason"),
+        "seed": report.get("seed"),
+        "retrieved_tools": report.get("retrieved_tools"),
+    }
 
 
 def write_trials_aggregate(output_root: Path, task_name: str, model: str,
@@ -614,6 +661,11 @@ def write_trials_aggregate(output_root: Path, task_name: str, model: str,
             if num in recorded:
                 continue
             recorded.add(num)
+            real = _load_recorded_run(d)
+            if real is not None:
+                real["attempt"] = real.get("attempt") or num
+                run_records.append(real)
+                continue
             run_records.append({
                 "attempt": num, "passed": False,
                 "failure_class": "unrecorded_run",

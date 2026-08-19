@@ -405,12 +405,13 @@ class Toolbox:
         # instruction's wording doesn't closely echo (e.g. create_event,
         # send_template) never surface even though they're the only tools
         # for the job. Fix: raise the effective floor to cover every scoped
-        # tool (capped, so one pathologically large single app can't balloon
-        # context back to a full corpus dump) instead of letting `k` cap the
-        # task's own toolset. `k` still governs presentation ORDER via the
-        # RAG-ranked pool below -- it just can no longer cause silent drops.
+        # tool, uncapped -- a task that declares many apps is trusted to mean
+        # it, and no tool belonging to a declared app should be hidden from
+        # the agent by an arbitrary ceiling. `k` still governs presentation
+        # ORDER via the RAG-ranked pool below -- it just can no longer cause
+        # silent drops.
         scoped_total = sum(1 for kn in self.tools if self._server_of(kn) in allowed)
-        k_eff = max(k, min(scoped_total, 200))
+        k_eff = max(k, scoped_total)
         pool_k = min(len(self.tools) or k_eff, max(k_eff * 10, 300))
         pool = self.rag.read(query=query, k=pool_k)
         keys: List[str] = []
@@ -1122,6 +1123,14 @@ class AgentClient:
                 if self.toolbox.method == "rag":
                     key_names = self.toolbox.retrieve_tool_keys(
                         query=query, apps=env.get("apps"))
+                    # RAG retrieval runs once against the initial query, not
+                    # per turn -- a tool a later turn needs but the opening
+                    # query didn't hint at is invisible for the whole
+                    # trajectory. Previously only visible via the stdout
+                    # print below; recorded here so it survives into
+                    # report.json for post-hoc "was it retrieved at all"
+                    # analysis instead of only a transient log line.
+                    results["retrieved_tools"] = list(key_names)
                 elif self.toolbox.method == "provide":
                     key_names = list(provide_tools or [])
                 else:
@@ -1137,6 +1146,10 @@ class AgentClient:
                         "${CHOSEN_TOOLS}",
                         "\n".join(map(lambda x: f"- {x}", _chosen))
                     )
+                    results["retrieved_tools"] = [
+                        d.get("tool_name") if isinstance(d, dict) else d
+                        for d in _chosen
+                    ]
                   
                     print(f"Tool number: {len(_chosen)} chosen "
                           f"(from {len(self.toolbox.tools)} total, apps={env.get('apps')})")

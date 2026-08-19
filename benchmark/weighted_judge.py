@@ -650,7 +650,7 @@ def _score_traj_tests(passed, tests_map):
 
 
 def _score_rubric(criteria, verdicts):
-    """Weighted rubric score in [0, 1] from {criterion_number: bool} verdicts.
+    """Weighted rubric score (can go negative) from {criterion_number: bool|None} verdicts.
 
     Polarity: a criterion is a GUARD (violation-worded) when it is flagged
     ``is_positive: false`` OR carries a negative ``score``. For a guard,
@@ -660,8 +660,22 @@ def _score_rubric(criteria, verdicts):
     criteria earn weight and define the denominator. This matches
     rubric_judge.evaluate_rubric; the old sign-only rule mis-scored guard
     criteria that authors wrote with a positive score + ``is_positive: false``
-    (e.g. 5/19 instead of 5/10 on a clean run)."""
+    (e.g. 5/19 instead of 5/10 on a clean run).
+
+    A verdict of ``None`` (as opposed to ``False``) means the grader FAILED to
+    evaluate that criterion (e.g. the rubric-judge LLM call errored/timed
+    out/couldn't reach its backend) -- it is "not evaluated", not "evaluated
+    and found lacking". Collapsing the two via a bare ``bool(None) == False``
+    silently turned a broken grader connection into a confident 0% for every
+    positive criterion (and a false-clean pass for every guard) -- identical
+    across runs with wildly different actual behavior, which is how this was
+    caught. Ungraded criteria are excluded from both the denominator and the
+    penalty; if every criterion in the rubric came back ungraded, the whole
+    rubric reports ``None`` (absent/not-evaluated) rather than a fabricated
+    0.0, matching the "absent means null, not zero" contract documented on
+    ``runreport.py``."""
     met = pen = pos_total = 0.0
+    n_graded = 0
     per = []
     for c in criteria or []:
         w = c.get("score", 0) or 0
@@ -669,15 +683,21 @@ def _score_rubric(criteria, verdicts):
         # is_positive wins when present; else fall back to the sign of the score.
         guard = (is_pos is False) or (is_pos is None and w < 0)
         mag = abs(w)
-        v = bool(verdicts.get(c.get("number")))
+        raw_v = verdicts.get(c.get("number"))
+        graded = raw_v is not None
+        v = bool(raw_v)
         per.append({"number": c.get("number"), "criterion": c.get("criterion"),
                     "score": w, "is_positive": (not guard), "satisfied": v,
+                    "graded": graded,
                     # Carried through so report.json shows what the task
                     # authored; these were dropped, so a criterion authored
                     # "critical" was delivered as "important".
                     "type": c.get("type", ""),
                     "evaluation_target": c.get("evaluation_target", "final_answer"),
                     "importance": c.get("importance", "important")})
+        if not graded:
+            continue
+        n_graded += 1
         if guard:
             if v:
                 pen += mag          # violation fired
@@ -685,7 +705,16 @@ def _score_rubric(criteria, verdicts):
             pos_total += mag
             if v:
                 met += mag
-    score = round(max(0.0, (met - pen) / pos_total), 4) if pos_total else None
+    if criteria and n_graded == 0:
+        print(
+            f"[rubric] WARNING: all {len(criteria)} rubric criteria failed to "
+            "grade (rubric-judge calls errored) -- reporting rubric_score as "
+            "null, not 0%. Check OPENAI_BASE_URL/ANTHROPIC_BASE_URL "
+            "connectivity for the configured rubric judge.",
+            file=sys.stderr,
+        )
+        return None, per
+    score = (met - pen) / pos_total if pos_total else None
     return score, per
 
 

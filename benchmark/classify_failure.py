@@ -164,6 +164,33 @@ def _detect_transient_defeatism(
     return None
 
 
+def _read_response_is_empty(step: dict) -> bool:
+    resp = step.get("response")
+    if isinstance(resp, dict):
+        out = resp.get("output")
+        if out is None:
+            return True
+        if isinstance(out, (list, dict)):
+            return len(out) == 0
+        if isinstance(out, str):
+            return out.strip() == ""
+        return False
+    return not resp
+
+
+def _no_dirty_state_evidence(steps: Sequence[dict]) -> bool:
+    """True when every listing-style call (``list_*``) the agent made came
+    back empty -- i.e. the world never actually surfaced a collection for
+    the dirty_state lever to act on, so the agent can't be faulted for not
+    cleaning it up. Only fires when there's at least one such call; agents
+    that never looked at all still get DIRTY_STATE_IGNORED as before.
+    """
+    list_steps = [s for s in steps if _base(s.get("tool")).startswith("list_")]
+    if not list_steps:
+        return False
+    return all(_read_response_is_empty(s) for s in list_steps)
+
+
 def classify(
     *,
     trajectory: dict[str, Any] | list[dict] | None,
@@ -303,6 +330,13 @@ def classify(
             any(h in name.lower() for h in CLEANUP_HINTS) for name in tool_names_called
         )
         if not touched_cleanup:
+            if _no_dirty_state_evidence(steps):
+                return _verdict(
+                    FailureClass.ENVIRONMENT_MISMATCH,
+                    "dirty_state lever declared but every list_-style call the agent made "
+                    "came back empty; the runtime never surfaced a dirty collection to clean",
+                    {"called": tool_names_called},
+                )
             return _verdict(
                 FailureClass.DIRTY_STATE_IGNORED,
                 "dirty_state lever active but agent called no cleanup-style tools",

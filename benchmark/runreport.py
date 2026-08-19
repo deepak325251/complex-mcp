@@ -152,13 +152,11 @@ class RunReport:
 
 def from_judge(model: str, run_index: int, judge_detail: dict, *,
                rubric: list[RubricEntry] | None = None,
-               exit_code: int = 0, top_n: int = 40) -> RunReport:
+               exit_code: int = 0) -> RunReport:
     """Build a run report from the judge's per-key outcomes.
 
-    Failures are kept in full; passing keys are truncated to `top_n` and the
-    omitted ones folded into one aggregate entry carrying their summed weight,
-    so `test_weights_percentage` equals the judge's `weighted_score` whatever
-    `top_n` is.
+    Every outcome — failing or passing — is kept in full, so the entry list
+    always matches the judge's `weighted_score` one-for-one.
     """
     outcomes: list[TestEntry] = []
     for o in judge_detail.get("failed_positive", []):
@@ -172,16 +170,8 @@ def from_judge(model: str, run_index: int, judge_detail: dict, *,
         outcomes.append(TestEntry(_name(o, "untouched"),
                                   -abs(float(o.get("weight", 1.0))), False))
 
-    room = max(0, top_n - len(outcomes))
-    passing = judge_detail.get("passed_positive", [])
-    for o in passing[:room]:
+    for o in judge_detail.get("passed_positive", []):
         outcomes.append(TestEntry(_name(o, "reached"), float(o.get("weight", 1.0)), True))
-
-    hidden = passing[room:]
-    if hidden:
-        outcomes.append(TestEntry(
-            f"reached[+{len(hidden)}_more_passing]",
-            round(sum(float(o.get("weight", 1.0)) for o in hidden), 6), True))
 
     return RunReport(model=model, run_index=run_index, tests=outcomes,
                      rubric=list(rubric or []), exit_code=exit_code)

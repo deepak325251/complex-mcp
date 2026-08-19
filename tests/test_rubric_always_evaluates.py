@@ -81,7 +81,11 @@ def test_a_failing_rubric_at_weight_zero_still_does_not_move_the_reward(rubric_p
     r_good = _run(W_ZERO, rubric_path)
     r_bad = _run(W_ZERO, rubric_path,
                  judge=lambda c, o: {"1": False, "2": False, "3": True})
-    assert r_bad["rubric_score"] == 0.0          # guard fired, nothing met
+    # Nothing positive earned, guard "3" fired -> score goes negative, derived
+    # straight from CRITERIA rather than a hardcoded number.
+    pos_total = sum(c["score"] for c in CRITERIA if c["is_positive"])
+    penalty = sum(c["score"] for c in CRITERIA if not c["is_positive"])
+    assert r_bad["rubric_score"] == pytest.approx(-penalty / pos_total)
     assert r_bad["reward"] == r_good["reward"]   # reward untouched
 
 

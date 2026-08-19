@@ -5,10 +5,7 @@ Every app's session class now calls hydrate(self, "<App>") at the end of its
 seed-branch __init__ (after the throwaway seed-rolled world + any fixtures).
 hydrate() replaces every field the JSON declares wholesale, so with
 COMPLEXMCP_WORLD_DATA active, get_session_dict() should reproduce the JSON
-file exactly for every app whose JSON exists -- except apps world_data.py
-explicitly documents it can't safely round-trip (currently just
-LightWeather's "alerts", which dumps as a list but is stored as a dict; see
-world_data.py's container-kind-mismatch skip).
+file exactly for every app whose JSON exists.
 """
 import glob
 import importlib
@@ -25,7 +22,7 @@ NO_STATE_APPS = {"LightNews", "LightSystem"}
 # Known, documented hydration gaps -- container-kind mismatches that can't
 # be round-tripped without a recoverable dict key. Keep this list honest:
 # growing it silently would hide new regressions.
-KNOWN_GAPS = {"LightWeather": {"alerts"}}
+KNOWN_GAPS = {}
 
 
 def _app_names():

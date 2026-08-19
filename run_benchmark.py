@@ -886,6 +886,7 @@ def main(args):
                     "expected_tool_calls": task_info.get("expected_tool_calls"),
                     "reasoning_signatures": result.get("reasoning_signatures") or [],
                     "termination_reason": result.get("termination_reason"),
+                    "retrieved_tools": result.get("retrieved_tools"),
                     # Per-turn timestamps + token slices + tool-call counts. The
                     # trajectory is reconstructed from a flat text stream with no
                     # turn boundaries, so ATIF cannot group calls into turns (or

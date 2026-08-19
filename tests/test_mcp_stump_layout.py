@@ -76,6 +76,28 @@ def test_write_mcp_stump_run_creates_all_files(tmp_path: Path):
     assert report["seed"] == 777
 
 
+def test_report_json_carries_retrieved_tools_when_present(tmp_path: Path):
+    rec = _record()
+    rec["retrieved_tools"] = ["get_primary_location", "list_alerts"]
+    score = {"gradeable": True, "reward": 1.0, "recall": 3, "total": 3,
+             "misbehave": 0, "passed": True}
+    run_dir, _ = write_mcp_stump_run(tmp_path, rec, model="claude-opus-4-8", score=score)
+    report = json.loads((run_dir / "report.json").read_text())
+    assert report["retrieved_tools"] == ["get_primary_location", "list_alerts"]
+
+
+def test_report_json_retrieved_tools_absent_for_non_rag(tmp_path: Path):
+    # Backward compatible: records from non-rag methods (list_all, provide,
+    # ...) never set this key -- report.json must still write cleanly with it
+    # as null rather than KeyError.
+    rec = _record()
+    score = {"gradeable": True, "reward": 1.0, "recall": 3, "total": 3,
+             "misbehave": 0, "passed": True}
+    run_dir, _ = write_mcp_stump_run(tmp_path, rec, model="claude-opus-4-8", score=score)
+    report = json.loads((run_dir / "report.json").read_text())
+    assert report["retrieved_tools"] is None
+
+
 def test_write_mcp_stump_run_auto_increments(tmp_path: Path):
     rec = _record()
     score = {"gradeable": True, "reward": 0.0, "recall": 0, "total": 3,

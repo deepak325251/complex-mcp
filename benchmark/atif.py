@@ -336,9 +336,10 @@ def from_complexmcp(traj: dict, *, agent: str = "complexmcp", model: str = "",
             atif_step["extra"] = extra
         steps.append(atif_step)
 
+    next_step_id = (steps[-1]["step_id"] + 1) if steps else 0
     steps.append(
         {
-            "step_id": len(steps) + 1,
+            "step_id": next_step_id,
             "source": "agent",
             "message": traj.get("final_message", ""),
             "model_name": model,
