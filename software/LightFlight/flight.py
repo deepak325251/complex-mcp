@@ -120,6 +120,8 @@ class FlightSession:
     def init_airports(self) -> Tuple[List[Airport], Dict[str, str]]:
         airports_list = []
         airports_in_cities = defaultdict(list)
+        if not (CORPUS_PATH / "airports.yaml").is_file():
+            return airports_list, dict(airports_in_cities)
         with open(CORPUS_PATH / "airports.yaml") as f:
             airports = yaml.safe_load(f)["airports"]
             for airport in airports:
@@ -142,9 +144,6 @@ class FlightSession:
         return airports_list, airports_in_cities
 
     def init_flights(self) -> Tuple[Dict[str, Flight], Dict[str, List[Flight]], Dict[str, List[Flight]]]:
-        # Corpus-only: if the flight catalog is authored in corpus/flights.yaml,
-        # load it verbatim (deterministic, no seed generation). Only fall back to
-        # rolling flights from the rng when the authored catalog is absent.
         _authored = CORPUS_PATH / "flights.yaml"
         if _authored.is_file():
             with open(_authored) as _f:
@@ -159,77 +158,7 @@ class FlightSession:
                 flights_by_departure[_flight.departure].append(_flight)
             return flights, dict(flights_by_arrival), dict(flights_by_departure)
 
-        def __mock_dura_price(
-            coord_1: Tuple[float, float],
-            coord_2: Tuple[float, float]
-        ) -> Tuple[int, float]:
-            lat1, lon1 = coord_1
-            lat2, lon2 = coord_2
-            
-            dlat = lat2 - lat1
-            dlon = lon2 - lon1
-            distance_km = 111 * math.sqrt(dlat**2 + (math.cos(math.radians(lat1)) * dlon)**2)
-            
-            flight_hours = distance_km / 800
-            total_minutes = int(round(flight_hours * 60 + 45))  # 飞行时间+起降
-            
-            total_minutes = int(total_minutes * self.rng.uniform(0.9, 1.1))
-            total_minutes = max(60, total_minutes)
-            
-            price_per_km = self.rng.uniform(0.8, 1.2)  # 每公里 0.8-1.2 元
-            price = distance_km * price_per_km
-            
-            # 简单调节
-            if total_minutes < 120:  # 短途
-                price *= 1.5
-            elif total_minutes > 360:  # 长途
-                price *= 0.9
-            
-            # 随机波动
-            price *= self.rng.uniform(0.3, 1.2)
-            
-            price = max(300, min(10000, price))
-            price = round(price / 10) * 10
-            
-            return total_minutes, price
-
-        flights: Dict[str, Flight] = {}
-        flights_by_arrival: Dict[str, List[Flight]] = defaultdict(list)
-        flights_by_departure: Dict[str, List[Flight]] = defaultdict(list)
-        base_time = self.os.now()
-        for airport in self.airports:
-            target_airports = self.rng.sample(self.airports, k=self.rng.randint(5, 50))
-            target_airports = self.rng.choices(target_airports, k=4 * len(target_airports))
-            for target_airport in target_airports:
-                dura, price = __mock_dura_price(airport._coord, target_airport._coord)
-                departure_time = self.time_machine.add_secs(
-                    timestamp=base_time,
-                    min_secs=3600 * 4, max_secs= 3600 * 10 * 24
-                )
-                flight = Flight(
-                    fid=self.uuid("flight"),
-                    departure=airport.city,
-                    arrival=target_airport.city,
-                    departure_airport=airport.name,
-                    arrival_airport=target_airport.name,
-                    departure_time=departure_time,
-                    arrival_time=self.time_machine.add_secs(
-                        departure_time,
-                        min_secs=dura * 60, max_secs=dura * 60
-                    ),
-                    duration=dura,
-                    price=price, # economy
-                    seat_count={
-                        "economy": self.rng.randint(10, 50),
-                        "business": self.rng.randint(0, 20),
-                        "first": self.rng.randint(0, 7)
-                    }
-                )
-                flights[flight.fid] = flight
-                flights_by_arrival[flight.arrival].append(flight)
-                flights_by_departure[flight.departure].append(flight)
-        
-        return flights, dict(flights_by_arrival), dict(flights_by_departure)
+        return {}, {}, {}
 
     def __mock_booking(self):
         if self.rng.uniform(0, 1) > 0.5:

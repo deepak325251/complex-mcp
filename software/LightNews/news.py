@@ -42,11 +42,10 @@ class NewsSession:
                 "Public Safety",
                 "Sports"
             ]
-            # World data loaded verbatim from corpus/state.json (no cooking):
+            # World data loaded verbatim from corpus/state.yaml (no cooking):
             # authored news is rebuilt into NewsItem objects the tools expect.
-            import json as _json
-            with open(CORPUS_PATH / "state.json") as _f:
-                _news_data = _json.load(_f).get("news", {})
+            with open(CORPUS_PATH / "state.yaml") as _f:
+                _news_data = (yaml.safe_load(_f) or {}).get("news", {})
             self._news: Dict[str, List[NewsItem]] = {
                 sec: [NewsItem(**d) for d in _news_data.get(sec, [])]
                 for sec in self.sections

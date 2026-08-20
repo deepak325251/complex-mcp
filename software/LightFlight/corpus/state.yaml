@@ -1,4 +1,4 @@
-# Source: world_data 2/LightFlight.json (verbatim). Corpus-only authored world.
+# Source: world_data/LightFlight.json (verbatim). Corpus-only authored world.
 my_balance: 33951
 bookings:
 - bid: book_tXvxkYUeqHydnu8Tzei6Qp
