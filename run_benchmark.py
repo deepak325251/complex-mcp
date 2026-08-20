@@ -488,9 +488,6 @@ def main(args):
     # in which case rubric+pytest tasks grade on Channel A (pytest) alone.
     rubric_judge = make_openai_rubric_judge() or make_anthropic_rubric_judge()
     if rubric_judge is None:
-        # Say it ONCE and loudly: without judge creds every criteria-style
-        # tests/rubric.json silently grades as "no rubric", which reads like
-        # the task never had one.
         print("[rubric] WARNING: no judge backend (need OPENAI_API_KEY+"
               "OPENAI_BASE_URL or ANTHROPIC_BASE_URL+ANTHROPIC_API_KEY) — "
               "criteria-style rubric.json files will NOT be scored this run")
