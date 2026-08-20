@@ -31,25 +31,9 @@ class ObsidianSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "obsidian.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.notes: List[Dict[str, Any]] = [
-                {
-                    "path": r["path"],
-                    "title": r["title"],
-                    "size_bytes": int(r.get("size_bytes") or 0),
-                    "modified_at": r["modified_at"],
-                    "tags": [t.strip() for t in str(r.get("tags") or "").split(";") if t.strip()],
-                }
-                for r in info.get("notes", [])
-            ]
-            self.contents: Dict[str, str] = {
-                r["path"]: r["content"].replace("\\n", "\n") for r in info.get("note_contents", [])
-            }
-            self.vault: Dict[str, Any] = info.get("vault", {})
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightObsidian')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightObsidian')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

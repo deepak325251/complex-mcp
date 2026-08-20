@@ -55,26 +55,9 @@ class GoogleClassroomSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "google_classroom.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.courses: List[Dict[str, Any]] = self._coerce_courses(info.get("courses", []))
-            self.coursework: List[Dict[str, Any]] = self._coerce_coursework(info.get("coursework", []))
-            self.topics: List[Dict[str, Any]] = self._coerce_topics(info.get("topics", []))
-            self.students: List[Dict[str, Any]] = self._coerce_students(info.get("students", []))
-            self.teachers: List[Dict[str, Any]] = self._coerce_teachers(info.get("teachers", []))
-            self.submissions: List[Dict[str, Any]] = self._coerce_submissions(info.get("submissions", []))
-            self.announcements: List[Dict[str, Any]] = self._coerce_announcements(info.get("announcements", []))
-            self.materials: List[Dict[str, Any]] = self._coerce_materials(info.get("materials", []))
-
-            self._next_course_id = 5
-            self._next_cw_id = 400
-            self._next_topic_id = 400
-            self._next_sub_id = 100
-            self._next_ann_id = 20
-            self._next_mat_id = 10
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightGoogleClassroom')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightGoogleClassroom')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

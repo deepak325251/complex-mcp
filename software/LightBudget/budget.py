@@ -79,17 +79,18 @@ class BudgetSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
-            self.categories: Dict[str, Category] = {
-                c["catid"]: Category(**c) for c in DEFAULT_CATEGORIES
-            }
+            # Annotations drive the coercion in load_typed_state (categories/
+            # transactions/budgets -> their dataclasses via _SHAPES).
+            self.categories: Dict[str, Category] = {}
             self.transactions: Dict[str, Transaction] = {}
             self.budgets: Dict[str, Budget] = {}
-            self._seed_transactions()
-            self._seed_budgets()
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # dicts rebuilt into Category/Transaction/Budget; "today" -> _today.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, "LightBudget")
+            # Task-specific overlay still applies on top for fixture tasks.
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightBudget", fixture)
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, "LightBudget")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -88,13 +88,16 @@ class HRSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (employees/
+            # leaves/timesheets -> Employee/Leave/TimeEntry dataclasses).
             self.employees: Dict[str, Employee] = {}
             self.leaves: Dict[str, Leave] = {}
             self.timesheets: Dict[str, TimeEntry] = {}
-            self._today = datetime(2026, 1, 5)
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightHR')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt back into the dataclass objects tools expect.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightHR')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

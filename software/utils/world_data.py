@@ -1,14 +1,22 @@
-"""Bring-your-own world data: hydrate a session's fields from user-authored
-JSON instead of the seed-rolled/random world.
+"""In-code world data: hydrate a session's fields from the app's own
+authored world file instead of the seed-rolled/random world.
 
-Guarded by the ``COMPLEXMCP_WORLD_DATA`` env var, so it's inert unless a run
-explicitly opts in. When set to a directory, and that directory contains
-``<AppName>.json``, the JSON is loaded and used to REPLACE the named
-top-level fields on the session -- not merged, not overlaid onto the seeded
-world: the fields the JSON declares become the session's entire state for
-those fields, same as the seed roll they take the place of. (Contrast with
-``fixtures.py``, which overlays a couple of entities onto an otherwise
-seeded world -- world data replaces a whole app's world wholesale.)
+The canonical world for each app lives next to its own code, at
+``software/<App>/world.json`` -- a single source of truth, not a separate
+parallel world. ``hydrate()`` loads that file by default and uses it to
+REPLACE the named top-level fields on the session -- not merged, not
+overlaid onto the seeded world: the fields the JSON declares become the
+session's entire state for those fields, same as the seed roll they take the
+place of. (Contrast with ``fixtures.py``, which overlays a couple of
+entities onto an otherwise seeded world -- world data replaces a whole app's
+world wholesale.)
+
+The ``COMPLEXMCP_WORLD_DATA`` env var is an optional OVERRIDE: when it points
+at a directory containing ``<AppName>.json``, that file wins over the
+canonical ``software/<App>/world.json`` (used for per-task / scenario worlds,
+e.g. ``07-savannah-cookout-week/world_data/``, and the ``--world-data`` CLI
+flag). With neither present, ``hydrate()`` is a no-op and the app keeps its
+seed-rolled world.
 
 The JSON must mirror the session's own field shape -- the same shape its
 ``get_session_dict()`` dump already produces: dicts of id -> dataclass keep
@@ -55,6 +63,96 @@ _log = logging.getLogger("complexmcp.world_data")
 
 def active_dir() -> str:
     return os.environ.get("COMPLEXMCP_WORLD_DATA", "").strip()
+
+
+def _corpus_base(mod_file):
+    """The app's authored-world file next to its module: corpus/state.json
+    (legacy) or corpus/state.yaml (corpus-only mode). state.json wins if both
+    exist. Returns the path, or None if neither is present."""
+    cdir = os.path.join(os.path.dirname(os.path.abspath(mod_file)), "corpus")
+    for name in ("state.json", "state.yaml"):
+        p = os.path.join(cdir, name)
+        if os.path.isfile(p):
+            return p
+    return None
+
+
+def _read_corpus(path):
+    """Load a corpus data file (json or yaml) into a plain dict."""
+    with open(path) as fh:
+        if path.endswith((".yaml", ".yml")):
+            import yaml
+            return yaml.safe_load(fh) or {}
+        return json.load(fh)
+
+
+def load_state(session, app_name: str) -> bool:
+    """Load an app's world verbatim -- NO cooking. Reads
+    ``software/<App>/corpus/state.json`` and setattr's each top-level key onto
+    ``session`` as a plain dict/list/scalar (no type coercion, no reshaping).
+    For apps whose tools operate on plain-dict state.
+
+    A per-task ``COMPLEXMCP_WORLD_DATA/<App>.json`` override, if present, is
+    applied ON TOP (graded keys only), so scenario/per-task worlds still win
+    while reference fields keep coming from ``state.json``. Returns True if a
+    base ``state.json`` was found and applied.
+    """
+    mod = inspect.getmodule(type(session))
+    mod_file = getattr(mod, "__file__", None)
+    if not mod_file:
+        return False
+    base = _corpus_base(mod_file)
+    if not base:
+        return False
+    # Plain-dict apps setattr keys verbatim, but a handful register a
+    # hand-authored _SHAPES entry to reshape keys whose dumped JSON form
+    # (e.g. a dict serialized as list(...values())) does not round-trip back
+    # to the shape the tools expect. Apply those fixups here -- to BOTH the
+    # base state.json and any per-task override -- so a list-form override
+    # can't clobber a dict-shaped attribute. Auto-shape (dataclass wrapping)
+    # is intentionally NOT applied: load_state is for plain-dict worlds.
+    shape = {}
+    shape_fn = _SHAPES.get(app_name)
+    if shape_fn:
+        shape = shape_fn()
+    _apply_shape_specs(session, _read_corpus(base), shape)
+
+    d = active_dir()
+    if d:
+        override = os.path.join(d, f"{app_name}.json")
+        if os.path.isfile(override):
+            with open(override) as fh:
+                _apply_shape_specs(session, json.load(fh), shape)
+    return True
+
+
+def _canonical_world_path(session, app_name: str):
+    """The app's own in-``software/`` world file: ``software/<App>/world.json``,
+    resolved from the session class's module dir so it's cwd-independent."""
+    mod = inspect.getmodule(type(session))
+    mod_file = getattr(mod, "__file__", None)
+    if not mod_file:
+        return None
+    return os.path.join(os.path.dirname(os.path.abspath(mod_file)), "world.json")
+
+
+def _resolve_world_path(session, app_name: str):
+    """Resolve the world-data file to load for ``app_name``, or ``None``.
+
+    Two tiers:
+      1. Override -- ``$COMPLEXMCP_WORLD_DATA/<App>.json`` if the env var is set
+         and that file exists (per-task/scenario dirs, ``--world-data``).
+      2. Canonical -- ``software/<App>/world.json`` next to the app's own code.
+    """
+    d = active_dir()
+    if d:
+        override = os.path.join(d, f"{app_name}.json")
+        if os.path.isfile(override):
+            return override
+    canonical = _canonical_world_path(session, app_name)
+    if canonical and os.path.isfile(canonical):
+        return canonical
+    return None
 
 
 def _coerce(tp, value):
@@ -205,9 +303,12 @@ def _weather_alerts_fn(session, value):
     # get_session_dict() dumps it as list(self.alerts.values()), so the JSON
     # round-trips as a list. Auto-derivation can't recover the dict key from
     # that shape alone and skips it; rebuild the dict here using each alert's
-    # own "aid" field as the key.
+    # own "aid" field as the key. Tolerate both shapes: corpus/state.json may
+    # store the already-keyed dict, while per-task world_data overrides ship
+    # the dumped list -- both must resolve to a dict here.
+    items = value.values() if isinstance(value, dict) else value
     session.alerts = {
-        a["aid"]: a for a in value if isinstance(a, dict) and "aid" in a
+        a["aid"]: a for a in items if isinstance(a, dict) and "aid" in a
     }
 
 
@@ -373,27 +474,26 @@ def _auto_shape(app_name: str, session) -> dict:
 
 
 def hydrate(session, app_name: str) -> bool:
-    """Load ``<COMPLEXMCP_WORLD_DATA>/<app_name>.json`` onto ``session``,
-    replacing each field the JSON declares. Returns True if a file was found
-    and applied, False if world data isn't active for this run (or no file
-    exists for this app -- e.g. LightSystem's is empty)."""
-    d = active_dir()
-    if not d:
-        return False
-    path = os.path.join(d, f"{app_name}.json")
-    if not os.path.isfile(path):
+    """Load the app's world file onto ``session``, replacing each field the
+    JSON declares. The file is ``software/<App>/world.json`` (canonical,
+    next to the app's own code) unless ``$COMPLEXMCP_WORLD_DATA/<app_name>.json``
+    overrides it -- see ``_resolve_world_path``. Returns True if a file was
+    found and applied, False otherwise (no world file for this app, or its
+    dump is empty -- e.g. LightSystem)."""
+    path = _resolve_world_path(session, app_name)
+    if path is None:
         return False
     with open(path) as fh:
         data = json.load(fh)
+    _apply(session, app_name, data)
+    return True
 
-    # Auto-derived shape is the base; hand-authored _SHAPES entries override
-    # individual keys (renames, scalar coercions, aggregates) without
-    # dropping the keys auto-derivation already gets right.
-    shape = dict(_auto_shape(app_name, session))
-    shape_fn = _SHAPES.get(app_name)
-    if shape_fn:
-        shape.update(shape_fn())
 
+def _apply_shape_specs(session, data: dict, shape: dict) -> None:
+    """setattr each key of ``data`` onto ``session``, routing keys that carry a
+    ``shape`` spec through their declared reshaping (skip/fn/scalar/dict/list)
+    and copying the rest verbatim. Shared by ``_apply`` (auto-shape + _SHAPES)
+    and ``load_state`` (hand-authored _SHAPES only)."""
     for key, value in data.items():
         spec = shape.get(key)
         if spec is None:
@@ -418,7 +518,48 @@ def hydrate(session, app_name: str) -> bool:
         else:
             setattr(session, attr_name, value)
 
+
+def _apply(session, app_name: str, data: dict) -> None:
+    """Apply a data dict onto ``session``: coerce each key that has a declared
+    shape (rebuilding dataclasses, dict/list containers, scalars, aggregates),
+    and setattr the rest verbatim. Runs the app's post-hydrate hook, if any."""
+    # Auto-derived shape is the base; hand-authored _SHAPES entries override
+    # individual keys (renames, scalar coercions, aggregates) without
+    # dropping the keys auto-derivation already gets right.
+    shape = dict(_auto_shape(app_name, session))
+    shape_fn = _SHAPES.get(app_name)
+    if shape_fn:
+        shape.update(shape_fn())
+
+    _apply_shape_specs(session, data, shape)
+
     post_fn = _POST_HYDRATE.get(app_name)
     if post_fn:
         post_fn(session)
+
+
+def load_typed_state(session, app_name: str) -> bool:
+    """Rebuild an app's world from ``software/<App>/corpus/state.json`` with the
+    SAME coercion ``hydrate`` uses -- for dataclass-backed apps whose tools need
+    typed objects (contact.name, deal.amount). The stored JSON is plain (dicts,
+    lists, scalars); this rebuilds the declared dataclass/container types. A
+    per-task ``COMPLEXMCP_WORLD_DATA/<App>.json`` override is applied ON TOP.
+    Returns True if a base ``state.json`` was found. No cooking of the authored
+    values -- only the object-wrapping the tools require.
+    """
+    mod = inspect.getmodule(type(session))
+    mod_file = getattr(mod, "__file__", None)
+    if not mod_file:
+        return False
+    base = _corpus_base(mod_file)
+    if not base:
+        return False
+    _apply(session, app_name, _read_corpus(base))
+
+    d = active_dir()
+    if d:
+        override = os.path.join(d, f"{app_name}.json")
+        if os.path.isfile(override):
+            with open(override) as fh:
+                _apply(session, app_name, json.load(fh))
     return True

@@ -54,46 +54,9 @@ class KubernetesSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "kubernetes.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.namespaces: List[Dict[str, Any]] = [
-                {**n, "labels": _labels(n.get("labels"))} for n in info.get("namespaces", [])
-            ]
-            self.nodes: List[Dict[str, Any]] = list(info.get("nodes", []))
-            self.pods: List[Dict[str, Any]] = [
-                {
-                    **p,
-                    "restart_count": _to_int(p.get("restart_count")),
-                    "ready": _to_bool(p.get("ready")),
-                    "node": (p.get("node") or None),
-                    "pod_ip": (p.get("pod_ip") or None),
-                }
-                for p in info.get("pods", [])
-            ]
-            self.deployments: List[Dict[str, Any]] = [
-                {
-                    **d,
-                    "_pk": f"{d['namespace']}/{d['name']}",
-                    "replicas": _to_int(d.get("replicas")),
-                    "available_replicas": _to_int(d.get("available_replicas")),
-                    "ready_replicas": _to_int(d.get("ready_replicas")),
-                    "updated_replicas": _to_int(d.get("updated_replicas")),
-                }
-                for d in info.get("deployments", [])
-            ]
-            self.services: List[Dict[str, Any]] = [
-                {
-                    **s,
-                    "_pk": f"{s['namespace']}/{s['name']}",
-                    "port": _to_int(s.get("port")),
-                    "target_port": _to_int(s.get("target_port")),
-                    "external_ip": (s.get("external_ip") or None),
-                }
-                for s in info.get("services", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightKubernetes')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightKubernetes')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

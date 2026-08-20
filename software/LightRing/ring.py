@@ -42,76 +42,9 @@ class RingSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "ring.yaml") as f:
-                info = yaml.safe_load(f)
-
-            # devices / location / active_dings are documents (kept as loaded).
-            self.devices: Dict[str, Any] = info.get("devices", {}) or {}
-            self.location: Dict[str, Any] = info.get("location", {}) or {}
-            self.active_dings: List[Dict[str, Any]] = list(info.get("active_dings", []) or [])
-
-            # events: coerce string columns like the source _coerce_events.
-            self.events: List[Dict[str, Any]] = [
-                {
-                    "id": int(e["id"]),
-                    "doorbot_id": int(e["doorbot_id"]),
-                    "device_id": e["device_id"],
-                    "kind": e["kind"],
-                    "created_at": e["created_at"],
-                    "answered": _to_bool(e["answered"]),
-                    "favorite": _to_bool(e["favorite"]),
-                    "recording": {"status": e["recording_status"]},
-                    "snapshot_url": e["snapshot_url"],
-                    "duration_seconds": _to_int(e.get("duration_seconds")),
-                    "cv_properties": (str(e.get("cv_properties") or "") or None),
-                }
-                for e in info.get("events", [])
-            ]
-
-            # shared_users: coerce user_id to int.
-            self.shared_users: List[Dict[str, Any]] = [
-                {
-                    "user_id": int(u["user_id"]),
-                    "first_name": u["first_name"],
-                    "last_name": u["last_name"],
-                    "email": u["email"],
-                    "role": u["role"],
-                    "device_access": u["device_access"],
-                    "shared_at": u["shared_at"],
-                }
-                for u in info.get("shared_users", [])
-            ]
-
-            # motion_zones: coerce and synth composite pk device_id@zone_id.
-            self.motion_zones: List[Dict[str, Any]] = [
-                {
-                    "device_id": int(z["device_id"]),
-                    "zone_id": z["zone_id"],
-                    "zone_name": z["zone_name"],
-                    "sensitivity": int(z["sensitivity"]),
-                    "enabled": _to_bool(z["enabled"]),
-                    "coordinates": z["coordinates"],
-                    "_pk": f"{int(z['device_id'])}@{z['zone_id']}",
-                }
-                for z in info.get("motion_zones", [])
-            ]
-
-            # notification_prefs: coerce and synth composite pk device_id/channel.
-            self.notification_prefs: List[Dict[str, Any]] = []
-            for p in info.get("notification_prefs", []):
-                device_id = int(p["device_id"])
-                channel = p.get("channel") or "push"
-                self.notification_prefs.append({
-                    "_pk": f"{device_id}/{channel}",
-                    "device_id": device_id,
-                    "channel": channel,
-                    "motion_alerts": _to_bool(p["motion_alerts"]) if p.get("motion_alerts") else None,
-                    "ding_alerts": _to_bool(p["ding_alerts"]) if p.get("ding_alerts") else None,
-                    "person_alerts": _to_bool(p["person_alerts"]) if p.get("person_alerts") else None,
-                    "package_alerts": _to_bool(p["package_alerts"]) if p.get("package_alerts") else None,
-                })
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightRing')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightRing')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

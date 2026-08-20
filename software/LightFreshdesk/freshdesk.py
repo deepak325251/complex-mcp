@@ -43,53 +43,10 @@ class FreshdeskSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "freshdesk.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.tickets: List[Dict[str, Any]] = [
-                {
-                    "id": _to_int(t.get("id")),
-                    "subject": t["subject"],
-                    "description": t["description"],
-                    "status": _to_int(t.get("status")),
-                    "priority": _to_int(t.get("priority")),
-                    "requester_id": _to_int(t.get("requester_id")),
-                    "responder_id": _to_int(t.get("responder_id"), default=None),
-                    "type": t["type"],
-                    "tags": [x for x in str(t.get("tags") or "").split(";") if x],
-                    "created_at": t["created_at"],
-                    "updated_at": t["updated_at"],
-                }
-                for t in info.get("tickets", [])
-            ]
-            self.contacts: List[Dict[str, Any]] = [
-                {
-                    "id": _to_int(c.get("id")),
-                    "name": c["name"],
-                    "email": c["email"],
-                    "phone": c["phone"],
-                    "company_id": _to_int(c.get("company_id"), default=None),
-                    "active": _to_bool(c.get("active")),
-                    "created_at": c["created_at"],
-                }
-                for c in info.get("contacts", [])
-            ]
-            self.agents: List[Dict[str, Any]] = [
-                {
-                    "id": _to_int(a.get("id")),
-                    "available": _to_bool(a.get("available")),
-                    "ticket_scope": _to_int(a.get("ticket_scope")),
-                    "occasional": _to_bool(a.get("occasional")),
-                    "created_at": a["created_at"],
-                    "contact": {
-                        "name": a["name"],
-                        "email": a["email"],
-                    },
-                }
-                for a in info.get("agents", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightFreshdesk')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # tickets/contacts/agents stored in final shape.
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightFreshdesk')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

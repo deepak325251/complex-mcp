@@ -101,15 +101,16 @@ class SignSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild the
+            # dataclass objects the tools expect: document.title, request.status).
             self.documents: Dict[str, Document] = {}
             self.requests: Dict[str, SignatureRequest] = {}
             self.signatures: Dict[str, Signature] = {}
             self.audit_events: Dict[str, AuditEvent] = {}
-            self._doc_order: List[str] = []
-            self._req_order: List[str] = []
-            self._seed_all()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightSign')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into their dataclasses via the annotations.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightSign')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

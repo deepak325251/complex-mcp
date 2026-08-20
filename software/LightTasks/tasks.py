@@ -68,14 +68,15 @@ class TasksSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
-            self.projects: Dict[str, Project] = {
-                p["pid"]: Project(**p) for p in DEFAULT_PROJECTS
-            }
-            self.tasks: Dict[str, Task] = {}
             self._today = datetime(2026, 1, 5)
-            self._seed_tasks()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightTasks')
+            # Annotations drive the coercion in load_typed_state (projects ->
+            # Project, tasks -> Task).
+            self.projects: Dict[str, Project] = {}
+            self.tasks: Dict[str, Task] = {}
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into Project/Task objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightTasks')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

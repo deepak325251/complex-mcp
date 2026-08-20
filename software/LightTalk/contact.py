@@ -84,25 +84,17 @@ class ContactSession:
             ) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
+            # Annotations drive the coercion in load_typed_state: contacts_dict
+            # rebuilds Contact objects (with their nested chat_history/moments/
+            # comments), groups rebuilds Group objects -- see _talk_shape. The
+            # derived indices (uid_dict/uids) and "me" identity (my_uid/my_name/
+            # my_gender) are rebuilt afterwards by the _talk_post_hydrate hook.
             self.contacts_dict: Dict[str, Contact] = {}
             self.uid_dict = {}
-            self.my_uid = f"user_{self.uuid()}"
+            self.my_uid = ""
 
-            with open(corpus_path / "contact.yaml") as f:
-                info = yaml.safe_load(f)
-
-            n_contacts = self.rng.randint(5, 100)
-
-            surnames = self.rng.choices(info["surnames"], k=n_contacts + 1)
-            tags = self.rng.choices(info["tags"], k=n_contacts)
-            genders = self.rng.choices(["male", "female"], k=n_contacts + 1)
-            first_names_arr = info["first_names"]
-            first_names = [self.rng.choice(first_names_arr[gender]) for gender in genders]
-
-            blockeds = self.rng.choices([False, True], weights=[0.9, 0.1], k=n_contacts)
-
-            self.my_name = f"{first_names[-1]} {surnames[-1]}"
-            self.my_gender = genders[-1]
+            self.my_name = ""
+            self.my_gender = ""
             self.my_moments: List[Moment] = []
             self.my_ip = "UnKnown"
             self.ip_choices = [
@@ -118,37 +110,21 @@ class ContactSession:
 
             self.has_privilege = False
 
-            # Generate all contacts
-            for first_name, surname, tag, gender, blocked in \
-                zip(first_names[:-1], surnames[:-1], tags, genders, blockeds):
-                name = f"{first_name} {surname}"
-                if name in self.uid_dict:
-                    continue
-                contact = Contact(name=name, tag=tag, uid=f"user_{self.uuid()}", gender=gender, blocked=blocked)
-                self.contacts_dict[contact.uid] = contact
-                self.uid_dict[name] = contact.uid
-
-            self.uids = list(self.contacts_dict.keys())
-            self.contacts_dict[self.my_uid] = Contact(
-                name=self.my_name,
-                gender=self.my_gender,
-                tag="me",
-                uid=self.my_uid,
-                blocked=False
-            )
-
-            # Generate moments of each contact
-            self.__mock_moments()        
-            self.__mock_chat_history()
-
+            self.uids: List[str] = []
             self.groups: List[Group] = []
 
             self.__network_err_rate = self.rng.uniform(0.1, 0.5)
             self.__network_acc = False
+
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # contacts_dict/groups rebuilt into dataclasses; _talk_post_hydrate
+            # then rebuilds uid_dict/uids and repoints my_uid/my_name/my_gender
+            # at the contact tagged "me".
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, "LightTalk")
+            # Task-specific overlay still applies on top for fixture tasks.
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightTalk", fixture)
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, "LightTalk")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, corpus_path / "world.pkl")

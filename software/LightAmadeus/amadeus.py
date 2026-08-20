@@ -39,17 +39,8 @@ class AmadeusSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "amadeus.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.airports: List[Dict[str, Any]] = [
-                {**a, "latitude": _to_float(a.get("latitude")), "longitude": _to_float(a.get("longitude"))}
-                for a in info.get("airports", [])
-            ]
-            self.airlines: List[Dict[str, Any]] = list(info.get("airlines", []))
-            self.offers: List[Dict[str, Any]] = list(info.get("flight_offers", []))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightAmadeus')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightAmadeus')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

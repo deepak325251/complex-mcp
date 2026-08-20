@@ -63,15 +63,9 @@ class HubspotSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "hubspot.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.contacts: List[Dict[str, Any]] = self._coerce_objects(info.get("contacts", []), _CONTACT_PROPS)
-            self.companies: List[Dict[str, Any]] = self._coerce_objects(info.get("companies", []), _COMPANY_PROPS)
-            self.deals: List[Dict[str, Any]] = self._coerce_objects(info.get("deals", []), _DEAL_PROPS, extra=self._deal_extra)
-            self.pipelines: List[Dict[str, Any]] = self._coerce_stages(info.get("pipeline_stages", []))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightHubspot')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightHubspot')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

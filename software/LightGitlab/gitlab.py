@@ -43,62 +43,10 @@ class GitlabSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "gitlab.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.current_user: Dict[str, Any] = info.get("current_user", {})
-
-            self.projects: List[Dict[str, Any]] = [
-                {
-                    **p,
-                    "id": _to_int(p.get("id")),
-                    "star_count": _to_int(p.get("star_count")),
-                    "forks_count": _to_int(p.get("forks_count")),
-                    "open_issues_count": _to_int(p.get("open_issues_count")),
-                }
-                for p in info.get("projects", [])
-            ]
-            self.issues: List[Dict[str, Any]] = [
-                {
-                    **i,
-                    "id": _to_int(i.get("id")),
-                    "iid": _to_int(i.get("iid")),
-                    "project_id": _to_int(i.get("project_id")),
-                    "labels": [l for l in str(i.get("labels", "") or "").split(";") if l],
-                    "closed_at": (i.get("closed_at") or None),
-                }
-                for i in info.get("issues", [])
-            ]
-            self.merge_requests: List[Dict[str, Any]] = [
-                {
-                    **m,
-                    "id": _to_int(m.get("id")),
-                    "iid": _to_int(m.get("iid")),
-                    "project_id": _to_int(m.get("project_id")),
-                    "draft": _to_bool(m.get("draft", False)),
-                    "merged_at": (m.get("merged_at") or None),
-                }
-                for m in info.get("merge_requests", [])
-            ]
-            self.pipelines: List[Dict[str, Any]] = [
-                {
-                    **p,
-                    "id": _to_int(p.get("id")),
-                    "project_id": _to_int(p.get("project_id")),
-                    "duration": _to_int(p.get("duration")),
-                }
-                for p in info.get("pipelines", [])
-            ]
-            self.users: List[Dict[str, Any]] = [
-                {
-                    **u,
-                    "id": _to_int(u.get("id")),
-                    "is_admin": _to_bool(u.get("is_admin", False)),
-                }
-                for u in info.get("users", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightGitlab')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # current_user/projects/issues/merge_requests/pipelines/users final shape.
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightGitlab')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

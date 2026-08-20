@@ -61,14 +61,15 @@ class NotesSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
-            self.notebooks: Dict[str, Notebook] = {
-                n["nbid"]: Notebook(**n) for n in DEFAULT_NOTEBOOKS
-            }
-            self.notes: Dict[str, Note] = {}
             self._today = datetime(2026, 1, 5)
-            self._seed_notes()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightNotes')
+            # Type annotations drive the coercion in load_typed_state (they tell
+            # it to rebuild Notebook/Note objects the tools expect).
+            self.notebooks: Dict[str, Notebook] = {}
+            self.notes: Dict[str, Note] = {}
+            # World data loaded from corpus/state.json (no cooking): plain dicts
+            # are wrapped back into Notebook/Note objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightNotes')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

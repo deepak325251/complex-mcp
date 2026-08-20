@@ -47,43 +47,9 @@ class VimeoSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "vimeo.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.users: List[Dict[str, Any]] = [
-                {
-                    "id": u["id"],
-                    "name": u["name"],
-                    "link": u["link"],
-                    "location": u["location"],
-                    "bio": u["bio"],
-                    "account": u["account"],
-                    "created_time": u["created_time"],
-                    "websites": [x for x in _opt_csv_list(u.get("websites"), sep=";") if x],
-                }
-                for u in info.get("users", [])
-            ]
-            self.videos: List[Dict[str, Any]] = [
-                {
-                    "id": v["id"],
-                    "user_id": v["user_id"],
-                    "name": v["name"],
-                    "description": v["description"],
-                    "duration": _strict_int(v["duration"]),
-                    "width": _strict_int(v["width"]),
-                    "height": _strict_int(v["height"]),
-                    "privacy": v["privacy"],
-                    "status": v["status"],
-                    "plays": _strict_int(v["plays"]),
-                    "likes": _strict_int(v["likes"]),
-                    "created_time": v["created_time"],
-                    "modified_time": v["modified_time"],
-                    "link": v["link"],
-                }
-                for v in info.get("videos", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightVimeo')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightVimeo')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

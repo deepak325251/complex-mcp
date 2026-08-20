@@ -48,36 +48,9 @@ class GoogleMapsSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "google_maps.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.places: List[Dict[str, Any]] = [
-                {
-                    "place_id": r["place_id"],
-                    "name": r["name"],
-                    "formatted_address": r["formatted_address"],
-                    "geometry": {"location": {"lat": _strict_float(r["lat"]), "lng": _strict_float(r["lng"])}},
-                    "rating": _strict_float(r["rating"]),
-                    "user_ratings_total": _strict_int(r["user_ratings_total"]),
-                    "types": [t for t in _opt_csv_list(r.get("types"), sep="|") if t],
-                    "business_status": r["business_status"],
-                    "price_level": _strict_int(r["price_level"]),
-                }
-                for r in info.get("places", [])
-            ]
-            self.geocodes: List[Dict[str, Any]] = [
-                {
-                    "query": r["query"],
-                    "formatted_address": r["formatted_address"],
-                    "lat": _strict_float(r["lat"]),
-                    "lng": _strict_float(r["lng"]),
-                    "place_id": r["place_id"],
-                    "location_type": r["location_type"],
-                }
-                for r in info.get("geocodes", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightGoogleMaps')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightGoogleMaps')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

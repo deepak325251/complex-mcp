@@ -51,44 +51,9 @@ class AirbnbSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "airbnb.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.listings: List[Dict[str, Any]] = [
-                {
-                    **l,
-                    "price_per_night": _to_float(l["price_per_night"]),
-                    "cleaning_fee": _to_float(l["cleaning_fee"]),
-                    "beds": _to_int(l["beds"]),
-                    "baths": _to_float(l["baths"]),
-                    "max_guests": _to_int(l["max_guests"]),
-                    "rating": _to_float(l["rating"]),
-                    "review_count": _to_int(l["review_count"]),
-                    "instant_book": _to_bool(l["instant_book"]),
-                }
-                for l in info.get("listings", [])
-            ]
-            self.hosts: List[Dict[str, Any]] = [
-                {
-                    **h,
-                    "superhost": _to_bool(h["superhost"]),
-                    "joined_year": _to_int(h["joined_year"]),
-                    "response_rate": _to_int(h["response_rate"]),
-                    "languages": [x.strip() for x in str(h.get("languages", "")).split(",") if x.strip() != ""],
-                }
-                for h in info.get("hosts", [])
-            ]
-            self.availability: List[Dict[str, Any]] = [
-                {**a, "available": _to_bool(a["available"])}
-                for a in info.get("availability", [])
-            ]
-            self.reviews: List[Dict[str, Any]] = [
-                {**r, "rating": _to_int(r["rating"])}
-                for r in info.get("reviews", [])
-            ]
-            self.reservations: List[Dict[str, Any]] = []
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightAirbnb')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightAirbnb')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

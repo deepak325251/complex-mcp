@@ -1,34 +1,246 @@
+# Source: world_data 2/LightGmail.json (verbatim). Authored world for LightGmail.
+messages:
+- id: msg-100
+  thread_id: thr-100
+  from_addr: cordelia.ashmore.vance@shpa-savannah.org
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Board packet for the January meeting
+  snippet: Amos - the January board packet is attached in the shared drive. Please review the preservation
+    standards addendum before Wednesday.
+  body: 'Amos,
+
+
+    The January board packet is in the shared drive. Please review the preservation standards addendum
+    from Malcolm before Wednesday''s prep session, and flag anything you want moved to the consent agenda.
+
+
+    Cordelia'
+  date: '2026-01-02T14:00:00Z'
+  internal_date: 1767362400000
+  size_estimate: 4200
+  labels:
+  - INBOX
+  - SHPA
+  is_unread: false
+  is_starred: true
+- id: msg-101
+  thread_id: thr-101
+  from_addr: wesley.farraday@Finthesiss.ai
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Order confirmed - white oak and fasteners
+  snippet: 'Your order is confirmed for Thursday pickup: 40 bf quartersawn white oak, brass fasteners,
+    finishing supplies.'
+  body: 'Mr. Whitfield,
+
+
+    Your order is confirmed for Thursday pickup at the Savannah Building Supply yard: 40 board feet quartersawn
+    white oak, two boxes of brass fasteners, and the finishing supplies you asked about.
+
+
+    Wesley Farraday'
+  date: '2026-01-02T16:30:00Z'
+  internal_date: 1767371400000
+  size_estimate: 4500
+  labels:
+  - INBOX
+  - Woodworks
+  is_unread: false
+  is_starred: false
+- id: msg-102
+  thread_id: thr-102
+  from_addr: ellis.marchand@ashcrofthardwoods.com
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Quote - rock maple for the Windsor chairs
+  snippet: Quote attached for the rock maple stock for the Renard-Whitcomb Windsor chairs. Kiln-dried,
+    ready to ship from Charleston.
+  body: 'Amos,
+
+
+    Quote attached for the rock maple stock for the Renard-Whitcomb Windsor chairs - kiln-dried, ready
+    to ship from Charleston next week. Say the word and I will hold the boards.
+
+
+    Ellis Marchand
+
+    Ashcroft Fine Hardwoods'
+  date: '2026-01-03T10:15:00Z'
+  internal_date: 1767435300000
+  size_estimate: 4800
+  labels:
+  - INBOX
+  - Woodworks
+  is_unread: true
+  is_starred: true
+- id: msg-103
+  thread_id: thr-103
+  from_addr: roxanne.ellery@georgiatrust.org
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Grant report due January 31
+  snippet: 'Reminder: the restoration grant interim report is due January 31. Happy to review a draft
+    the week before.'
+  body: 'Amos,
+
+
+    A reminder that the restoration grant interim report is due January 31. If you send a draft the week
+    before, I am happy to give it a read and flag anything the committee will ask about.
+
+
+    Roxanne Ellery
+
+    Georgia Trust'
+  date: '2026-01-03T13:45:00Z'
+  internal_date: 1767447900000
+  size_estimate: 5100
+  labels:
+  - INBOX
+  - SHPA
+  is_unread: true
+  is_starred: false
+- id: msg-104
+  thread_id: thr-104
+  from_addr: james.holloway@Finthesiss.ai
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Deacons schedule for January
+  snippet: January deacons rotation attached. You are down for the second and fourth Sundays.
+  body: 'Brother Amos,
+
+
+    The January deacons rotation is attached. You are down for the second and fourth Sundays. Let me know
+    if the fourth conflicts with your workshop weekend.
+
+
+    Pastor Holloway'
+  date: '2026-01-04T09:00:00Z'
+  internal_date: 1767517200000
+  size_estimate: 5400
+  labels:
+  - INBOX
+  is_unread: false
+  is_starred: false
+- id: msg-105
+  thread_id: thr-105
+  from_addr: barrington.family@Finthesiss.ai
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: Sheraton sideboard - October delivery
+  snippet: Checking in on the sideboard commission. October timing still holds on our end - no rush, just
+    excited.
+  body: 'Mr. Whitfield,
+
+
+    Just checking in on the Sheraton sideboard commission. The October timing still holds on our end -
+    no rush at all, we are just excited to see the dovetails.
+
+
+    The Barringtons'
+  date: '2026-01-04T15:20:00Z'
+  internal_date: 1767540000000
+  size_estimate: 5700
+  labels:
+  - INBOX
+  - Woodworks
+  is_unread: true
+  is_starred: false
+- id: msg-106
+  thread_id: thr-106
+  from_addr: priscilla.everton@shpa-savannah.org
+  to_addr: amos.whitfield@Finthesiss.ai
+  cc_addr: ''
+  subject: December financials ready for review
+  snippet: December close is done. Statement of activities and the Bull Street repair actuals are in the
+    finance folder.
+  body: 'Amos,
+
+
+    December close is done. The statement of activities and the Bull Street repair actuals are in the
+    finance folder for your review before Reginald sees them Thursday.
+
+
+    Priscilla'
+  date: '2026-01-05T08:30:00Z'
+  internal_date: 1767601800000
+  size_estimate: 6000
+  labels:
+  - INBOX
+  - SHPA
+  is_unread: true
+  is_starred: false
 drafts:
 - id: draft-001
-  thread_id: thr-101
-  to_addr: helena@orbit-labs.com
-  cc_addr: jonas@orbit-labs.com
-  subject: 'Re: Latency spike alert — auth.refresh'
-  body: Helena — adding @jonas. Let's correlate the spike with the shim warmup. Can
-    you pull the timing of the dual-writer flush?\n\n— Amelia
-  updated_at: '2026-05-23T11:35:00Z'
+  thread_id: thr-102
+  to_addr: ellis.marchand@ashcrofthardwoods.com
+  cc_addr: ''
+  subject: 'Re: Quote - rock maple for the Windsor chairs'
+  body: 'Ellis,
+
+
+    Quote looks fair. Hold the boards - I will confirm quantities after I re-measure the chair templates
+    Saturday.
+
+
+    Amos'
+  updated_at: '2026-01-05T07:45:00Z'
 labels:
 - id: INBOX
   name: INBOX
   type: system
-  messages_total: '6'
-  messages_unread: '2'
-  threads_total: '5'
-  threads_unread: '2'
+  messages_total: '7'
+  messages_unread: '4'
+  threads_total: '7'
+  threads_unread: '4'
+  messagesTotal: 7
+  messagesUnread: 4
+  threadsTotal: 7
+  threadsUnread: 4
 - id: SENT
   name: SENT
   type: system
-  messages_total: '3'
+  messages_total: '0'
   messages_unread: '0'
-  threads_total: '3'
+  threads_total: '0'
   threads_unread: '0'
-- id: DRAFTS
+  messagesTotal: 0
+  messagesUnread: 0
+  threadsTotal: 0
+  threadsUnread: 0
+- id: DRAFT
   name: DRAFT
   type: system
   messages_total: '1'
   messages_unread: '0'
   threads_total: '1'
   threads_unread: '0'
+  messagesTotal: 1
+  messagesUnread: 0
+  threadsTotal: 1
+  threadsUnread: 0
+- id: STARRED
+  name: STARRED
+  type: system
+  messages_total: '2'
+  messages_unread: '1'
+  threads_total: '2'
+  threads_unread: '1'
+  messagesTotal: 2
+  messagesUnread: 1
+  threadsTotal: 2
+  threadsUnread: 1
+- id: IMPORTANT
+  name: IMPORTANT
+  type: system
+  messages_total: '3'
+  messages_unread: '2'
+  threads_total: '3'
+  threads_unread: '2'
+  messagesTotal: 3
+  messagesUnread: 2
+  threadsTotal: 3
+  threadsUnread: 2
 - id: TRASH
   name: TRASH
   type: system
@@ -36,146 +248,29 @@ labels:
   messages_unread: '0'
   threads_total: '0'
   threads_unread: '0'
-- id: SPAM
-  name: SPAM
-  type: system
-  messages_total: '1'
-  messages_unread: '1'
-  threads_total: '1'
-  threads_unread: '1'
-- id: Label_orbit
-  name: Orbit Labs
+  messagesTotal: 0
+  messagesUnread: 0
+  threadsTotal: 0
+  threadsUnread: 0
+- id: Label_shpa
+  name: SHPA
   type: user
-  messages_total: '4'
-  messages_unread: '1'
-  threads_total: '4'
-  threads_unread: '1'
-- id: Label_followup
-  name: Follow up
+  messages_total: '3'
+  messages_unread: '2'
+  threads_total: '3'
+  threads_unread: '2'
+  messagesTotal: 3
+  messagesUnread: 2
+  threadsTotal: 3
+  threadsUnread: 2
+- id: Label_woodworks
+  name: Woodworks
   type: user
-  messages_total: '2'
-  messages_unread: '1'
-  threads_total: '2'
-  threads_unread: '1'
-- id: Label_oncall
-  name: On-call
-  type: user
-  messages_total: '1'
-  messages_unread: '0'
-  threads_total: '1'
-  threads_unread: '0'
-messages:
-- id: msg-100
-  thread_id: thr-100
-  from_addr: jonas@orbit-labs.com
-  to_addr: amelia@orbit-labs.com
-  cc_addr: ''
-  subject: Auth v2 cutover plan — draft
-  snippet: Hi Amelia — sharing the draft cutover plan for Friday...
-  body: 'Hi Amelia,\n\nSharing the draft cutover plan for Friday. Highlights:\n- Dual-write
-    shim has been stable for 5 days\n- Plan to flip the read path at 08:00 PT\n- Rollback
-    path: revert feature flag auth_v2_rollout=false\n\nLet me know if you want changes
-    before I send to the wider list.\n\nJonas'
-  date: '2026-05-22T15:00:00Z'
-  internal_date: '1748016000000'
-  size_estimate: '5400'
-  labels: INBOX,Label_orbit
-  is_unread: 'false'
-  is_starred: 'true'
-- id: msg-101
-  thread_id: thr-101
-  from_addr: helena@orbit-labs.com
-  to_addr: amelia@orbit-labs.com
-  cc_addr: jonas@orbit-labs.com
-  subject: Latency spike alert — auth.refresh
-  snippet: FYI alertmanager fired at 10:42 UTC for auth.refresh p95 > 600ms...
-  body: 'FYI alertmanager fired at 10:42 UTC for auth.refresh p95 > 600ms. Auto-recovered
-    at 10:51. Looking into whether it''s related to the shim warmup.\n\nDashboard:
-    https://grafana.example.com/d/auth-latency\n\n— Helena'
-  date: '2026-05-23T11:00:00Z'
-  internal_date: '1748005200000'
-  size_estimate: '3200'
-  labels: INBOX,Label_orbit,Label_followup
-  is_unread: 'true'
-  is_starred: 'false'
-- id: msg-102
-  thread_id: thr-100
-  from_addr: amelia@orbit-labs.com
-  to_addr: jonas@orbit-labs.com
-  cc_addr: ''
-  subject: 'Re: Auth v2 cutover plan — draft'
-  snippet: Looks good. Two nits...
-  body: Looks good. Two nits:\n1. Add a step to drain the dual-writer queue before
-    flip\n2. Page the on-call before flipping the read path\n\nReady to send.\n\nAmelia
-  date: '2026-05-22T16:30:00Z'
-  internal_date: '1748021400000'
-  size_estimate: '1200'
-  labels: SENT,Label_orbit
-  is_unread: 'false'
-  is_starred: 'false'
-- id: msg-103
-  thread_id: thr-103
-  from_addr: oncall-alerts@orbit-labs.com
-  to_addr: amelia@orbit-labs.com
-  cc_addr: ''
-  subject: '[ALERT] billing-api error rate above SLO'
-  snippet: Error rate for billing-api over the last 5 minutes is 2.1%...
-  body: 'PagerDuty alert ID: PD-XYZ-789\n\nError rate for billing-api over the last
-    5 minutes is 2.1%. SLO target 1%. Currently auto-paging the on-call.\n\nRunbook:
-    https://runbooks.example.com/billing-api-error-rate'
-  date: '2026-05-24T03:15:00Z'
-  internal_date: '1748056500000'
-  size_estimate: '4100'
-  labels: INBOX,Label_oncall
-  is_unread: 'false'
-  is_starred: 'false'
-- id: msg-104
-  thread_id: thr-104
-  from_addr: careers-spam@example-recruit.com
-  to_addr: amelia@orbit-labs.com
-  cc_addr: ''
-  subject: Exclusive opportunity for senior engineers
-  snippet: We came across your profile...
-  body: Hi Amelia,\n\nWe came across your profile and would love to chat about an
-    exciting opportunity at our stealth-mode startup...\n\nBest,\nThe TalentBot
-  date: '2026-05-25T07:00:00Z'
-  internal_date: '1748145600000'
-  size_estimate: '2200'
-  labels: SPAM
-  is_unread: 'true'
-  is_starred: 'false'
-- id: msg-105
-  thread_id: thr-105
-  from_addr: sarah.whitfield@cascaderealty.com
-  to_addr: amelia@orbit-labs.com
-  cc_addr: ''
-  subject: Open house this Saturday — 412 Maple Grove
-  snippet: Quick reminder about the open house...
-  body: Hi Amelia,\n\nQuick reminder about the open house this Saturday at 412 Maple
-    Grove Ct from 11-1pm. Let me know if you can make it.\n\nSarah
-  date: '2026-05-25T16:45:00Z'
-  internal_date: '1748191500000'
-  size_estimate: '1900'
-  labels: INBOX,Label_followup
-  is_unread: 'true'
-  is_starred: 'false'
-- id: msg-106
-  thread_id: thr-106
-  from_addr: amelia@orbit-labs.com
-  to_addr: jonas@orbit-labs.com
-  cc_addr: helena@orbit-labs.com
-  subject: 'Reminder: status doc due Friday'
-  snippet: Weekly status doc is due Friday EOD.
-  body: Quick reminder — please drop your section in the weekly status doc by Friday
-    EOD.\n\nAmelia
-  date: '2026-05-26T09:30:00Z'
-  internal_date: '1748252400000'
-  size_estimate: '800'
-  labels: SENT,Label_orbit
-  is_unread: 'false'
-  is_starred: 'false'
-profile:
-  emailAddress: amelia@orbit-labs.com
-  messagesTotal: 6
-  threadsTotal: 5
-  historyId: '104221'
+  messages_total: '3'
+  messages_unread: '2'
+  threads_total: '3'
+  threads_unread: '2'
+  messagesTotal: 3
+  messagesUnread: 2
+  threadsTotal: 3
+  threadsUnread: 2

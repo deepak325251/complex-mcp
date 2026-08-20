@@ -108,16 +108,15 @@ class VaultSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
-            self.folders: Dict[str, Folder] = {
-                f["fdid"]: Folder(**f) for f in DEFAULT_FOLDERS
-            }
+            # Annotations drive the coercion in load_typed_state (folders ->
+            # Folder, entries -> Entry, shares -> Share, audit_logs -> AuditLog).
+            self.folders: Dict[str, Folder] = {}
             self.entries: Dict[str, Entry] = {}
             self.shares: Dict[str, Share] = {}
             self.audit_logs: Dict[str, AuditLog] = {}
-            self._entry_order: List[str] = []
-            self._seed_all()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightVault')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightVault')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

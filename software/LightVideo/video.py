@@ -85,17 +85,16 @@ class VideoSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (videos ->
+            # Video, playlists -> Playlist, history -> WatchHistory,
+            # subscriptions -> Subscription).
             self.videos: Dict[str, Video] = {}
             self.playlists: Dict[str, Playlist] = {}
             self.history: Dict[str, WatchHistory] = {}
             self.subscriptions: Dict[str, Subscription] = {}
-            self._video_index: List[str] = []
-            self._seed_videos()
-            self._seed_playlists()
-            self._seed_history()
-            self._seed_subscriptions()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightVideo')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightVideo')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

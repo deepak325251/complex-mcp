@@ -1,205 +1,163 @@
+# Source: world_data 2/LightReddit.json (verbatim). Authored world for LightReddit.
+posts:
+- id: t3_p001
+  subreddit: woodworking
+  title: 'Hand-cut dovetails: my jig-free layout method'
+  author: Ruth Ann Greer
+  url: https://example.com/grpc-post
+  selftext: Sharing the layout sequence I learned restoring period casework.
+  score: 1820
+  ups: 1820
+  num_comments: 3
+  created_utc: 1716800000.0
+  is_self: false
+  _likes: null
+- id: t3_p002
+  subreddit: savannah
+  title: Best quiet squares for a morning walk?
+  author: Malcolm Kingsley
+  url: null
+  selftext: I walk 6:30 to 7:30 most mornings and want new routes.
+  score: 640
+  ups: 640
+  num_comments: 2
+  created_utc: 1716810000.0
+  is_self: true
+  _likes: null
+- id: t3_p003
+  subreddit: BBQ
+  title: Brisket rest time — how long is too long?
+  author: Odetta Sinclair
+  url: https://example.com/nas-build
+  selftext: Low and slow, then a long rest in the cooler.
+  score: 2310
+  ups: 2310
+  num_comments: 2
+  created_utc: 1716700000.0
+  is_self: false
+  _likes: null
+- id: t3_p004
+  subreddit: preservation
+  title: 'Facade easements: what homeowners should know'
+  author: Calvin Burke
+  url: null
+  selftext: An easement is a promise to the future, not a burden.
+  score: 990
+  ups: 990
+  num_comments: 1
+  created_utc: 1716720000.0
+  is_self: true
+  _likes: null
+- id: t3_p005
+  subreddit: woodworking
+  title: Finished a walnut blanket chest for my grandson
+  author: Barrett Whitehall
+  url: https://example.com/tomatoes
+  selftext: Cut the pins first. Always the pins first.
+  score: 1450
+  ups: 1450
+  num_comments: 2
+  created_utc: 1716650000.0
+  is_self: false
+  _likes: null
+- id: t3_p006
+  subreddit: savannah
+  title: Savannah gallery night recommendations?
+  author: Ruth Ann Greer
+  url: null
+  selftext: Looking for shows near the Historic District.
+  score: 210
+  ups: 210
+  num_comments: 1
+  created_utc: 1716660000.0
+  is_self: true
+  _likes: null
 comments:
 - id: t1_c001
   post_id: t3_p001
   parent_id: t3_p001
-  author: grpcfan
-  body: Streaming and codegen alone made the switch worth it for us.
-  score: '140'
-  created_utc: '1716801000'
+  author: Ruth Ann Greer
+  body: Pins first gang checking in.
+  score: 140
+  ups: 140
+  created_utc: 1716801000.0
 - id: t1_c002
   post_id: t3_p001
   parent_id: t1_c001
-  author: skeptic9
-  body: Did you measure latency wins or was it mostly DX?
-  score: '38'
-  created_utc: '1716801500'
+  author: Renard-Whitcomb residence
+  body: Try Pulaski Square at dawn — empty and lovely.
+  score: 38
+  ups: 38
+  created_utc: 1716801500.0
 - id: t1_c003
   post_id: t3_p001
   parent_id: t3_p001
-  author: oldschool
-  body: REST with proper caching still wins for public APIs imo.
-  score: '72'
-  created_utc: '1716802000'
+  author: Reginald Thackery
+  body: Two hours wrapped, minimum.
+  score: 72
+  ups: 72
+  created_utc: 1716802000.0
 - id: t1_c004
   post_id: t3_p002
   parent_id: t3_p002
-  author: monorepoer
-  body: We use Bazel with one package per service and shared libs at the root.
-  score: '55'
-  created_utc: '1716811000'
+  author: Denise Whitfield-Carter
+  body: Our block did this and the street looks wonderful.
+  score: 55
+  ups: 55
+  created_utc: 1716811000.0
 - id: t1_c005
   post_id: t3_p002
   parent_id: t1_c004
-  author: curiousdev
-  body: How long are your CI runs with that setup?
-  score: '21'
-  created_utc: '1716811800'
+  author: Priscilla Everton
+  body: That chest will be an heirloom.
+  score: 21
+  ups: 21
+  created_utc: 1716811800.0
 - id: t1_c006
   post_id: t3_p003
   parent_id: t3_p003
-  author: quietpc
-  body: What drives did you go with for the 8 bays?
-  score: '44'
-  created_utc: '1716701000'
+  author: Grady Colton
+  body: The Telfair stays open late on gallery night.
+  score: 44
+  ups: 44
+  created_utc: 1716701000.0
 - id: t1_c007
   post_id: t3_p003
   parent_id: t1_c006
-  author: rackmonkey
-  body: Four refurb enterprise drives plus four new ones for balance.
-  score: '30'
-  created_utc: '1716701600'
+  author: Odetta Sinclair
+  body: Pins first gang checking in.
+  score: 30
+  ups: 30
+  created_utc: 1716701600.0
 - id: t1_c008
   post_id: t3_p004
   parent_id: t3_p004
-  author: labeledlife
-  body: Learned this the hard way too. Brother label maker changed my life.
-  score: '18'
-  created_utc: '1716721000'
+  author: Priscilla Everton
+  body: Try Pulaski Square at dawn — empty and lovely.
+  score: 18
+  ups: 18
+  created_utc: 1716721000.0
 - id: t1_c009
   post_id: t3_p005
   parent_id: t3_p005
-  author: greenthumb
-  body: Those look great. Which variety did you grow?
-  score: '25'
-  created_utc: '1716651000'
+  author: Terrence Carter
+  body: Two hours wrapped, minimum.
+  score: 25
+  ups: 25
+  created_utc: 1716651000.0
 - id: t1_c010
   post_id: t3_p005
   parent_id: t1_c009
-  author: leafyleo
-  body: Sungold cherries. They thrive in containers.
-  score: '12'
-  created_utc: '1716651500'
+  author: Barrett Whitehall
+  body: Our block did this and the street looks wonderful.
+  score: 12
+  ups: 12
+  created_utc: 1716651500.0
 - id: t1_c011
   post_id: t3_p006
   parent_id: t3_p006
-  author: botanybob
-  body: Looks like a squash seedling from your compost.
-  score: '9'
-  created_utc: '1716661000'
-posts:
-- id: t3_p001
-  subreddit: programming
-  title: Why I switched from REST to gRPC for internal services
-  author: devkat
-  url: https://example.com/grpc-post
-  selftext: ''
-  score: '1820'
-  num_comments: '3'
-  created_utc: '1716800000'
-  is_self: 'false'
-- id: t3_p002
-  subreddit: programming
-  title: 'Ask: how do you structure a monorepo for 30 microservices?'
-  author: buildbot
-  url: ''
-  selftext: Looking for real-world layouts and tooling that scaled past 30 services.
-  score: '640'
-  num_comments: '2'
-  created_utc: '1716810000'
-  is_self: 'true'
-- id: t3_p003
-  subreddit: homelab
-  title: My quiet 8-bay NAS build for under 600 dollars
-  author: rackmonkey
-  url: https://example.com/nas-build
-  selftext: ''
-  score: '2310'
-  num_comments: '2'
-  created_utc: '1716700000'
-  is_self: 'false'
-- id: t3_p004
-  subreddit: homelab
-  title: 'PSA: label your cables before you regret it'
-  author: cablechaos
-  url: ''
-  selftext: A cautionary tale about an unlabeled patch panel and a long debugging
-    night.
-  score: '990'
-  num_comments: '1'
-  created_utc: '1716720000'
-  is_self: 'true'
-- id: t3_p005
-  subreddit: gardening
-  title: First tomato harvest from my balcony containers
-  author: leafyleo
-  url: https://example.com/tomatoes
-  selftext: ''
-  score: '1450'
-  num_comments: '2'
-  created_utc: '1716650000'
-  is_self: 'false'
-- id: t3_p006
-  subreddit: gardening
-  title: Identify this volunteer sprout in my raised bed?
-  author: sprouthunter
-  url: ''
-  selftext: It came up on its own and I have no idea what it is. Photos in comments.
-  score: '210'
-  num_comments: '1'
-  created_utc: '1716660000'
-  is_self: 'true'
-subreddits:
-- id: t5_aaa001
-  name: programming
-  title: Programming
-  public_description: Computer programming news and discussion
-  subscribers: '6800000'
-  created_utc: '1201234567'
-  over18: 'false'
-- id: t5_aaa002
-  name: homelab
-  title: r/homelab
-  public_description: For people who run servers and labs at home
-  subscribers: '920000'
-  created_utc: '1301234567'
-  over18: 'false'
-- id: t5_aaa003
-  name: gardening
-  title: Gardening
-  public_description: A place to grow your green thumb
-  subscribers: '5400000'
-  created_utc: '1251234567'
-  over18: 'false'
-users:
-- name: devkat
-  id: t2_u001
-  link_karma: '18400'
-  comment_karma: '9200'
-  created_utc: '1401234567'
-  is_gold: 'true'
-  is_mod: 'false'
-- name: buildbot
-  id: t2_u002
-  link_karma: '5600'
-  comment_karma: '12100'
-  created_utc: '1421234567'
-  is_gold: 'false'
-  is_mod: 'false'
-- name: rackmonkey
-  id: t2_u003
-  link_karma: '30200'
-  comment_karma: '4400'
-  created_utc: '1411234567'
-  is_gold: 'true'
-  is_mod: 'true'
-- name: leafyleo
-  id: t2_u004
-  link_karma: '2100'
-  comment_karma: '800'
-  created_utc: '1451234567'
-  is_gold: 'false'
-  is_mod: 'false'
-- name: sprouthunter
-  id: t2_u005
-  link_karma: '340'
-  comment_karma: '150'
-  created_utc: '1471234567'
-  is_gold: 'false'
-  is_mod: 'false'
-- name: cablechaos
-  id: t2_u006
-  link_karma: '7800'
-  comment_karma: '15600'
-  created_utc: '1431234567'
-  is_gold: 'false'
-  is_mod: 'true'
+  author: Yvonne Cabrera
+  body: That chest will be an heirloom.
+  score: 9
+  ups: 9
+  created_utc: 1716661000.0

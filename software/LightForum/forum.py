@@ -57,9 +57,10 @@ class ForumSession:
             self.subforums: Dict[str, SubForum] = {}
             self.threads: Dict[str, Thread] = {}
             self.posts: Dict[str, Post] = {}
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightForum')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts are rebuilt into the declared dataclass objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightForum')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

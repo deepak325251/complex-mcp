@@ -1,144 +1,62 @@
-escalation_policies:
-- escalation_policy_id: EP001
-  name: Platform On-Call
-  num_loops: '2'
-  tier1_user_id: PU004
-  tier2_user_id: PU001
-- escalation_policy_id: EP002
-  name: Billing On-Call
-  num_loops: '1'
-  tier1_user_id: PU002
-  tier2_user_id: PU005
+# Source: world_data 2/LightPagerDuty.json (verbatim). Authored world for LightPagerDuty.
 incidents:
 - incident_id: PI001
-  incident_number: '1042'
-  title: auth-api token refresh latency above 2s p99
+  incident_number: 1042
+  title: shpa-website down (hosting outage)
   status: triggered
   urgency: high
   service_id: PS001
   escalation_policy_id: EP001
-  assigned_to: PU004
+  assigned_to: Coastal IT Services
   created_at: '2026-05-27T09:14:00Z'
-  resolved_at: ''
+  resolved_at: null
 - incident_id: PI002
-  incident_number: '1043'
-  title: billing-api invoice job backlog growing
+  incident_number: 1043
+  title: member-portal slow responses
   status: acknowledged
   urgency: high
   service_id: PS002
   escalation_policy_id: EP002
-  assigned_to: PU002
+  assigned_to: Devon Marsh (Coastal IT)
   created_at: '2026-05-27T07:48:00Z'
-  resolved_at: ''
+  resolved_at: null
 - incident_id: PI003
-  incident_number: '1041'
-  title: auth-api elevated 401 rate after deploy
+  incident_number: 1041
+  title: ticketing checkout errors
   status: acknowledged
   urgency: high
   service_id: PS001
   escalation_policy_id: EP001
-  assigned_to: PU003
+  assigned_to: Alicia Grant (Coastal IT)
   created_at: '2026-05-26T22:05:00Z'
-  resolved_at: ''
+  resolved_at: null
 - incident_id: PI004
-  incident_number: '1039'
-  title: notifications-api SMTP timeouts
+  incident_number: 1039
+  title: newsletter send failure
   status: resolved
   urgency: low
   service_id: PS003
   escalation_policy_id: EP001
-  assigned_to: PU004
+  assigned_to: Coastal IT Services
   created_at: '2026-05-25T14:30:00Z'
   resolved_at: '2026-05-25T15:12:00Z'
 - incident_id: PI005
-  incident_number: '1038'
-  title: billing-api stale webhook signatures
+  incident_number: 1038
+  title: SSL certificate expiring
   status: resolved
   urgency: low
   service_id: PS002
   escalation_policy_id: EP002
-  assigned_to: PU002
+  assigned_to: Devon Marsh (Coastal IT)
   created_at: '2026-05-24T11:20:00Z'
   resolved_at: '2026-05-24T12:05:00Z'
 - incident_id: PI006
-  incident_number: '1040'
-  title: auth-api cookie issuer misconfig in staging
+  incident_number: 1040
+  title: backup job missed
   status: triggered
   urgency: low
   service_id: PS001
   escalation_policy_id: EP001
-  assigned_to: ''
+  assigned_to: Alicia Grant (Coastal IT)
   created_at: '2026-05-26T18:42:00Z'
-  resolved_at: ''
-schedules:
-- schedule_id: SCH001
-  name: Platform Primary
-  time_zone: America/Los_Angeles
-  escalation_policy_id: EP001
-  current_oncall_user_id: PU004
-  oncall_start: '2026-05-26T17:00:00Z'
-  oncall_end: '2026-06-02T17:00:00Z'
-- schedule_id: SCH002
-  name: Platform Secondary
-  time_zone: Europe/Berlin
-  escalation_policy_id: EP001
-  current_oncall_user_id: PU003
-  oncall_start: '2026-05-26T17:00:00Z'
-  oncall_end: '2026-06-02T17:00:00Z'
-- schedule_id: SCH003
-  name: Billing Primary
-  time_zone: America/New_York
-  escalation_policy_id: EP002
-  current_oncall_user_id: PU002
-  oncall_start: '2026-05-25T17:00:00Z'
-  oncall_end: '2026-06-01T17:00:00Z'
-services:
-- service_id: PS001
-  name: auth-api
-  description: Authentication and session service
-  status: critical
-  escalation_policy_id: EP001
-  auto_resolve_timeout: '14400'
-- service_id: PS002
-  name: billing-api
-  description: Subscription billing and invoicing
-  status: active
-  escalation_policy_id: EP002
-  auto_resolve_timeout: '14400'
-- service_id: PS003
-  name: notifications-api
-  description: Email and push notification dispatch
-  status: active
-  escalation_policy_id: EP001
-  auto_resolve_timeout: '14400'
-users:
-- user_id: PU001
-  name: Amelia Ortega
-  email: amelia.ortega@orbit-labs.com
-  role: admin
-  time_zone: America/Los_Angeles
-  job_title: SRE Lead
-- user_id: PU002
-  name: Jonas Pereira
-  email: jonas.pereira@orbit-labs.com
-  role: user
-  time_zone: America/Los_Angeles
-  job_title: Backend Engineer
-- user_id: PU003
-  name: Helena Park
-  email: helena.park@orbit-labs.com
-  role: user
-  time_zone: Europe/Berlin
-  job_title: Platform Engineer
-- user_id: PU004
-  name: Rohit Bansal
-  email: rohit.bansal@orbit-labs.com
-  role: user
-  time_zone: Asia/Kolkata
-  job_title: Site Reliability Engineer
-- user_id: PU005
-  name: Noor Aziz
-  email: noor.aziz@orbit-labs.com
-  role: manager
-  time_zone: America/New_York
-  job_title: Engineering Manager
+  resolved_at: null

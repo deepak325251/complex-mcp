@@ -51,11 +51,14 @@ class MeetSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
-            self.meetings: Dict[str, Meeting] = {}
             self._today = datetime(2026, 1, 5)
-            self._seed_meetings()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMeet')
+            # Annotation drives the coercion in load_typed_state (rebuilds
+            # Meeting objects the tools expect).
+            self.meetings: Dict[str, Meeting] = {}
+            # World data loaded from corpus/state.json (no cooking): plain dicts
+            # are wrapped back into Meeting objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightMeet')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

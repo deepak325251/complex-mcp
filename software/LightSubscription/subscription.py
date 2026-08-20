@@ -47,11 +47,14 @@ class SubscriptionSession:
             # Seed architecture: world rolled from a seed (re-armed).
             self.rng = random.Random(resolve_seed(seed))
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            # Annotations drive the coercion in load_typed_state (rebuild the
+            # dataclass objects the tools expect: sub.amount, payment.status).
             self.subs: Dict[str, Subscription] = {}
             self.payments: Dict[str, Payment] = {}
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightSubscription')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into their dataclasses via the annotations.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightSubscription')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

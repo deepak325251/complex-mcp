@@ -22,15 +22,11 @@ _ROOT = os.path.dirname(_HERE)
 # Files a bundle MUST carry to be gradeable in-process (weighted/graph/pytest).
 # This is the family-agnostic core: it holds for both the complexmcp-native
 # bundles this pipeline emits and the mcp-stump-family bundles authored
-# elsewhere. The Docker state-diff path files (verify.py/test.sh/gen_gt.py/
-# GT_GENERATION.md, environment/Dockerfile) are recommended for harbor parity
-# but NOT required — the in-process graders never read them.
+# elsewhere. 
 REQUIRED = [
     "task.toml",
     "instruction.md",
     "environment/docker-compose.yaml",
-    "tests/oracle.json",
-    "tests/old_env.json",
     "tests/gt_env.json",
     "tests/gold_plan.json",
     "tests/efs.json",
@@ -47,8 +43,13 @@ RECOMMENDED = [
     "environment/Dockerfile",
     "tests/verify.py",
     "tests/test.sh",
-    "tests/gen_gt.py",
-    "tests/GT_GENERATION.md",
+]
+
+# Baked by the runner itself when absent (run_benchmark boots the seeded world
+# in-process via scripts/make_old_env before the controls gate), so a bundle
+# need not ship them. Absence is a note; a shipped copy is used as-is.
+RUNTIME_GENERATED = [
+    "tests/old_env.json",
 ]
 
 
@@ -118,6 +119,9 @@ def main(argv=None) -> int:
     notes = [f"recommended (harbor-parity) file absent: {rel}"
              for rel in RECOMMENDED
              if not os.path.exists(os.path.join(task_dir, rel))]
+    notes += [f"runtime-generated file absent (runner will bake it): {rel}"
+              for rel in RUNTIME_GENERATED
+              if not os.path.exists(os.path.join(task_dir, rel))]
     slug = os.path.basename(task_dir.rstrip("/"))
     if problems:
         print(f"[FAIL] {slug}")

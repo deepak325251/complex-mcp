@@ -46,48 +46,9 @@ class PlaidSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "plaid.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.accounts: List[Dict[str, Any]] = [
-                {
-                    "account_id": a["account_id"],
-                    "name": a["name"],
-                    "official_name": (str(a.get("official_name", "")) or None),
-                    "mask": a["mask"],
-                    "type": a["type"],
-                    "subtype": a["subtype"],
-                    "balances": {
-                        "available": _to_float(a.get("available")),
-                        "current": _to_float(a.get("current")),
-                        "limit": _to_float(a.get("limit")),
-                        "iso_currency_code": a["iso_currency_code"],
-                        "unofficial_currency_code": None,
-                    },
-                }
-                for a in info.get("accounts", [])
-            ]
-
-            self.transactions: List[Dict[str, Any]] = [
-                {
-                    "transaction_id": t["transaction_id"],
-                    "account_id": t["account_id"],
-                    "amount": _to_float(t.get("amount")),
-                    "iso_currency_code": t["iso_currency_code"],
-                    "date": t["date"],
-                    "name": t["name"],
-                    "merchant_name": (str(t.get("merchant_name", "")) or None),
-                    "category": [c for c in str(t.get("category", "")).split(";") if c],
-                    "pending": _to_bool(t.get("pending", False)),
-                    "payment_channel": t["payment_channel"],
-                }
-                for t in info.get("transactions", [])
-            ]
-
-            self.item: Dict[str, Any] = dict(info.get("item", {}))
-            self.identity: Dict[str, Any] = dict(info.get("identity", {}))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightPlaid')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightPlaid')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

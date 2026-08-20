@@ -49,48 +49,8 @@ class YelpSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "yelp.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.businesses: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "alias": r["id"],
-                    "name": r["name"],
-                    "rating": _to_float(r.get("rating")),
-                    "price": r["price"],
-                    "review_count": _to_int(r.get("review_count")),
-                    "is_closed": _to_bool(r.get("is_closed")),
-                    "phone": r["phone"],
-                    "image_url": r["image_url"],
-                    "categories": [{"alias": r["category"], "title": r["category_title"]}],
-                    "coordinates": {"latitude": _to_float(r.get("latitude")), "longitude": _to_float(r.get("longitude"))},
-                    "location": {
-                        "address1": r["address"],
-                        "city": r["city"],
-                        "state": r["state"],
-                        "display_address": [r["address"], f"{r['city']}, {r['state']}"],
-                    },
-                }
-                for r in info.get("businesses", [])
-            ]
-            self.reviews: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "business_id": r["business_id"],
-                    "rating": _to_int(r.get("rating")),
-                    "text": r["text"],
-                    "time_created": r["time_created"],
-                    "user": {"name": r["user_name"]},
-                }
-                for r in info.get("reviews", [])
-            ]
-            self.categories: List[Dict[str, Any]] = [
-                {"alias": r["alias"], "title": r["title"], "parent_aliases": [r["parent"]]}
-                for r in info.get("categories", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightYelp')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightYelp')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -75,11 +75,13 @@ class MailSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
-            self.user_email = "me@example.com"
+            # Annotation drives the coercion in load_typed_state (rebuilds
+            # Message objects the tools expect). user_email is restored verbatim.
             self.messages: Dict[str, Message] = {}
-            self._seed_messages()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMail')
+            # World data loaded from corpus/state.json (no cooking): plain dicts
+            # are wrapped back into Message objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightMail')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

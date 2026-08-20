@@ -40,49 +40,9 @@ class MicrosoftTeamsSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "microsoft_teams.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.teams: List[Dict[str, Any]] = [
-                {
-                    "id": t["id"],
-                    "displayName": t["display_name"],
-                    "description": t["description"],
-                    "visibility": t["visibility"],
-                    "isArchived": _to_bool(t.get("is_archived", False)),
-                    "webUrl": t["web_url"],
-                    "member_ids": [x for x in str(t.get("member_ids", "")).split(";") if x],
-                }
-                for t in info.get("teams", [])
-            ]
-            self.channels: List[Dict[str, Any]] = [
-                {
-                    "id": c["id"],
-                    "team_id": c["team_id"],
-                    "displayName": c["display_name"],
-                    "description": c["description"],
-                    "membershipType": c["membership_type"],
-                    "webUrl": c["web_url"],
-                    "createdDateTime": c["created_date"],
-                }
-                for c in info.get("channels", [])
-            ]
-            self.messages: List[Dict[str, Any]] = [
-                {
-                    "id": m["id"],
-                    "channel_id": m["channel_id"],
-                    "team_id": m["team_id"],
-                    "from_user_id": m["from_user_id"],
-                    "from_display_name": m["from_display_name"],
-                    "content": m["content"],
-                    "contentType": m["content_type"],
-                    "importance": m["importance"],
-                    "createdDateTime": m["created_date"],
-                }
-                for m in info.get("messages", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMicrosoftTeams')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightMicrosoftTeams')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

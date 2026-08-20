@@ -177,10 +177,14 @@ def replay_trajectory(task_dir, trajectory, *, seed=None, apps=None, repo_root=N
         sys.path.insert(0, repo_root)
     spec = {}
     op = os.path.join(task_dir, "tests", "oracle.json")
-    if os.path.exists(op):
+    if os.path.exists(op):                                # legacy: still honored if present
         spec = json.load(open(op, encoding="utf-8"))
     seed = seed if seed is not None else resolve_seed(task_dir, spec)
-    apps = apps or spec.get("apps") or list(spec.get("oracle", {}).keys())
+    # Oracle-free bundles carry no oracle.json, so seed/apps come from task.toml.
+    # Without this fallback apps would be empty -> boot_world([]) -> replay no-ops
+    # and the empty-dump state repair silently fails.
+    apps = apps or spec.get("apps") or list(spec.get("oracle", {}).keys()) \
+        or resolve_apps(task_dir)
 
     sessions = boot_world(apps, seed)
     steps = trajectory.get("steps", []) if isinstance(trajectory, dict) else trajectory
@@ -302,6 +306,29 @@ def resolve_seed(task_dir, spec=None):
         except (OSError, tomllib.TOMLDecodeError, ValueError):
             pass
     return 42
+
+
+def resolve_apps(task_dir, spec=None):
+    """Apps for a task: oracle.json 'apps' -> task.toml [task.metadata] apps -> [].
+
+    Oracle-free bundles have no oracle.json, so the app list lives only in
+    task.toml. apps may be a TOML array or a JSON-encoded string (both are used
+    across the corpus)."""
+    if spec and spec.get("apps"):
+        return list(spec["apps"])
+    toml_path = os.path.join(task_dir, "task.toml")
+    if os.path.exists(toml_path):
+        try:
+            with open(toml_path, "rb") as fh:
+                meta = tomllib.load(fh).get("task", {}).get("metadata", {})
+            apps = meta.get("apps")
+            if isinstance(apps, str):
+                apps = json.loads(apps)
+            if apps:
+                return list(apps)
+        except (OSError, tomllib.TOMLDecodeError, ValueError, json.JSONDecodeError):
+            pass
+    return []
 
 
 def bake(task_dir, repo_root=None, write=True):

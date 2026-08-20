@@ -41,14 +41,9 @@ class MixpanelSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "mixpanel.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.events: List[Dict[str, Any]] = self._coerce_events(info.get("events", []))
-            self.funnels: Dict[str, Any] = self._coerce_funnels(info.get("funnels", []))
-            self.profiles: List[Dict[str, Any]] = self._coerce_profiles(info.get("profiles", []))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMixpanel')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightMixpanel')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

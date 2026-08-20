@@ -546,15 +546,18 @@ def main(args):
             os.environ.pop("COMPLEXMCP_WORLD_DATA", None)
         # A4 reconciliation: task.toml's seed and world_data/fixture are two
         # independent content mechanisms (see seed_content_registry.py). If a
-        # task declares a seed but no world_data/fixture is active, any app
-        # whose content the registry says is seed-static won't actually vary
-        # -- warn once per offending app-set so this doesn't get discovered by
-        # staring at a state-diff instead.
+        # task declares a seed but no authored world is active, any app whose
+        # content the registry says is seed-static won't actually vary -- warn
+        # once per offending app-set so this doesn't get discovered by staring
+        # at a state-diff instead. An app that ships a canonical in-code world
+        # (software/<App>/world.json) already has authored content, so it's not
+        # an offender even without an override env var.
         if task_info.get("seed") is not None and not os.environ.get("COMPLEXMCP_WORLD_DATA"):
             _fixture_apps = {app for (_, app) in fixtures._REGISTRY} if os.environ.get("COMPLEXMCP_FIXTURE") else set()
             _static_apps = sorted(
                 a for a in apps
                 if a not in _fixture_apps and not seed_rolls_content(a)
+                and not os.path.isfile(os.path.join("software", a, "world.json"))
             )
             if _static_apps and tuple(_static_apps) not in _WARNED_STATIC_SEED_APPS:
                 _WARNED_STATIC_SEED_APPS.add(tuple(_static_apps))
@@ -565,6 +568,40 @@ def main(args):
                     "seed_content_registry.py) -- supply world_data or a "
                     "fixture if per-task content variation is expected."
                 )
+        # Runtime old_env: input bundles no longer need to ship tests/old_env.json.
+        # When it's absent, bake it HERE — after this task's COMPLEXMCP_SEED /
+        # FIXTURE / WORLD_DATA are exported (the in-process boot reads them at
+        # login) and before anything consumes it: the controls gate (world-full
+        # admissibility), the post-run state diff, and repair_new_env all read
+        # this same file. A bundle that ships its own old_env.json is left alone.
+        _td_pre = task_info.get("task_dir")
+        if _td_pre and apps:
+            _old_p = os.path.join(str(_td_pre), "tests", "old_env.json")
+            if not os.path.exists(_old_p):
+                try:
+                    from scripts.make_old_env import make_old_env
+                    # Restrict the bake to the STATE apps (gt_env's keys), not
+                    # the full presented app list: judge_env unions app keys
+                    # across old/new/gt, so an app in old_env that gt_env lacks
+                    # grades as an uncredited change (total+=1, recall+=0) and
+                    # deflates Rc. The shipped bundles follow this same
+                    # convention (old_env apps == gt_env apps).
+                    _bake_apps = (list(gt_env.keys())
+                                  if isinstance(gt_env, dict) and gt_env
+                                  else apps)
+                    _old = make_old_env(str(_td_pre), apps=_bake_apps,
+                                        seed=task_info.get("seed"))
+                    os.makedirs(os.path.dirname(_old_p), exist_ok=True)
+                    with open(_old_p, "w", encoding="utf-8") as _f:
+                        json.dump(_old, _f, ensure_ascii=False, indent=2)
+                    print(f"[old_env] baked at runtime -> {_old_p}")
+                except (SystemExit, Exception) as _exc:
+                    # World-free tasks (or apps that can't boot in-process) never
+                    # touch the state channel, so a failed bake must not block
+                    # the rollout — grading degrades exactly as before.
+                    print(f"[old_env] runtime bake skipped: "
+                          f"{type(_exc).__name__}: {_exc}")
+
         # Compute the presented toolset ONCE per task so every attempt in the
         # pass@k loop sees the same distractor sample (the knob is a property of
         # the measurement, not of the individual rollout).

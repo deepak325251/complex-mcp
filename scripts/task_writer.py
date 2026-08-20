@@ -215,7 +215,7 @@ def write_task_dir(tasks_root: Path, record: dict, *,
         score = {
             "gradeable": False,
             "reason": "Harbor tasks in benchmark/harbor_final_all/ have no gt_env.json "
-                      "(needs tests/gen_gt.py replay of solution/trajectory.json).",
+                      "(needs an authored tests/gt_env.json).",
             "reward": None,
             "recall": None,
             "misbehave": None,

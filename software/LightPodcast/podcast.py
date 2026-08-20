@@ -104,21 +104,19 @@ class PodcastSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild
+            # Podcast/Episode/QueueItem/Progress/Download objects tools expect).
             self.podcasts: Dict[str, Podcast] = {}
             self.episodes: Dict[str, Episode] = {}
             self.queue: Dict[str, QueueItem] = {}
             self.progress: Dict[str, Progress] = {}
             self.downloads: Dict[str, Download] = {}
-            self.subscribed: set = set()
-            self._podcast_index: List[str] = []
-            self._episode_index: List[str] = []
-            self._seed_podcasts()
-            self._seed_episodes()
-            self._seed_queue()
-            self._seed_progress()
-            self._seed_downloads()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightPodcast')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # dataclasses rebuilt; subscribed (Set[str]) carried as a sorted
+            # list in JSON, converted back to a set below.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightPodcast')
+            self.subscribed = set(self.subscribed)
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

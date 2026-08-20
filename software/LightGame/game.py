@@ -109,9 +109,10 @@ class GameSession:
             self.play_sessions: Dict[str, PlaySession] = {}
             self.wishlist: Dict[str, Wishlist] = {}
             self._game_order: List[str] = []
-            self._seed_all()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightGame')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts are rebuilt into the declared dataclass objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightGame')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

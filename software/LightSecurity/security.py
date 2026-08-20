@@ -116,18 +116,17 @@ class SecuritySession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild the
+            # dataclass objects the tools expect: camera.name, alarm.kind, ...).
             self.cameras: Dict[str, Camera] = {}
             self.sensors: Dict[str, Sensor] = {}
             self.alarms: Dict[str, Alarm] = {}
             self.events: Dict[str, Event] = {}
             self.access_logs: Dict[str, AccessLog] = {}
-            self._seed_cameras()
-            self._seed_sensors()
-            self._seed_alarms()
-            self._seed_events()
-            self._seed_access_logs()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightSecurity')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into their dataclasses via the annotations.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightSecurity')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

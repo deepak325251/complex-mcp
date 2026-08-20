@@ -82,20 +82,21 @@ class FlightSession:
                 url=os_cfg["url"]
             ) if os_cfg else DummyOSConnector()
 
+            # Reference catalogs (flights/airports) load from corpus/*.yaml.
             self.airports, self.airports_in_cities = self.init_airports()
             self.flights, self.flights_by_arrival, self.flights_by_departure = self.init_flights()
 
-            self.my_balance = self.rng.randint(15000, 60000)
+            # Annotations drive the coercion in load_typed_state.
             self.current_bookings: List[BookingItem] = []
             self.bookings_history: List[BookingRecord] = []
             self.refund_history: List[RefundRecord] = []
             self.passengers: List[PassengerInfo] = []
-            self.__mock_booking()
             self.my_starred_airports = set()
-
             self.enter_password = False
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightFlight')
+            # Authored world (my_balance/bookings/passengers) from corpus/state.json,
+            # no cooking; rebuilt into BookingItem/PassengerInfo objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightFlight')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")
@@ -141,6 +142,23 @@ class FlightSession:
         return airports_list, airports_in_cities
 
     def init_flights(self) -> Tuple[Dict[str, Flight], Dict[str, List[Flight]], Dict[str, List[Flight]]]:
+        # Corpus-only: if the flight catalog is authored in corpus/flights.yaml,
+        # load it verbatim (deterministic, no seed generation). Only fall back to
+        # rolling flights from the rng when the authored catalog is absent.
+        _authored = CORPUS_PATH / "flights.yaml"
+        if _authored.is_file():
+            with open(_authored) as _f:
+                _raw = (yaml.safe_load(_f) or {}).get("flights", [])
+            flights: Dict[str, Flight] = {}
+            flights_by_arrival: Dict[str, List[Flight]] = defaultdict(list)
+            flights_by_departure: Dict[str, List[Flight]] = defaultdict(list)
+            for _fd in _raw:
+                _flight = Flight(**_fd)
+                flights[_flight.fid] = _flight
+                flights_by_arrival[_flight.arrival].append(_flight)
+                flights_by_departure[_flight.departure].append(_flight)
+            return flights, dict(flights_by_arrival), dict(flights_by_departure)
+
         def __mock_dura_price(
             coord_1: Tuple[float, float],
             coord_2: Tuple[float, float]

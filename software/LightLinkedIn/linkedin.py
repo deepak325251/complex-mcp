@@ -39,25 +39,9 @@ class LinkedinSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "linkedin.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.profile: Dict[str, Any] = dict(info.get("profile", {}))
-            self.connections: List[Dict[str, Any]] = list(info.get("connections", []))
-            self.posts: List[Dict[str, Any]] = [self._coerce_post(p) for p in info.get("posts", [])]
-            self.organizations: List[Dict[str, Any]] = [
-                {**o, "followerCount": _to_int(o.get("followerCount"))} for o in info.get("organizations", [])
-            ]
-            self.jobs: List[Dict[str, Any]] = [
-                {
-                    **j,
-                    "applicants": _to_int(j.get("applicants")),
-                    "keywords": [k for k in str(j.get("keywords", "")).split(" ") if k],
-                }
-                for j in info.get("jobs", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightLinkedIn')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightLinkedIn')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -53,51 +53,9 @@ class ContentfulSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "contentful.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.space: Dict[str, Any] = info.get("space", {})
-
-            self.content_types: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "name": r["name"],
-                    "displayField": r["displayField"],
-                    "description": r["description"],
-                    "fields": _parse_json(r.get("fields_json"), []),
-                }
-                for r in info.get("content_types", [])
-            ]
-
-            self.entries: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "content_type": r["content_type"],
-                    "created_at": r["created_at"],
-                    "updated_at": r["updated_at"],
-                    "published_version": _to_int(r.get("published_version"), default=0),
-                    "fields": _parse_json(r.get("fields_json"), {}),
-                }
-                for r in info.get("entries", [])
-            ]
-
-            self.assets: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "created_at": r["created_at"],
-                    "updated_at": r["updated_at"],
-                    "published_version": _to_int(r.get("published_version"), default=0),
-                    "title": r["title"],
-                    "description": r["description"],
-                    "file_url": r["file_url"],
-                    "content_type": r["content_type"],
-                    "file_name": r["file_name"],
-                    "size": _to_int(r.get("size"), default=0),
-                }
-                for r in info.get("assets", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightContentful')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightContentful')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

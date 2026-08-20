@@ -104,15 +104,16 @@ class HomeSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
-            self.rooms: Dict[str, Room] = {r["rmid"]: Room(**r) for r in DEFAULT_ROOMS}
+            # Annotations drive the coercion in load_typed_state (rooms/devices/
+            # scenes/automations -> Room/Device/Scene/Automation dataclasses).
+            self.rooms: Dict[str, Room] = {}
             self.devices: Dict[str, Device] = {}
             self.scenes: Dict[str, Scene] = {}
             self.automations: Dict[str, Automation] = {}
-            self._seed_devices()
-            self._seed_scenes()
-            self._seed_automations()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightHome')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt back into the dataclass objects tools expect.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightHome')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -39,17 +39,8 @@ class ServicenowSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "servicenow.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.incidents: List[Dict[str, Any]] = list(info.get("incident", []))
-            self.changes: List[Dict[str, Any]] = list(info.get("change_request", []))
-            self.problems: List[Dict[str, Any]] = list(info.get("problem", []))
-            self.users: List[Dict[str, Any]] = [
-                {**u, "active": _to_bool(u.get("active", False))} for u in info.get("sys_user", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightServiceNow')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightServiceNow')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -62,13 +62,14 @@ class CalendarSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
-            self.calendars: Dict[str, Calendar] = {
-                c["cid"]: Calendar(**c) for c in DEFAULT_CALENDARS
-            }
+            # Annotations drive the coercion in load_typed_state (calendars/
+            # events -> Calendar/Event dataclasses).
+            self.calendars: Dict[str, Calendar] = {}
             self.events: Dict[str, Event] = {}
-            self._seed_events()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightCalendar')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into Calendar/Event objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightCalendar')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

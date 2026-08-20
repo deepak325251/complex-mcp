@@ -65,14 +65,16 @@ class WalletSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
+            # Kept as a literal: LightWallet's _SHAPES entry coerces state.json's
+            # "today" string back into this datetime; tools read self._today.
             self._today = datetime(2026, 1, 5)
-            self.wallets: Dict[str, Wallet] = {
-                w["wid"]: Wallet(**w) for w in DEFAULT_WALLETS
-            }
+            # Annotations drive the coercion in load_typed_state (wallets ->
+            # Wallet, transfers -> Transfer).
+            self.wallets: Dict[str, Wallet] = {}
             self.transfers: Dict[str, Transfer] = {}
-            self._seed_transfers()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightWallet')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightWallet')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

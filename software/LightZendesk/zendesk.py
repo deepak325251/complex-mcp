@@ -51,49 +51,8 @@ class ZendeskSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "zendesk.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.users: List[Dict[str, Any]] = [{
-                "id": _to_int(r.get("id")),
-                "name": r["name"],
-                "email": r["email"],
-                "role": r["role"],
-                "organization_id": _to_int(r.get("organization_id")),
-                "active": _to_bool(r.get("active")),
-                "created_at": r["created_at"],
-            } for r in info.get("users", [])]
-            self.organizations: List[Dict[str, Any]] = [{
-                "id": _to_int(r.get("id")),
-                "name": r["name"],
-                "domain_names": [d for d in _opt_csv_list(r.get("domain_names"), sep=";") if d],
-                "created_at": r["created_at"],
-            } for r in info.get("organizations", [])]
-            self.tickets: List[Dict[str, Any]] = [{
-                "id": _to_int(r.get("id")),
-                "subject": r["subject"],
-                "description": r["description"],
-                "status": r["status"],
-                "priority": r["priority"],
-                "type": r["type"],
-                "requester_id": _to_int(r.get("requester_id")),
-                "assignee_id": _to_int(r.get("assignee_id")),
-                "organization_id": _to_int(r.get("organization_id")),
-                "tags": [t for t in _opt_csv_list(r.get("tags"), sep=";") if t],
-                "created_at": r["created_at"],
-                "updated_at": r["updated_at"],
-            } for r in info.get("tickets", [])]
-            self.comments: List[Dict[str, Any]] = [{
-                "id": _to_int(r.get("id")),
-                "ticket_id": _to_int(r.get("ticket_id")),
-                "author_id": _to_int(r.get("author_id")),
-                "body": r["body"],
-                "public": _to_bool(r.get("public")),
-                "created_at": r["created_at"],
-            } for r in info.get("comments", [])]
-
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, "LightZendesk")
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, "LightZendesk")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

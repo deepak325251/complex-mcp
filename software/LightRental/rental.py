@@ -86,15 +86,15 @@ class RentalSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild
+            # Asset/Booking/Damage objects the tools expect).
             self.assets: Dict[str, Asset] = {}
             self.bookings: Dict[str, Booking] = {}
             self.damages: Dict[str, Damage] = {}
-            self._name_to_aid: Dict[str, str] = {}
-            self._seed_assets()
-            self._seed_bookings()
-            self._seed_damages()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightRental')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts wrapped back into their dataclasses.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightRental')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

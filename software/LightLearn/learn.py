@@ -112,14 +112,17 @@ class LearnSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (courses/lessons/
+            # enrollments/quizzes/attempts -> their dataclass objects).
             self.courses: Dict[str, Course] = {}
             self.lessons: Dict[str, Lesson] = {}
             self.enrollments: Dict[str, Enrollment] = {}
             self.quizzes: Dict[str, Quiz] = {}
             self.attempts: Dict[str, QuizAttempt] = {}
-            self._seed_all()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightLearn')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt back into the dataclass objects tools expect.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightLearn')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

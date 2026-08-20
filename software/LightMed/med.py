@@ -98,15 +98,17 @@ class MedSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
-            self.pharmacies: Dict[str, Pharmacy] = {
-                p["phid"]: Pharmacy(**p) for p in SEED_PHARMACIES
-            }
+            # Type annotations drive the coercion in load_typed_state (they tell
+            # it to rebuild Pharmacy/Prescription/RefillRequest/AuditLog objects
+            # the tools expect).
+            self.pharmacies: Dict[str, Pharmacy] = {}
             self.prescriptions: Dict[str, Prescription] = {}
             self.refills: Dict[str, RefillRequest] = {}
             self.audit_logs: Dict[str, AuditLog] = {}
-            self._seed_all()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMed')
+            # World data loaded from corpus/state.json (no cooking): plain dicts
+            # are wrapped back into their dataclass objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightMed')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

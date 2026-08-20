@@ -39,44 +39,12 @@ class QuickbooksSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "quickbooks.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.realm_id = REALM_ID
-
-            # --- QBO-enveloped reference tables (served verbatim from QueryResponse) ---
-            self.customers: List[Dict[str, Any]] = list(
-                (info.get("customers", {}).get("QueryResponse", {}) or {}).get("Customer", [])
-            )
-            self.vendors: List[Dict[str, Any]] = list(
-                (info.get("vendors", {}).get("QueryResponse", {}) or {}).get("Vendor", [])
-            )
-            self.accounts: List[Dict[str, Any]] = list(
-                (info.get("accounts", {}).get("QueryResponse", {}) or {}).get("Account", [])
-            )
-
-            # --- items: CSV-shaped seed coerced like _coerce_items in source ---
-            self.items: List[Dict[str, Any]] = [self._coerce_item(r) for r in info.get("items", [])]
-
-            # --- plain list tables (API-shaped) ---
-            self.invoices: List[Dict[str, Any]] = list(info.get("invoices", []))
-            self.bills: List[Dict[str, Any]] = list(info.get("bills", []))
-            self.payments: List[Dict[str, Any]] = list(info.get("payments", []))
-            self.estimates: List[Dict[str, Any]] = list(info.get("estimates", []))
-            self.expenses: List[Dict[str, Any]] = list(info.get("expenses", []))
-
-            # --- documents ---
-            self.company_info: Dict[str, Any] = dict(info.get("company_info", {}))
-            self.company_raw: Dict[str, Any] = dict(info.get("company", {}))
-            self.bill_payments: Dict[str, Any] = dict(info.get("bill-payments", {}))
-            self.corporate_expense_ledger: Dict[str, Any] = dict(info.get("Corporate_Expense_Ledger", {}))
-            self.reimbursement_policy: Dict[str, Any] = dict(info.get("Reimbursement_Policy", {}))
-            self.break_even_analysis: Dict[str, Any] = dict(info.get("break-even-analysis", {}))
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, "LightQuickBooks")
 
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightQuickBooks", fixture)
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, "LightQuickBooks")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

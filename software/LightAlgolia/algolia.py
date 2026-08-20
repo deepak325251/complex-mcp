@@ -64,32 +64,8 @@ class AlgoliaSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "algolia.yaml") as f:
-                info = yaml.safe_load(f)
-
-            indices_meta = list(info.get("indices", []))
-            self.indices: List[Dict[str, Any]] = [
-                {
-                    "name": m["name"],
-                    "entries": _to_int(m.get("entries"), default=0),
-                    "dataSize": _to_int(m.get("data_size"), default=0),
-                    "createdAt": m["created_at"],
-                    "updatedAt": m["updated_at"],
-                }
-                for m in indices_meta
-            ]
-
-            # one record list per index name, keyed by objectID
-            self.records: Dict[str, List[Dict[str, Any]]] = {}
-            for m in indices_meta:
-                key = m["records_csv"].replace(".json", "")
-                self.records[m["name"]] = [self._coerce_record(r) for r in info.get(key, [])]
-
-            self.settings: List[Dict[str, Any]] = [
-                {"index": r["index"], **self._coerce_settings(r)} for r in info.get("settings", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightAlgolia')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightAlgolia')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

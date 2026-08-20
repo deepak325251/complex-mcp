@@ -1,123 +1,75 @@
+# Source: world_data 2/LightPostHog.json (verbatim). Authored world for LightPostHog.
 events:
 - id: evt_30001
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3001
-  event: $pageview
+  event: member_portal_login
   timestamp: '2026-05-02T09:00:00Z'
-  properties: $current_url=/dashboard
+  properties:
+    $current_url: /dashboard
 - id: evt_30002
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3001
-  event: button_clicked
+  event: tour_ticket_purchase
   timestamp: '2026-05-02T09:02:11Z'
-  properties: name=export;plan=pro
+  properties:
+    name: export
+    plan: pro
 - id: evt_30003
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3002
-  event: $pageview
+  event: donation_completed
   timestamp: '2026-05-03T12:14:40Z'
-  properties: $current_url=/settings
+  properties:
+    $current_url: /settings
 - id: evt_30004
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3003
-  event: signup
+  event: newsletter_signup
   timestamp: '2026-05-04T08:31:05Z'
-  properties: source=referral
+  properties:
+    source: referral
 - id: evt_30005
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3002
-  event: feature_flag_called
+  event: resource_download
   timestamp: '2026-05-05T10:45:22Z'
-  properties: flag=new-onboarding
+  properties:
+    flag: new-onboarding
 - id: evt_30006
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3004
-  event: $pageview
+  event: member_portal_login
   timestamp: '2026-05-06T15:09:18Z'
-  properties: $current_url=/pricing
+  properties:
+    $current_url: /pricing
 - id: evt_30007
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3003
-  event: purchase
+  event: tour_ticket_purchase
   timestamp: '2026-05-07T11:55:47Z'
-  properties: amount=49.00;currency=USD
+  properties:
+    amount: '49.00'
+    currency: USD
 - id: evt_30008
-  project_id: '2'
+  project_id: 2
   distinct_id: user_3005
-  event: $pageview
+  event: donation_completed
   timestamp: '2026-05-08T07:22:33Z'
-  properties: $current_url=/home
+  properties:
+    $current_url: /home
 - id: evt_30009
-  project_id: '2'
+  project_id: 2
   distinct_id: user_3005
-  event: form_submitted
+  event: newsletter_signup
   timestamp: '2026-05-09T14:38:51Z'
-  properties: form=contact
+  properties:
+    form: contact
 - id: evt_30010
-  project_id: '1'
+  project_id: 1
   distinct_id: user_3001
-  event: purchase
+  event: resource_download
   timestamp: '2026-05-10T18:01:29Z'
-  properties: amount=120.00;currency=USD
-feature_flags:
-- id: flag_4001
-  project_id: '1'
-  key: new-onboarding
-  name: New Onboarding Flow
-  active: 'true'
-  rollout_percentage: '100'
-- id: flag_4002
-  project_id: '1'
-  key: beta-dashboard
-  name: Beta Dashboard
-  active: 'true'
-  rollout_percentage: '50'
-- id: flag_4003
-  project_id: '1'
-  key: dark-mode
-  name: Dark Mode
-  active: 'false'
-  rollout_percentage: '0'
-- id: flag_4004
-  project_id: '1'
-  key: fast-checkout
-  name: Fast Checkout
-  active: 'true'
-  rollout_percentage: '25'
-- id: flag_4005
-  project_id: '2'
-  key: referral-program
-  name: Referral Program
-  active: 'true'
-  rollout_percentage: '100'
-persons:
-- id: per_5001
-  project_id: '1'
-  distinct_id: user_3001
-  name: Jordan Reyes
-  email: jordan@example.com
-  created_at: '2026-04-21T09:00:00Z'
-- id: per_5002
-  project_id: '1'
-  distinct_id: user_3002
-  name: Mira Patel
-  email: mira@example.com
-  created_at: '2026-04-23T09:00:00Z'
-- id: per_5003
-  project_id: '1'
-  distinct_id: user_3003
-  name: Sam Okafor
-  email: sam@example.com
-  created_at: '2026-04-26T09:00:00Z'
-- id: per_5004
-  project_id: '1'
-  distinct_id: user_3004
-  name: Lena Brandt
-  email: lena@example.com
-  created_at: '2026-04-29T09:00:00Z'
-- id: per_5005
-  project_id: '2'
-  distinct_id: user_3005
-  name: Theo Marsh
-  email: theo@example.com
-  created_at: '2026-05-01T09:00:00Z'
+  properties:
+    amount: '120.00'
+    currency: USD

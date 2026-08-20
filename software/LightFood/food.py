@@ -107,11 +107,10 @@ class FoodSession:
             self.orders: Dict[str, Order] = {}
             self._rest_name_to_id: Dict[str, str] = {}
             self._menu_name_to_id: Dict[str, str] = {}
-            self._seed_restaurants()
-            self._seed_menu()
-            self._seed_orders()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightFood')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts are rebuilt into the declared dataclass objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightFood')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

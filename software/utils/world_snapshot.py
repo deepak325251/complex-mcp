@@ -27,11 +27,13 @@ A4 reconciliation -- seed vs. content, two different guarantees:
   their substantive content (listings, tickets, messages, ...) from a static
   per-app corpus that a seed change never touches; only ~36 apps' content
   actually differs across seeds. See software/utils/seed_content_registry.py
-  for the empirically-derived per-app answer. For task authors who need
-  per-task content control on a seed-static app, the mechanism is
-  software.utils.world_data (hydrate) or software.utils.fixtures, not seed;
-  run_benchmark.py logs a one-time advisory when a task's declared seed
-  can't actually do anything for one of its apps.
+  for the empirically-derived per-app answer. Each app's authored world now
+  lives in-code -- baked into software/<App>/corpus/*.yaml where the corpus can
+  hold it, else in software/<App>/world.json (both loaded via world_data at
+  boot). For task authors who need *different* content for a seed-static app,
+  the mechanism is a software.utils.world_data override dir or
+  software.utils.fixtures, not seed. run_benchmark.py logs a one-time advisory
+  when a task's declared seed can't actually do anything for one of its apps.
 """
 from __future__ import annotations
 

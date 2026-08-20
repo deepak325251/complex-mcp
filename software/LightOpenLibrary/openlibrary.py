@@ -32,51 +32,9 @@ class OpenlibrarySession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "openlibrary.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.authors: List[Dict[str, Any]] = [
-                {
-                    "author_id": r["author_id"],
-                    "name": r["name"],
-                    "birth_date": (str(r.get("birth_date") or "") or None),
-                    "death_date": (str(r.get("death_date") or "") or None),
-                    "bio": r["bio"],
-                    "top_work": r["top_work"],
-                    "work_count": int(r["work_count"]),
-                }
-                for r in info.get("authors", [])
-            ]
-            self.works: List[Dict[str, Any]] = [
-                {
-                    "work_id": r["work_id"],
-                    "title": r["title"],
-                    "author_id": r["author_id"],
-                    "first_publish_year": int(r["first_publish_year"]),
-                    "subjects": _split(r["subjects"]),
-                    "description": r["description"],
-                    "edition_count": int(r["edition_count"]),
-                }
-                for r in info.get("works", [])
-            ]
-            self.editions: List[Dict[str, Any]] = [
-                {
-                    "edition_id": r["edition_id"],
-                    "work_id": r["work_id"],
-                    "title": r["title"],
-                    "isbn_13": r["isbn_13"],
-                    "isbn_10": r["isbn_10"],
-                    "publisher": r["publisher"],
-                    "publish_date": r["publish_date"],
-                    "number_of_pages": int(r["number_of_pages"]),
-                    "language": r["language"],
-                }
-                for r in info.get("editions", [])
-            ]
-            self.subjects: List[Dict[str, Any]] = list(info.get("subjects", []))
-            self._authors_by_id = {a["author_id"]: a for a in self.authors}
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightOpenLibrary')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightOpenLibrary')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

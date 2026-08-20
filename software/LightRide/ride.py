@@ -86,14 +86,15 @@ class RideSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild
+            # Driver/Rider/Ride objects the tools expect).
             self.drivers: Dict[str, Driver] = {}
             self.riders: Dict[str, Rider] = {}
             self.rides: Dict[str, Ride] = {}
-            self._seed_drivers()
-            self._seed_riders()
-            self._seed_rides()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightRide')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts wrapped back into their dataclasses.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightRide')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

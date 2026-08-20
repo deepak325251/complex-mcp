@@ -1,146 +1,55 @@
-app_assignments:
-- app_id: 0oa1github
-  user_id: 00u1amelia
-  scope: USER
-- app_id: 0oa1github
-  user_id: 00u2jonas
-  scope: USER
-- app_id: 0oa2slack
-  user_id: 00u1amelia
-  scope: USER
-- app_id: 0oa2slack
-  user_id: 00u3helena
-  scope: USER
-- app_id: 0oa3aws
-  user_id: 00u1amelia
-  scope: USER
-- app_id: 0oa4datadog
-  user_id: 00u3helena
-  scope: USER
-apps:
-- id: 0oa1github
-  name: github_enterprise
-  label: GitHub Enterprise
-  status: ACTIVE
-  sign_on_mode: SAML_2_0
-  created: '2024-02-01T10:00:00.000Z'
-- id: 0oa2slack
-  name: slack
-  label: Slack
-  status: ACTIVE
-  sign_on_mode: SAML_2_0
-  created: '2024-02-05T10:00:00.000Z'
-- id: 0oa3aws
-  name: amazon_aws
-  label: AWS Console
-  status: ACTIVE
-  sign_on_mode: SAML_2_0
-  created: '2024-02-10T10:00:00.000Z'
-- id: 0oa4datadog
-  name: datadog
-  label: Datadog
-  status: INACTIVE
-  sign_on_mode: SAML_2_0
-  created: '2024-03-01T10:00:00.000Z'
-group_memberships:
-- group_id: 00g1eng
-  user_id: 00u1amelia
-- group_id: 00g1eng
-  user_id: 00u2jonas
-- group_id: 00g1eng
-  user_id: 00u3helena
-- group_id: 00g1eng
-  user_id: 00u6priya
-- group_id: 00g2plat
-  user_id: 00u1amelia
-- group_id: 00g2plat
-  user_id: 00u3helena
-- group_id: 00g3admins
-  user_id: 00u1amelia
-- group_id: 00g4everyone
-  user_id: 00u1amelia
-- group_id: 00g4everyone
-  user_id: 00u2jonas
-- group_id: 00g4everyone
-  user_id: 00u3helena
-- group_id: 00g4everyone
-  user_id: 00u4rohit
-- group_id: 00g4everyone
-  user_id: 00u5noor
-- group_id: 00g4everyone
-  user_id: 00u6priya
-groups:
-- id: 00g1eng
-  name: Engineering
-  description: All engineering staff
-  type: OKTA_GROUP
-  created: '2024-01-10T10:00:00.000Z'
-- id: 00g2plat
-  name: Platform Team
-  description: Platform and infrastructure engineers
-  type: OKTA_GROUP
-  created: '2024-01-12T10:00:00.000Z'
-- id: 00g3admins
-  name: Administrators
-  description: Tenant administrators
-  type: OKTA_GROUP
-  created: '2024-01-10T10:00:00.000Z'
-- id: 00g4everyone
-  name: Everyone
-  description: All users in the org
-  type: BUILT_IN
-  created: '2024-01-10T10:00:00.000Z'
+# Source: world_data 2/LightOkta.json (verbatim). Authored world for LightOkta.
 users:
-- id: 00u1amelia
-  first_name: Amelia
-  last_name: Ortega
-  email: amelia.ortega@orbit-labs.com
-  login: amelia.ortega@orbit-labs.com
+- id: 00u1lorraine
+  first_name: Delbert
+  last_name: Yancey
+  email: delbert.yancey@yanceyballard-cpa.com
+  login: delbert.yancey@yanceyballard-cpa.com
   status: ACTIVE
   created: '2024-01-10T10:00:00.000Z'
   activated: '2024-01-10T10:05:00.000Z'
   last_login: '2026-05-26T08:00:00.000Z'
-- id: 00u2jonas
-  first_name: Jonas
-  last_name: Pereira
-  email: jonas.pereira@orbit-labs.com
-  login: jonas.pereira@orbit-labs.com
+- id: 00u2marcus
+  first_name: Ellis
+  last_name: Marchand
+  email: ellis.marchand@ashcrofthardwoods.com
+  login: ellis.marchand@ashcrofthardwoods.com
   status: ACTIVE
   created: '2024-02-04T11:30:00.000Z'
   activated: '2024-02-04T11:35:00.000Z'
   last_login: '2026-05-25T17:00:00.000Z'
-- id: 00u3helena
-  first_name: Helena
-  last_name: Park
-  email: helena.park@orbit-labs.com
-  login: helena.park@orbit-labs.com
+- id: 00u3josephine
+  first_name: Wesley
+  last_name: Farraday
+  email: wesley.farraday@Finthesiss.ai
+  login: wesley.farraday@Finthesiss.ai
   status: ACTIVE
   created: '2024-03-12T14:20:00.000Z'
   activated: '2024-03-12T14:25:00.000Z'
   last_login: '2026-05-26T07:30:00.000Z'
 - id: 00u4rohit
-  first_name: Rohit
-  last_name: Bansal
-  email: rohit.bansal@orbit-labs.com
-  login: rohit.bansal@orbit-labs.com
+  first_name: Cordelia
+  last_name: Ashmore-Vance
+  email: cordelia.ashmore.vance@shpa-savannah.org
+  login: cordelia.ashmore.vance@shpa-savannah.org
   status: SUSPENDED
   created: '2024-05-02T09:10:00.000Z'
   activated: '2024-05-02T09:15:00.000Z'
   last_login: '2026-04-30T12:00:00.000Z'
 - id: 00u5noor
-  first_name: Noor
-  last_name: Aziz
-  email: noor.aziz@orbit-labs.com
-  login: noor.aziz@orbit-labs.com
+  first_name: Terrence
+  last_name: Carter
+  email: terrence.carter@Finthesiss.ai
+  login: terrence.carter@Finthesiss.ai
   status: PROVISIONED
   created: '2026-05-20T16:45:00.000Z'
-  activated: ''
-  last_login: ''
+  activated: null
+  last_login: null
 - id: 00u6priya
-  first_name: Priya
-  last_name: Nair
-  email: priya.nair@orbit-labs.com
-  login: priya.nair@orbit-labs.com
+  first_name: Loretta
+  last_name: Simms
+  email: loretta.simms@Finthesiss.ai
+  login: loretta.simms@Finthesiss.ai
   status: ACTIVE
   created: '2024-08-15T10:00:00.000Z'
   activated: '2024-08-15T10:05:00.000Z'

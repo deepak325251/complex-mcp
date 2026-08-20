@@ -42,7 +42,18 @@ class NewsSession:
                 "Public Safety",
                 "Sports"
             ]
-            self._news, self._news_dict = self._initialize_news()
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # authored news is rebuilt into NewsItem objects the tools expect.
+            import json as _json
+            with open(CORPUS_PATH / "state.json") as _f:
+                _news_data = _json.load(_f).get("news", {})
+            self._news: Dict[str, List[NewsItem]] = {
+                sec: [NewsItem(**d) for d in _news_data.get(sec, [])]
+                for sec in self.sections
+            }
+            self._news_dict: Dict[str, NewsItem] = {
+                it.nid: it for items in self._news.values() for it in items
+            }
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

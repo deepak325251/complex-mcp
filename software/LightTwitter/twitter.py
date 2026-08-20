@@ -40,48 +40,9 @@ class TwitterSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "twitter.yaml") as f:
-                info = yaml.safe_load(f)
-
-            _metric_cols = ("followers_count", "following_count", "tweet_count")
-            self.users: List[Dict[str, Any]] = []
-            for r in info.get("users", []):
-                base = {k: v for k, v in r.items() if k not in _metric_cols}
-                self.users.append({
-                    **base,
-                    "verified": _to_bool(r["verified"]),
-                    "protected": _to_bool(r["protected"]),
-                    "public_metrics": {
-                        "followers_count": _to_int(r["followers_count"]),
-                        "following_count": _to_int(r["following_count"]),
-                        "tweet_count": _to_int(r["tweet_count"]),
-                    },
-                })
-
-            self.tweets: List[Dict[str, Any]] = [
-                {
-                    "id": t["id"],
-                    "author_id": t["author_id"],
-                    "text": t["text"],
-                    "created_at": t["created_at"],
-                    "lang": t["lang"],
-                    "reply_to_tweet_id": (str(t.get("reply_to_tweet_id") or "") or None),
-                    "public_metrics": {
-                        "like_count": _to_int(t["like_count"]),
-                        "retweet_count": _to_int(t["retweet_count"]),
-                        "reply_count": _to_int(t["reply_count"]),
-                        "quote_count": _to_int(t["quote_count"]),
-                    },
-                }
-                for t in info.get("tweets", [])
-            ]
-            self.follows: List[Dict[str, Any]] = list(info.get("follows", []))
-            self.likes: List[Dict[str, Any]] = list(info.get("likes", []))
-            self.retweets: List[Dict[str, Any]] = list(info.get("retweets", []))
-
-            self._me_id = self.users[0]["id"] if self.users else None
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightTwitter')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightTwitter')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

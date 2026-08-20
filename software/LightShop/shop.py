@@ -56,18 +56,22 @@ class ShopSession:
             self.rng = random.Random(resolve_seed(seed))
             self.time_machine = TimeMachine(rng=self.rng)
             self.os = _os
-            self.shops = self.init_shops()
-            self.my_balance = self.rng.randint(8000, 100000)
+            # Annotations drive the coercion in load_typed_state (cart/trans ->
+            # CartItem/Transaction; shops -> Shop via _SHAPES).
             self.cart: List[CartItem] = []
             self.trans_history: List[Transaction] = []
-            self.__mock_cart()
-            self.my_starred_shops = set()
-            self.my_starred_items = set()
-            self.enter_password = False
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # shops/cart/trans_history are rebuilt into their dataclasses; the
+            # extra scalar/set fields are restored as-is.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, "LightShop")
+            # Defensive: world_data may omit these (they're not always dumped) --
+            # default to empty rather than crashing on a missing attribute.
+            self.my_starred_shops = set(getattr(self, "my_starred_shops", None) or [])
+            self.my_starred_items = set(getattr(self, "my_starred_items", None) or [])
+            # Task-specific overlay still applies on top for fixture tasks.
             from software.utils.fixtures import apply as _apply_fixtures
             _apply_fixtures(self, "LightShop", fixture)
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, "LightShop")
         else:
             # Seedless: world loaded verbatim from a frozen snapshot next to
             # this module; `seed` is accepted for client compat and ignored.

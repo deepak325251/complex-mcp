@@ -1,218 +1,129 @@
-attendees:
-- id: att-001
-  event_id: evt-7000001
-  ticket_class_id: tc-001
-  name: Amelia Ortega
-  email: amelia@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-04-05T10:00:00Z'
-- id: att-002
-  event_id: evt-7000001
-  ticket_class_id: tc-001
-  name: Jonas Pereira
-  email: jonas@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-04-06T10:00:00Z'
-- id: att-003
-  event_id: evt-7000001
-  ticket_class_id: tc-002
-  name: Noor Aziz
-  email: noor@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-04-10T10:00:00Z'
-- id: att-004
-  event_id: evt-7000002
-  ticket_class_id: tc-003
-  name: Helena Park
-  email: helena@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-04-20T10:00:00Z'
-- id: att-005
-  event_id: evt-7000002
-  ticket_class_id: tc-003
-  name: Rohit Bansal
-  email: rohit@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-04-21T10:00:00Z'
-- id: att-006
-  event_id: evt-7000004
-  ticket_class_id: tc-005
-  name: Amelia Ortega
-  email: amelia@orbit-labs.com
-  status: attending
-  checked_in: 'false'
-  created: '2026-05-15T10:00:00Z'
-- id: att-007
-  event_id: evt-7000005
-  ticket_class_id: tc-001
-  name: Helena Park
-  email: helena@orbit-labs.com
-  status: attending
-  checked_in: 'true'
-  created: '2026-04-10T10:00:00Z'
+# Source: world_data 2/LightEventbrite.json (verbatim). Authored world for LightEventbrite.
 events:
 - id: evt-7000001
   organization_id: org-cascade
-  name: Production Postgres at scale
-  summary: Practitioner talks on running Postgres at scale.
+  name: Historic Homes Tour 2026
+  summary: Historic Homes Tour 2026 — presented by the Savannah Historic Preservation Alliance.
   status: live
   start_utc: '2026-06-04T01:30:00Z'
   end_utc: '2026-06-04T04:00:00Z'
-  timezone: America/Los_Angeles
+  timezone: America/New_York
   venue_id: venue-soma
-  capacity: '120'
-  is_free: 'false'
-  online_event: 'false'
+  capacity: 120
+  is_free: false
+  online_event: false
   url: https://eventbrite.example.com/e/pg-scale
   created: '2026-04-01T10:00:00Z'
 - id: evt-7000002
   organization_id: org-cascade
-  name: 'SRE workshop: incident command'
-  summary: Hands-on incident command exercises.
+  name: 'Preservation Lecture: Regency Savannah'
+  summary: 'Preservation Lecture: Regency Savannah — presented by the Savannah Historic Preservation Alliance.'
   status: live
   start_utc: '2026-06-11T17:00:00Z'
   end_utc: '2026-06-11T22:00:00Z'
-  timezone: America/Los_Angeles
+  timezone: America/New_York
   venue_id: venue-mission
-  capacity: '40'
-  is_free: 'false'
-  online_event: 'false'
+  capacity: 40
+  is_free: false
+  online_event: false
   url: https://eventbrite.example.com/e/sre-workshop
   created: '2026-04-15T10:00:00Z'
 - id: evt-7000003
   organization_id: org-cascade
-  name: Bay Area auth + identity meetup
-  summary: Lightning talks + networking on auth/identity.
+  name: Member Appreciation Evening
+  summary: Member Appreciation Evening — presented by the Savannah Historic Preservation Alliance.
   status: draft
   start_utc: '2026-07-09T01:00:00Z'
   end_utc: '2026-07-09T04:00:00Z'
-  timezone: America/Los_Angeles
+  timezone: America/New_York
   venue_id: venue-soma
-  capacity: '80'
-  is_free: 'true'
-  online_event: 'false'
+  capacity: 80
+  is_free: true
+  online_event: false
   url: https://eventbrite.example.com/e/auth-meetup
   created: '2026-05-20T10:00:00Z'
 - id: evt-7000004
   organization_id: org-sf-runners
-  name: Saturday Presidio loop run
-  summary: 5 mile group run with optional coffee after.
+  name: Docent Orientation
+  summary: Docent Orientation — presented by the Savannah Historic Preservation Alliance.
   status: live
   start_utc: '2026-05-31T15:00:00Z'
   end_utc: '2026-05-31T17:00:00Z'
-  timezone: America/Los_Angeles
+  timezone: America/New_York
   venue_id: venue-presidio
-  capacity: '30'
-  is_free: 'true'
-  online_event: 'false'
+  capacity: 30
+  is_free: true
+  online_event: false
   url: https://eventbrite.example.com/e/presidio-run
   created: '2026-05-10T10:00:00Z'
 - id: evt-7000005
   organization_id: org-cascade
-  name: 'Past event: gRPC clinic'
-  summary: Q&A clinic on gRPC pitfalls
+  name: Facade Grant Workshop
+  summary: Facade Grant Workshop — presented by the Savannah Historic Preservation Alliance.
   status: completed
   start_utc: '2026-04-23T01:30:00Z'
   end_utc: '2026-04-23T04:00:00Z'
-  timezone: America/Los_Angeles
+  timezone: America/New_York
   venue_id: venue-soma
-  capacity: '60'
-  is_free: 'false'
-  online_event: 'false'
+  capacity: 60
+  is_free: false
+  online_event: false
   url: https://eventbrite.example.com/e/grpc-clinic
   created: '2026-03-15T10:00:00Z'
-organizations:
-- id: org-cascade
-  name: Cascade Eng Meetups
-  description: Bay Area engineering and SRE meetups
-  vertical: Tech
-  image_url: https://img.example.com/org-cascade.png
-- id: org-sf-runners
-  name: SF Bay Runners
-  description: Group runs around SF Bay Area parks
-  vertical: Sports
-  image_url: https://img.example.com/org-sfrun.png
-ticket_classes:
-- id: tc-001
+attendees:
+- id: att-001
   event_id: evt-7000001
-  name: Standard
-  quantity_total: '120'
-  quantity_sold: '86'
-  cost: '2500'
-  fee: '250'
-  free: 'false'
-  sales_start: '2026-04-01T10:00:00Z'
-  sales_end: '2026-06-04T01:00:00Z'
-- id: tc-002
+  ticket_class_id: tc-001
+  name: Corinne Lattimer
+  email: corinne.lattimer@halliwell-cpa.com
+  status: attending
+  checked_in: false
+  created: '2026-04-05T10:00:00Z'
+- id: att-002
   event_id: evt-7000001
-  name: Student
-  quantity_total: '30'
-  quantity_sold: '18'
-  cost: '1000'
-  fee: '100'
-  free: 'false'
-  sales_start: '2026-04-01T10:00:00Z'
-  sales_end: '2026-06-04T01:00:00Z'
-- id: tc-003
+  ticket_class_id: tc-001
+  name: Rev. Delilah Hargrove
+  email: delilah.hargrove@shpa-savannah.org
+  status: attending
+  checked_in: false
+  created: '2026-04-06T10:00:00Z'
+- id: att-003
+  event_id: evt-7000001
+  ticket_class_id: tc-002
+  name: Nathaniel Kessel
+  email: nathaniel.kessel@shpa-savannah.org
+  status: attending
+  checked_in: false
+  created: '2026-04-10T10:00:00Z'
+- id: att-004
   event_id: evt-7000002
-  name: Workshop seat
-  quantity_total: '40'
-  quantity_sold: '32'
-  cost: '7500'
-  fee: '650'
-  free: 'false'
-  sales_start: '2026-04-15T10:00:00Z'
-  sales_end: '2026-06-11T17:00:00Z'
-- id: tc-004
-  event_id: evt-7000003
-  name: RSVP
-  quantity_total: '80'
-  quantity_sold: '0'
-  cost: '0'
-  fee: '0'
-  free: 'true'
-  sales_start: '2026-05-20T10:00:00Z'
-  sales_end: '2026-07-09T01:00:00Z'
-- id: tc-005
+  ticket_class_id: tc-003
+  name: Patricia Odom
+  email: patricia.odom@Finthesiss.ai
+  status: attending
+  checked_in: false
+  created: '2026-04-20T10:00:00Z'
+- id: att-005
+  event_id: evt-7000002
+  ticket_class_id: tc-003
+  name: Anselm Trumbull
+  email: anselm.trumbull@shpa-savannah.org
+  status: attending
+  checked_in: false
+  created: '2026-04-21T10:00:00Z'
+- id: att-006
   event_id: evt-7000004
-  name: RSVP
-  quantity_total: '30'
-  quantity_sold: '21'
-  cost: '0'
-  fee: '0'
-  free: 'true'
-  sales_start: '2026-05-10T10:00:00Z'
-  sales_end: '2026-05-31T15:00:00Z'
-venues:
-- id: venue-soma
-  name: GitHub Loft
-  address1: 532 Folsom St
-  city: San Francisco
-  region: CA
-  postal_code: '94105'
-  country: US
-  latitude: '37.7853'
-  longitude: '-122.3970'
-- id: venue-mission
-  name: Mission Bay Conference Center
-  address1: 1675 Owens St
-  city: San Francisco
-  region: CA
-  postal_code: '94158'
-  country: US
-  latitude: '37.7679'
-  longitude: '-122.3925'
-- id: venue-presidio
-  name: Presidio Main Post
-  address1: Lincoln Blvd
-  city: San Francisco
-  region: CA
-  postal_code: '94129'
-  country: US
-  latitude: '37.7989'
-  longitude: '-122.4662'
+  ticket_class_id: tc-005
+  name: Corinne Lattimer
+  email: corinne.lattimer@halliwell-cpa.com
+  status: attending
+  checked_in: false
+  created: '2026-05-15T10:00:00Z'
+- id: att-007
+  event_id: evt-7000005
+  ticket_class_id: tc-001
+  name: Patricia Odom
+  email: patricia.odom@Finthesiss.ai
+  status: attending
+  checked_in: true
+  created: '2026-04-10T10:00:00Z'

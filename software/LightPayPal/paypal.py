@@ -38,76 +38,9 @@ class PaypalSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "paypal.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.orders: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "intent": r["intent"],
-                    "status": r["status"],
-                    "purchase_units": [{
-                        "amount": self._money(r["amount_value"], r["currency_code"]),
-                        "payee": {"email_address": r["payee_email"]},
-                        "description": r["description"],
-                    }],
-                    "create_time": r["create_time"],
-                }
-                for r in info.get("orders", [])
-            ]
-            self.captures: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "order_id": r["order_id"],
-                    "status": r["status"],
-                    "amount": self._money(r["amount_value"], r["currency_code"]),
-                    "final_capture": _to_bool(r.get("final_capture", False)),
-                    "create_time": r["create_time"],
-                }
-                for r in info.get("captures", [])
-            ]
-            self.invoices: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "detail": {
-                        "invoice_number": r["invoice_number"],
-                        "currency_code": r["currency_code"],
-                        "note": r["note"],
-                    },
-                    "status": r["status"],
-                    "primary_recipients": [{"billing_info": {"email_address": r["recipient_email"]}}],
-                    "amount": self._money(r["amount_value"], r["currency_code"]),
-                    "due_date": r["due_date"],
-                }
-                for r in info.get("invoices", [])
-            ]
-            self.payouts: List[Dict[str, Any]] = [
-                {
-                    "batch_header": {
-                        "payout_batch_id": r["payout_batch_id"],
-                        "batch_status": r["status"],
-                        "sender_batch_header": {"sender_batch_id": r["sender_batch_id"]},
-                        "amount": self._money(r["amount_value"], r["currency_code"]),
-                    },
-                    "recipient_email": r["recipient_email"],
-                    "create_time": r["create_time"],
-                    "payout_batch_id": r["payout_batch_id"],
-                }
-                for r in info.get("payouts", [])
-            ]
-            self.refunds: List[Dict[str, Any]] = [
-                {
-                    "id": r["id"],
-                    "capture_id": r["capture_id"],
-                    "status": r["status"],
-                    "amount": self._money(r["amount_value"], r["currency_code"]),
-                    "note_to_payer": r["note_to_payer"],
-                    "create_time": r["create_time"],
-                }
-                for r in info.get("refunds", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightPayPal')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightPayPal')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

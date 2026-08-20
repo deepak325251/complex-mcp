@@ -42,28 +42,8 @@ class AirtableSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "airtable.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.bases: List[Dict[str, Any]] = list(info.get("bases", []))
-            self.tables: List[Dict[str, Any]] = list(info.get("tables", []))
-            fields_rows: List[Dict[str, Any]] = list(info.get("fields", []))
-
-            self._field_types: Dict[str, Dict[str, str]] = {}
-            self._field_meta: Dict[str, List[Dict[str, Any]]] = {}
-            for r in fields_rows:
-                self._field_types.setdefault(r["tableId"], {})[r["name"]] = r["type"]
-                self._field_meta.setdefault(r["tableId"], []).append({
-                    "id": r["id"], "name": r["name"], "type": r["type"],
-                })
-
-            # one record list per table id (recXXX), coerced from the flat corpus rows
-            self.records: Dict[str, List[Dict[str, Any]]] = {}
-            for t in self.tables:
-                key = t["records_csv"].replace(".json", "")
-                self.records[t["id"]] = self._coerce_records(t["id"], info.get(key, []))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightAirtable')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightAirtable')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -51,35 +51,9 @@ class CalendlySession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "calendly.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.event_types: List[Dict[str, Any]] = [
-                {
-                    **e,
-                    "duration": int(e.get("duration", 0)),
-                    "active": _to_bool(e.get("active", False)),
-                }
-                for e in info.get("event_types", [])
-            ]
-            self.scheduled_events: List[Dict[str, Any]] = [
-                {
-                    **ev,
-                    "canceled_reason": (str(ev.get("canceled_reason", "") or "") or None),
-                }
-                for ev in info.get("scheduled_events", [])
-            ]
-            self.invitees: List[Dict[str, Any]] = [
-                {
-                    **inv,
-                    "questions_and_answers": _parse_qa(inv.get("questions_and_answers")),
-                }
-                for inv in info.get("invitees", [])
-            ]
-            self.availability: List[Dict[str, Any]] = list(info.get("availability", []))
-            self.user: Dict[str, Any] = info.get("user", {})
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightCalendly')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightCalendly')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

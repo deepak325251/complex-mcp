@@ -90,18 +90,16 @@ class PhotoSession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (rebuild
+            # Album/Photo/FaceGroup/ShareLink objects the tools expect).
             self.albums: Dict[str, Album] = {}
             self.photos: Dict[str, Photo] = {}
             self.face_groups: Dict[str, FaceGroup] = {}
             self.share_links: Dict[str, ShareLink] = {}
-            self._album_index: List[str] = []
-            self._face_index: List[str] = []
-            self._seed_albums()
-            self._seed_face_groups()
-            self._seed_photos()
-            self._seed_share_links()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightPhoto')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts wrapped back into their dataclasses.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightPhoto')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

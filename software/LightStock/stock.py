@@ -63,28 +63,38 @@ class StockSession:
             self.time_machine = TimeMachine(rng=self.rng)
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
 
-            self.stocks: Dict[str, Stock] = self.init_stocks() # {tocker: Stock}
-            self.market_open = self.rng.choice([True, True, False]) # 模拟非交易时段
-
-            self.trading_balance = self.rng.randint(10000, 50000)
-            self.savings_balance = self.rng.randint(50000, 150000)
-            self.frozen_margin = 0.0
-            self.user_tier: Literal["Basic", "VIP"] = self.rng.choice(["Basic", "VIP"]) # VIP 才能做空和止损
-            self.day_trades_remaining = self.rng.randint(1, 3)
-
+            # Annotations kept for clarity; the "user"/"stocks" aggregates and
+            # the sets/dicts below are rebuilt by _SHAPES in load_typed_state.
+            self.stocks: Dict[str, Stock] = {} # {ticker: Stock}
             self.portfolio: Dict[str, Position] = {} # {ticker : position}
             self.pending_orders: List[PendingOrder] = []
             self.trade_history: List[StockTransaction] = []
             self.watchlist: Set[str] = set()
             self.price_alerts: Dict[str, float] = {}
-
-            self.fee_rate = 0.002 * self.rng.uniform(0.5, 1.5)
-            self.vip_fee = 8000
-
-            self.__mock_environment()
+            # Defaults so _stock_user_fn's `value.get("tier", session.user_tier)`
+            # fallbacks resolve; all overwritten from the "user" aggregate below.
+            self.user_tier: Literal["Basic", "VIP"] = "Basic"
+            self.trading_balance = 0
+            self.savings_balance = 0
+            self.frozen_margin = 0.0
+            # runtime flag, reset every session (not world data)
             self.password_verified = False
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightStock')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # user aggregate (tier/balances) + stocks aggregate (portfolio/
+            # pending_orders/trade_history/watch_list/price_alerts) are rebuilt
+            # by _stock_shape; the market catalog + scalar knobs come in as the
+            # extra top-level keys below.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightStock')
+            # The market catalog isn't part of get_session_dict, so it's stored
+            # under "stocks_catalog" and setattr'd verbatim -- rebuild the Stock
+            # dataclasses the tools need (stock.price, stock.sector, ...).
+            # Defensive: world_data may omit the market catalog -- default to an
+            # empty catalog rather than crashing on a missing attribute.
+            _catalog = getattr(self, "stocks_catalog", None) or {}
+            self.stocks = {t: Stock(**v) for t, v in _catalog.items()}
+            if hasattr(self, "stocks_catalog"):
+                del self.stocks_catalog
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

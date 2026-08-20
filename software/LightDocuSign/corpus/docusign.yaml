@@ -1,64 +1,28 @@
-documents:
-- document_id: doc-1
-  envelope_id: env-2001
-  name: Master Services Agreement.pdf
-  document_type: content
-  page_count: '12'
-  order: '1'
-- document_id: doc-2
-  envelope_id: env-2001
-  name: Exhibit A - Pricing.pdf
-  document_type: content
-  page_count: '2'
-  order: '2'
-- document_id: doc-3
-  envelope_id: env-2002
-  name: Mutual NDA.pdf
-  document_type: content
-  page_count: '4'
-  order: '1'
-- document_id: doc-4
-  envelope_id: env-2003
-  name: Vendor Onboarding Form.pdf
-  document_type: content
-  page_count: '3'
-  order: '1'
-- document_id: doc-5
-  envelope_id: env-2004
-  name: Q1 Contractor Agreement.pdf
-  document_type: content
-  page_count: '8'
-  order: '1'
-- document_id: doc-6
-  envelope_id: env-2005
-  name: Office Lease Addendum.pdf
-  document_type: content
-  page_count: '5'
-  order: '1'
+# Source: world_data 2/LightDocuSign.json (verbatim). Authored world for LightDocuSign.
 envelopes:
 - envelope_id: env-2001
   status: sent
   email_subject: 'Please sign: Master Services Agreement'
-  sender_name: Amelia Ortega
-  sender_email: amelia.ortega@orbit-labs.com
+  sender_name: Delbert Yancey CPA
+  sender_email: delbert.yancey@yanceyballard-cpa.com
   created_time: '2026-05-20T10:00:00Z'
   sent_time: '2026-05-20T10:05:00Z'
-  completed_time: ''
+  completed_time: null
   template_id: tmpl-msa
 - envelope_id: env-2002
   status: delivered
   email_subject: 'Please sign: Mutual NDA'
-  sender_name: Jonas Pereira
-  sender_email: jonas.pereira@orbit-labs.com
+  sender_name: Ellis Marchand
+  sender_email: ellis.marchand@ashcrofthardwoods.com
   created_time: '2026-05-22T14:30:00Z'
   sent_time: '2026-05-22T14:32:00Z'
-  completed_time: ''
+  completed_time: null
   template_id: tmpl-nda
 - envelope_id: env-2003
   status: completed
   email_subject: 'Signed: Vendor Onboarding Form'
-  sender_name: Helena Park
-  sender_email: helena.park@orbit-labs.com
+  sender_name: Barrington family
+  sender_email: wesley.farraday@Finthesiss.ai
   created_time: '2026-05-15T09:00:00Z'
   sent_time: '2026-05-15T09:02:00Z'
   completed_time: '2026-05-18T16:45:00Z'
@@ -66,110 +30,18 @@ envelopes:
 - envelope_id: env-2004
   status: voided
   email_subject: 'Voided: Q1 Contractor Agreement'
-  sender_name: Amelia Ortega
-  sender_email: amelia.ortega@orbit-labs.com
+  sender_name: Delbert Yancey CPA
+  sender_email: delbert.yancey@yanceyballard-cpa.com
   created_time: '2026-05-10T11:00:00Z'
   sent_time: '2026-05-10T11:03:00Z'
-  completed_time: ''
-  template_id: ''
+  completed_time: null
+  template_id: null
 - envelope_id: env-2005
   status: completed
   email_subject: 'Signed: Office Lease Addendum'
-  sender_name: Rohit Bansal
-  sender_email: rohit.bansal@orbit-labs.com
+  sender_name: Cordelia Ashmore-Vance
+  sender_email: cordelia.ashmore.vance@shpa-savannah.org
   created_time: '2026-04-28T08:30:00Z'
   sent_time: '2026-04-28T08:33:00Z'
   completed_time: '2026-05-02T12:10:00Z'
-  template_id: ''
-recipients:
-- recipient_id: rcp-1
-  envelope_id: env-2001
-  name: Maria Chen
-  email: maria.chen@acme-corp.com
-  recipient_type: signer
-  status: sent
-  routing_order: '1'
-  signed_time: ''
-- recipient_id: rcp-2
-  envelope_id: env-2001
-  name: Amelia Ortega
-  email: amelia.ortega@orbit-labs.com
-  recipient_type: signer
-  status: sent
-  routing_order: '2'
-  signed_time: ''
-- recipient_id: rcp-3
-  envelope_id: env-2002
-  name: Tomas Reyes
-  email: tomas.reyes@partner.io
-  recipient_type: signer
-  status: delivered
-  routing_order: '1'
-  signed_time: ''
-- recipient_id: rcp-4
-  envelope_id: env-2002
-  name: Jonas Pereira
-  email: jonas.pereira@orbit-labs.com
-  recipient_type: signer
-  status: sent
-  routing_order: '2'
-  signed_time: ''
-- recipient_id: rcp-5
-  envelope_id: env-2003
-  name: Lena Voss
-  email: lena.voss@vendorco.com
-  recipient_type: signer
-  status: completed
-  routing_order: '1'
-  signed_time: '2026-05-18T16:40:00Z'
-- recipient_id: rcp-6
-  envelope_id: env-2003
-  name: Helena Park
-  email: helena.park@orbit-labs.com
-  recipient_type: signer
-  status: completed
-  routing_order: '2'
-  signed_time: '2026-05-18T16:45:00Z'
-- recipient_id: rcp-7
-  envelope_id: env-2004
-  name: Devon Clark
-  email: devon.clark@contractor.dev
-  recipient_type: signer
-  status: sent
-  routing_order: '1'
-  signed_time: ''
-- recipient_id: rcp-8
-  envelope_id: env-2005
-  name: Priya Nair
-  email: priya.nair@lessor.com
-  recipient_type: signer
-  status: completed
-  routing_order: '1'
-  signed_time: '2026-05-02T12:05:00Z'
-- recipient_id: rcp-9
-  envelope_id: env-2005
-  name: Rohit Bansal
-  email: rohit.bansal@orbit-labs.com
-  recipient_type: signer
-  status: completed
-  routing_order: '2'
-  signed_time: '2026-05-02T12:10:00Z'
-templates:
-- template_id: tmpl-msa
-  name: Master Services Agreement
-  description: Standard MSA for new enterprise customers
-  shared: 'true'
-  owner_name: Amelia Ortega
-  created_time: '2026-01-10T09:00:00Z'
-- template_id: tmpl-nda
-  name: Mutual NDA
-  description: Two-way confidentiality agreement
-  shared: 'true'
-  owner_name: Jonas Pereira
-  created_time: '2026-01-12T10:30:00Z'
-- template_id: tmpl-vendor
-  name: Vendor Onboarding Form
-  description: Vendor compliance and banking details
-  shared: 'false'
-  owner_name: Helena Park
-  created_time: '2026-02-01T13:00:00Z'
+  template_id: null

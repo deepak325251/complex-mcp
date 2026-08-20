@@ -1,239 +1,58 @@
+# Source: world_data 2/LightActiveCampaign.json (verbatim). Authored world for LightActiveCampaign.
 contacts:
 - id: '1'
-  email: olivia.bennett@example.com
-  first_name: Olivia
-  last_name: Bennett
-  phone: +1-415-555-0182
+  email: ruthann.greer@Finthesiss.ai
+  first_name: Ruth
+  last_name: Greer
+  phone: 555-912-2217
   status: '1'
   created_timestamp: '2026-04-02T09:12:00-05:00'
   updated_timestamp: '2026-05-18T11:30:00-05:00'
 - id: '2'
-  email: noah.kim@example.com
-  first_name: Noah
-  last_name: Kim
-  phone: +1-206-555-0143
+  email: calvin.burke@Finthesiss.ai
+  first_name: Calvin
+  last_name: Burke
+  phone: 555-912-5581
   status: '1'
   created_timestamp: '2026-04-05T14:25:00-05:00'
   updated_timestamp: '2026-05-10T08:05:00-05:00'
-- id: '3'
-  email: emma.alvarez@example.com
-  first_name: Emma
-  last_name: Alvarez
-  phone: +1-512-555-0199
-  status: '0'
-  created_timestamp: '2026-04-09T10:40:00-05:00'
-  updated_timestamp: '2026-04-09T10:40:00-05:00'
 - id: '4'
-  email: liam.osei@example.com
-  first_name: Liam
-  last_name: Osei
-  phone: +44-20-7946-0321
+  email: reginald.fox@Finthesiss.ai
+  first_name: Dr.
+  last_name: Fox
+  phone: (555) 912-6634
   status: '1'
   created_timestamp: '2026-04-15T16:00:00-05:00'
   updated_timestamp: '2026-05-21T13:45:00-05:00'
 - id: '5'
-  email: ava.dubois@example.com
-  first_name: Ava
-  last_name: Dubois
-  phone: +33-1-7000-0145
+  email: patricia.odom@Finthesiss.ai
+  first_name: Patricia
+  last_name: Odom
+  phone: 555-912-8800
   status: '1'
   created_timestamp: '2026-04-20T08:30:00-05:00'
   updated_timestamp: '2026-05-22T09:15:00-05:00'
 - id: '6'
-  email: mateo.rossi@example.com
-  first_name: Mateo
-  last_name: Rossi
-  phone: +39-06-555-0177
+  email: corinne.lattimer@halliwell-cpa.com
+  first_name: Corinne
+  last_name: Lattimer
+  phone: (555) 912-6634
   status: '2'
   created_timestamp: '2026-04-28T12:10:00-05:00'
   updated_timestamp: '2026-05-05T15:20:00-05:00'
 - id: '7'
-  email: sofia.nguyen@example.com
-  first_name: Sofia
-  last_name: Nguyen
-  phone: +1-718-555-0166
+  email: amos.whitfield@Finthesiss.ai
+  first_name: Amos
+  last_name: Whitfield
+  phone: (555) 404-3318
   status: '1'
   created_timestamp: '2026-05-03T11:05:00-05:00'
   updated_timestamp: '2026-05-24T10:00:00-05:00'
 - id: '8'
-  email: ethan.muller@example.com
-  first_name: Ethan
-  last_name: Muller
-  phone: +49-30-555-0188
+  email: josephine.halloway@shpa-savannah.org
+  first_name: Josephine
+  last_name: Halloway
+  phone: (555) 912-2217
   status: '1'
   created_timestamp: '2026-05-08T09:50:00-05:00'
   updated_timestamp: '2026-05-25T17:35:00-05:00'
-lists:
-- id: '1'
-  name: Newsletter Subscribers
-  stringid: newsletter-subscribers
-  subscriber_count: '5210'
-  sender_url: https://acme.example.com
-  sender_reminder: You signed up on our website.
-  created_timestamp: '2026-01-10T09:00:00-05:00'
-- id: '2'
-  name: Product Updates
-  stringid: product-updates
-  subscriber_count: '3140'
-  sender_url: https://acme.example.com/product
-  sender_reminder: You opted in for product news.
-  created_timestamp: '2026-02-01T09:00:00-05:00'
-- id: '3'
-  name: Webinar Leads
-  stringid: webinar-leads
-  subscriber_count: '880'
-  sender_url: https://acme.example.com/webinars
-  sender_reminder: You registered for a webinar.
-  created_timestamp: '2026-03-12T09:00:00-05:00'
-- id: '4'
-  name: Trial Users
-  stringid: trial-users
-  subscriber_count: '1420'
-  sender_url: https://acme.example.com/trial
-  sender_reminder: You started a free trial.
-  created_timestamp: '2026-04-02T09:00:00-05:00'
-- id: '5'
-  name: Churned Customers
-  stringid: churned-customers
-  subscriber_count: '640'
-  sender_url: https://acme.example.com/winback
-  sender_reminder: We miss you - here are updates.
-  created_timestamp: '2026-04-22T09:00:00-05:00'
-campaigns:
-- id: '1'
-  name: May Newsletter
-  type: single
-  status: '5'
-  list_id: '1'
-  subject: What's new in May
-  send_amt: '5180'
-  opens: '2410'
-  clicks: '612'
-  sdate: '2026-05-05T10:00:00-05:00'
-  created_timestamp: '2026-05-04T16:00:00-05:00'
-- id: '2'
-  name: Feature Launch - Insights
-  type: single
-  status: '5'
-  list_id: '2'
-  subject: Introducing Insights
-  send_amt: '3110'
-  opens: '1620'
-  clicks: '498'
-  sdate: '2026-05-12T09:30:00-05:00'
-  created_timestamp: '2026-05-11T14:00:00-05:00'
-- id: '3'
-  name: Webinar Reminder
-  type: single
-  status: '5'
-  list_id: '3'
-  subject: Starting in 1 hour
-  send_amt: '870'
-  opens: '540'
-  clicks: '210'
-  sdate: '2026-05-15T13:00:00-05:00'
-  created_timestamp: '2026-05-15T08:00:00-05:00'
-- id: '4'
-  name: Trial Day 3 Tips
-  type: automation
-  status: '5'
-  list_id: '4'
-  subject: Getting the most from your trial
-  send_amt: '1400'
-  opens: '910'
-  clicks: '344'
-  sdate: '2026-05-18T08:00:00-05:00'
-  created_timestamp: '2026-05-01T09:00:00-05:00'
-- id: '5'
-  name: Win-back Offer
-  type: single
-  status: '1'
-  list_id: '5'
-  subject: Come back for 30% off
-  send_amt: '0'
-  opens: '0'
-  clicks: '0'
-  sdate: '2026-05-29T10:00:00-05:00'
-  created_timestamp: '2026-05-25T11:00:00-05:00'
-- id: '6'
-  name: Summer Preview
-  type: single
-  status: '2'
-  list_id: '1'
-  subject: A peek at summer
-  send_amt: '0'
-  opens: '0'
-  clicks: '0'
-  sdate: '2026-06-01T10:00:00-05:00'
-  created_timestamp: '2026-05-26T15:00:00-05:00'
-deals:
-- id: '1'
-  title: Acme Annual Plan
-  contact_id: '1'
-  value: '1200000'
-  currency: usd
-  status: '0'
-  stage: '2'
-  owner: '3'
-  created_timestamp: '2026-04-10T09:00:00-05:00'
-  updated_timestamp: '2026-05-20T12:00:00-05:00'
-- id: '2'
-  title: Northwind Pilot
-  contact_id: '4'
-  value: '450000'
-  currency: usd
-  status: '0'
-  stage: '1'
-  owner: '3'
-  created_timestamp: '2026-04-18T10:00:00-05:00'
-  updated_timestamp: '2026-05-19T09:30:00-05:00'
-- id: '3'
-  title: Dubois Enterprise
-  contact_id: '5'
-  value: '2400000'
-  currency: eur
-  status: '0'
-  stage: '3'
-  owner: '4'
-  created_timestamp: '2026-04-25T11:00:00-05:00'
-  updated_timestamp: '2026-05-22T14:00:00-05:00'
-- id: '4'
-  title: Rossi Expansion
-  contact_id: '6'
-  value: '300000'
-  currency: eur
-  status: '1'
-  stage: '4'
-  owner: '4'
-  created_timestamp: '2026-05-02T13:00:00-05:00'
-  updated_timestamp: '2026-05-15T16:00:00-05:00'
-- id: '5'
-  title: Nguyen Upgrade
-  contact_id: '7'
-  value: '180000'
-  currency: usd
-  status: '0'
-  stage: '1'
-  owner: '3'
-  created_timestamp: '2026-05-09T09:00:00-05:00'
-  updated_timestamp: '2026-05-24T10:30:00-05:00'
-- id: '6'
-  title: Muller Trial Close
-  contact_id: '8'
-  value: '90000'
-  currency: eur
-  status: '2'
-  stage: '1'
-  owner: '4'
-  created_timestamp: '2026-05-12T15:00:00-05:00'
-  updated_timestamp: '2026-05-21T11:00:00-05:00'
-- id: '7'
-  title: Kim Renewal
-  contact_id: '2'
-  value: '600000'
-  currency: usd
-  status: '0'
-  stage: '2'
-  owner: '3'
-  created_timestamp: '2026-05-14T08:30:00-05:00'
-  updated_timestamp: '2026-05-25T09:00:00-05:00'

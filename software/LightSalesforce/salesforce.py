@@ -58,17 +58,9 @@ class SalesforceSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "salesforce.yaml") as f:
-                info = yaml.safe_load(f)
-
-            # Tables keyed by canonical sObject name; rows coerced like the source _coerce().
-            self.tables: Dict[str, List[Dict[str, Any]]] = {}
-            for sobject, table in _SOBJECT_TABLE.items():
-                self.tables[sobject] = [
-                    self._coerce_row(dict(r), sobject) for r in info.get(table, [])
-                ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightSalesforce')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightSalesforce')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

@@ -86,13 +86,16 @@ class IssuesSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (sprints/
+            # issues/comments -> Sprint/Issue/Comment dataclasses).
             self.sprints: Dict[str, Sprint] = {}
             self.issues: Dict[str, Issue] = {}
             self.comments: Dict[str, Comment] = {}
-            self._today = datetime(2026, 1, 5)
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightIssues')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt back into the dataclass objects tools expect.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightIssues')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

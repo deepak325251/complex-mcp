@@ -35,7 +35,6 @@ _TEMPLATES = os.path.join(_ROOT, "benchmark", "rubric_pytest_kit", "templates")
 # Docker-path files copied verbatim from a real bundle (byte-identical across
 # the 43 harbor bundles). Resolved lazily so a missing reference is a clear error.
 _VERBATIM_FROM_HARBOR = ["tests/verify.py", "tests/test.sh",
-                         "tests/gen_gt.py", "tests/GT_GENERATION.md",
                          "solution/solve.sh"]
 
 

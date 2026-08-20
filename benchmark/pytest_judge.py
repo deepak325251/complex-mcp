@@ -296,8 +296,8 @@ def _state_controls(grading_dir) -> dict | None:
     """World-FULL admissibility, computed statically from the baked env pair.
 
     A task that ships tests/old_env.json (seeded initial world) + tests/gt_env.json
-    (world after the oracle's solution/trajectory.json is replayed, see gen_gt.py)
-    is graded on WORLD STATE, so it must be admitted on those terms -- independent
+    (the authored target world state) is graded on WORLD STATE, so it must be
+    admitted on those terms -- independent
     of any world-free trajectory pytest. Using the same state-diff the live grader
     uses (weighted_judge.judge_env):
 

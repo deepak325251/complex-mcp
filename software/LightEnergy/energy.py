@@ -101,16 +101,16 @@ class EnergySession:
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
             self._today = datetime(2026, 1, 5)
+            # Annotations drive the coercion in load_typed_state (meters/readings/
+            # bills/alerts -> their dataclasses).
             self.meters: Dict[str, Meter] = {}
             self.readings: Dict[str, Reading] = {}
             self.bills: Dict[str, Bill] = {}
             self.alerts: Dict[str, Alert] = {}
-            self._seed_meters()
-            self._seed_readings()
-            self._seed_bills()
-            self._seed_alerts()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightEnergy')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts rebuilt into Meter/Reading/Bill/Alert objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightEnergy')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

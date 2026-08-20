@@ -43,40 +43,9 @@ class SendgridSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "sendgrid.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.templates: List[Dict[str, Any]] = [
-                {**t, "active": _to_bool(t.get("active", False))} for t in info.get("templates", [])
-            ]
-            self.lists: List[Dict[str, Any]] = [
-                {**l, "contact_count": _to_int(l.get("contact_count", 0))} for l in info.get("lists", [])
-            ]
-            self.contacts: List[Dict[str, Any]] = [
-                {**c, "list_ids": [x for x in str(c.get("list_ids", "")).split(";") if x]}
-                for c in info.get("contacts", [])
-            ]
-            self.sent_log: List[Dict[str, Any]] = [
-                {**s, "opens": _to_int(s.get("opens", 0)), "clicks": _to_int(s.get("clicks", 0))}
-                for s in info.get("sent_log", [])
-            ]
-            self.stats: List[Dict[str, Any]] = [
-                {
-                    "date": r["date"],
-                    "requests": _to_int(r.get("requests", 0)),
-                    "delivered": _to_int(r.get("delivered", 0)),
-                    "opens": _to_int(r.get("opens", 0)),
-                    "unique_opens": _to_int(r.get("unique_opens", 0)),
-                    "clicks": _to_int(r.get("clicks", 0)),
-                    "unique_clicks": _to_int(r.get("unique_clicks", 0)),
-                    "bounces": _to_int(r.get("bounces", 0)),
-                    "spam_reports": _to_int(r.get("spam_reports", 0)),
-                    "unsubscribes": _to_int(r.get("unsubscribes", 0)),
-                }
-                for r in info.get("stats", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightSendGrid')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightSendGrid')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

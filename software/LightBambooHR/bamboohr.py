@@ -44,20 +44,8 @@ class BamboohrSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "bamboohr.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.employees: List[Dict[str, Any]] = [
-                {**e, "supervisorId": (str(e.get("supervisorId", "")).strip() or None)}
-                for e in info.get("employees", [])
-            ]
-            self.time_off: List[Dict[str, Any]] = [
-                {**t, "amount": _to_int(t.get("amount"), 0)} for t in info.get("time_off", [])
-            ]
-            self.whos_out: List[Dict[str, Any]] = list(info.get("whos_out", []))
-            self.company: Dict[str, Any] = dict(info.get("company", {}))
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightBambooHR')
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightBambooHR')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

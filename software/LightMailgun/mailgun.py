@@ -36,45 +36,9 @@ class MailgunSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "mailgun.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.messages: List[Dict[str, Any]] = [
-                {
-                    "id": m["id"],
-                    "domain": m["domain"],
-                    "sender": m["sender"],
-                    "recipient": m["recipient"],
-                    "subject": m["subject"],
-                    "body": m["body"],
-                    "timestamp": m["timestamp"],
-                }
-                for m in info.get("messages", [])
-            ]
-            self.events: List[Dict[str, Any]] = [
-                {
-                    "id": e["id"],
-                    "domain": e["domain"],
-                    "message_id": e["message_id"],
-                    "event": e["event"],
-                    "recipient": e["recipient"],
-                    "timestamp": e["timestamp"],
-                    "reason": (e.get("reason") or None),
-                }
-                for e in info.get("events", [])
-            ]
-            self.members: List[Dict[str, Any]] = [
-                {
-                    "list_address": r["list_address"],
-                    "address": r["address"],
-                    "name": r["name"],
-                    "subscribed": _to_bool(r.get("subscribed", False)),
-                    "vars": r["vars"],
-                }
-                for r in info.get("list_members", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightMailgun')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightMailgun')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

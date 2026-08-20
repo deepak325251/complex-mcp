@@ -45,12 +45,15 @@ class AuctionSession:
             # Seed architecture: world rolled from a seed (re-armed).
             self.rng = random.Random(resolve_seed(seed))
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
+            # Annotations drive the coercion in load_typed_state (listings/bids
+            # -> Listing/Bid dataclasses; watchlist stays a plain list).
             self.listings: Dict[str, Listing] = {}
             self.bids: Dict[str, Bid] = {}
             self.watchlist: List[str] = []
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightAuction')
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # plain dicts/lists rebuilt into Listing/Bid objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightAuction')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

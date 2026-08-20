@@ -1,194 +1,98 @@
-calendars:
-- id: amelia@orbit-labs.com
-  summary: Amelia Ortega
-  description: Primary calendar
-  time_zone: America/Los_Angeles
-  access_role: owner
-  primary: 'true'
-  color_id: '1'
-- id: orbit-labs.com_eng@group.calendar.google.com
-  summary: Engineering
-  description: Team-wide engineering events
-  time_zone: America/Los_Angeles
-  access_role: writer
-  primary: 'false'
-  color_id: '2'
-- id: orbit-labs.com_holidays@group.calendar.google.com
-  summary: Company holidays
-  description: Holidays and PTO
-  time_zone: America/Los_Angeles
-  access_role: reader
-  primary: 'false'
-  color_id: '8'
-- id: amelia.personal@gmail.com
-  summary: Personal
-  description: ''
-  time_zone: America/Los_Angeles
-  access_role: owner
-  primary: 'false'
-  color_id: '5'
-event_attendees:
-- event_id: evt-001
-  email: amelia@orbit-labs.com
-  display_name: Amelia Ortega
-  response_status: accepted
-  optional: 'false'
-  organizer: 'true'
-- event_id: evt-001
-  email: jonas@orbit-labs.com
-  display_name: Jonas Pereira
-  response_status: accepted
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-002
-  email: amelia@orbit-labs.com
-  display_name: Amelia Ortega
-  response_status: accepted
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-002
-  email: helena@orbit-labs.com
-  display_name: Helena Park
-  response_status: accepted
-  optional: 'false'
-  organizer: 'true'
-- event_id: evt-002
-  email: jonas@orbit-labs.com
-  display_name: Jonas Pereira
-  response_status: accepted
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-002
-  email: rohit@orbit-labs.com
-  display_name: Rohit Bansal
-  response_status: tentative
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-003
-  email: amelia@orbit-labs.com
-  display_name: Amelia Ortega
-  response_status: accepted
-  optional: 'false'
-  organizer: 'true'
-- event_id: evt-003
-  email: helena@orbit-labs.com
-  display_name: Helena Park
-  response_status: needsAction
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-003
-  email: jonas@orbit-labs.com
-  display_name: Jonas Pereira
-  response_status: accepted
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-004
-  email: helena@orbit-labs.com
-  display_name: Helena Park
-  response_status: accepted
-  optional: 'false'
-  organizer: 'true'
-- event_id: evt-004
-  email: amelia@orbit-labs.com
-  display_name: Amelia Ortega
-  response_status: accepted
-  optional: 'false'
-  organizer: 'false'
-- event_id: evt-004
-  email: jonas@orbit-labs.com
-  display_name: Jonas Pereira
-  response_status: accepted
-  optional: 'true'
-  organizer: 'false'
+# Source: world_data 2/LightGoogleCalendar.json (verbatim). Authored world for LightGoogleCalendar.
 events:
 - id: evt-001
-  calendar_id: amelia@orbit-labs.com
-  summary: Weekly 1:1 with Jonas
-  description: Direct report sync
-  location: ''
-  start: '2026-05-26T15:00:00-07:00'
-  end: '2026-05-26T15:30:00-07:00'
-  all_day: 'false'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: SHPA staff sync
+  description: Weekly staff meeting with the directors
+  location: 45 Bull Street, Savannah, GA
+  start: '2026-01-05T09:30:00-05:00'
+  end: '2026-01-05T10:15:00-05:00'
+  all_day: false
   status: confirmed
-  creator: amelia@orbit-labs.com
-  organizer: amelia@orbit-labs.com
-  recurrence: RRULE:FREQ=WEEKLY;BYDAY=TU
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence:
+  - RRULE:FREQ=WEEKLY;BYDAY=MO
   visibility: default
 - id: evt-002
-  calendar_id: amelia@orbit-labs.com
-  summary: Eng leads sync
-  description: Weekly leads alignment
-  location: Conf room Forecastle
-  start: '2026-05-26T16:00:00-07:00'
-  end: '2026-05-26T17:00:00-07:00'
-  all_day: 'false'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Board prep with Cordelia
+  description: Walk the January board packet before the meeting
+  location: 45 Bull Street, Savannah, GA
+  start: '2026-01-07T16:00:00-05:00'
+  end: '2026-01-07T16:30:00-05:00'
+  all_day: false
   status: confirmed
-  creator: helena@orbit-labs.com
-  organizer: helena@orbit-labs.com
-  recurrence: RRULE:FREQ=WEEKLY;BYDAY=TU
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence: []
   visibility: default
 - id: evt-003
-  calendar_id: amelia@orbit-labs.com
-  summary: Auth v2 cutover dry-run
-  description: Rehearsal for next week's cutover
-  location: 'Zoom: https://zoom.example.com/j/12345'
-  start: '2026-05-28T17:00:00-07:00'
-  end: '2026-05-28T19:00:00-07:00'
-  all_day: 'false'
-  status: tentative
-  creator: amelia@orbit-labs.com
-  organizer: amelia@orbit-labs.com
-  recurrence: ''
-  visibility: private
-- id: evt-004
-  calendar_id: orbit-labs.com_eng@group.calendar.google.com
-  summary: All-hands engineering demo
-  description: Q2 wrap-up demos
-  location: Townhall
-  start: '2026-06-02T10:00:00-07:00'
-  end: '2026-06-02T11:00:00-07:00'
-  all_day: 'false'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Finance review with Reginald
+  description: December close and Bull Street repair actuals
+  location: 45 Bull Street, Savannah, GA
+  start: '2026-01-08T11:00:00-05:00'
+  end: '2026-01-08T11:45:00-05:00'
+  all_day: false
   status: confirmed
-  creator: helena@orbit-labs.com
-  organizer: helena@orbit-labs.com
-  recurrence: ''
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence: []
+  visibility: default
+- id: evt-004
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Docent-led tour
+  description: Historic district walking tour - Amos leading
+  location: Historic District, Savannah, GA
+  start: '2026-01-09T10:00:00-05:00'
+  end: '2026-01-09T11:30:00-05:00'
+  all_day: false
+  status: confirmed
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence:
+  - RRULE:FREQ=WEEKLY;BYDAY=FR
   visibility: default
 - id: evt-005
-  calendar_id: orbit-labs.com_holidays@group.calendar.google.com
-  summary: Memorial Day
-  description: Company holiday
-  location: ''
-  start: '2026-05-25T00:00:00-07:00'
-  end: '2026-05-26T00:00:00-07:00'
-  all_day: 'true'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Workshop time
+  description: Carriage house - Windsor chair templates
+  location: 318 East Charlton Street, Savannah, GA
+  start: '2026-01-10T08:00:00-05:00'
+  end: '2026-01-10T10:30:00-05:00'
+  all_day: false
   status: confirmed
-  creator: system@orbit-labs.com
-  organizer: system@orbit-labs.com
-  recurrence: ''
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence:
+  - RRULE:FREQ=WEEKLY;BYDAY=SA
   visibility: default
 - id: evt-006
-  calendar_id: amelia.personal@gmail.com
-  summary: Dentist
-  description: ''
-  location: 123 Clinic St
-  start: '2026-05-29T13:30:00-07:00'
-  end: '2026-05-29T14:30:00-07:00'
-  all_day: 'false'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Church service
+  description: Ebenezer Heritage Church - deacon duty second and fourth Sundays
+  location: Ebenezer Heritage Church, Savannah, GA
+  start: '2026-01-11T10:00:00-05:00'
+  end: '2026-01-11T11:30:00-05:00'
+  all_day: false
   status: confirmed
-  creator: amelia.personal@gmail.com
-  organizer: amelia.personal@gmail.com
-  recurrence: ''
-  visibility: private
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence:
+  - RRULE:FREQ=WEEKLY;BYDAY=SU
+  visibility: default
 - id: evt-007
-  calendar_id: amelia@orbit-labs.com
-  summary: Focus block
-  description: ''
-  location: ''
-  start: '2026-05-27T09:00:00-07:00'
-  end: '2026-05-27T11:30:00-07:00'
-  all_day: 'false'
+  calendar_id: amos.whitfield@Finthesiss.ai
+  summary: Morning walk
+  description: Squares loop before the office
+  location: Historic District, Savannah, GA
+  start: '2026-01-06T06:30:00-05:00'
+  end: '2026-01-06T07:15:00-05:00'
+  all_day: false
   status: confirmed
-  creator: amelia@orbit-labs.com
-  organizer: amelia@orbit-labs.com
-  recurrence: ''
+  creator: amos.whitfield@Finthesiss.ai
+  organizer: amos.whitfield@Finthesiss.ai
+  recurrence:
+  - RRULE:FREQ=DAILY
   visibility: default

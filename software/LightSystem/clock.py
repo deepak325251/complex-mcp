@@ -1,8 +1,11 @@
 import datetime
+import json
 import random
 from pathlib import Path
 
 from software.utils.world_snapshot import restore_into, seed_mode, resolve_seed
+
+CORPUS_PATH = Path(__file__).resolve().parent / "corpus"
 
 class ClockSession:
     def __init__(self, seed=None):
@@ -11,7 +14,11 @@ class ClockSession:
         if seed_mode():
             # Seed architecture: world rolled from a seed (re-armed).
             self.rng = random.Random(resolve_seed(seed))
-            self._now = self._init_now()
+            # World data loaded verbatim from corpus/state.json (no cooking):
+            # the clock's starting time is authored, not randomly rolled.
+            with open(CORPUS_PATH / "state.json") as _f:
+                self._now = datetime.datetime.strptime(
+                    json.load(_f)["now"], "%Y-%m-%d %H:%M:%S")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "clock_world.pkl")

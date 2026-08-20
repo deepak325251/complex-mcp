@@ -66,12 +66,15 @@ class CRMSession:
                 session_id=os_cfg["session_id"],
                 url=os_cfg["url"],
             ) if os_cfg else DummyOSConnector()
+            self._today = datetime(2026, 1, 5)
+            # Type annotations drive the coercion in load_typed_state (they tell
+            # it to rebuild Contact/Deal objects the tools expect).
             self.contacts: Dict[str, Contact] = {}
             self.deals: Dict[str, Deal] = {}
-            self._today = datetime(2026, 1, 5)
-            self._seed()
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightCRM')
+            # World data loaded from corpus/state.json (no cooking): plain dicts
+            # are wrapped back into Contact/Deal objects.
+            from software.utils.world_data import load_typed_state as _load_typed_state
+            _load_typed_state(self, 'LightCRM')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

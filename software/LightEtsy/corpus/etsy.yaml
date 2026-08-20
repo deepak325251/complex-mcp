@@ -1,1694 +1,1119 @@
-listing_images:
-- listing_image_id: '90001'
-  listing_id: '1001'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90001.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90001.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90001.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90001.jpg
-  alt_text: Hand-carved red cedar mortar and pestle set on rustic wood table
-  created_timestamp: '2024-01-15T09:35:00'
-- listing_image_id: '90002'
-  listing_id: '1001'
-  shop_id: '29457183'
-  rank: '2'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90002.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90002.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90002.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90002.jpg
-  alt_text: Close-up of hand-carved detail on red cedar mortar
-  created_timestamp: '2024-01-15T09:36:00'
-- listing_image_id: '90003'
-  listing_id: '1001'
-  shop_id: '29457183'
-  rank: '3'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90003.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90003.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90003.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90003.jpg
-  alt_text: Mortar and pestle set in use grinding spices in kitchen
-  created_timestamp: '2024-01-15T09:37:00'
-- listing_image_id: '90004'
-  listing_id: '1002'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90004.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90004.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90004.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90004.jpg
-  alt_text: Traditional carved beechwood rolling pin with ornate patterns
-  created_timestamp: '2024-02-20T14:05:00'
-- listing_image_id: '90005'
-  listing_id: '1002'
-  shop_id: '29457183'
-  rank: '2'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90005.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90005.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90005.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90005.jpg
-  alt_text: Detail of embossed floral pattern on rolling pin surface
-  created_timestamp: '2024-02-20T14:06:00'
-- listing_image_id: '90006'
-  listing_id: '1003'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90006.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90006.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90006.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90006.jpg
-  alt_text: Large hand-turned hardwood grain bowl on kitchen counter
-  created_timestamp: '2024-03-10T16:50:00'
-- listing_image_id: '90007'
-  listing_id: '1004'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90007.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90007.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90007.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90007.jpg
-  alt_text: Ornate floral carved wood panel hanging on living room wall
-  created_timestamp: '2024-04-05T11:05:00'
-- listing_image_id: '90008'
-  listing_id: '1005'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90008.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90008.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90008.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90008.jpg
-  alt_text: Handwoven reed market basket with natural finish and sturdy handles
-  created_timestamp: '2024-05-12T08:20:00'
-- listing_image_id: '90009'
-  listing_id: '1006'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90009.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90009.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90009.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90009.jpg
-  alt_text: Hand-painted ceramic holiday tree bells in assorted festive colors
-  created_timestamp: '2024-05-28T13:35:00'
-- listing_image_id: '90010'
-  listing_id: '1007'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90010.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90010.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90010.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90010.jpg
-  alt_text: Traditional multi-color beaded necklace displayed on dark fabric
-  created_timestamp: '2024-06-15T09:05:00'
-- listing_image_id: '90011'
-  listing_id: '1008'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90011.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90011.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90011.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90011.jpg
-  alt_text: Handmade ektara instrument with painted gourd body and bamboo neck
-  created_timestamp: '2024-07-01T10:35:00'
-- listing_image_id: '90012'
-  listing_id: '1009'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90012.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90012.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90012.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90012.jpg
-  alt_text: Hand-carved western red cedar eagle sculpture on burl base
-  created_timestamp: '2024-07-20T15:05:00'
-- listing_image_id: '90013'
-  listing_id: '1010'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90013.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90013.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90013.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90013.jpg
-  alt_text: Custom cedar fly box with hand-carved trout scene on lid
-  created_timestamp: '2024-08-05T12:05:00'
-- listing_image_id: '90014'
-  listing_id: '1011'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90014.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90014.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90014.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90014.jpg
-  alt_text: Carved alder wood salmon wall mount with painted details
-  created_timestamp: '2024-08-22T09:35:00'
-- listing_image_id: '90015'
-  listing_id: '1013'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90015.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90015.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90015.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90015.jpg
-  alt_text: Set of six handcrafted brass bangles with assorted decorative patterns
-  created_timestamp: '2024-09-25T14:05:00'
-- listing_image_id: '90016'
-  listing_id: '1017'
-  shop_id: '29457183'
-  rank: '1'
-  url_75x75: https://i.etsystatic.com/example/il_75x75.90016.jpg
-  url_170x135: https://i.etsystatic.com/example/il_170x135.90016.jpg
-  url_570xN: https://i.etsystatic.com/example/il_570xN.90016.jpg
-  url_fullxfull: https://i.etsystatic.com/example/il_fullxfull.90016.jpg
-  alt_text: Three slightly imperfect hand-carved wood pieces at sale price
-  created_timestamp: '2025-01-05T09:05:00'
+# Source: world_data 2/LightEtsy.json (verbatim). Authored world for LightEtsy.
 listings:
-- listing_id: '1001'
-  shop_id: '29457183'
-  title: Hand-Carved Mortar & Pestle Set - Red Cedar
-  description: Solid red cedar mortar and pestle set hand-carved in my Tacoma workshop.
-    The mortar stands approximately 7 inches tall with a 5-inch opening. Pestle is
-    shaped for a comfortable grip. Finished with food-safe mineral oil. Each set shows
-    unique grain patterns.
-  price: '180.00'
+- listing_id: 1001
+  shop_id: 29457183
+  title: Sheraton sideboard reproduction (walnut)
+  description: Sheraton sideboard reproduction (walnut). Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 180.0
   currency_code: USD
-  quantity: '3'
-  taxonomy_id: '6516'
-  tags: mortar and pestle,wood mortar,hand carved,red cedar,kitchen woodcraft,artisan
-    kitchenware,Pacific Northwest
-  materials: red cedar,mineral oil
+  quantity: 3
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - walnut
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40001'
-  processing_min: '10'
-  processing_max: '21'
-  item_weight: '3.2'
+  shop_section_id: 40001
+  processing_min: 10
+  processing_max: 21
+  item_weight: 3.2
   item_weight_unit: lb
-  item_length: '5.0'
-  item_width: '5.0'
-  item_height: '7.0'
+  item_length: 5.0
+  item_width: 5.0
+  item_height: 7.0
   item_dimensions_unit: in
-  views: '1243'
-  num_favorers: '198'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 1243
+  num_favorers: 198
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-01-15T09:30:00'
   updated_timestamp: '2026-04-20T11:15:00'
   ending_timestamp: '2026-07-15T09:30:00'
-- listing_id: '1002'
-  shop_id: '29457183'
-  title: Traditional Pattern Rolling Pin - Carved Beechwood
-  description: Hand-carved beechwood rolling pin with intricate traditional patterns
-    embossed into the surface. Creates beautiful designs on cookies, pastry, and flatbread.
-    Approximately 10 inches rolling surface with turned handles. Each pattern is carved
-    by hand.
-  price: '45.00'
+- listing_id: 1002
+  shop_id: 29457183
+  title: Windsor side chair, hand-carved seat
+  description: Windsor side chair, hand-carved seat. Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 45.0
   currency_code: USD
-  quantity: '8'
-  taxonomy_id: '6516'
-  tags: rolling pin,carved rolling pin,embossed rolling pin,beechwood,cookie roller,pattern
-    roller,handmade kitchen
-  materials: beechwood
+  quantity: 8
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - cherry
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40001'
-  processing_min: '7'
-  processing_max: '14'
-  item_weight: '1.1'
+  shop_section_id: 40001
+  processing_min: 7
+  processing_max: 14
+  item_weight: 1.1
   item_weight_unit: lb
-  item_length: '15.0'
-  item_width: '2.5'
-  item_height: '2.5'
+  item_length: 15.0
+  item_width: 2.5
+  item_height: 2.5
   item_dimensions_unit: in
-  views: '1876'
-  num_favorers: '267'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 1876
+  num_favorers: 267
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-02-20T14:00:00'
   updated_timestamp: '2026-04-18T09:00:00'
   ending_timestamp: '2026-08-20T14:00:00'
-- listing_id: '1003'
-  shop_id: '29457183'
-  title: Large Hand-Turned Grain Bowl - Hardwood
-  description: Generous hand-turned grain bowl carved from a single piece of Pacific
-    Northwest hardwood. Approximately 12 inches diameter and 4 inches deep. Perfect
-    for serving salads or displaying fruit. Finished with food-safe oil. Natural wood
-    grain makes each bowl unique.
-  price: '150.00'
+- listing_id: 1003
+  shop_id: 29457183
+  title: Walnut blanket chest with hand-cut dovetails
+  description: Walnut blanket chest with hand-cut dovetails. Built to order in the Whitfield Heritage
+    Woodworks shop, Savannah, Georgia.
+  price: 150.0
   currency_code: USD
-  quantity: '2'
-  taxonomy_id: '6516'
-  tags: wood bowl,grain bowl,hand turned bowl,serving bowl,hardwood bowl,artisan bowl,Pacific
-    Northwest
-  materials: hardwood,food-safe oil
+  quantity: 2
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - quartersawn oak
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40002'
-  processing_min: '14'
-  processing_max: '21'
-  item_weight: '2.8'
+  shop_section_id: 40002
+  processing_min: 14
+  processing_max: 21
+  item_weight: 2.8
   item_weight_unit: lb
-  item_length: '12.0'
-  item_width: '12.0'
-  item_height: '4.0'
+  item_length: 12.0
+  item_width: 12.0
+  item_height: 4.0
   item_dimensions_unit: in
-  views: '987'
-  num_favorers: '156'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 987
+  num_favorers: 156
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-03-10T16:45:00'
   updated_timestamp: '2026-04-15T08:30:00'
   ending_timestamp: '2026-09-10T16:45:00'
-- listing_id: '1004'
-  shop_id: '29457183'
-  title: Ornate Floral Wood Panel - Wall Art
-  description: Hand-carved ornate floral wood panel suitable for wall mounting. Features
-    detailed scrollwork and flower motifs carved in relief. Approximately 14 x 14
-    inches. Carved from select hardwood with a natural finish. Mounting hardware included.
-  price: '320.00'
+- listing_id: 1004
+  shop_id: 29457183
+  title: Cherry side table, tapered legs
+  description: Cherry side table, tapered legs. Built to order in the Whitfield Heritage Woodworks shop,
+    Savannah, Georgia.
+  price: 320.0
   currency_code: USD
-  quantity: '1'
-  taxonomy_id: '6516'
-  tags: wood panel,carved wall art,floral carving,wood sculpture,wall decor,ornate
-    carving,handmade art
-  materials: hardwood,natural finish
+  quantity: 1
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - mahogany
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40002'
-  processing_min: '21'
-  processing_max: '30'
-  item_weight: '4.5'
+  shop_section_id: 40002
+  processing_min: 21
+  processing_max: 30
+  item_weight: 4.5
   item_weight_unit: lb
-  item_length: '14.0'
-  item_width: '14.0'
-  item_height: '1.5'
+  item_length: 14.0
+  item_width: 14.0
+  item_height: 1.5
   item_dimensions_unit: in
-  views: '1534'
-  num_favorers: '245'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 1534
+  num_favorers: 245
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-04-05T11:00:00'
   updated_timestamp: '2026-04-22T10:00:00'
   ending_timestamp: '2026-10-05T11:00:00'
-- listing_id: '1005'
-  shop_id: '29457183'
-  title: Woven Reed Market Basket - Handwoven
-  description: Handwoven reed market basket with sturdy construction and natural finish.
-    Perfect for farmers market shopping, picnics, or home storage. Approximately 14
-    inches wide and 10 inches tall with reinforced handles. Woven using traditional
-    techniques.
-  price: '65.00'
+- listing_id: 1005
+  shop_id: 29457183
+  title: Quartersawn oak bookcase
+  description: Quartersawn oak bookcase. Built to order in the Whitfield Heritage Woodworks shop, Savannah,
+    Georgia.
+  price: 65.0
   currency_code: USD
-  quantity: '5'
-  taxonomy_id: '6516'
-  tags: woven basket,reed basket,market basket,handwoven,natural basket,storage basket,artisan
-    basket
-  materials: reed,natural fiber
+  quantity: 5
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - walnut
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40003'
-  processing_min: '7'
-  processing_max: '14'
-  item_weight: '1.0'
+  shop_section_id: 40003
+  processing_min: 7
+  processing_max: 14
+  item_weight: 1.0
   item_weight_unit: lb
-  item_length: '14.0'
-  item_width: '10.0'
-  item_height: '10.0'
+  item_length: 14.0
+  item_width: 10.0
+  item_height: 10.0
   item_dimensions_unit: in
-  views: '789'
-  num_favorers: '134'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'false'
-  is_personalizable: 'false'
+  views: 789
+  num_favorers: 134
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: false
+  is_personalizable: false
   created_timestamp: '2024-05-12T08:15:00'
   updated_timestamp: '2026-03-30T14:20:00'
   ending_timestamp: '2026-11-12T08:15:00'
-- listing_id: '1006'
-  shop_id: '29457183'
-  title: Hand-Painted Holiday Tree Bell - Ceramic
-  description: Charming hand-painted ceramic tree bell ornament in festive colors.
-    Each bell features a unique color combination with white snow-capped tips and
-    a star topper. Approximately 3 inches tall with hanging loop. Perfect for holiday
-    gift-giving.
-  price: '25.00'
+- listing_id: 1006
+  shop_id: 29457183
+  title: Mahogany writing slope
+  description: Mahogany writing slope. Built to order in the Whitfield Heritage Woodworks shop, Savannah,
+    Georgia.
+  price: 25.0
   currency_code: USD
-  quantity: '12'
-  taxonomy_id: '6516'
-  tags: holiday ornament,tree bell,ceramic bell,Christmas ornament,hand painted,holiday
-    decor,gift ornament
-  materials: ceramic,acrylic paint,twine
+  quantity: 12
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - cherry
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40004'
-  processing_min: '5'
-  processing_max: '10'
-  item_weight: '0.3'
+  shop_section_id: 40004
+  processing_min: 5
+  processing_max: 10
+  item_weight: 0.3
   item_weight_unit: lb
-  item_length: '2.0'
-  item_width: '2.0'
-  item_height: '3.0'
+  item_length: 2.0
+  item_width: 2.0
+  item_height: 3.0
   item_dimensions_unit: in
-  views: '1223'
-  num_favorers: '198'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 1223
+  num_favorers: 198
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-05-28T13:30:00'
   updated_timestamp: '2026-04-10T16:45:00'
   ending_timestamp: '2026-11-28T13:30:00'
-- listing_id: '1007'
-  shop_id: '29457183'
-  title: Traditional Beaded Necklace - Multi-color
-  description: Handcrafted multi-color beaded necklace using traditional stringing
-    techniques. Features a vibrant mix of glass and wood beads in earthy and bright
-    tones. Adjustable length approximately 18-22 inches. Finished with a handmade
-    clasp.
-  price: '55.00'
+- listing_id: 1007
+  shop_id: 29457183
+  title: Heritage picture frame, gilt detail
+  description: Heritage picture frame, gilt detail. Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 55.0
   currency_code: USD
-  quantity: '6'
-  taxonomy_id: '6516'
-  tags: beaded necklace,handmade necklace,multi-color beads,traditional jewelry,artisan
-    necklace,boho necklace,glass beads
-  materials: glass beads,wood beads,cord
+  quantity: 6
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - quartersawn oak
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40003'
-  processing_min: '5'
-  processing_max: '10'
-  item_weight: '0.15'
+  shop_section_id: 40003
+  processing_min: 5
+  processing_max: 10
+  item_weight: 0.15
   item_weight_unit: lb
-  item_length: '1.0'
-  item_width: '1.0'
-  item_height: '1.0'
+  item_length: 1.0
+  item_width: 1.0
+  item_height: 1.0
   item_dimensions_unit: in
-  views: '678'
-  num_favorers: '112'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 678
+  num_favorers: 112
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-06-15T09:00:00'
   updated_timestamp: '2026-04-25T11:30:00'
   ending_timestamp: '2026-12-15T09:00:00'
-- listing_id: '1008'
-  shop_id: '29457183'
-  title: Handmade Ektara Instrument - Gourd & Bamboo
-  description: Traditional one-stringed ektara instrument handmade from a natural
-    dried gourd body with a bamboo neck. Hand-painted decorative patterns on the gourd.
-    Produces a rich resonant tone. Approximately 24 inches total length. A beautiful
-    playable folk instrument or display piece.
-  price: '85.00'
+- listing_id: 1008
+  shop_id: 29457183
+  title: Turned cherry candlesticks (pair)
+  description: Turned cherry candlesticks (pair). Built to order in the Whitfield Heritage Woodworks shop,
+    Savannah, Georgia.
+  price: 85.0
   currency_code: USD
-  quantity: '4'
-  taxonomy_id: '6516'
-  tags: ektara,folk instrument,handmade instrument,gourd instrument,bamboo instrument,traditional
-    music,world music
-  materials: dried gourd,bamboo,steel string,acrylic paint
+  quantity: 4
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - mahogany
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40005'
-  processing_min: '10'
-  processing_max: '14'
-  item_weight: '0.9'
+  shop_section_id: 40005
+  processing_min: 10
+  processing_max: 14
+  item_weight: 0.9
   item_weight_unit: lb
-  item_length: '6.0'
-  item_width: '6.0'
-  item_height: '24.0'
+  item_length: 6.0
+  item_width: 6.0
+  item_height: 24.0
   item_dimensions_unit: in
-  views: '456'
-  num_favorers: '89'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'false'
-  is_personalizable: 'false'
+  views: 456
+  num_favorers: 89
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: false
+  is_personalizable: false
   created_timestamp: '2024-07-01T10:30:00'
   updated_timestamp: '2026-04-12T09:15:00'
   ending_timestamp: '2027-01-01T10:30:00'
-- listing_id: '1009'
-  shop_id: '29457183'
-  title: Hand-Carved Eagle Sculpture - Western Red Cedar
-  description: Majestic eagle sculpture hand-carved from a single block of western
-    red cedar. Spread wingspan with detailed feather texturing. Approximately 16 inches
-    tall on a natural burl base. Finished with a hand-rubbed oil and wax blend. A
-    statement piece for any room.
-  price: '450.00'
+- listing_id: 1009
+  shop_id: 29457183
+  title: Sheraton sideboard reproduction (walnut)
+  description: Sheraton sideboard reproduction (walnut). Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 450.0
   currency_code: USD
-  quantity: '1'
-  taxonomy_id: '6516'
-  tags: eagle sculpture,wood carving,hand carved eagle,cedar sculpture,wildlife art,bird
-    carving,Pacific Northwest art
-  materials: western red cedar,linseed oil,beeswax
+  quantity: 1
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - walnut
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40002'
-  processing_min: '30'
-  processing_max: '45'
-  item_weight: '5.5'
+  shop_section_id: 40002
+  processing_min: 30
+  processing_max: 45
+  item_weight: 5.5
   item_weight_unit: lb
-  item_length: '12.0'
-  item_width: '16.0'
-  item_height: '16.0'
+  item_length: 12.0
+  item_width: 16.0
+  item_height: 16.0
   item_dimensions_unit: in
-  views: '2103'
-  num_favorers: '312'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 2103
+  num_favorers: 312
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2024-07-20T15:00:00'
   updated_timestamp: '2026-04-28T08:00:00'
   ending_timestamp: '2027-01-20T15:00:00'
-- listing_id: '1010'
-  shop_id: '29457183'
-  title: Custom Fly Box - Cedar with Trout Scene
-  description: Hand-carved cedar fly box with a detailed trout scene on the lid. Interior
-    fitted with closed-cell foam to hold flies securely. Approximately 7 x 4 x 2 inches.
-    Brass hinges and magnetic clasp. Perfect gift for the fly fishing enthusiast.
-  price: '120.00'
+- listing_id: 1010
+  shop_id: 29457183
+  title: Windsor side chair, hand-carved seat
+  description: Windsor side chair, hand-carved seat. Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 120.0
   currency_code: USD
-  quantity: '4'
-  taxonomy_id: '6516'
-  tags: fly box,fishing box,cedar fly box,trout carving,fly fishing gift,handmade
-    fly box,wood box
-  materials: western red cedar,brass hinges,closed-cell foam
+  quantity: 4
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - cherry
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40001'
-  processing_min: '14'
-  processing_max: '21'
-  item_weight: '0.8'
+  shop_section_id: 40001
+  processing_min: 14
+  processing_max: 21
+  item_weight: 0.8
   item_weight_unit: lb
-  item_length: '7.0'
-  item_width: '4.0'
-  item_height: '2.0'
+  item_length: 7.0
+  item_width: 4.0
+  item_height: 2.0
   item_dimensions_unit: in
-  views: '1456'
-  num_favorers: '201'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 1456
+  num_favorers: 201
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2024-08-05T12:00:00'
   updated_timestamp: '2026-04-08T10:00:00'
   ending_timestamp: '2027-02-05T12:00:00'
-- listing_id: '1011'
-  shop_id: '29457183'
-  title: Carved Salmon Wall Mount - Alder Wood
-  description: Hand-carved alder wood salmon wall mount with painted details. Captures
-    the dynamic form of a leaping Pacific salmon. Approximately 18 inches long. Mounted
-    on a natural-edge plank with hidden wall hanger. Each piece signed on the back.
-  price: '280.00'
+- listing_id: 1011
+  shop_id: 29457183
+  title: Walnut blanket chest with hand-cut dovetails
+  description: Walnut blanket chest with hand-cut dovetails. Built to order in the Whitfield Heritage
+    Woodworks shop, Savannah, Georgia.
+  price: 280.0
   currency_code: USD
-  quantity: '2'
-  taxonomy_id: '6516'
-  tags: salmon carving,fish wall art,wood fish,alder carving,Pacific salmon,wildlife
-    wall mount,Northwest art
-  materials: alder wood,acrylic paint,polyurethane
+  quantity: 2
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - quartersawn oak
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40002'
-  processing_min: '21'
-  processing_max: '30'
-  item_weight: '3.0'
+  shop_section_id: 40002
+  processing_min: 21
+  processing_max: 30
+  item_weight: 3.0
   item_weight_unit: lb
-  item_length: '18.0'
-  item_width: '6.0'
-  item_height: '3.0'
+  item_length: 18.0
+  item_width: 6.0
+  item_height: 3.0
   item_dimensions_unit: in
-  views: '892'
-  num_favorers: '167'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 892
+  num_favorers: 167
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-08-22T09:30:00'
   updated_timestamp: '2026-04-05T14:00:00'
   ending_timestamp: '2027-02-22T09:30:00'
-- listing_id: '1012'
-  shop_id: '29457183'
-  title: Diamond Willow Walking Stick - Hand-Carved
-  description: Hand-carved diamond willow walking stick with a comfortable rounded
-    grip and rubber tip. The natural diamond patterns in the wood are highlighted
-    with a light stain. Approximately 48 inches tall. Can be custom-sized to your
-    height.
-  price: '95.00'
+- listing_id: 1012
+  shop_id: 29457183
+  title: Cherry side table, tapered legs
+  description: Cherry side table, tapered legs. Built to order in the Whitfield Heritage Woodworks shop,
+    Savannah, Georgia.
+  price: 95.0
   currency_code: USD
-  quantity: '3'
-  taxonomy_id: '6516'
-  tags: walking stick,diamond willow,hand carved stick,hiking stick,wood walking stick,artisan
-    stick,carved cane
-  materials: diamond willow,rubber tip,linseed oil
+  quantity: 3
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - mahogany
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40003'
-  processing_min: '7'
-  processing_max: '14'
-  item_weight: '1.5'
+  shop_section_id: 40003
+  processing_min: 7
+  processing_max: 14
+  item_weight: 1.5
   item_weight_unit: lb
-  item_length: '3.0'
-  item_width: '3.0'
-  item_height: '48.0'
+  item_length: 3.0
+  item_width: 3.0
+  item_height: 48.0
   item_dimensions_unit: in
-  views: '534'
-  num_favorers: '76'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 534
+  num_favorers: 76
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2024-09-10T11:15:00'
   updated_timestamp: '2026-04-01T16:00:00'
   ending_timestamp: '2027-03-10T11:15:00'
-- listing_id: '1013'
-  shop_id: '29457183'
-  title: Handcrafted Brass Bangle Set (6-piece)
-  description: Set of six handcrafted brass bangles with assorted decorative patterns
-    including hammered, twisted, and etched designs. Various widths from delicate
-    to statement. Fits wrist sizes 7-8 inches. Polished to a warm golden finish.
-  price: '90.00'
+- listing_id: 1013
+  shop_id: 29457183
+  title: Quartersawn oak bookcase
+  description: Quartersawn oak bookcase. Built to order in the Whitfield Heritage Woodworks shop, Savannah,
+    Georgia.
+  price: 90.0
   currency_code: USD
-  quantity: '5'
-  taxonomy_id: '6516'
-  tags: brass bangles,bangle set,handcrafted bangles,gold bangles,stacking bangles,artisan
-    jewelry,boho bracelet
-  materials: brass,copper alloy
+  quantity: 5
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - walnut
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40003'
-  processing_min: '5'
-  processing_max: '10'
-  item_weight: '0.4'
+  shop_section_id: 40003
+  processing_min: 5
+  processing_max: 10
+  item_weight: 0.4
   item_weight_unit: lb
-  item_length: '3.5'
-  item_width: '3.5'
-  item_height: '0.5'
+  item_length: 3.5
+  item_width: 3.5
+  item_height: 0.5
   item_dimensions_unit: in
-  views: '2567'
-  num_favorers: '287'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 2567
+  num_favorers: 287
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-09-25T14:00:00'
   updated_timestamp: '2026-04-26T09:30:00'
   ending_timestamp: '2027-03-25T14:00:00'
-- listing_id: '1014'
-  shop_id: '29457183'
-  title: Hand-Carved Great Blue Heron - Driftwood Base
-  description: Life-sized great blue heron sculpture hand-carved from western red
-    cedar and mounted on a natural Puget Sound driftwood base. Detailed feather work
-    and painted accents. Approximately 36 inches tall. A signature Walsh Woodcraft
-    piece.
-  price: '550.00'
+- listing_id: 1014
+  shop_id: 29457183
+  title: Mahogany writing slope
+  description: Mahogany writing slope. Built to order in the Whitfield Heritage Woodworks shop, Savannah,
+    Georgia.
+  price: 550.0
   currency_code: USD
-  quantity: '1'
-  taxonomy_id: '6516'
-  tags: heron sculpture,bird carving,great blue heron,driftwood art,wildlife sculpture,hand
-    carved bird,Pacific Northwest
-  materials: western red cedar,driftwood,acrylic paint,linseed oil
+  quantity: 1
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - cherry
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40002'
-  processing_min: '45'
-  processing_max: '60'
-  item_weight: '8.5'
+  shop_section_id: 40002
+  processing_min: 45
+  processing_max: 60
+  item_weight: 8.5
   item_weight_unit: lb
-  item_length: '12.0'
-  item_width: '8.0'
-  item_height: '36.0'
+  item_length: 12.0
+  item_width: 8.0
+  item_height: 36.0
   item_dimensions_unit: in
-  views: '623'
-  num_favorers: '178'
-  shipping_profile_id: '50002'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 623
+  num_favorers: 178
+  shipping_profile_id: 50002
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2024-10-08T10:00:00'
   updated_timestamp: '2026-04-15T12:30:00'
   ending_timestamp: '2027-04-08T10:00:00'
-- listing_id: '1015'
-  shop_id: '29457183'
-  title: Handwoven Tote Bag - Pacific Northwest Pattern
-  description: Sturdy handwoven tote bag in vibrant Pacific Northwest-inspired patterns.
-    Reinforced fabric handles and lined interior. Approximately 16 x 14 x 5 inches.
-    Perfect for market days, beach trips, or everyday carry. Machine washable.
-  price: '40.00'
+- listing_id: 1015
+  shop_id: 29457183
+  title: Heritage picture frame, gilt detail
+  description: Heritage picture frame, gilt detail. Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 40.0
   currency_code: USD
-  quantity: '8'
-  taxonomy_id: '6516'
-  tags: tote bag,handwoven bag,market bag,Pacific Northwest,woven tote,fabric bag,artisan
-    bag
-  materials: cotton,polyester blend
+  quantity: 8
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - quartersawn oak
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40003'
-  processing_min: '5'
-  processing_max: '10'
-  item_weight: '0.6'
+  shop_section_id: 40003
+  processing_min: 5
+  processing_max: 10
+  item_weight: 0.6
   item_weight_unit: lb
-  item_length: '16.0'
-  item_width: '14.0'
-  item_height: '5.0'
+  item_length: 16.0
+  item_width: 14.0
+  item_height: 5.0
   item_dimensions_unit: in
-  views: '1089'
-  num_favorers: '134'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'false'
+  views: 1089
+  num_favorers: 134
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: false
   created_timestamp: '2024-10-30T08:45:00'
   updated_timestamp: '2026-04-20T15:00:00'
   ending_timestamp: '2027-04-30T08:45:00'
-- listing_id: '1016'
-  shop_id: '29457183'
-  title: Carved Wood Ornament Set - Wildlife Series (4-pack)
-  description: 'Set of four hand-carved wooden ornaments featuring Pacific Northwest
-    wildlife: eagle, salmon, bear, and orca. Each ornament approximately 3 inches.
-    Finished with a light stain and sealed. Comes with twine hangers and a gift box.'
-  price: '35.00'
+- listing_id: 1016
+  shop_id: 29457183
+  title: Turned cherry candlesticks (pair)
+  description: Turned cherry candlesticks (pair). Built to order in the Whitfield Heritage Woodworks shop,
+    Savannah, Georgia.
+  price: 35.0
   currency_code: USD
-  quantity: '6'
-  taxonomy_id: '6516'
-  tags: wood ornaments,carved ornaments,wildlife ornaments,Christmas ornaments,Pacific
-    Northwest,handmade ornaments,gift set
-  materials: hardwood,wood stain,twine
+  quantity: 6
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - mahogany
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40004'
-  processing_min: '7'
-  processing_max: '14'
-  item_weight: '0.5'
+  shop_section_id: 40004
+  processing_min: 7
+  processing_max: 14
+  item_weight: 0.5
   item_weight_unit: lb
-  item_length: '4.0'
-  item_width: '4.0'
-  item_height: '1.0'
+  item_length: 4.0
+  item_width: 4.0
+  item_height: 1.0
   item_dimensions_unit: in
-  views: '567'
-  num_favorers: '98'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'false'
-  is_personalizable: 'false'
+  views: 567
+  num_favorers: 98
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: false
+  is_personalizable: false
   created_timestamp: '2024-11-15T13:00:00'
   updated_timestamp: '2026-04-22T09:45:00'
   ending_timestamp: '2027-05-15T13:00:00'
-- listing_id: '1017'
-  shop_id: '29457183'
-  title: SECONDS SALE - Minor Flaw Carving
-  description: Perfectly functional hand-carved piece with a small cosmetic imperfection
-    (minor tool mark, slight asymmetry, or knot). Same quality wood and craftsmanship
-    - just not quite perfect enough for full price. Items vary - message for current
-    available pieces.
-  price: '30.00'
+- listing_id: 1017
+  shop_id: 29457183
+  title: Sheraton sideboard reproduction (walnut)
+  description: Sheraton sideboard reproduction (walnut). Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 30.0
   currency_code: USD
-  quantity: '3'
-  taxonomy_id: '6516'
-  tags: seconds sale,discounted carving,wood carving,imperfect,sale item,handmade
-    seconds
-  materials: various hardwoods
+  quantity: 3
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - walnut
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40006'
-  processing_min: '3'
-  processing_max: '5'
-  item_weight: '1.0'
+  shop_section_id: 40006
+  processing_min: 3
+  processing_max: 5
+  item_weight: 1.0
   item_weight_unit: lb
-  item_length: '6.0'
-  item_width: '4.0'
-  item_height: '4.0'
+  item_length: 6.0
+  item_width: 4.0
+  item_height: 4.0
   item_dimensions_unit: in
-  views: '2890'
-  num_favorers: '134'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'false'
-  is_personalizable: 'false'
+  views: 2890
+  num_favorers: 134
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: false
+  is_personalizable: false
   created_timestamp: '2025-01-05T09:00:00'
   updated_timestamp: '2026-04-28T10:00:00'
   ending_timestamp: '2026-07-05T09:00:00'
-- listing_id: '1018'
-  shop_id: '29457183'
-  title: Custom Commission - Wildlife Carving (Deposit)
-  description: 50% deposit to begin a custom wildlife carving commission. I carve
-    eagles, herons, salmon, bears, owls, and other Pacific Northwest wildlife. Final
-    price ranges $200-$1500 depending on size and complexity. Message me to discuss
-    your vision before ordering. Balance due upon completion.
-  price: '200.00'
+- listing_id: 1018
+  shop_id: 29457183
+  title: Windsor side chair, hand-carved seat
+  description: Windsor side chair, hand-carved seat. Built to order in the Whitfield Heritage Woodworks
+    shop, Savannah, Georgia.
+  price: 200.0
   currency_code: USD
-  quantity: '5'
-  taxonomy_id: '6516'
-  tags: custom carving,wildlife commission,custom order,wood sculpture,personalized
-    carving,bespoke art
-  materials: western red cedar,various hardwoods
+  quantity: 5
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - cherry
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40006'
-  processing_min: '30'
-  processing_max: '60'
-  item_weight: '0.0'
+  shop_section_id: 40006
+  processing_min: 30
+  processing_max: 60
+  item_weight: 0.0
   item_weight_unit: lb
-  item_length: '0.0'
-  item_width: '0.0'
-  item_height: '0.0'
+  item_length: 0.0
+  item_width: 0.0
+  item_height: 0.0
   item_dimensions_unit: in
-  views: '412'
-  num_favorers: '67'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 412
+  num_favorers: 67
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2025-02-10T11:30:00'
   updated_timestamp: '2026-04-15T08:00:00'
   ending_timestamp: '2026-08-10T11:30:00'
-- listing_id: '1019'
-  shop_id: '29457183'
-  title: Cedar Fly Box - Steelhead Scene
-  description: Hand-carved cedar fly box with a detailed steelhead trout scene on
-    the lid. Interior fitted with dual-layer closed-cell foam holding 60+ flies. Approximately
-    8 x 5 x 2.5 inches. Brass hinges and latch. Companion piece to the Trout Scene
-    box.
-  price: '150.00'
+- listing_id: 1019
+  shop_id: 29457183
+  title: Walnut blanket chest with hand-cut dovetails
+  description: Walnut blanket chest with hand-cut dovetails. Built to order in the Whitfield Heritage
+    Woodworks shop, Savannah, Georgia.
+  price: 150.0
   currency_code: USD
-  quantity: '2'
-  taxonomy_id: '6516'
-  tags: fly box,steelhead carving,cedar box,fly fishing,fishing gift,carved fly box,handmade
-    box
-  materials: western red cedar,brass hardware,closed-cell foam
+  quantity: 2
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - quartersawn oak
   who_made: i_did
   when_made: '2020_2026'
   state: active
-  shop_section_id: '40001'
-  processing_min: '14'
-  processing_max: '21'
-  item_weight: '1.0'
+  shop_section_id: 40001
+  processing_min: 14
+  processing_max: 21
+  item_weight: 1.0
   item_weight_unit: lb
-  item_length: '8.0'
-  item_width: '5.0'
-  item_height: '2.5'
+  item_length: 8.0
+  item_width: 5.0
+  item_height: 2.5
   item_dimensions_unit: in
-  views: '334'
-  num_favorers: '54'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'true'
-  is_personalizable: 'true'
+  views: 334
+  num_favorers: 54
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: true
+  is_personalizable: true
   created_timestamp: '2025-03-01T10:00:00'
   updated_timestamp: '2026-04-20T14:00:00'
   ending_timestamp: '2026-09-01T10:00:00'
-- listing_id: '1020'
-  shop_id: '29457183'
-  title: Beginner Woodcarving Workshop Kit
-  description: Starter kit for beginner woodcarvers. Includes two basswood blanks,
-    a basic carving knife, a gouge, sandpaper, and a printed guide with three projects.
-    NOT YET AVAILABLE - assembling kits for summer workshops at the Tacoma Community
-    Craft Center.
-  price: '40.00'
+- listing_id: 1020
+  shop_id: 29457183
+  title: Cherry side table, tapered legs
+  description: Cherry side table, tapered legs. Built to order in the Whitfield Heritage Woodworks shop,
+    Savannah, Georgia.
+  price: 40.0
   currency_code: USD
-  quantity: '0'
-  taxonomy_id: '6516'
-  tags: woodcarving kit,beginner carving,workshop kit,carving tools,starter kit
-  materials: basswood,steel tools,sandpaper
+  quantity: 0
+  taxonomy_id: 6516
+  tags:
+  - heritage
+  - handmade
+  - savannah
+  materials:
+  - mahogany
   who_made: i_did
   when_made: '2020_2026'
   state: draft
-  shop_section_id: '40006'
-  processing_min: '14'
-  processing_max: '21'
-  item_weight: '2.0'
+  shop_section_id: 40006
+  processing_min: 14
+  processing_max: 21
+  item_weight: 2.0
   item_weight_unit: lb
-  item_length: '12.0'
-  item_width: '8.0'
-  item_height: '4.0'
+  item_length: 12.0
+  item_width: 8.0
+  item_height: 4.0
   item_dimensions_unit: in
-  views: '0'
-  num_favorers: '0'
-  shipping_profile_id: '50001'
-  return_policy_id: '60001'
-  is_supply: 'false'
-  is_customizable: 'false'
-  is_personalizable: 'false'
+  views: 0
+  num_favorers: 0
+  shipping_profile_id: 50001
+  return_policy_id: 60001
+  is_supply: false
+  is_customizable: false
+  is_personalizable: false
   created_timestamp: '2026-04-01T09:00:00'
   updated_timestamp: '2026-04-28T16:00:00'
   ending_timestamp: '2026-10-01T09:00:00'
 receipts:
-- receipt_id: '2001'
-  shop_id: '29457183'
-  buyer_user_id: '55001'
-  buyer_email: marissa.chen@email.com
-  name: Marissa Chen
-  address_first_line: 742 Evergreen Terrace
-  address_city: San Francisco
-  address_state: CA
-  address_zip: '94102'
-  address_country: US
+- receipt_id: 2001
+  shop_id: 29457183
+  buyer_user_id: 55001
+  buyer_email: priscilla.everton@shpa-savannah.org
+  name: Priscilla Everton
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 129 Habersham Street, Savannah, GA
+  address_state: 88 Whitaker Street, Savannah, GA
+  address_zip: 88 Whitaker Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '191.99'
-  subtotal: '180.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 191.99
+  subtotal: 180.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456789'
   created_timestamp: '2025-01-08T14:22:00'
   updated_timestamp: '2025-01-15T10:00:00'
   shipped_timestamp: '2025-01-12T09:15:00'
   estimated_delivery: '2025-01-16T00:00:00'
-- receipt_id: '2002'
-  shop_id: '29457183'
-  buyer_user_id: '55002'
-  buyer_email: jt.brooks87@gmail.com
-  name: James Brooks
-  address_first_line: 1456 Oak Avenue Apt 3B
-  address_city: Portland
-  address_state: OR
-  address_zip: '97201'
-  address_country: US
+- receipt_id: 2002
+  shop_id: 29457183
+  buyer_user_id: 55002
+  buyer_email: renardwhitcomb.residence@Finthesiss.ai
+  name: Renard-Whitcomb residence
+  address_first_line: 56 Liberty Street, Savannah, GA
+  address_city: 129 Habersham Street, Savannah, GA
+  address_state: 45 Bull Street, Savannah, GA
+  address_zip: 34 Gaston Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: paypal
-  grandtotal: '161.99'
-  subtotal: '150.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 161.99
+  subtotal: 150.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456790'
   created_timestamp: '2025-01-22T10:05:00'
   updated_timestamp: '2025-02-05T14:30:00'
   shipped_timestamp: '2025-02-01T11:00:00'
   estimated_delivery: '2025-02-06T00:00:00'
-- receipt_id: '2003'
-  shop_id: '29457183'
-  buyer_user_id: '55003'
-  buyer_email: katie.yamamoto@outlook.com
-  name: Katie Yamamoto
-  address_first_line: 89 Pine Street
-  address_city: Seattle
-  address_state: WA
-  address_zip: '98101'
-  address_country: US
+- receipt_id: 2003
+  shop_id: 29457183
+  buyer_user_id: 55003
+  buyer_email: cordelia.ashmore.vance@shpa-savannah.org
+  name: Cordelia Ashmore-Vance
+  address_first_line: 34 Gaston Street, Savannah, GA
+  address_city: 56 Liberty Street, Savannah, GA
+  address_state: 12 Abercorn Street, Savannah, GA
+  address_zip: 318 East Charlton Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '95.99'
-  subtotal: '90.00'
-  total_shipping_cost: '5.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
+  grandtotal: 95.99
+  subtotal: 90.0
+  total_shipping_cost: 5.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
   gift_message: Happy Housewarming! Love Katie
-  is_gift: 'true'
+  is_gift: true
   shipping_carrier: USPS
   tracking_code: '9400111899223100456791'
   created_timestamp: '2025-02-02T18:30:00'
   updated_timestamp: '2025-02-14T09:00:00'
   shipped_timestamp: '2025-02-10T10:30:00'
   estimated_delivery: '2025-02-14T00:00:00'
-- receipt_id: '2004'
-  shop_id: '29457183'
-  buyer_user_id: '55004'
-  buyer_email: ryan.oconnor@proton.me
-  name: Ryan O'Connor
-  address_first_line: 3302 Maple Drive
-  address_city: Austin
-  address_state: TX
-  address_zip: '78701'
-  address_country: US
+- receipt_id: 2004
+  shop_id: 29457183
+  buyer_user_id: 55004
+  buyer_email: vivienne.boudreaux@shpa-savannah.org
+  name: Dr. Vivienne Boudreaux
+  address_first_line: 318 East Charlton Street, Savannah, GA
+  address_city: 207 Jones Street, Savannah, GA
+  address_state: 34 Gaston Street, Savannah, GA
+  address_zip: 318 East Charlton Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '461.99'
-  subtotal: '450.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 461.99
+  subtotal: 450.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456792'
   created_timestamp: '2025-02-14T09:45:00'
   updated_timestamp: '2025-02-28T16:00:00'
   shipped_timestamp: '2025-02-25T08:45:00'
   estimated_delivery: '2025-03-01T00:00:00'
-- receipt_id: '2005'
-  shop_id: '29457183'
-  buyer_user_id: '55005'
-  buyer_email: sofia.rivera@yahoo.com
-  name: Sofia Rivera
-  address_first_line: 567 Birch Lane
-  address_city: Denver
-  address_state: CO
-  address_zip: '80202'
-  address_country: US
+- receipt_id: 2005
+  shop_id: 29457183
+  buyer_user_id: 55005
+  buyer_email: patricia.odom@Finthesiss.ai
+  name: Patricia Odom
+  address_first_line: 207 Jones Street, Savannah, GA
+  address_city: 45 Bull Street, Savannah, GA
+  address_state: 129 Habersham Street, Savannah, GA
+  address_zip: 45 Bull Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '60.99'
-  subtotal: '55.00'
-  total_shipping_cost: '5.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 60.99
+  subtotal: 55.0
+  total_shipping_cost: 5.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456793'
   created_timestamp: '2025-02-20T12:15:00'
   updated_timestamp: '2025-03-04T11:00:00'
   shipped_timestamp: '2025-03-01T09:00:00'
   estimated_delivery: '2025-03-05T00:00:00'
-- receipt_id: '2006'
-  shop_id: '29457183'
-  buyer_user_id: '55006'
-  buyer_email: alex.thompson@email.com
-  name: Alex Thompson
-  address_first_line: 890 Cedar Court
-  address_city: Chicago
-  address_state: IL
-  address_zip: '60601'
-  address_country: US
+- receipt_id: 2006
+  shop_id: 29457183
+  buyer_user_id: 55006
+  buyer_email: everett.petain@senonprofit.com
+  name: Everett Petain
+  address_first_line: 56 Liberty Street, Savannah, GA
+  address_city: 34 Gaston Street, Savannah, GA
+  address_state: 56 Liberty Street, Savannah, GA
+  address_zip: 56 Liberty Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: shipped
   payment_method: cc
-  grandtotal: '331.99'
-  subtotal: '320.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 331.99
+  subtotal: 320.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456794'
   created_timestamp: '2025-03-05T16:40:00'
   updated_timestamp: '2025-03-18T09:00:00'
   shipped_timestamp: '2025-03-18T09:00:00'
   estimated_delivery: '2025-03-22T00:00:00'
-- receipt_id: '2007'
-  shop_id: '29457183'
-  buyer_user_id: '55007'
-  buyer_email: priya.patel.design@gmail.com
-  name: Priya Patel
-  address_first_line: 2105 Willow Way
-  address_city: Nashville
-  address_state: TN
-  address_zip: '37201'
-  address_country: US
+- receipt_id: 2007
+  shop_id: 29457183
+  buyer_user_id: 55007
+  buyer_email: miriam.aldridge@savannahga.gov
+  name: Miriam Aldridge
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 45 Bull Street, Savannah, GA
+  address_state: 129 Habersham Street, Savannah, GA
+  address_zip: 34 Gaston Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: paid
   payment_method: cc
-  grandtotal: '41.99'
-  subtotal: '35.00'
-  total_shipping_cost: '5.99'
-  total_tax_cost: '1.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
-  shipping_carrier: ''
-  tracking_code: ''
+  grandtotal: 41.99
+  subtotal: 35.0
+  total_shipping_cost: 5.99
+  total_tax_cost: 1.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
+  shipping_carrier: null
+  tracking_code: null
   created_timestamp: '2025-03-28T20:10:00'
   updated_timestamp: '2025-03-28T20:10:00'
-  shipped_timestamp: ''
-  estimated_delivery: ''
-- receipt_id: '2008'
-  shop_id: '29457183'
-  buyer_user_id: '55008'
-  buyer_email: marcus.wellington@email.com
-  name: Marcus Wellington
-  address_first_line: 445 Spruce Street Apt 12
-  address_city: Brooklyn
-  address_state: NY
-  address_zip: '11201'
-  address_country: US
+  shipped_timestamp: null
+  estimated_delivery: null
+- receipt_id: 2008
+  shop_id: 29457183
+  buyer_user_id: 55008
+  buyer_email: cordelia.ashmore.vance@shpa-savannah.org
+  name: Cordelia Ashmore-Vance
+  address_first_line: 34 Gaston Street, Savannah, GA
+  address_city: 12 Abercorn Street, Savannah, GA
+  address_state: 12 Abercorn Street, Savannah, GA
+  address_zip: 56 Liberty Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: paid
   payment_method: paypal
-  grandtotal: '580.99'
-  subtotal: '550.00'
-  total_shipping_cost: '24.99'
-  total_tax_cost: '6.00'
-  discount_amt: '0.00'
-  gift_message: Congratulations on your wedding! We hope you treasure this heron for
-    years to come. - The Wellingtons
-  is_gift: 'true'
-  shipping_carrier: ''
-  tracking_code: ''
+  grandtotal: 580.99
+  subtotal: 550.0
+  total_shipping_cost: 24.99
+  total_tax_cost: 6.0
+  discount_amt: 0.0
+  gift_message: Congratulations on your wedding! We hope you treasure this heron for years to come. -
+    The Wellingtons
+  is_gift: true
+  shipping_carrier: null
+  tracking_code: null
   created_timestamp: '2025-04-02T11:30:00'
   updated_timestamp: '2025-04-02T11:30:00'
-  shipped_timestamp: ''
-  estimated_delivery: ''
-- receipt_id: '2009'
-  shop_id: '29457183'
-  buyer_user_id: '55009'
-  buyer_email: jen.liu.ceramics@hotmail.com
-  name: Jennifer Liu
-  address_first_line: 78 Ash Boulevard
-  address_city: Minneapolis
-  address_state: MN
-  address_zip: '55401'
-  address_country: US
+  shipped_timestamp: null
+  estimated_delivery: null
+- receipt_id: 2009
+  shop_id: 29457183
+  buyer_user_id: 55009
+  buyer_email: cordelia.ashmore.vance@shpa-savannah.org
+  name: Cordelia Ashmore-Vance
+  address_first_line: 318 East Charlton Street, Savannah, GA
+  address_city: 318 East Charlton Street, Savannah, GA
+  address_state: 34 Gaston Street, Savannah, GA
+  address_zip: 12 Abercorn Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '71.99'
-  subtotal: '65.00'
-  total_shipping_cost: '5.99'
-  total_tax_cost: '1.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 71.99
+  subtotal: 65.0
+  total_shipping_cost: 5.99
+  total_tax_cost: 1.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456795'
   created_timestamp: '2025-04-05T14:55:00'
   updated_timestamp: '2025-04-16T10:00:00'
   shipped_timestamp: '2025-04-13T08:30:00'
   estimated_delivery: '2025-04-17T00:00:00'
-- receipt_id: '2010'
-  shop_id: '29457183'
-  buyer_user_id: '55010'
-  buyer_email: danielle.martinez99@gmail.com
-  name: Danielle Martinez
-  address_first_line: 1234 Elm Street
-  address_city: Phoenix
-  address_state: AZ
-  address_zip: '85001'
-  address_country: US
+- receipt_id: 2010
+  shop_id: 29457183
+  buyer_user_id: 55010
+  buyer_email: josephine.halloway@shpa-savannah.org
+  name: Josephine Halloway
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 129 Habersham Street, Savannah, GA
+  address_state: 45 Bull Street, Savannah, GA
+  address_zip: 12 Abercorn Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: cancelled
   payment_method: cc
-  grandtotal: '45.00'
-  subtotal: '45.00'
-  total_shipping_cost: '0.00'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
-  shipping_carrier: ''
-  tracking_code: ''
+  grandtotal: 45.0
+  subtotal: 45.0
+  total_shipping_cost: 0.0
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
+  shipping_carrier: null
+  tracking_code: null
   created_timestamp: '2025-04-10T08:20:00'
   updated_timestamp: '2025-04-11T09:00:00'
-  shipped_timestamp: ''
-  estimated_delivery: ''
-- receipt_id: '2011'
-  shop_id: '29457183'
-  buyer_user_id: '55001'
-  buyer_email: marissa.chen@email.com
-  name: Marissa Chen
-  address_first_line: 742 Evergreen Terrace
-  address_city: San Francisco
-  address_state: CA
-  address_zip: '94102'
-  address_country: US
+  shipped_timestamp: null
+  estimated_delivery: null
+- receipt_id: 2011
+  shop_id: 29457183
+  buyer_user_id: 55001
+  buyer_email: priscilla.everton@shpa-savannah.org
+  name: Priscilla Everton
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 129 Habersham Street, Savannah, GA
+  address_state: 88 Whitaker Street, Savannah, GA
+  address_zip: 88 Whitaker Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: paid
   payment_method: cc
-  grandtotal: '291.99'
-  subtotal: '280.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
-  shipping_carrier: ''
-  tracking_code: ''
+  grandtotal: 291.99
+  subtotal: 280.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
+  shipping_carrier: null
+  tracking_code: null
   created_timestamp: '2025-04-15T19:30:00'
   updated_timestamp: '2025-04-15T19:30:00'
-  shipped_timestamp: ''
-  estimated_delivery: ''
-- receipt_id: '2012'
-  shop_id: '29457183'
-  buyer_user_id: '55011'
-  buyer_email: tom.baker.pdx@email.com
-  name: Tom Baker
-  address_first_line: 567 Hawthorn Ave
-  address_city: Portland
-  address_state: OR
-  address_zip: '97205'
-  address_country: US
+  shipped_timestamp: null
+  estimated_delivery: null
+- receipt_id: 2012
+  shop_id: 29457183
+  buyer_user_id: 55011
+  buyer_email: ellis.marchand@ashcrofthardwoods.com
+  name: Ellis Marchand
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 129 Habersham Street, Savannah, GA
+  address_state: 45 Bull Street, Savannah, GA
+  address_zip: 45 Bull Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '106.99'
-  subtotal: '95.00'
-  total_shipping_cost: '11.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 106.99
+  subtotal: 95.0
+  total_shipping_cost: 11.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456796'
   created_timestamp: '2025-03-15T10:45:00'
   updated_timestamp: '2025-03-22T14:00:00'
   shipped_timestamp: '2025-03-20T09:00:00'
   estimated_delivery: '2025-03-24T00:00:00'
-- receipt_id: '2013'
-  shop_id: '29457183'
-  buyer_user_id: '55012'
-  buyer_email: nadia.kowalski@email.com
-  name: Nadia Kowalski
-  address_first_line: 2890 River Road
-  address_city: Sacramento
-  address_state: CA
-  address_zip: '95814'
-  address_country: US
+- receipt_id: 2013
+  shop_id: 29457183
+  buyer_user_id: 55012
+  buyer_email: corinne.lattimer@halliwell-cpa.com
+  name: Corinne Lattimer
+  address_first_line: 34 Gaston Street, Savannah, GA
+  address_city: 207 Jones Street, Savannah, GA
+  address_state: 88 Whitaker Street, Savannah, GA
+  address_zip: 88 Whitaker Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: completed
   payment_method: cc
-  grandtotal: '55.99'
-  subtotal: '50.00'
-  total_shipping_cost: '5.99'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 55.99
+  subtotal: 50.0
+  total_shipping_cost: 5.99
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456797'
   created_timestamp: '2025-03-20T08:00:00'
   updated_timestamp: '2025-04-01T10:00:00'
   shipped_timestamp: '2025-03-28T11:00:00'
   estimated_delivery: '2025-04-02T00:00:00'
-- receipt_id: '2014'
-  shop_id: '29457183'
-  buyer_user_id: '55013'
-  buyer_email: chris.doyle55@gmail.com
-  name: Chris Doyle
-  address_first_line: 1100 Summit Blvd
-  address_city: Atlanta
-  address_state: GA
-  address_zip: '30301'
-  address_country: US
+- receipt_id: 2014
+  shop_id: 29457183
+  buyer_user_id: 55013
+  buyer_email: yvonne.cabrera@shpa-savannah.org
+  name: Yvonne Cabrera
+  address_first_line: 88 Whitaker Street, Savannah, GA
+  address_city: 34 Gaston Street, Savannah, GA
+  address_state: 45 Bull Street, Savannah, GA
+  address_zip: 56 Liberty Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: open
   payment_method: cc
-  grandtotal: '85.00'
-  subtotal: '85.00'
-  total_shipping_cost: '0.00'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
-  shipping_carrier: ''
-  tracking_code: ''
+  grandtotal: 85.0
+  subtotal: 85.0
+  total_shipping_cost: 0.0
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
+  shipping_carrier: null
+  tracking_code: null
   created_timestamp: '2025-04-25T17:00:00'
   updated_timestamp: '2025-04-25T17:00:00'
-  shipped_timestamp: ''
-  estimated_delivery: ''
-- receipt_id: '2015'
-  shop_id: '29457183'
-  buyer_user_id: '55014'
-  buyer_email: hannah.nguyen.art@email.com
-  name: Hannah Nguyen
-  address_first_line: 345 Linden Street
-  address_city: Philadelphia
-  address_state: PA
-  address_zip: '19101'
-  address_country: US
+  shipped_timestamp: null
+  estimated_delivery: null
+- receipt_id: 2015
+  shop_id: 29457183
+  buyer_user_id: 55014
+  buyer_email: vivienne.boudreaux@shpa-savannah.org
+  name: Dr. Vivienne Boudreaux
+  address_first_line: 12 Abercorn Street, Savannah, GA
+  address_city: 88 Whitaker Street, Savannah, GA
+  address_state: 207 Jones Street, Savannah, GA
+  address_zip: 45 Bull Street, Savannah, GA
+  address_country: 207 Jones Street, Savannah, GA
   status: return_requested
   payment_method: cc
-  grandtotal: '90.00'
-  subtotal: '90.00'
-  total_shipping_cost: '0.00'
-  total_tax_cost: '0.00'
-  discount_amt: '0.00'
-  gift_message: ''
-  is_gift: 'false'
+  grandtotal: 90.0
+  subtotal: 90.0
+  total_shipping_cost: 0.0
+  total_tax_cost: 0.0
+  discount_amt: 0.0
+  gift_message: null
+  is_gift: false
   shipping_carrier: USPS
   tracking_code: '9400111899223100456798'
   created_timestamp: '2025-03-01T12:00:00'
   updated_timestamp: '2025-04-20T10:00:00'
   shipped_timestamp: '2025-03-14T09:30:00'
   estimated_delivery: '2025-03-18T00:00:00'
-return_policies:
-- return_policy_id: '60001'
-  shop_id: '29457183'
-  accepts_returns: 'true'
-  accepts_exchanges: 'true'
-  return_deadline: '30'
-reviews:
-- review_id: '7001'
-  shop_id: '29457183'
-  listing_id: '1001'
-  buyer_user_id: '55001'
-  rating: '5'
-  review: Absolutely stunning mortar and pestle set! The red cedar has such a rich
-    color and the carving work is exquisite. It's heavy and sturdy - clearly built
-    to last. The grain pattern on mine is beautiful. Will definitely be ordering more
-    pieces from this shop!
-  language: en
-  image_url: ''
-  created_timestamp: '2025-01-20T08:30:00'
-  updated_timestamp: '2025-01-20T08:30:00'
-- review_id: '7002'
-  shop_id: '29457183'
-  listing_id: '1003'
-  buyer_user_id: '55002'
-  rating: '5'
-  review: This grain bowl is a work of art. The wood grain has so much depth and character.
-    It's huge - perfect for serving salads at dinner parties! Shipped fast and arrived
-    perfectly packaged with extra padding. You can tell the maker really cares.
-  language: en
-  image_url: https://i.etsystatic.com/example/review_7002.jpg
-  created_timestamp: '2025-02-08T19:15:00'
-  updated_timestamp: '2025-02-08T19:15:00'
-- review_id: '7003'
-  shop_id: '29457183'
-  listing_id: '1002'
-  buyer_user_id: '55003'
-  rating: '4'
-  review: Beautiful rolling pins! I ordered two as a housewarming gift and the recipient
-    loved them. Giving 4 stars only because one arrived with a small crack near the
-    handle - not visible when using it but I noticed. Seller offered to replace but
-    it really is minor.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-02-18T12:00:00'
-  updated_timestamp: '2025-02-18T12:00:00'
-- review_id: '7004'
-  shop_id: '29457183'
-  listing_id: '1009'
-  buyer_user_id: '55004'
-  rating: '5'
-  review: WOW. This eagle sculpture is a showstopper. Every guest who walks in comments
-    on it. The feather detail is incredible - photos don't do it justice. Worth every
-    penny and then some. This is museum-quality work from a backyard workshop.
-  language: en
-  image_url: https://i.etsystatic.com/example/review_7004.jpg
-  created_timestamp: '2025-03-05T17:45:00'
-  updated_timestamp: '2025-03-05T17:45:00'
-- review_id: '7005'
-  shop_id: '29457183'
-  listing_id: '1007'
-  buyer_user_id: '55005'
-  rating: '5'
-  review: Ordered the beaded necklace for my mom for Mother's Day. The colors are
-    vibrant and the craftsmanship is solid. She loves it and wears it constantly!
-    The seller was great with communication about shipping timelines too.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-03-10T09:20:00'
-  updated_timestamp: '2025-03-10T09:20:00'
-- review_id: '7006'
-  shop_id: '29457183'
-  listing_id: '1004'
-  buyer_user_id: '55006'
-  rating: '4'
-  review: Gorgeous carved wood panel with incredible detail. The floral scrollwork
-    is breathtaking. One edge has a slight roughness that could use a bit more sanding
-    but it's barely noticeable once mounted. Looks amazing in our living room.
-  language: en
-  image_url: https://i.etsystatic.com/example/review_7006.jpg
-  created_timestamp: '2025-03-25T14:30:00'
-  updated_timestamp: '2025-03-25T14:30:00'
-- review_id: '7007'
-  shop_id: '29457183'
-  listing_id: '1012'
-  buyer_user_id: '55011'
-  rating: '5'
-  review: Love this walking stick! The diamond willow patterns are so unique - like
-    nature's own artwork. Perfectly balanced and comfortable to hold on long hikes.
-    Had it custom-sized to my height and it's spot on. Highly recommend.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-03-27T20:00:00'
-  updated_timestamp: '2025-03-27T20:00:00'
-- review_id: '7008'
-  shop_id: '29457183'
-  listing_id: '1006'
-  buyer_user_id: '55012'
-  rating: '5'
-  review: These little tree bells are adorable! Each one is painted with such care
-    and the colors are festive without being gaudy. Bought a dozen for the family
-    Christmas tree and everyone wanted to know where I got them. Perfect stocking
-    stuffers.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-04-05T11:10:00'
-  updated_timestamp: '2025-04-05T11:10:00'
-- review_id: '7009'
-  shop_id: '29457183'
-  listing_id: '1005'
-  buyer_user_id: '55009'
-  rating: '5'
-  review: Perfect market basket! Sturdy enough to haul produce from the farmers market
-    and attractive enough to use as home decor. The weave is tight and even. Already
-    planning to buy more as gifts for friends.
-  language: en
-  image_url: https://i.etsystatic.com/example/review_7009.jpg
-  created_timestamp: '2025-04-20T16:00:00'
-  updated_timestamp: '2025-04-20T16:00:00'
-- review_id: '7010'
-  shop_id: '29457183'
-  listing_id: '1013'
-  buyer_user_id: '55014'
-  rating: '2'
-  review: The bangles arrived with one noticeably bent out of shape. I reached out
-    to the seller who was responsive and offered a replacement but I'm disappointed
-    with the original packaging - they were just tossed in a padded envelope. The
-    designs are beautiful though so I'm hopeful the replacement set will arrive safely.
-  language: en
-  image_url: https://i.etsystatic.com/example/review_7010.jpg
-  created_timestamp: '2025-04-01T10:30:00'
-  updated_timestamp: '2025-04-01T10:30:00'
-- review_id: '7011'
-  shop_id: '29457183'
-  listing_id: '1010'
-  buyer_user_id: '55003'
-  rating: '5'
-  review: Came back for more! Got the trout fly box this time and it's just as lovely
-    as the rolling pins I bought before. The carved trout scene on the lid is incredibly
-    detailed. My husband is a fly fisherman and he was speechless when he opened it.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-03-15T13:00:00'
-  updated_timestamp: '2025-03-15T13:00:00'
-- review_id: '7012'
-  shop_id: '29457183'
-  listing_id: '1011'
-  buyer_user_id: '55002'
-  rating: '5'
-  review: As a PNW native I'm picky about salmon art and this wall mount delivers!
-    The form is dynamic - it really captures a salmon mid-leap. The painted details
-    on the scales catch the light beautifully. Looks perfect above our mantel.
-  language: en
-  image_url: ''
-  created_timestamp: '2025-04-10T07:45:00'
-  updated_timestamp: '2025-04-10T07:45:00'
-shipping_profiles:
-- shipping_profile_id: '50001'
-  shop_id: '29457183'
-  title: Standard Shipping - Small Items
-  origin_country: US
-  origin_postal_code: '98402'
-  processing_min: '5'
-  processing_max: '10'
-  min_delivery_days: '3'
-  max_delivery_days: '5'
-  cost: '5.99'
-  secondary_cost: '3.99'
-- shipping_profile_id: '50002'
-  shop_id: '29457183'
-  title: Standard Shipping - Large/Heavy Items
-  origin_country: US
-  origin_postal_code: '98402'
-  processing_min: '10'
-  processing_max: '21'
-  min_delivery_days: '3'
-  max_delivery_days: '7'
-  cost: '11.99'
-  secondary_cost: '7.99'
-- shipping_profile_id: '50003'
-  shop_id: '29457183'
-  title: Express Shipping - Priority Mail Express
-  origin_country: US
-  origin_postal_code: '98402'
-  processing_min: '5'
-  processing_max: '10'
-  min_delivery_days: '1'
-  max_delivery_days: '2'
-  cost: '24.99'
-  secondary_cost: '18.99'
-shop:
-  shop_id: 29457183
-  shop_name: WalshWoodcraft
-  user_id: 81726354
-  title: Hand-Carved Woodwork & Artisan Crafts • Pacific Northwest
-  announcement: Welcome to Walsh Woodcraft! Every piece is hand-carved in my Tacoma,
-    WA workshop using locally-sourced Pacific Northwest woods. I also sell woven baskets,
-    beaded jewelry, and handmade instruments at the Steilacoom Artisan Market. Please
-    allow 1-3 weeks for made-to-order items. Custom wildlife carvings and fly boxes
-    available—just message me!
-  currency_code: USD
-  is_vacation: false
-  vacation_message: null
-  sale_message: Thank you for your order! I’ll begin working on your piece within
-    3-5 business days. Each item is hand-carved, so natural wood grain variations
-    make every piece one of a kind. Don’t hesitate to reach out if you have any questions!
-  digital_sale_message: null
-  listing_active_count: 19
-  digital_listing_count: 0
-  login_name: DeniseWalsh
-  accepts_custom_requests: true
-  policy_welcome: Thanks for visiting Walsh Woodcraft!
-  policy_payment: I accept payments through Etsy's secure checkout system including
-    credit cards, debit cards, Etsy gift cards, and PayPal. For custom commissions
-    over $200, a 50% deposit is required.
-  policy_shipping: All items ship via USPS Priority Mail from Tacoma, WA. Made-to-order
-    items ship within 10-21 business days depending on complexity. Ready-to-ship items
-    go out within 3-5 business days. Large sculptures and panels ship with extra padding
-    and insurance.
-  policy_refunds: I want you to love your piece! If it arrives damaged, please contact
-    me within 48 hours with photos and I'll send a replacement or full refund. Due
-    to the handmade nature of my work, I cannot accept returns for natural wood grain
-    variations.
-  num_favorers: 2341
-  url: https://www.etsy.com/shop/WalshWoodcraft
-  image_url_760x100: https://i.etsystatic.com/isbl/example/walsh_banner.jpg
-  icon_url_fullxfull: https://i.etsystatic.com/iusa/example/walsh_icon.jpg
-  review_average: 4.82
-  review_count: 187
-  create_date: '2022-06-10T08:15:00'
-  update_date: '2026-05-10T14:30:00'
-shop_sections:
-- shop_section_id: '40001'
-  shop_id: '29457183'
-  title: Kitchenware & Fly Boxes
-  rank: '1'
-  active_listing_count: '4'
-- shop_section_id: '40002'
-  shop_id: '29457183'
-  title: Home Decor & Sculptures
-  rank: '2'
-  active_listing_count: '5'
-- shop_section_id: '40003'
-  shop_id: '29457183'
-  title: Accessories & Jewelry
-  rank: '3'
-  active_listing_count: '5'
-- shop_section_id: '40004'
-  shop_id: '29457183'
-  title: Holiday & Ornaments
-  rank: '4'
-  active_listing_count: '2'
-- shop_section_id: '40005'
-  shop_id: '29457183'
-  title: Instruments
-  rank: '5'
-  active_listing_count: '1'
-- shop_section_id: '40006'
-  shop_id: '29457183'
-  title: Sale & Special Orders
-  rank: '6'
-  active_listing_count: '2'
-transactions:
-- transaction_id: '3001'
-  receipt_id: '2001'
-  listing_id: '1001'
-  shop_id: '29457183'
-  buyer_user_id: '55001'
-  title: Hand-Carved Mortar & Pestle Set - Red Cedar
-  quantity: '1'
-  price: '180.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-01-08T14:22:00'
-- transaction_id: '3002'
-  receipt_id: '2002'
-  listing_id: '1003'
-  shop_id: '29457183'
-  buyer_user_id: '55002'
-  title: Large Hand-Turned Grain Bowl - Hardwood
-  quantity: '1'
-  price: '150.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-01-22T10:05:00'
-- transaction_id: '3003'
-  receipt_id: '2003'
-  listing_id: '1002'
-  shop_id: '29457183'
-  buyer_user_id: '55003'
-  title: Traditional Pattern Rolling Pin - Carved Beechwood
-  quantity: '2'
-  price: '45.00'
-  shipping_cost: '5.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-02-02T18:30:00'
-- transaction_id: '3004'
-  receipt_id: '2004'
-  listing_id: '1009'
-  shop_id: '29457183'
-  buyer_user_id: '55004'
-  title: Hand-Carved Eagle Sculpture - Western Red Cedar
-  quantity: '1'
-  price: '450.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-02-14T09:45:00'
-- transaction_id: '3005'
-  receipt_id: '2005'
-  listing_id: '1007'
-  shop_id: '29457183'
-  buyer_user_id: '55005'
-  title: Traditional Beaded Necklace - Multi-color
-  quantity: '1'
-  price: '55.00'
-  shipping_cost: '5.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-02-20T12:15:00'
-- transaction_id: '3006'
-  receipt_id: '2006'
-  listing_id: '1004'
-  shop_id: '29457183'
-  buyer_user_id: '55006'
-  title: Ornate Floral Wood Panel - Wall Art
-  quantity: '1'
-  price: '320.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-03-05T16:40:00'
-- transaction_id: '3007'
-  receipt_id: '2007'
-  listing_id: '1016'
-  shop_id: '29457183'
-  buyer_user_id: '55007'
-  title: Carved Wood Ornament Set - Wildlife Series (4-pack)
-  quantity: '1'
-  price: '35.00'
-  shipping_cost: '5.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-03-28T20:10:00'
-- transaction_id: '3008'
-  receipt_id: '2008'
-  listing_id: '1014'
-  shop_id: '29457183'
-  buyer_user_id: '55008'
-  title: Hand-Carved Great Blue Heron - Driftwood Base
-  quantity: '1'
-  price: '550.00'
-  shipping_cost: '24.99'
-  is_digital: 'false'
-  variations: wood_type:Western Red Cedar
-  created_timestamp: '2025-04-02T11:30:00'
-- transaction_id: '3009'
-  receipt_id: '2009'
-  listing_id: '1005'
-  shop_id: '29457183'
-  buyer_user_id: '55009'
-  title: Woven Reed Market Basket - Handwoven
-  quantity: '1'
-  price: '65.00'
-  shipping_cost: '5.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-04-05T14:55:00'
-- transaction_id: '3010'
-  receipt_id: '2010'
-  listing_id: '1002'
-  shop_id: '29457183'
-  buyer_user_id: '55010'
-  title: Traditional Pattern Rolling Pin - Carved Beechwood
-  quantity: '1'
-  price: '45.00'
-  shipping_cost: '0.00'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-04-10T08:20:00'
-- transaction_id: '3011'
-  receipt_id: '2011'
-  listing_id: '1011'
-  shop_id: '29457183'
-  buyer_user_id: '55001'
-  title: Carved Salmon Wall Mount - Alder Wood
-  quantity: '1'
-  price: '280.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-04-15T19:30:00'
-- transaction_id: '3012'
-  receipt_id: '2012'
-  listing_id: '1012'
-  shop_id: '29457183'
-  buyer_user_id: '55011'
-  title: Diamond Willow Walking Stick - Hand-Carved
-  quantity: '1'
-  price: '95.00'
-  shipping_cost: '11.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-03-15T10:45:00'
-- transaction_id: '3013'
-  receipt_id: '2013'
-  listing_id: '1006'
-  shop_id: '29457183'
-  buyer_user_id: '55012'
-  title: Hand-Painted Holiday Tree Bell - Ceramic
-  quantity: '2'
-  price: '25.00'
-  shipping_cost: '5.99'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-03-20T08:00:00'
-- transaction_id: '3014'
-  receipt_id: '2014'
-  listing_id: '1008'
-  shop_id: '29457183'
-  buyer_user_id: '55013'
-  title: Handmade Ektara Instrument - Gourd & Bamboo
-  quantity: '1'
-  price: '85.00'
-  shipping_cost: '0.00'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-04-25T17:00:00'
-- transaction_id: '3015'
-  receipt_id: '2015'
-  listing_id: '1013'
-  shop_id: '29457183'
-  buyer_user_id: '55014'
-  title: Handcrafted Brass Bangle Set (6-piece)
-  quantity: '1'
-  price: '90.00'
-  shipping_cost: '0.00'
-  is_digital: 'false'
-  variations: ''
-  created_timestamp: '2025-03-01T12:00:00'

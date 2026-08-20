@@ -59,43 +59,9 @@ class TwilioSession:
             self.os = OSConnector(session_id=os_cfg["session_id"], url=os_cfg["url"]) if os_cfg else DummyOSConnector()
             self.time_machine = TimeMachine(rng=self.rng)
 
-            with open(CORPUS_PATH / "twilio.yaml") as f:
-                info = yaml.safe_load(f)
-
-            self.account: Dict[str, Any] = info.get("account", {})
-            self.phone_numbers: List[Dict[str, Any]] = [
-                {
-                    **p,
-                    "sms_enabled": _to_bool(p.get("sms_enabled", False)),
-                    "voice_enabled": _to_bool(p.get("voice_enabled", False)),
-                    "mms_enabled": _to_bool(p.get("mms_enabled", False)),
-                    "capabilities_fax": _to_bool(p.get("capabilities_fax", False)),
-                }
-                for p in info.get("phone_numbers", [])
-            ]
-            self.messages: List[Dict[str, Any]] = [
-                {
-                    **m,
-                    "num_segments": _to_int(m.get("num_segments"), 0),
-                    "price": _to_float(m.get("price")),
-                    "error_code": (int(m["error_code"]) if str(m.get("error_code", "")).strip() != "" else None),
-                    "date_sent": (_opt_str(m.get("date_sent"))),
-                }
-                for m in info.get("messages", [])
-            ]
-            self.calls: List[Dict[str, Any]] = [
-                {
-                    **c,
-                    "duration": _to_int(c.get("duration"), 0),
-                    "price": _to_float(c.get("price")),
-                    "answered_by": (_opt_str(c.get("answered_by"))),
-                    "start_time": (_opt_str(c.get("start_time"))),
-                    "end_time": (_opt_str(c.get("end_time"))),
-                }
-                for c in info.get("calls", [])
-            ]
-            from software.utils.world_data import hydrate as _hydrate_world_data
-            _hydrate_world_data(self, 'LightTwilio')
+            # World data loaded verbatim from corpus/state.json (no cooking).
+            from software.utils.world_data import load_state as _load_state
+            _load_state(self, 'LightTwilio')
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

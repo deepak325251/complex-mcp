@@ -30,7 +30,8 @@ tasks/<slug>/
 │   └── docker-compose.yaml   # REQUIRED. port map + COMPLEXMCP_SEED/APPS
 ├── tests/
 │   ├── oracle.json           # REQUIRED. {seed, apps, fixture?, oracle:{App:[{call,args}]}}  (authored)
-│   ├── old_env.json          # REQUIRED. baked at emit (boot+dump)
+│   ├── old_env.json          # OPTIONAL. baked at emit (boot+dump); when absent,
+│   │                         #   run_benchmark bakes it at runtime (scripts/make_old_env)
 │   ├── gt_env.json           # REQUIRED. baked at finish (boot+oracle+dump)
 │   ├── gold_plan.json        # REQUIRED (graph grader). list of steps of alternatives
 │   ├── efs.json              # REQUIRED (graph grader). {sets:[...]}
@@ -52,8 +53,10 @@ At SEED emit, everything is final **except** the tasker's Stage-3 deliverables:
 `instruction.md` body, `tests/oracle.json`, `tests/gt_env.json`,
 `tests/rubric.json`, `tests/test_outputs.py`, `tests/test_weights.json`,
 `tests/gold_plan.json`, `tests/efs.json`, `solution/trajectory.json`.
-`tests/old_env.json` **is** baked at emit — the seeded world is fully
-determined before any authoring.
+`tests/old_env.json` is baked at emit when authoring GT by hand, but a
+bundle may omit it: run_benchmark bakes it at runtime (boot+dump at the
+task's seed via scripts/make_old_env) before the controls gate runs. The
+seeded world is fully determined before any authoring either way.
 
 ## Canary
 
