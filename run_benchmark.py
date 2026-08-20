@@ -487,6 +487,13 @@ def main(args):
     # still runs without an OpenAI key. None only if neither backend is available,
     # in which case rubric+pytest tasks grade on Channel A (pytest) alone.
     rubric_judge = make_openai_rubric_judge() or make_anthropic_rubric_judge()
+    if rubric_judge is None:
+        # Say it ONCE and loudly: without judge creds every criteria-style
+        # tests/rubric.json silently grades as "no rubric", which reads like
+        # the task never had one.
+        print("[rubric] WARNING: no judge backend (need OPENAI_API_KEY+"
+              "OPENAI_BASE_URL or ANTHROPIC_BASE_URL+ANTHROPIC_API_KEY) — "
+              "criteria-style rubric.json files will NOT be scored this run")
     if output_dir:
         safe_model = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_") or "model"
         if layout in ("mcp-stump", "harbor"):
@@ -715,6 +722,10 @@ def main(args):
                        os.path.join(str(_task_dir), "rubric.json")):
                 if _task_dir and os.path.exists(_p):
                     _rpath = _p; break
+            if _rpath and rubric_judge is None:
+                print(f"[rubric] SKIP {os.path.basename(str(_task_dir))}: "
+                      f"rubric.json present but no judge backend — "
+                      f"rubric channel dark for this task")
 
             if _grader == "weighted":
                 # HYBRID grading: state-diff (Rc/Rb), plan-shape (graph_f1) and an
