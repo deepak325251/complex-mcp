@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Iterable, Sequence
 
 from benchmark.failure_taxonomy import (
@@ -230,7 +231,7 @@ def _is_infra_error(step: dict) -> bool:
 
 
 def _is_id_key(k: str) -> bool:
-    k = str(k or "").lower()
+    k = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", str(k or "")).lower()
     return (k == "id" or k == "slug" or k.endswith("_id") or k.endswith("_slug")
             or k in _ID_ARG_HINTS)
 
@@ -262,15 +263,23 @@ def _detect_hallucinated_arg(steps: Sequence[dict]) -> dict | None:
     """The agent called a tool with an entity id that no PRIOR response ever
     surfaced, and the tool rejected it as non-existent -> invented argument."""
     seen: set[str] = set()
+    seen_text: list[str] = []
     for i, s in enumerate(steps):
         if _has_error_status(s):
             body = _resp_body(s).lower()
             if any(sig in body for sig in NOT_FOUND_SIGNATURES):
                 for k, v in (s.get("arguments") or {}).items():
-                    if _looks_like_id(k, v) and v not in seen:
+                    # Key-shape harvesting can miss ids serialized under keys we
+                    # don't recognize; before calling a value invented, also
+                    # check it never appeared ANYWHERE in a prior response body.
+                    if (_looks_like_id(k, v) and v not in seen
+                            and not any(v.lower() in t for t in seen_text)):
                         return {"step": i, "tool": _base(s.get("tool")),
                                 "arg": k, "value": v}
         seen |= _harvest_ids(s.get("response"))
+        body_txt = _resp_body(s)
+        if body_txt:
+            seen_text.append(body_txt)
     return None
 
 
@@ -485,11 +494,16 @@ def classify(
         return _verdict(FailureClass.PARTIAL_COMPLETION, reason, ev)
 
     if total > 0 and recall >= total and misbehave == 0:
+        # recall==total with zero misbehave means the state/traj channel DID
+        # verify -- the run is below the reward threshold on softer components
+        # (plan shape, failed positive tests). Saying "state transitions did
+        # not verify" here was factually wrong and sent grading-shape failures
+        # to the model-behaviour pile.
         return _verdict(
             FailureClass.EXECUTION_DROP,
-            f"reached all gold nodes (recall {recall}/{total}) with no misbehavior "
-            f"but state transitions did not verify -- a planned action likely "
-            f"slipped between reasoning and the tool trace",
+            f"required transitions all verified (recall {recall}/{total}, "
+            f"misbehave 0) but reward fell below threshold -- plan-graph shape "
+            f"or a failed positive test, not a state failure",
             {"recall": recall, "total": total, "misbehave": misbehave},
         )
 

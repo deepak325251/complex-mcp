@@ -15,10 +15,20 @@ class ClockSession:
             # Seed architecture: world rolled from a seed (re-armed).
             self.rng = random.Random(resolve_seed(seed))
             # World data loaded verbatim from corpus/state.json (no cooking):
-            # the clock's starting time is authored, not randomly rolled.
+            # the clock's starting time is authored, not randomly rolled. A
+            # per-task $COMPLEXMCP_WORLD_DATA/LightSystem.json {"now": ...}
+            # overrides it, so scenario worlds whose entities live at another
+            # date (e.g. the SHPA Jan-2026 bundles) can pin a matching clock.
             with open(CORPUS_PATH / "state.json") as _f:
-                self._now = datetime.datetime.strptime(
-                    json.load(_f)["now"], "%Y-%m-%d %H:%M:%S")
+                now_str = json.load(_f)["now"]
+            from software.utils.world_data import active_dir
+            _d = active_dir()
+            if _d:
+                _p = Path(_d) / "LightSystem.json"
+                if _p.is_file():
+                    with open(_p) as _f:
+                        now_str = json.load(_f).get("now", now_str)
+            self._now = datetime.datetime.strptime(now_str, "%Y-%m-%d %H:%M:%S")
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "clock_world.pkl")

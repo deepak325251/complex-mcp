@@ -63,6 +63,12 @@ class Toolbox:
         self.tools = tools
         self.clients = {}
         self.servers = {}
+        # Task-scoped app allowlist (env["apps"]). None = no scoping (default,
+        # identical to historical behavior). When set, call() refuses to route a
+        # bare tool name to an app outside the task's scope -- registration
+        # order decides bare-name ownership, so the first-registered app shadows
+        # the task's own tool under a prefixed key (get_employee -> wrong app).
+        self.scope_apps: set | None = None
         self.rag: RAGEngine | None = rag_cls() if rag_cls else None
         self.method = method
         # ETOM pseudo-execution: no world, no server. When on, call() returns a
@@ -123,6 +129,30 @@ class Toolbox:
                     "output": e.__str__()
                 })
         tool = self.tools[key_name]
+        if self.scope_apps:
+            allowed = set(self.scope_apps) | {"LightSystem"}
+            srv = ((tool.get("server") or {}).get("name"))
+            if srv and srv not in allowed:
+                bare = tool.get("tool_name") or key_name
+                cands = [k for k, v in self.tools.items()
+                         if k != key_name
+                         and (v.get("tool_name") or k) == bare
+                         and ((v.get("server") or {}).get("name")) in allowed]
+                alt = cands[0] if len(cands) == 1 else None
+                if alt and self._args_fit(self.tools[alt], arguments):
+                    # Same tool name, exactly one in-scope owner, and the given
+                    # arguments fit its schema: route there silently.
+                    key_name, tool = alt, self.tools[alt]
+                else:
+                    # Out-of-scope app must not see the call (a write would
+                    # mutate the wrong world). Fail deterministically and name
+                    # the in-scope tool so the model recovers in one step.
+                    hint = f" Did you mean `{alt}`?" if alt else ""
+                    return json.dumps({
+                        "status": "failed",
+                        "output": f"Tool `{key_name}` belongs to {srv}, which is "
+                                  f"not part of this task.{hint}"
+                    })
         if self.pseudo:
             # ETOM: no world, no session, no server -- return a schema-shaped
             # success so the agent proceeds through its plan structurally.
@@ -379,6 +409,21 @@ class Toolbox:
         
     def _server_of(self, key_name: str) -> str | None:
         return ((self.tools.get(key_name) or {}).get("server") or {}).get("name")
+
+    @staticmethod
+    def _args_fit(tool: Dict[str, Any], arguments: Dict[str, Any]) -> bool:
+        """Every provided argument name appears in the tool's declared schema.
+        Unknown/unparseable schema -> False (caller falls back to a guidance
+        error instead of silently re-routing a call that would then fail on
+        argument names, e.g. eid vs employee_id)."""
+        spec = tool.get("arguments")
+        if isinstance(spec, dict):
+            declared = set(spec.keys())
+        elif isinstance(spec, list):
+            declared = {a.get("name") for a in spec if isinstance(a, dict)}
+        else:
+            return False
+        return set(arguments or {}) <= declared
 
     def _retrieve_keys(self, query: str, k: int, apps: List[str] | None = None) -> List[str]:
         """Top-k retrieved tool key_names, optionally SCOPED to `apps`.
@@ -1114,6 +1159,11 @@ class AgentClient:
                 session_id_dict=session_id_dict,
                 results=results
             )
+
+            # Execution-time counterpart of keys_for_apps presentation scoping:
+            # a bare-name call must not dispatch to an app outside this task.
+            if self.toolbox is not None:
+                self.toolbox.scope_apps = set(env.get("apps") or []) or None
 
             system_prompt = self.system_prompt
             if self.toolbox and native:

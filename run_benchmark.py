@@ -8,6 +8,7 @@ from benchmark.harbor_layout import slug_of as _hslug
 from scripts.task_writer import write_task_dir, write_mcp_stump_run, write_trials_aggregate, parse_trajectory as _parse_traj_for_layout, parse_trajectory
 from software.utils import fixtures
 from software.utils.seed_content_registry import seed_rolls_content
+from seed import canonical as _seed_canonical, registry as _seed_registry
 from dotenv import load_dotenv
 from argparse import ArgumentParser
 from prompt_toolkit import prompt
@@ -34,6 +35,35 @@ from shortuuid import uuid
 # advisory below prints once per offending app-set per process, not once
 # per task -- a full benchmark run is thousands of tasks.
 _WARNED_STATIC_SEED_APPS = set()
+
+RUN_REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                 "benchmark", "data", "run_registry.json")
+
+
+def _task_repeat_key(task_info: dict) -> str | None:
+    """Stable identity for the repeat gate.
+
+    Prefers the seed pipeline's canonical combination key (order-independent
+    over apps/levers/tags) when the bundle's task.toml carries a combo; for
+    bundles without one, falls back to a content hash of what actually defines
+    the episode (name, apps, seed, query).
+    """
+    td = task_info.get("task_dir")
+    if td and os.path.exists(os.path.join(str(td), "task.toml")):
+        try:
+            return _seed_canonical.key_from_task_toml(str(td))
+        except Exception:
+            pass                       # no combo in task.toml -> content hash
+    try:
+        payload = json.dumps({
+            "name": task_info.get("name"),
+            "apps": sorted(task_info.get("apps") or []),
+            "seed": task_info.get("seed"),
+            "query": task_info.get("query"),
+        }, sort_keys=True, ensure_ascii=False)
+        return "task:" + hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    except (TypeError, ValueError):
+        return None
 
 def _aggregate_trials_on_disk(run_dir: Path, model: str) -> dict:
     """Corpus roll-up over EVERY ``trials_*/summary.json`` present on disk.
@@ -524,6 +554,21 @@ def main(args):
         gt_env = task_info.get("gt_env")
         gt_tool_cnt = task_info.get("gt_tool_cnt") or {}
         episode_name = task_info["name"]
+   
+        _repeat_key = _task_repeat_key(task_info)
+        if (_repeat_key and _seed_registry.exists(_repeat_key, RUN_REGISTRY_PATH)
+                and not os.environ.get("COMPLEXMCP_ALLOW_REPEAT")):
+            _prev = _seed_registry.get(_repeat_key, RUN_REGISTRY_PATH) or {}
+            print(f"[repeat] task {episode_name!r} already exists -- it was "
+                  f"run before (as {_prev.get('slug')!r} at "
+                  f"{_prev.get('recorded_at')}), so gently declining this run. "
+                  f"Set COMPLEXMCP_ALLOW_REPEAT=1 to run it again anyway.")
+            per_episode.append({
+                "index": i + 1, "name": episode_name,
+                "passed": False, "gradeable": False,
+                "repeated": True, "repeat_key": _repeat_key,
+            })
+            continue
         # Seed architecture: the task's declared seed drives the world. Apps read
         # $COMPLEXMCP_SEED at login (software.utils.world_snapshot.resolve_seed),
         # so set it here before any world boots. The task's baked old_env/gt_env
@@ -1127,6 +1172,18 @@ def main(args):
                         "failure_class": final_score.get("failure_class"),
                         "failure_reason": final_score.get("reason"),
                     })
+
+       
+        if _repeat_key:
+            try:
+                _seed_registry.append({
+                    "key": _repeat_key, "slug": episode_name,
+                    "recorded_at": datetime.now(timezone.utc).isoformat(),
+                }, path=RUN_REGISTRY_PATH)
+            except KeyError:
+                pass
+            except OSError as _exc:
+                print(f"[repeat] run-registry write failed (task still ran): {_exc}")
 
     avg_recall_rate /= len(tasks_list)
     avg_misbehave_rate /= len(tasks_list)

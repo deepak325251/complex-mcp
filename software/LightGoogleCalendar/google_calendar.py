@@ -44,11 +44,17 @@ class GoogleCalendarSession:
             ]
             self.events: List[Dict[str, Any]] = []
             for e in info.get("events", []):
-                recurrence = e.get("recurrence") or ""
+                # Corpus recurrence may be a single RRULE string or already a
+                # list of RRULE strings; both must land flat, or recurring
+                # events dump as [["RRULE:…"]] and the state diff charges
+                # phantom misbehaviour against authored flat snapshots.
+                recurrence = e.get("recurrence") or []
+                if isinstance(recurrence, str):
+                    recurrence = [recurrence]
                 self.events.append({
                     **e,
                     "all_day": _to_bool(e.get("all_day", False)),
-                    "recurrence": [recurrence] if recurrence else [],
+                    "recurrence": list(recurrence),
                 })
             self.attendees: Dict[str, List[Dict[str, Any]]] = {}
             for r in info.get("event_attendees", []):
@@ -64,6 +70,24 @@ class GoogleCalendarSession:
             _apply_fixtures(self, "LightGoogleCalendar", fixture)
             from software.utils.world_data import hydrate as _hydrate_world_data
             _hydrate_world_data(self, "LightGoogleCalendar")
+
+            # Some authored worlds carry events but no `calendars` section,
+            # leaving list_calendars() empty and "primary" unresolvable even
+            # though every event names its calendar_id -- the calendar becomes
+            # undiscoverable by any tool. Derive the calendar list from the
+            # events' own calendar_ids (first-seen = primary) rather than
+            # touching the authored corpus data. calendars is not part of
+            # get_session_dict(), so this never shows up in the state diff.
+            if not self.calendars and self.events:
+                seen: List[str] = []
+                for e in self.events:
+                    cid = e.get("calendar_id")
+                    if cid and cid not in seen:
+                        seen.append(cid)
+                self.calendars = [
+                    {"id": cid, "summary": cid, "primary": i == 0}
+                    for i, cid in enumerate(seen)
+                ]
         else:
             # Seedless: world loaded verbatim from the frozen snapshot.
             restore_into(self, Path(__file__).resolve().parent / "world.pkl")

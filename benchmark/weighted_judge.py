@@ -447,6 +447,36 @@ def _index_by_id(items):
     return out
 
 
+# Serialization drift between hand-authored snapshots and live dumps must not
+# read as agent action: authored envs normalize unicode punctuation (em/en
+# dashes, NBSP) that the live corpus carries verbatim, and older session builds
+# double-wrapped Google Calendar recurrence lists ([["RRULE:…"]] vs the
+# authored flat ["RRULE:…"]). Both sides of the diff are normalized
+# symmetrically, so a real agent write still registers.
+_PUNCT_TRANSLATION = str.maketrans({
+    "‐": "-", "‑": "-", "‒": "-", "–": "-",
+    "—": "-", "―": "-", "−": "-", " ": " ",
+})
+
+_NESTED_STR_LIST_KEYS = {"recurrence"}
+
+
+def _norm_leaf(v):
+    if isinstance(v, str):
+        return v.translate(_PUNCT_TRANSLATION)
+    return v
+
+
+def _unwrap_nested_strs(v):
+    # [["a"], ["b"]] -> ["a", "b"]; only when every element is a 1-elem list
+    # of a scalar, i.e. the double-wrap shape and nothing else.
+    if (isinstance(v, list) and v and all(
+            isinstance(e, list) and len(e) == 1
+            and isinstance(e[0], (str, int, float, bool)) for e in v)):
+        return [e[0] for e in v]
+    return v
+
+
 def judge_env(old_env, new_env, gt_env):
     """Recursive state diff → {total, recall, misbehave}. See verify.py."""
     total = recall = misbehave = 0
@@ -455,6 +485,10 @@ def judge_env(old_env, new_env, gt_env):
         nonlocal total, recall, misbehave
         if key in exclude_keys:
             return
+        if key in _NESTED_STR_LIST_KEYS:
+            old_item = _unwrap_nested_strs(old_item)
+            new_item = _unwrap_nested_strs(new_item)
+            gt_item = _unwrap_nested_strs(gt_item)
         if isinstance(gt_item, list):
             # Align by ENTITY IDENTITY, not by index.
             #
@@ -496,6 +530,9 @@ def judge_env(old_env, new_env, gt_env):
                     _get(gt_item, sub_key), key=sub_key)
             return
         eq = eq_methods.get(key, exact_match)
+        old_item = _norm_leaf(old_item)
+        new_item = _norm_leaf(new_item)
+        gt_item = _norm_leaf(gt_item)
         # A path the ground truth never describes is NOT gradeable. The baked
         # snapshot is a thinner projection than the live app returns -- it omits
         # whole collections (transactions, comments) and per-record fields
@@ -849,7 +886,16 @@ def judge_weighted(
             penalty += c["penalty"]
 
     reward = round(max(0.0, (earned - penalty) / pos_total), 6) if pos_total else 0.0
-    passed = bool(pos_total) and reward >= threshold
+    # Terminal gate, per the task contract (verification_explanation): a run
+    # whose world state fully verifies (Rc == 1.0, Rb == 0.0) and whose
+    # trajectory tests are clean (all positives pass, no guard fired) has done
+    # the task; graph-plan shape alone must not fail it. reward >= threshold
+    # stays as the other pass path, so plan-only tasks and every already-passing
+    # run grade exactly as before -- this can only flip FAIL -> PASS, never the
+    # reverse, and the reward value itself is untouched.
+    state_ok = (state is not None) and (Rc is None or Rc == 1.0) and Rb == 0.0
+    traj_ok = (traj is None) or (traj["misbehave"] == 0 and traj["recall"] == traj["total"])
+    passed = bool(pos_total) and (reward >= threshold or (state_ok and traj_ok))
 
     # --- aggregate passthrough (state preferred, else plan) ------------------
     # `misbehave_kind` records what the aggregate misbehave/total counts MEAN, so
