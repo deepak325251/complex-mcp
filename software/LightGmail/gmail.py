@@ -59,7 +59,8 @@ class GmailSession:
                     "body": m["body"].replace("\\n", "\n"),
                     "internal_date": _to_int(m["internal_date"]),
                     "size_estimate": _to_int(m["size_estimate"]),
-                    "labels": [x for x in str(m.get("labels", "")).split(",") if x],
+                    "labels": (list(m["labels"]) if isinstance(m.get("labels"), list)
+                               else [x.strip() for x in str(m.get("labels") or "").split(",") if x.strip()]),
                     "is_unread": _to_bool(m["is_unread"]),
                     "is_starred": _to_bool(m["is_starred"]),
                 }
