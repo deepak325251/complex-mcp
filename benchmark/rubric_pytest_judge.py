@@ -172,6 +172,12 @@ def make_openai_rubric_judge(model=None, narrative: bool | None = None):
                     messages=[{"role": "user", "content": prompt}],
                     max_completion_tokens=300 if narrative else 4,
                 )
+                _u = getattr(resp, "usage", None)
+                if _u is not None:
+                    judge.usage["input_tokens"] += getattr(_u, "prompt_tokens", 0) or 0
+                    judge.usage["output_tokens"] += getattr(_u, "completion_tokens", 0) or 0
+                    _d = getattr(_u, "prompt_tokens_details", None)
+                    judge.usage["cache_read_tokens"] += (getattr(_d, "cached_tokens", 0) or 0) if _d else 0
                 raw = resp.choices[0].message.content or ""
                 if narrative:
                     verdict, text = _parse_narrative(raw)
@@ -193,6 +199,10 @@ def make_openai_rubric_judge(model=None, narrative: bool | None = None):
     # changing the verdict contract ({number: bool}) every existing caller uses.
     judge.narrative = narrative
     judge.justifications = {}
+    # Cumulative token spend across every call this process makes; the Finance
+    # API reporter (benchmark/finance_report.py) reads per-trajectory deltas.
+    judge.usage = {"model_name": judge_model, "input_tokens": 0, "output_tokens": 0,
+                   "cache_read_tokens": 0, "cache_creation_tokens": 0, "cost_usd": 0.0}
     return judge
 
 
@@ -236,6 +246,11 @@ def make_anthropic_rubric_judge(model=None):
             try:
                 with urllib.request.urlopen(req, timeout=60) as resp:
                     data = _json.loads(resp.read().decode())
+                _u = data.get("usage") or {}
+                judge.usage["input_tokens"] += _u.get("input_tokens", 0) or 0
+                judge.usage["output_tokens"] += _u.get("output_tokens", 0) or 0
+                judge.usage["cache_read_tokens"] += _u.get("cache_read_input_tokens", 0) or 0
+                judge.usage["cache_creation_tokens"] += _u.get("cache_creation_input_tokens", 0) or 0
                 # /v1/messages -> {"content": [{"type":"text","text":"YES"}], ...}
                 parts = data.get("content") or []
                 text = "".join(p.get("text", "") for p in parts if isinstance(p, dict)).strip().upper()
@@ -249,6 +264,10 @@ def make_anthropic_rubric_judge(model=None):
                           "not failed. This warning prints once per process.", file=sys.stderr)
         return verdicts
 
+    # Cumulative token spend across every call this process makes; the Finance
+    # API reporter (benchmark/finance_report.py) reads per-trajectory deltas.
+    judge.usage = {"model_name": judge_model, "input_tokens": 0, "output_tokens": 0,
+                   "cache_read_tokens": 0, "cache_creation_tokens": 0, "cost_usd": 0.0}
     return judge
 
 

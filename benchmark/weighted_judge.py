@@ -109,6 +109,10 @@ exclude_keys = {
     # traj-test content_contains fingerprints. Same "grade content, not the
     # receipt" rationale as the ids/stamps above.
     "to_addr", "cc_addr", "subject", "body",
+    # Slack-shaped chat writes: message content lives in "text" (not "body"),
+    # and the sandbox auto-assigns the sender when the agent omits it, so a
+    # baked GT "user_id" can never be matched by a compliant agent.
+    "text", "user_id",
 }
 
 eq_methods = {"content": fuzzy_match}

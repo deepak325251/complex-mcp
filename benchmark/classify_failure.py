@@ -38,6 +38,34 @@ READ_PREFIXES: tuple[str, ...] = (
 )
 
 
+# Server-side exceptions: the tool IMPLEMENTATION crashed (a harness/world defect),
+# not an app-level rejection the agent could have avoided. Never blame the model.
+INFRA_ERROR_SIGNATURES: tuple[str, ...] = (
+    "error calling tool",
+    "traceback (most recent call",
+    "list index out of range",
+    "object has no attribute",
+    "list indices must be integers",
+    "'nonetype' object",
+    "keyerror", "attributeerror", "indexerror", "typeerror", "valueerror",
+    "unhashable type", "not json serializable",
+)
+
+
+# App-level "the thing you named does not exist". When the agent supplies an id
+# that no prior read ever surfaced, that rejection means an invented (hallucinated)
+# argument, not a real dirty-state / missing-prereq problem.
+NOT_FOUND_SIGNATURES: tuple[str, ...] = (
+    "not found", "does not exist", "doesn't exist", "no such",
+    "unknown id", "invalid id", "could not find",
+)
+
+_ID_ARG_HINTS: frozenset[str] = frozenset({
+    "id", "sid", "tid", "uid", "cid", "gid", "mid", "aid", "oid",
+    "bid", "rid", "pid", "eid", "event_id", "channel", "org_id",
+})
+
+
 UTILITY_TOOLS: frozenset[str] = frozenset({
     "acc_network", "change_my_ip", "list_ip_choices",
     "wait_trade_password", "wait_payment_password", "ask_for_privilege",
@@ -191,6 +219,61 @@ def _no_dirty_state_evidence(steps: Sequence[dict]) -> bool:
     return all(_read_response_is_empty(s) for s in list_steps)
 
 
+def _is_infra_error(step: dict) -> bool:
+    """A server-side crash inside the tool (harness/world defect), as opposed to
+    a normal app-level rejection ('X not found'). Only the former should be
+    attributed to infrastructure rather than the agent."""
+    if not _has_error_status(step):
+        return False
+    body = _resp_body(step).lower()
+    return any(sig in body for sig in INFRA_ERROR_SIGNATURES)
+
+
+def _is_id_key(k: str) -> bool:
+    k = str(k or "").lower()
+    return (k == "id" or k == "slug" or k.endswith("_id") or k.endswith("_slug")
+            or k in _ID_ARG_HINTS)
+
+
+def _looks_like_id(key: str, val: Any) -> bool:
+    return _is_id_key(key) and isinstance(val, str) and len(val) >= 3
+
+
+def _harvest_ids(resp: Any) -> set[str]:
+    """Every id/slug-shaped string value appearing anywhere in a tool response --
+    the pool of entity handles the agent legitimately learned about."""
+    found: set[str] = set()
+
+    def walk(o: Any) -> None:
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if isinstance(v, str) and _is_id_key(k):
+                    found.add(v)
+                walk(v)
+        elif isinstance(o, list):
+            for x in o:
+                walk(x)
+
+    walk(resp)
+    return found
+
+
+def _detect_hallucinated_arg(steps: Sequence[dict]) -> dict | None:
+    """The agent called a tool with an entity id that no PRIOR response ever
+    surfaced, and the tool rejected it as non-existent -> invented argument."""
+    seen: set[str] = set()
+    for i, s in enumerate(steps):
+        if _has_error_status(s):
+            body = _resp_body(s).lower()
+            if any(sig in body for sig in NOT_FOUND_SIGNATURES):
+                for k, v in (s.get("arguments") or {}).items():
+                    if _looks_like_id(k, v) and v not in seen:
+                        return {"step": i, "tool": _base(s.get("tool")),
+                                "arg": k, "value": v}
+        seen |= _harvest_ids(s.get("response"))
+    return None
+
+
 def classify(
     *,
     trajectory: dict[str, Any] | list[dict] | None,
@@ -311,11 +394,43 @@ def classify(
         )
 
     error_steps = [s for s in steps if _has_error_status(s)]
+    _halluc = _detect_hallucinated_arg(steps)
     if len(error_steps) >= 3 and (recall == 0 or (total and recall / total < 0.5)):
+        infra_steps = [s for s in error_steps if _is_infra_error(s)]
+        # Server-side crashes (KeyError/AttributeError/"Error calling tool") are a
+        # HARNESS/world defect, not the agent failing to recover -- split them out
+        # so the model isn't blamed for a broken tool implementation.
+        if len(infra_steps) * 2 >= len(error_steps):
+            return _verdict(
+                FailureClass.INFRA_ERROR,
+                f"{len(infra_steps)}/{len(error_steps)} tool errors are server-side "
+                f"crashes (harness/world defect, not the agent)",
+                {"infra_steps": len(infra_steps), "error_steps": len(error_steps)},
+            )
+        # Many errors all from named-but-nonexistent entities -> the agent was
+        # inventing ids/slugs (hallucination), not just "failing to recover".
+        halluc_errs = [s for s in error_steps
+                       if any(sig in _resp_body(s).lower() for sig in NOT_FOUND_SIGNATURES)]
+        if _halluc is not None and len(halluc_errs) * 2 >= len(error_steps):
+            return _verdict(
+                FailureClass.HALLUCINATED_ARG,
+                f"{len(halluc_errs)}/{len(error_steps)} errors are invented entity "
+                f"ids/slugs the agent never read (e.g. {_halluc['arg']}='{_halluc['value']}')",
+                {**_halluc, "halluc_errors": len(halluc_errs), "error_steps": len(error_steps)},
+            )
         return _verdict(
             FailureClass.TOOL_ERROR_UNRECOVERED,
             f"agent hit {len(error_steps)} tool errors and did not recover",
-            {"error_steps": len(error_steps)},
+            {"error_steps": len(error_steps), "infra_steps": len(infra_steps)},
+        )
+
+    # A single invented-id rejection (below the multi-error threshold above).
+    if _halluc is not None:
+        return _verdict(
+            FailureClass.HALLUCINATED_ARG,
+            f"called {_halluc['tool']} with {_halluc['arg']}='{_halluc['value']}' "
+            f"which no prior read surfaced -- invented (hallucinated) argument",
+            _halluc,
         )
 
     if state_metrics and misbehave > 0 and total > 0 and recall >= max(1, total // 2):

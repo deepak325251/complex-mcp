@@ -1,4 +1,3 @@
-# Source: world_data 2/LightStock.json (verbatim). Corpus-only authored world.
 user:
   tier: Basic
   trading_balance: 24651
@@ -10,3 +9,4 @@ stocks:
   trade_history: []
   watch_list: []
   price_alerts: {}
+

@@ -1103,6 +1103,14 @@ def main(args):
                     "judge_detail": final_score,
                 })
 
+                # Finance API: one usage record per trajectory (attempt), posted
+                # after grading so judge token spend is included. No-op unless
+                # FINANCE_API_URL is set; never raises, never affects grading.
+                from benchmark.finance_report import report_trajectory_usage
+                report_trajectory_usage(record, model=model,
+                                        task_name=episode_name,
+                                        rubric_judge=rubric_judge)
+
                 if first_attempt:
                     per_episode.append({
                         "index": i + 1,
