@@ -25,6 +25,7 @@ import uuid as _stdlib_uuid
 import subprocess
 import yaml
 import asyncio
+import traceback
 from collections import Counter
 from datetime import datetime, timezone
 
@@ -707,27 +708,62 @@ def main(args):
             # attributed to an arbitrary attempt.
             _t_trial_start = datetime.now(timezone.utc)
 
-            task = agent.process_query(
-                query=query,
-                max_turns=100,
-                verbose=True,
-                stop_tag="[END]",
-                env={
-                    "apps": apps
-                },
-                provide_tools=provide_tools if toolbox.method == "provide" else None,
-                native=native_tools
-            )
+            # Rollout guard: a dead server, failed login RPC, or a
+            # malformed/empty result dump must fail THIS attempt, not
+            # abort the whole multi-task run -- summary.json/report.md/
+            # pass@k are only written after the loop, so an unhandled
+            # exception here used to lose every completed task's roll-up.
+            try:
+                task = agent.process_query(
+                    query=query,
+                    max_turns=100,
+                    verbose=True,
+                    stop_tag="[END]",
+                    env={
+                        "apps": apps
+                    },
+                    provide_tools=provide_tools if toolbox.method == "provide" else None,
+                    native=native_tools
+                )
 
-            _t_agent_start = datetime.now(timezone.utc)
-            result = asyncio.run(task)
-            _t_agent_end = datetime.now(timezone.utc)
+                _t_agent_start = datetime.now(timezone.utc)
+                result = asyncio.run(task)
+                _t_agent_end = datetime.now(timezone.utc)
 
-            old_env = result["old_apps"]
-            new_env = result["apps"]
-            tool_cnt = result["tool_cnt"]
-            tokens = result["tokens"]
-            usage = result.get("usage")  # real API usage incl. prompt-cache
+                old_env = result["old_apps"]
+                new_env = result["apps"]
+                tool_cnt = result["tool_cnt"]
+                tokens = result["tokens"]
+                usage = result.get("usage")  # real API usage incl. prompt-cache
+            except Exception as _exc:
+                traceback.print_exc()
+                print(f"[rollout] FAILED {episode_name} attempt "
+                      f"{attempt + 1}/{n_attempts}: "
+                      f"{type(_exc).__name__}: {_exc} -- recording a "
+                      f"failed attempt and continuing with the run")
+                _err = f"rollout failed: {type(_exc).__name__}: {_exc}"
+                trials_runs.setdefault(episode_name, []).append({
+                    "attempt": None,
+                    "passed": False,
+                    "reward": None,
+                    "completion_rate": 0.0,
+                    "misbehaving_rate": 0.0,
+                    "misbehave_kind": None,
+                    "state_admissible": None,
+                    "state_reason": None,
+                    "failure_class": "harness_error",
+                    "reason": _err,
+                    "query": query,
+                    "final_message": "",
+                    "judge_detail": {"gradeable": False, "reason": _err},
+                })
+                if first_attempt:
+                    per_episode.append({
+                        "index": i + 1, "name": episode_name,
+                        "passed": False, "gradeable": False,
+                        "error": _err,
+                    })
+                continue
 
             grading_dir = task_info.get("grading_dir")
             _traj = parse_trajectory(result.get("output", ""))
@@ -769,76 +805,91 @@ def main(args):
                       f"rubric.json present but no judge backend — "
                       f"rubric channel dark for this task")
 
-            if _grader == "weighted":
-                # HYBRID grading: state-diff (Rc/Rb), plan-shape (graph_f1) and an
-                # optional rubric are combined as a weighted ledger with penalties
-                # (tests/test_weights.json). State components drop out and the score
-                # renormalizes when gt_env is unavailable, so seedless tasks still grade.
-                from benchmark.weighted_judge import judge_weighted
-                # Layer-1 repair: if the Docker facade dumped empty for the state
-                # apps, rebuild new_env in-process by replaying the trajectory so
-                # the state channel can grade instead of dropping to inadmissible.
-                # Fully guarded: no-op on a healthy dump / missing gt, and any
-                # error is swallowed so grading proceeds exactly as before.
-                if _task_dir and old_env and gt_env and new_env is not None:
-                    try:
-                        from benchmark.bake_state_mcp import repair_new_env
-                        new_env, _rep = repair_new_env(
-                            str(_task_dir), new_env, old_env, gt_env, _traj)
-                        if _rep.get("repaired"):
-                            print(f"[state] repaired empty facade dump via "
-                                  f"in-process replay ({_rep.get('calls_applied')} "
-                                  f"calls) — was {_rep.get('reason')}")
-                        elif _rep.get("reason", "").startswith("empty_dump+"):
-                            print(f"[state] replay REFUSED ({_rep.get('reason')}) — "
-                                  f"state channel will be marked inadmissible "
-                                  f"rather than graded against an unverified world")
-                        # Carried so report.json can say the state channel was
-                        # reconstructed, not natively captured.
-                        _state_repair = _rep
-                    except Exception as _exc:
-                        print(f"[state] repair skipped: {type(_exc).__name__}: {_exc}")
-                judge_result = judge_weighted(
-                    old_env=old_env, new_env=new_env, gt_env=gt_env,
-                    trajectory=_traj, gold_plan=_gold, efs=_load_efs(_task_dir),
-                    grading_dir=grading_dir,
-                    final_message=_traj.get("final_message"),
-                    rubric_judge=rubric_judge, rubric_path=_rpath)
-                print(f"[judge] weighted reward={judge_result['reward']} "
-                      f"({judge_result['quadrant']}) earned={judge_result['earned']} "
-                      f"penalty={judge_result['penalty']} -> passed={judge_result['passed']}")
-                passed = int(judge_result["passed"])
-                gradeable = True
-            elif _grader == "graph" and _gold:
-                # ETOM-style WORLD-INDEPENDENT grading: score the agent's tool-call
-                # DAG against the oracle's tool sequence (solution/trajectory.json)
-                # with equal-function-sets. No world state, no world-specific values
-                # (uids/tickers/IDs) -- so frozen-fixture / seed mismatches can't bite.
-                from benchmark.graph_judge import judge_trajectory_graph
-                judge_result = judge_trajectory_graph(
-                    _traj, _gold, efs=_load_efs(_task_dir),
-                    final_message=_traj.get("final_message"),
-                    rubric_judge=rubric_judge, rubric_path=_rpath)
-                print(f"[judge] graph_f1={judge_result['graph_f1']} "
-                      f"(precision={judge_result['graph_precision']} recall={judge_result['graph_recall']}) "
-                      f"rubric={judge_result.get('rubric_score')} -> passed={judge_result['passed']}")
-                passed = int(judge_result["passed"])
-                gradeable = True
-            elif grading_dir:
-                # Fallback: trajectory Pytest+Rubric (tool-call assertions).
-                from benchmark.pytest_judge import judge_trajectory_pytest
-                judge_result = judge_trajectory_pytest(
-                    _traj, grading_dir,
-                    final_message=_traj.get("final_message"),
-                    rubric_judge=rubric_judge, verbose=True)
-                passed = int(judge_result["passed"])
-                gradeable = True
-            else:
-                judge_result = {"recall": 0, "total": 0, "misbehave": 0}
+            # Judge guard: a grader exception (e.g. a bug in the judge
+            # itself) scores this attempt as failed/ungradeable instead
+            # of aborting the run; the trajectory artifacts below are
+            # still written through the existing non-gradeable path.
+            try:
+                if _grader == "weighted":
+                    # HYBRID grading: state-diff (Rc/Rb), plan-shape (graph_f1) and an
+                    # optional rubric are combined as a weighted ledger with penalties
+                    # (tests/test_weights.json). State components drop out and the score
+                    # renormalizes when gt_env is unavailable, so seedless tasks still grade.
+                    from benchmark.weighted_judge import judge_weighted
+                    # Layer-1 repair: if the Docker facade dumped empty for the state
+                    # apps, rebuild new_env in-process by replaying the trajectory so
+                    # the state channel can grade instead of dropping to inadmissible.
+                    # Fully guarded: no-op on a healthy dump / missing gt, and any
+                    # error is swallowed so grading proceeds exactly as before.
+                    if _task_dir and old_env and gt_env and new_env is not None:
+                        try:
+                            from benchmark.bake_state_mcp import repair_new_env
+                            new_env, _rep = repair_new_env(
+                                str(_task_dir), new_env, old_env, gt_env, _traj)
+                            if _rep.get("repaired"):
+                                print(f"[state] repaired empty facade dump via "
+                                      f"in-process replay ({_rep.get('calls_applied')} "
+                                      f"calls) — was {_rep.get('reason')}")
+                            elif _rep.get("reason", "").startswith("empty_dump+"):
+                                print(f"[state] replay REFUSED ({_rep.get('reason')}) — "
+                                      f"state channel will be marked inadmissible "
+                                      f"rather than graded against an unverified world")
+                            # Carried so report.json can say the state channel was
+                            # reconstructed, not natively captured.
+                            _state_repair = _rep
+                        except Exception as _exc:
+                            print(f"[state] repair skipped: {type(_exc).__name__}: {_exc}")
+                    judge_result = judge_weighted(
+                        old_env=old_env, new_env=new_env, gt_env=gt_env,
+                        trajectory=_traj, gold_plan=_gold, efs=_load_efs(_task_dir),
+                        grading_dir=grading_dir,
+                        final_message=_traj.get("final_message"),
+                        rubric_judge=rubric_judge, rubric_path=_rpath)
+                    print(f"[judge] weighted reward={judge_result['reward']} "
+                          f"({judge_result['quadrant']}) earned={judge_result['earned']} "
+                          f"penalty={judge_result['penalty']} -> passed={judge_result['passed']}")
+                    passed = int(judge_result["passed"])
+                    gradeable = True
+                elif _grader == "graph" and _gold:
+                    # ETOM-style WORLD-INDEPENDENT grading: score the agent's tool-call
+                    # DAG against the oracle's tool sequence (solution/trajectory.json)
+                    # with equal-function-sets. No world state, no world-specific values
+                    # (uids/tickers/IDs) -- so frozen-fixture / seed mismatches can't bite.
+                    from benchmark.graph_judge import judge_trajectory_graph
+                    judge_result = judge_trajectory_graph(
+                        _traj, _gold, efs=_load_efs(_task_dir),
+                        final_message=_traj.get("final_message"),
+                        rubric_judge=rubric_judge, rubric_path=_rpath)
+                    print(f"[judge] graph_f1={judge_result['graph_f1']} "
+                          f"(precision={judge_result['graph_precision']} recall={judge_result['graph_recall']}) "
+                          f"rubric={judge_result.get('rubric_score')} -> passed={judge_result['passed']}")
+                    passed = int(judge_result["passed"])
+                    gradeable = True
+                elif grading_dir:
+                    # Fallback: trajectory Pytest+Rubric (tool-call assertions).
+                    from benchmark.pytest_judge import judge_trajectory_pytest
+                    judge_result = judge_trajectory_pytest(
+                        _traj, grading_dir,
+                        final_message=_traj.get("final_message"),
+                        rubric_judge=rubric_judge, verbose=True)
+                    passed = int(judge_result["passed"])
+                    gradeable = True
+                else:
+                    judge_result = {"recall": 0, "total": 0, "misbehave": 0}
+                    passed = 0
+                    gradeable = False
+                    print("[judge] SKIP: no solution/trajectory.json (graph gold) and no "
+                          "tests/test_outputs.py (pytest) -- add one to grade this task.")
+            except Exception as _exc:
+                traceback.print_exc()
+                print(f"[judge] FAILED {episode_name} attempt "
+                      f"{attempt + 1}/{n_attempts}: "
+                      f"{type(_exc).__name__}: {_exc} -- scoring the "
+                      f"attempt as failed/ungradeable and continuing")
+                judge_result = {"recall": 0, "total": 0, "misbehave": 0,
+                                "judge_error": f"{type(_exc).__name__}: {_exc}"}
                 passed = 0
                 gradeable = False
-                print("[judge] SKIP: no solution/trajectory.json (graph gold) and no "
-                      "tests/test_outputs.py (pytest) -- add one to grade this task.")
 
             ep_valid = ep_invalid = ep_error = 0
             for tool_cnt_info in tool_cnt.values():
@@ -911,7 +962,7 @@ def main(args):
                 else:
                     score = {
                         "gradeable": False,
-                        "reason": "not gradeable: task has no tests/test_outputs.py (Pytest+Rubric grading).",
+                        "reason": judge_result.get("judge_error") or "not gradeable: task has no tests/test_outputs.py (Pytest+Rubric grading).",
                         "reward": None,
                         "recall": None,
                         "misbehave": None,

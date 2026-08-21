@@ -263,18 +263,6 @@ def _leaf_strings(node, out=None):
                 continue
             _leaf_strings(v, out)
     elif isinstance(node, list):
-        # A LIST of records is a container too. Every mcp-stump app stores its
-        # world this way (output.accounts, output.tickets, output.charges, ...),
-        # and the dict-of-dicts rule above never matches it: the list is walked
-        # element-by-element and each element is a flat record whose values are
-        # scalars. The result was that a 4-app world produced exactly ONE bucket
-        # -- the root, keyed by app name -- which is identical in every world, so
-        # `_world_mismatch` compared app names to app names, found them equal,
-        # and passed a whole-world substitution as admissible.
-        ids = {_entity_id(it) for it in node if isinstance(it, dict)}
-        ids.discard(None)
-        if ids:
-            acc.setdefault(parent_key, set()).update(ids)
         for it in node:
             _leaf_strings(it, out)
     elif isinstance(node, str) and len(node.strip()) >= 12:

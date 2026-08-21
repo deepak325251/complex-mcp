@@ -1106,6 +1106,8 @@ class AgentClient:
                 results["apps"][app] = {}
             return
         for app in env["apps"]:
+            if app not in session_id_dict:
+                continue
             if app in self.toolbox.servers:
                 server = self.toolbox.servers[app]
                 assert server["need_session"]

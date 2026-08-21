@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "key": "sha256:9575faedfabde9adf89943c959ba7ac9d05bda6927e9aa25110f59c683737105",
+      "slug": "mcp-stump/shpa-open-bills-finance-brief",
+      "recorded_at": "2026-08-20T17:32:19.824982+00:00"
+    },
+    {
+      "key": "sha256:ece4115e1b6f6cc2a5a12a2dd79ffca99b221fda4a05fbc60746e24c32a37a31",
+      "slug": "mcp-stump/shpa-budget-access-board-brief",
+      "recorded_at": "2026-08-20T17:57:45.231872+00:00"
+    },
+    {
+      "key": "sha256:5ddd3d3d84ee4f0ebec63e5bbd8168139ca05b5055328c31e2b513589f7184b3",
+      "slug": "mcp-stump/shpa-pending-leave-staff-brief",
+      "recorded_at": "2026-08-20T18:05:13.684313+00:00"
+    }
+  ]
+}
